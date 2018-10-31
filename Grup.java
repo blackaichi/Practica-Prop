@@ -2,17 +2,35 @@ package classes;
 
 import java.util.*;
 
+/**
+ * 
+ * @author hector.morales.carnice@est.fib.upc.edu
+ *
+ */
 public class Grup {
-	//Atributs de la classe Grup:
+	/**
+	 * Identifica al Grup d'una assignatura concreta. 
+	 */
 	private int numero;
+	/**
+	 * Numera les places obertes que té el Grup.
+	 */
 	private int places;
-	
-	//Franja horaria; només pot obtenir els valors {M,T,MT,NAN}
+	/**
+	 * Franja horaria:
+	 * Només pot pendre els valors {M,T,MT,NAN}, els quals signifiquen:
+	 * matí, tarda, ambdós o cap dels dos, respectivament.
+	 */
 	private String franja;
 	
-	//Enllaços amb les classes corresponents:
-	private HashSet<SubGrup> subGrups;	//Registra tots els subGrups que pertanyen al Grup.
-	//private Assignatura assignatura;	//Registra l'assignatura a la qual pertany el Grup.
+	/**
+	 * Registra tots els subGrups que pertanyen al Grup.
+	 */
+	private HashSet<SubGrup> subGrups;
+	/**
+	 * Identifica l'assignatura a la qual pertany el Grup.
+	 */
+	//private Assignatura assign;
 	
 	////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////  PRIVADES  /////////////////////////////////////
@@ -62,7 +80,14 @@ public class Grup {
 	 * Assigna un numero identificatiu al grup.
 	 * @param numero Identifica el grup. 
 	 */
-	public void setNumero(int numero) {
+	public void setNumero(int numero) throws Exception {
+		if(this.numero == numero) return; //En cas de fer un canvi inutil.
+		else if(numero < 0) throw new Exception("Número de subgrup negatiu.");
+		/*
+		HashSet<Grup> grups = assign.getAllGrups();
+		for(Assignatura grup: grups) //Cerca d'una coincidencia; si n'hi ha, s'ha de llançar una excepció.
+			if(grup.getNumero() == numero) throw new Exception("El número de Grup ja existeix en aquesta Assignatura.");
+		*/
 		this.numero = numero;
 	}
 	
@@ -83,9 +108,9 @@ public class Grup {
 	 */
 	public void setFranja(String franja) throws Exception {
 		if(franja.equals("NAN")) this.franja = franja;
-		else if(!"MT".contains(franja)) throw new Exception("Franja incorrecte.");
+		else if(!"MT".contains(franja.toUpperCase())) throw new Exception("Franja incorrecte.");
 		
-		this.franja = franja;
+		this.franja = franja.toUpperCase();
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -148,20 +173,26 @@ public class Grup {
 	//////////////////////////////  MODIFICADORES  /////////////////////////////////
 	/**
 	 * Afegeix la quantitat entrada per parametre de places al Grup si, 
-	 * i només si, nplaces > 0; altrament fa l'acció inversa.
+	 * i només si, nplaces > 0; altrament llança una Excepció.
 	 * @param incr Quantitat de places a afegir.
 	 */
-	public void obrirPlaces(int nplaces) {
+	public void obrirPlaces(int nplaces) throws Exception {
+		if(nplaces < 0) throw new Exception("Nombre negatiu de places.");
 		this.places += nplaces;
 	}
 	
 	/**
 	 * Tanca la quantita entrada per paràmetre de places al Grup si,
-	 * i només si, nplaces > 0; altrament fa l'acció complementaria.
+	 * i només si, nplaces > 0 i no incongrueix amb les places obertes 
+	 * als seus subGrups; altrament llança una excepció.
 	 * @param nplaces Quantitat de places a tancar.
 	 */
-	public void tancarPlaces(int nplaces) {
-		this.obrirPlaces(-1 * nplaces); //Passem el valor a egatiu per a que resti, enlloc de sumar.
+	public void tancarPlaces(int nplaces) throws Exception {
+		if(nplaces < 0) throw new Exception("Nombre negatiu de places.");
+		else if(this.places - nplaces < 0)
+			throw new Exception("No hi ha proutes places per tancar.");
+		
+		this.places -= nplaces;
 	}
 	
 	/** 
@@ -169,12 +200,16 @@ public class Grup {
 	 * compleixin amb les especificacions. Altrament llança una excepció.
 	 * @param numero Indica el numero que identificarà al subGrup.
 	 * @param places Indica quantes places ha de tenir el subGrup.
+	 * @param incr 	 Permet que, enlloc de fer saltar una excepció quan un subgrup subruix al total de places del grup,
+	 * la diferencia de places necessaries per obrir el subgrup s'incremente al total de places del grup.
 	 */
-	public void altaSubGrup(int numero, int places) throws Exception{
+	public void altaSubGrup(int numero, int places, boolean incr) throws Exception{
 		if(places > this.places) throw new Exception("Subgrup amb més places que el Grup");
-		else if((this.places - calculaCapacitatTotal()) < places) throw new Exception("No hi ha proutes places al Grup");
 		else if(places < 0) throw new Exception("Subgrup amb capacitat negativa");
-		//else if(numero/10 != this.numero) throw new Exception("Sugrup amb numero incorrecte respecte al Grup");
+		else if((this.places - calculaCapacitatTotal()) < places){
+			if(!incr) throw new Exception("No hi ha proutes places al Grup");
+			else this.places += places - (this.places - calculaCapacitatTotal());
+		}
 		
 		subGrups.add(new SubGrup(this, numero, places));
 	}
@@ -198,8 +233,8 @@ public class Grup {
 	}
 	
 	/** 
-	 * Retorna true si, i només si, existeix un subgrup amb el numero passat per
-	 * parametre.
+	 * Retorna true si, i només si, existeix un subgrup identificat pel numero
+	 * passat per parametre.
 	 * @param numero Descriu el subGrup que es pretén cercar.
 	 */
 	public boolean checkSubGrup(int numero) {
