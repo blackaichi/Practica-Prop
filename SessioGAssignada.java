@@ -7,8 +7,11 @@ package classes;
  */
 
 public class SessioGAssignada extends SessioAssignada{
+	/////////////////////////////////////////////////////////////
+	//////////////////////// Variables //////////////////////////
+	
 	/**
-	 * Identifica el grup al qual pertany la sessió
+	 * Identifica el grup al qual pertany la sessio
 	 */
 	private Grup grup;
 	
@@ -16,6 +19,20 @@ public class SessioGAssignada extends SessioAssignada{
 	 * Identifica la sessio de grup a la qual pertany
 	 */
 	private SessioGrup sessiogrup;
+	
+	/////////////////////////////////////////////////////////////
+	//////////////////////  Constructora  ///////////////////////
+	
+	/**
+	* Creadora de SessioAssignada sense parametres
+	*/
+	public SessioGAssignada() throws Exception {}
+	
+	/////////////////////////////////////////////////////////////
+	////////////////////////  Setters  //////////////////////////
+	
+	/////////////////////////////////////////////////////////////
+	////////////////////////  Getters  //////////////////////////
 	
 	/**
 	 * retorna grup al qual pertany la sessio del grup
@@ -32,4 +49,8 @@ public class SessioGAssignada extends SessioAssignada{
 	public SessioGrup getSessioGrup() {
 		return sessiogrup;
 	}
+	
+	/////////////////////////////////////////////////////////////
+	///////////////////////  Funcions  //////////////////////////
+	
 }
