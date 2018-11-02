@@ -24,13 +24,17 @@ public class Grup {
 	private String franja;
 	
 	/**
+	 * Identifica l'assignatura a la qual pertany el Grup.
+	 */
+	private Assignatura assig;
+	/**
 	 * Registra tots els subGrups que pertanyen al Grup.
 	 */
 	private HashSet<SubGrup> subGrups;
 	/**
-	 * Identifica l'assignatura a la qual pertany el Grup.
+	 * Registra totes les sessions a les quals pertany el Grup.
 	 */
-	//private Assignatura assign;
+	private HashSet<SessioGAssignada> sessions;
 	
 	////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////  PRIVADES  /////////////////////////////////////
@@ -53,7 +57,9 @@ public class Grup {
 	 * prenen els valors -1, -1, "NAN" respectivament. Mentre que el conjunt de
 	 * subGrups inicialment és buit.
 	 */
-	public Grup() {
+	public Grup(Assignatura assig) {
+		this.setAssignatura(assig);
+		
 		numero = places = 0;
 		franja = new String("NAN");
 		
@@ -66,7 +72,8 @@ public class Grup {
 	 * @param places Descriu la capacitat del grup.
 	 * @param franja Descriu la franja horaria del grup
 	 */
-	public Grup(int numero, int places, String franja) throws Exception {
+	public Grup(Assignatura assig, int numero, int places, String franja) throws Exception {
+		this.setAssignatura(assig);
 		this.setNumero(numero);
 		this.setPlaces(places);
 		this.setFranja(franja);
@@ -83,11 +90,8 @@ public class Grup {
 	public void setNumero(int numero) throws Exception {
 		if(this.numero == numero) return; //En cas de fer un canvi inutil.
 		else if(numero < 0) throw new Exception("Número de subgrup negatiu.");
-		/*
-		HashSet<Grup> grups = assign.getAllGrups();
-		for(Assignatura grup: grups) //Cerca d'una coincidencia; si n'hi ha, s'ha de llançar una excepció.
-			if(grup.getNumero() == numero) throw new Exception("El número de Grup ja existeix en aquesta Assignatura.");
-		*/
+		else if(assig.checkGrup(numero)) throw new Exception("El número de Grup ja existeix en aquesta Assignatura.");
+
 		this.numero = numero;
 	}
 	
@@ -111,6 +115,16 @@ public class Grup {
 		else if(!"MT".contains(franja.toUpperCase())) throw new Exception("Franja incorrecte.");
 		
 		this.franja = franja.toUpperCase();
+	}
+	
+	/**
+	 * Assigna l'assignatura a la qual pertany el Grup.
+	 * @param assig Referencia l'assignatura a la qual pertany el grup.
+	 * @throws NullPointerException
+	 */
+	public void setAssignatura(Assignatura assig) throws NullPointerException {
+		if(assig == null) throw new NullPointerException("El grup ha de formar part d'una Assignatura.");
+		else this.assig = assig;
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -169,6 +183,37 @@ public class Grup {
 		return null;
 	}
 	
+	/**
+	 * Retorna l'assignatura a la qual pertany el grup.
+	 * @return La classe assignatura a la qual pertany el grup.
+	 */
+	public Assignatura getAssignatura() {
+		return assig;
+	}
+	
+	/**
+	 * Retorna totes les sessions a les quals està assignat el Grup.
+	 * @return Un HashSet de SessioAssignada buit, o amb múltiples sessions.
+	 */
+	public HashSet<SessioGAssignada> getSessions() {
+		return sessions;
+	}
+	
+	/**
+	 * Retorna, si hi és, la referencia a la sessió del Grup amb
+	 * el tipus i hores corresponents; altrament retorna null.
+	 * @param tipus Identifica el tipus de la sessió.
+	 * @param hores Identifica la durada en hores de la sessió.
+	 * @return Una classe de tipus SessioGAssignada o un null.
+	 */
+	public SessioGAssignada getSessio(String tipus, int hores) {
+		for(SessioGAssignada sessio: sessions)
+			if(sessio.getSessioGrup().getTipus().equals(tipus) && sessio.getSessioGrup().getHores() == hores)
+				return sessio;
+		
+		return null;
+	}
+	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  MODIFICADORES  /////////////////////////////////
 	/**
@@ -204,7 +249,8 @@ public class Grup {
 	 * la diferencia de places necessaries per obrir el subgrup s'incremente al total de places del grup.
 	 */
 	public void altaSubGrup(int numero, int places, boolean incr) throws Exception{
-		if(places > this.places) throw new Exception("Subgrup amb més places que el Grup");
+		if(this.checkSubGrup(numero)) throw new Exception("El subGrup ja existeix en aquest Grup.");
+		else if(places > this.places) throw new Exception("Subgrup amb més places que el Grup");
 		else if(places < 0) throw new Exception("Subgrup amb capacitat negativa");
 		else if((this.places - calculaCapacitatTotal()) < places){
 			if(!incr) throw new Exception("No hi ha proutes places al Grup");
@@ -222,6 +268,60 @@ public class Grup {
 		subGrups.removeIf(item -> item.getNumero() == numero);
 	}
 	
+	/**
+	 * Assigna un nova sessió al Grup i l'enregistra.
+	 * @param tipus Identifica el tipus de la sessio de grup.
+	 * @param hores Identifica el temps de durada de la sessió en hores
+	 * @throws Exception
+	 */
+	public void assignaSessio(String tipus, int hores) throws Exception{
+		if(this.checkSessio(tipus, hores)) throw new Exception("El grup ja conté una sessió amb el mateix tipus i hores");
+		else if(!assig.checkSessioG(tipus, hores)) 
+			throw new Exception("L'assignatura a la qual pertany el grup no te cap sessio de Grup del tipus indicat.");
+		
+		SessioGrup sessioGrup = assig.getSessioG(tipus, hores);
+		SessioGAssignada sessio = new SessioGAssignada(this, sessio);
+		
+		//Enllaç amb la classe Grup
+		sessions.add(sessio);
+		
+		//Enllaç amb la classe SessioGrup
+		sessioGrup.addSessio(sessio);
+	}
+	
+	/**
+	 * Desassigna una sessió del Grup i l'esborra del set, si hi és.
+	 * Altrament no fa res.
+	 * @param tipus Identifica el tipus de la sessio
+	 * @param hores Identifica el temps de durada de la sessió en hores
+	 */
+	public void eliminaSessio(String tipus, int hores){
+		SessioGAssignada sessio = this.getSessio(tipus, hores);
+		
+		//Eliminació de la sessio a la classe Grup
+		sessions.removeIf(item -> item.getSessioGrup().getTipus().equals(tipus) &&
+								  item.getSessioGrup().getHores() == hores);
+		
+		//Elimina la sessio a la classe SessioGrup
+		sessio.getSessioGrup().eliminaSessio(tipus, hores);
+	}
+
+	/**
+	 * Afegeix una nova sessió al Grup si, i només si, compleix les restriccions
+	 * d'integritat del grup.
+	 * @param sessio Referencia a la SessioGAssignada que es preten afegir.
+	 * @throws Exception
+	 */
+	public void afegeixSessio(SessioGAssignada sessio) throws Exception{
+		if(sessions.contains(sessio)) throw new Exception("El grup ja conté aquesta sessió.");
+		else if(!sessio.getSessioGrup().getAssignatura().equals(assig.getNom()))
+			throw new Exception("La sessió i el grup són d'assignatures diferents.");
+		else if(this.checkSessio(sessio.getSessioGrup().getTipus(), sessio.getSessioGrup().getHores()))
+			throw new Exception("El grup ja conté una sessió amb el mateix tipus i hores");
+		
+		sessions.add(sessio);
+	}
+	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  CONSULTORES  ///////////////////////////////////
 	/** 
@@ -236,10 +336,45 @@ public class Grup {
 	 * Retorna true si, i només si, existeix un subgrup identificat pel numero
 	 * passat per parametre.
 	 * @param numero Descriu el subGrup que es pretén cercar.
+	 * @return Descriu l'existencia d'un subGrup dins al Grup.
 	 */
 	public boolean checkSubGrup(int numero) {
 		for(SubGrup subg: subGrups)
 			if(subg.getNumero() == numero) return true;
+		
+		return false;
+	}
+
+	/**
+	 * Retorna a quantes sessions està assignat el Grup.
+	 * @return Un enter superior o igual a 0.
+	 */
+	public int quantesSessions() {
+		return sessions.size();
+	}
+	
+	/**
+	 * Retorna true si, i només si, el Grup està assignat a una sessió de l'assginatura
+	 * identificada per nomAssign i del tipus indicat. Altrament retorna false.
+	 * @param tipus Identifica el tipus de la sessió
+	 * @param hores Identifica el temps de durada de la sessió en hores
+	 * @return Descriu l'existencia d'una sessió del grup per una assignatura i
+	 * tipus de sessió concreta
+	 */
+	public boolean checkSessio(String tipus, int hores) {
+		return this.getSessio(tipus, hores) != null;
+	}
+
+	/**
+	 * Retorna true si, i només si, el Grup està assignat a una sessió del
+	 * tipus indicat (Sense tenir en compte la duració)
+	 * @param tipus Identifica el tipus de la sessió
+	 * @return Un boolea que descriu l'existencia d'una sessió del tipus
+	 * corresponent.
+	 */
+	public boolean checkSessio(String tipus) {
+		for(SessioGAssignada sessio: sessions)
+			if(sessio.getSessioGrup().getTipus().equals(tipus)) return true;
 		
 		return false;
 	}
