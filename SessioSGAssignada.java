@@ -13,12 +13,12 @@ public class SessioSGAssignada extends SessioAssignada{
 	/**
 	 * Identifica el subgrup al qual pertany la sessio
 	 */
-	private SubGrup subgrup;
+	private SubGrup subGrup;
 	
 	/**
 	 * Identifica la sessio de subgrup a la qual pertany
 	 */
-	private SessioSubGrup sessiosubgrup;
+	private SessioSubGrup sessioSubGrup;
 	
 	/////////////////////////////////////////////////////////////
 	//////////////////////  Constructora  ///////////////////////
@@ -38,7 +38,7 @@ public class SessioSGAssignada extends SessioAssignada{
 	 * @return el subgrup al qual pertany la sessio del subgrup
 	 */
 	public SubGrup getSubGrup() {
-		return subgrup;
+		return subGrup;
 	}
 	
 	/**
@@ -46,7 +46,7 @@ public class SessioSGAssignada extends SessioAssignada{
 	 * @return sessio subgrup a la qual pertany
 	 */
 	public SessioSubGrup getSessioSubGrup() {
-		return sessiosubgrup;
+		return sessioSubGrup;
 	}
 	
 	/////////////////////////////////////////////////////////////

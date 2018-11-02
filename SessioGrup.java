@@ -10,6 +10,16 @@ public class SessioGrup extends Sessio{
 	/////////////////////////////////////////////////////////////
 	//////////////////////// Variables //////////////////////////
 	
+	/**
+	 * Identifica el grup al qual pertany la sessio del grup
+	 */
+	private Grup grup;
+	
+	/**
+	 * Totes les sessions de grup assignades al seu grup
+	 */
+	private SessioGAssignada[] sessioGAssignada;
+	
 	/////////////////////////////////////////////////////////////
 	//////////////////////  Constructora  ///////////////////////
 	
@@ -34,6 +44,22 @@ public class SessioGrup extends Sessio{
 	
 	/////////////////////////////////////////////////////////////
 	////////////////////////  Getters  //////////////////////////
+	
+	/**
+	 * Retorna el grup al qual pertany la sessio del grup
+	 * @return grup de la sessio
+	 */
+	public Grup getGrup() {
+		return grup;
+	}
+	
+	/**
+	 * Retorna totes les sessions de grup assignades
+	 * @return un arrray amb les sessions de grup assignades
+	 */
+	public SessioGAssignada[] getAllSessionsGA() {
+		return sessioGAssignada;
+	}
 	
 	/////////////////////////////////////////////////////////////
 	///////////////////////  Funcions  //////////////////////////

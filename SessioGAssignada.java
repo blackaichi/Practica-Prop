@@ -18,7 +18,7 @@ public class SessioGAssignada extends SessioAssignada{
 	/**
 	 * Identifica la sessio de grup a la qual pertany
 	 */
-	private SessioGrup sessiogrup;
+	private SessioGrup sessioGrup;
 	
 	/////////////////////////////////////////////////////////////
 	//////////////////////  Constructora  ///////////////////////
@@ -47,7 +47,7 @@ public class SessioGAssignada extends SessioAssignada{
 	 * @return sessio grup a la qual pertany
 	 */
 	public SessioGrup getSessioGrup() {
-		return sessiogrup;
+		return sessioGrup;
 	}
 	
 	/////////////////////////////////////////////////////////////
