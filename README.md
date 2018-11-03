@@ -13,3 +13,4 @@ Repartiment treball (consultar UML.png):
 - Hèctor: crear les classes Grup i Subgrup.
 - Adrià: crear les classes Pla d'Estudis i Assignatura.
 - Èric: crear les classes Sessio, SessioSG, SessioG, SessioAssignada, SessioSGAssignada, SessioGAssignada. Crear UML amb argoUML.
+- Comú: Hem fet diverses quedades al llarg del primer mes per concretar les restriccions que havia de tenir l'horari, les que podia definir l'usuari i per la creació del diagrama de classes.
