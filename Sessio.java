@@ -11,57 +11,69 @@ public class Sessio {
 	//////////////////////// Variables //////////////////////////
 	
 	/**
-	 * Quants hores te aquesta sessio
+	 * Quantes hores té aquesta sessió
 	 */	
 	private int hores;
 	
 	/**
-	 * De quin tipus es la sessio
+	 * De quin tipus és la sessió
 	 */	
 	private String tipus;
 	
 	/**
-	 * Assignatura a la qual pertany la sessio
+	 * Assignatura a la qual pertany la sessió
 	 */
 	private Assignatura assignatura;
 	
 	/////////////////////////////////////////////////////////////
 	//////////////////////  Constructora  ///////////////////////
-	
+
 	/**
-	 * Creadora de Sessio amb parametres
-	 * @param hores: nombre d'hores de la sessio que entra l'usuari
-	 * @param tipus: tipus de sessio que entra l'usuari
+	 * Creadora de Sessio sense paràmetres
+	 * @param assig assignatura a la qual pertany la sessió
 	 */
-	public Sessio(int hores, String tipus) throws Exception {
-		this.setHores(hores);
-		this.setTipus(tipus);
+	public Sessio(Assignatura assig) throws Exception {
+		this.setAssignatura(assig);
+		this.hores = 0;
+		this.tipus = new String("NAN");
 	}
 	
 	/**
-	 * Creadora de Sessio sense parametres
+	 * Creadora de Sessio amb paràmetres
+	 * @param assig assignatura a la qual pertany la sessió
+	 * @param hores nombre d'hores de la sessió que entra l'usuari
+	 * @param tipus tipus de sessió que entra l'usuari
 	 */
-	public Sessio() throws Exception {
-		this.hores = 0;
-		this.tipus = new String("NAN");
+	public Sessio(Assignatura assig, int hores, String tipus) throws Exception {
+		this.setAssignatura(assig);
+		this.setHores(hores);
+		this.setTipus(tipus);
 	}
 	
 	/////////////////////////////////////////////////////////////
 	////////////////////////  Setters  //////////////////////////
 	
 	/**
-	 * Assigna quantes hores te la sessio
-	 * @param hores: nombre d'hores de la sessio que entra l'usuari
+	 * Assigna una assignatura a la sessió
+	 * @param assig assignatura que pertany la sessió
+	 */
+	public void setAssignatura(Assignatura assig) {
+		this.assignatura = assig;
+	}
+		
+	/**
+	 * Assigna quantes hores té la sessió
+	 * @param hores nombre d'hores de la sessió
 	 * @throws Exception si hora < 1
 	 */
 	public void setHores(int hores) throws Exception {
-		if (hores < 1) throw new Exception("l'hora no pot ser negativa");
+		if (hores < 1) throw new Exception("l'hora no pot ser negativa ni 0");
 		this.hores = hores;
 	}
 	
 	/**
-	 * Assigna de quin tipus es la sessio
-	 * @param tipus: tipus de sessio que entra l'usuari
+	 * Assigna de quin tipus es la sessió
+	 * @param tipus tipus de la sessió
 	 */
 	public void setTipus(String tipus) {
 		this.tipus = tipus;
@@ -71,23 +83,24 @@ public class Sessio {
 	////////////////////////  Getters  //////////////////////////
 	
 	/**
-	 * Retorna el nombre d'hores de la sessio
-	 * @return hores de la sessio
+	 * Retorna el nombre d'hores de la sessió
+	 * @return hores de la sessió
 	 */
 	public int getHores() {
 		return this.hores;
 	}
 	
-	 /** Retorna el tipus de la sessio
-	 * @return tipus de la sessio
+	 /** 
+	 * Retorna el tipus de la sessió
+	 * @return tipus de la sessió
 	 */
 	public String getTipus() {
 		return this.tipus;
 	}
 	
 	/**
-	 * Retorna ll'assignatura a la qual pertany la sessio
-	 * @return l'assignatura a la qual pertany la sessio
+	 * Retorna l'assignatura a la qual pertany la sessió
+	 * @return l'assignatura a la qual pertany la sessió
 	 */
 	public Assignatura getAssignatura() {
 		return assignatura;
@@ -97,16 +110,16 @@ public class Sessio {
 	///////////////////////  Funcions  //////////////////////////
 	
 	/**
-	 * Cambia el tipus de la sessio
-	 * @param tipus: nou tipus de sessio
+	 * Cambia el tipus de la sessió
+	 * @param tipus nou tipus de sessió
 	 */
 	public void modificaTipus(String tipus) {
 		this.tipus = tipus;
 	}
 	
 	/**
-	 * Cambia les hores de la sessio
-	 * @param hores: nou nombre d'hores
+	 * Cambia les hores de la sessió
+	 * @param hores nou nombre d'hores
 	 * @throws Exception si hora < 1
 	 */
 	public void modificaHores(int hores) throws Exception {

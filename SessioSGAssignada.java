@@ -24,12 +24,41 @@ public class SessioSGAssignada extends SessioAssignada{
 	//////////////////////  Constructora  ///////////////////////
 	
 	/**
-	* Creadora de SessioSGAssignada sense parametres
+	* Creadora de SessioSGAssignada sense paràmetres
 	*/
-	public SessioSGAssignada() throws Exception {}
+	public SessioSGAssignada() throws Exception {
+		super();
+	}
+	
+	/**
+	 * Creadora de SessioSGAssignada amb tots els paràmetres
+	 * @param subGrup subgrup al qual pertany la sessió assignada
+	 * @param sessioSG sessió de subgrup a la qual pertany la sessió assignada
+	 */
+	public SessioSGAssignada(SubGrup subGrup, SessioSubGrup sessioSG) throws Exception {
+		super();
+		this.setSubGrup(subGrup);
+		this.setSessioSubGrup(sessioSG);
+	}
 	
 	/////////////////////////////////////////////////////////////
 	////////////////////////  Setters  //////////////////////////
+
+	/**
+	 * Assigna el subgrup a la sessió assignada de subgrup
+	 * @param subGrup subgrup al qual pertany la sessió assignada
+	 */
+	public void setSubGrup(SubGrup subGrup) {
+		this.subGrup = subGrup;
+	}
+	
+	/**
+	 * Assigna la sessió de subgrup a la sessió de subgrup assignada
+	 * @param sessioSG sessió de subgrup a la qual pertany la sessió assignada
+	 */
+	public void setSessioSubGrup(SessioSubGrup sessioSG) {
+		this.sessioSubGrup = sessioSG;
+	}
 	
 	/////////////////////////////////////////////////////////////
 	////////////////////////  Getters  //////////////////////////

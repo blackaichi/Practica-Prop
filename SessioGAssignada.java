@@ -22,29 +22,58 @@ public class SessioGAssignada extends SessioAssignada{
 	
 	/////////////////////////////////////////////////////////////
 	//////////////////////  Constructora  ///////////////////////
+
+	/**
+	* Creadora de SessioGAssignada sense paràmetres
+	*/
+	public SessioGAssignada() throws Exception {
+		super();
+	}
 	
 	/**
-	* Creadora de SessioAssignada sense parametres
-	*/
-	public SessioGAssignada() throws Exception {}
+	 * Creadora de SessioGAssignada amb tots els paràmetres
+	 * @param grup grup al qual pertany la sessió assignada
+	 * @param sessioG sessió de grup a la qual pertany la sessió assignada
+	 */
+	public SessioGAssignada(Grup grup, SessioGrup sessioG) throws Exception {
+		super();
+		this.setGrup(grup);
+		this.setSessioGrup(sessioG);
+	}
 	
 	/////////////////////////////////////////////////////////////
 	////////////////////////  Setters  //////////////////////////
+	
+	/**
+	 * Assigna el grup a la sessió assignada de grup
+	 * @param grup grup al qual pertany la sessió assignada
+	 */
+	public void setGrup(Grup grup) {
+		this.grup = grup;
+	}
+	
+	/**
+	 * Assigna la sessió de grup a la sessió de grup assignada
+	 * @param sessioG sessió de grup a la qual pertany la sessió assignada
+	 */
+	public void setSessioGrup(SessioGrup sessioG) {
+		this.sessioGrup = sessioG;
+	}
 	
 	/////////////////////////////////////////////////////////////
 	////////////////////////  Getters  //////////////////////////
 	
 	/**
-	 * retorna grup al qual pertany la sessio del grup
-	 * @return el grup al qual pertany la sessio del grup
+	 * retorna grup al qual pertany la sessió del grup
+	 * @return el grup al qual pertany la sessió del grup
 	 */
 	public Grup getGrup() {
 		return grup;
 	}
 	
 	/**
-	 * retorna la sessio del grup al qual pertany
-	 * @return sessio grup a la qual pertany
+	 * retorna la sessió del grup al qual pertany
+	 * @return sessió grup a la qual pertany
 	 */
 	public SessioGrup getSessioGrup() {
 		return sessioGrup;
@@ -52,5 +81,4 @@ public class SessioGAssignada extends SessioAssignada{
 	
 	/////////////////////////////////////////////////////////////
 	///////////////////////  Funcions  //////////////////////////
-	
 }
