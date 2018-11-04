@@ -241,9 +241,9 @@ public class SubGrup {
 			throw new Exception("La sessió no és del Grup del SubGrup corresponent.");
 		else if(!sessio.getSessioSubGrup().getAssignatura().getNom().equals(this.getGrup().getAssignatura().getNom()))
 			throw new Exception("La sessió i el grup del subGrup són d'assignatures diferents.");
-		else if(this.checkSessio(sessio.getSessioSubGrup().getTipus(), sessio.getSessioSubGrup().getHores()))
+		/*else if(this.checkSessio(sessio.getSessioSubGrup().getTipus(), sessio.getSessioSubGrup().getHores()))
 			throw new Exception("El subGrup ja conté una sessió amb el mateix tipus i hores");
-		
+		*/
 		sessions.add(sessio);
 	}
 	

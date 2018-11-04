@@ -332,9 +332,9 @@ public class Grup {
 		else if(sessio.getGrup().getNumero() != this.numero) throw new Exception("La sessió no és del Grup corresponent");
 		else if(!sessio.getSessioGrup().getAssignatura().getNom().equals(this.getAssignatura().getNom()))
 			throw new Exception("La sessió i el grup són d'assignatures diferents.");
-		else if(this.checkSessio(sessio.getSessioGrup().getTipus(), sessio.getSessioGrup().getHores()))
+		/*else if(this.checkSessio(sessio.getSessioGrup().getTipus(), sessio.getSessioGrup().getHores()))
 			throw new Exception("El grup ja conté una sessió amb el mateix tipus i hores");
-		
+		*/
 		sessions.add(sessio);
 	}
 	
