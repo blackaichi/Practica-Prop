@@ -23,7 +23,7 @@ public class Sessio {
 	/**
 	 * Assignatura a la qual pertany la sessió
 	 */
-	private Assignatura assignatura;
+	protected Assignatura assignatura;
 	
 	/////////////////////////////////////////////////////////////
 	//////////////////////  Constructora  ///////////////////////
@@ -109,21 +109,4 @@ public class Sessio {
 	/////////////////////////////////////////////////////////////
 	///////////////////////  Funcions  //////////////////////////
 	
-	/**
-	 * Cambia el tipus de la sessió
-	 * @param tipus nou tipus de sessió
-	 */
-	public void modificaTipus(String tipus) {
-		this.tipus = tipus;
-	}
-	
-	/**
-	 * Cambia les hores de la sessió
-	 * @param hores nou nombre d'hores
-	 * @throws Exception si hora < 1
-	 */
-	public void modificaHores(int hores) throws Exception {
-		if (hores < 1) throw new Exception("l'hora no pot ser negativa");
-		this.hores = hores;
-	}
 }
