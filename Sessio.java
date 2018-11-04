@@ -13,12 +13,12 @@ public class Sessio {
 	/**
 	 * Quantes hores té aquesta sessió
 	 */	
-	private int hores;
+	protected int hores;
 	
 	/**
 	 * De quin tipus és la sessió
 	 */	
-	private String tipus;
+	protected String tipus;
 	
 	/**
 	 * Assignatura a la qual pertany la sessió
@@ -33,9 +33,9 @@ public class Sessio {
 	 * @param assig assignatura a la qual pertany la sessió
 	 */
 	public Sessio(Assignatura assig) throws Exception {
-		this.setAssignatura(assig);
-		this.hores = 0;
-		this.tipus = new String("NAN");
+		setAssignatura(assig);
+		hores = 0;
+		tipus = new String("NAN");
 	}
 	
 	/**
@@ -45,9 +45,9 @@ public class Sessio {
 	 * @param tipus tipus de sessió que entra l'usuari
 	 */
 	public Sessio(Assignatura assig, int hores, String tipus) throws Exception {
-		this.setAssignatura(assig);
-		this.setHores(hores);
-		this.setTipus(tipus);
+		setAssignatura(assig);
+		setHores(hores);
+		setTipus(tipus);
 	}
 	
 	/////////////////////////////////////////////////////////////
@@ -57,8 +57,8 @@ public class Sessio {
 	 * Assigna una assignatura a la sessió
 	 * @param assig assignatura que pertany la sessió
 	 */
-	public void setAssignatura(Assignatura assig) {
-		this.assignatura = assig;
+	public void setAssignatura(Assignatura assignatura) {
+		this.assignatura = assignatura;
 	}
 		
 	/**
@@ -87,7 +87,7 @@ public class Sessio {
 	 * @return hores de la sessió
 	 */
 	public int getHores() {
-		return this.hores;
+		return hores;
 	}
 	
 	 /** 
@@ -95,7 +95,7 @@ public class Sessio {
 	 * @return tipus de la sessió
 	 */
 	public String getTipus() {
-		return this.tipus;
+		return tipus;
 	}
 	
 	/**

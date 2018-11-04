@@ -20,7 +20,7 @@ public class SessioSubGrup extends Sessio{
 	/**
 	 * Registra totes les sessions de subgrup assignades
 	 */
-	private HashSet<SessioSGAssignada> sessionsSGA;
+	private HashSet<SessioSGAssignada> sessionsSGA = new HashSet<SessioSGAssignada>();
 	
 	/////////////////////////////////////////////////////////////
 	/////////////////////////  Privats  /////////////////////////
