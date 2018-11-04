@@ -190,7 +190,7 @@ public class SubGrup {
 		sessions.add(sessio);
 		
 		//Enllaç amb la classe SessioSubGrup
-		sessioSubGrup.addSessio(sessio);
+		sessioSubGrup.afegirSessio(sessio);
 	}
 	
 	/**
@@ -208,7 +208,24 @@ public class SubGrup {
 								  item.getSessioSubGrup().getHores() == hores);
 		
 		//Elimina la sessio de la classe SessioSubGrup
-		sessio.getSessioSubGrup().eliminaSessio(tipus, hores);
+		sessio.getSessioSubGrup().eliminarSessio(tipus, hores);
+	}
+	
+	/**
+	 * Desassigna aquella sessió del SubGrup igual a la sessió afegida per
+	 * paràmetre i l'esborra del set, si hi és.
+	 * Altrament no fa res.
+	 * @param sessio Referencia a la sessió que és preten esborrar.
+	 * @throws Exception
+	 */
+	public void eliminaSessio(SessioSGAssignada sessio) throws Exception {
+		if(sessio.getSubGrup().getNumero() != this.numero) throw new Exception("La sessió no és del SubGrup corresponent");
+		else if(sessio.getSubGrup().getGrup().getNumero() != this.getGrup().getNumero())
+			throw new Exception("La sessió no és del Grup del SubGrup corresponent.");
+		else if(!sessio.getSubGrup().getGrup().getAssignatura().getNom().equals(this.getGrup().getAssignatura().getNom()))
+			throw new Exception("La sessió a esborrar no és de la mateixa assignatura que el subGrup.");
+		
+		this.eliminaSessio(sessio.getSessioSubGrup().getTipus(), sessio.getSessioSubGrup().getHores());
 	}
 	
 	/**
@@ -219,7 +236,7 @@ public class SubGrup {
 	 */
 	public void afegeixSessio(SessioSGAssignada sessio) throws Exception{
 		if(sessions.contains(sessio)) throw new Exception("El subGrup ja conté aquesta sessió.");
-		else if(!sessio.getSessioGrup().getAssignatura().equals(grup.getAssignatura().getNom()))
+		else if(!sessio.getSessioSubGrup().getAssignatura().equals(grup.getAssignatura().getNom()))
 			throw new Exception("La sessió i el grup del subGrup són d'assignatures diferents.");
 		else if(this.checkSessio(sessio.getSessioSubGrup().getTipus(), sessio.getSessioSubGrup().getHores()))
 			throw new Exception("El subGrup ja conté una sessió amb el mateix tipus i hores");

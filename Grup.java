@@ -280,13 +280,13 @@ public class Grup {
 			throw new Exception("L'assignatura a la qual pertany el grup no te cap sessio de Grup del tipus indicat.");
 		
 		SessioGrup sessioGrup = assig.getSessioG(tipus, hores);
-		SessioGAssignada sessio = new SessioGAssignada(this, sessio);
+		SessioGAssignada sessio = new SessioGAssignada(this, sessioGrup);
 		
 		//Enllaç amb la classe Grup
 		sessions.add(sessio);
 		
 		//Enllaç amb la classe SessioGrup
-		sessioGrup.addSessio(sessio);
+		sessioGrup.afegirSessio(sessio);
 	}
 	
 	/**
@@ -303,9 +303,24 @@ public class Grup {
 								  item.getSessioGrup().getHores() == hores);
 		
 		//Elimina la sessio a la classe SessioGrup
-		sessio.getSessioGrup().eliminaSessio(tipus, hores);
+		sessio.getSessioGrup().eliminarSessio(tipus, hores);
 	}
 
+	/**
+	 * Desassigna aquella sessió del Grup igual a la sessió afegida per
+	 * paràmetre i l'esborra del set, si hi és.
+	 * Altrament no fa res.
+	 * @param sessio Referencia a la sessió que és preten esborrar.
+	 * @throws Exception
+	 */
+	public void eliminaSessio(SessioGAssignada sessio) throws Exception {
+		if(sessio.getGrup().getNumero() != this.numero) throw new Exception("La sessió no és del Grup corresponent");
+		else if(!sessio.getGrup().getAssignatura().getNom().equals(this.getAssignatura().getNom()))
+			throw new Exception("La sessió a esborrar no és de la mateixa assignatura que el grup.");
+		
+		this.eliminaSessio(sessio.getSessioGrup().getTipus(), sessio.getSessioGrup().getHores());
+	}
+	
 	/**
 	 * Afegeix una nova sessió al Grup si, i només si, compleix les restriccions
 	 * d'integritat del grup.
