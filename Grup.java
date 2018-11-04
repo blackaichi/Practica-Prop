@@ -329,7 +329,8 @@ public class Grup {
 	 */
 	public void afegeixSessio(SessioGAssignada sessio) throws Exception{
 		if(sessions.contains(sessio)) throw new Exception("El grup ja conté aquesta sessió.");
-		else if(!sessio.getSessioGrup().getAssignatura().equals(assig.getNom()))
+		else if(sessio.getGrup().getNumero() != this.numero) throw new Exception("La sessió no és del Grup corresponent");
+		else if(!sessio.getSessioGrup().getAssignatura().getNom().equals(this.getAssignatura().getNom()))
 			throw new Exception("La sessió i el grup són d'assignatures diferents.");
 		else if(this.checkSessio(sessio.getSessioGrup().getTipus(), sessio.getSessioGrup().getHores()))
 			throw new Exception("El grup ja conté una sessió amb el mateix tipus i hores");
