@@ -49,6 +49,36 @@ public class Grup {
 		return calcPlaces;
 	}
 	
+	/**
+	 * Comprova la integritat de la sessió respecte al Grup.
+	 * @param sessio Referencia la sessio a comprovar.
+	 * @throws Exception
+	 */
+	private void checkSessioAdequada(SessioGAssignada sessio) throws Exception{
+		if(sessio.getGrup().getNumero() != this.numero) throw new Exception("La sessió no és del Grup corresponent");
+		else if(!sessio.getGrup().getAssignatura().getNom().equals(this.getAssignatura().getNom()))
+			throw new Exception("La sessió no és de la mateixa assignatura que el grup.");
+	}
+	
+	/**
+	 * Desassigna una sessió del Grup i l'esborra del set, si hi és.
+	 * Altrament no fa res.
+	 * @param tipus Identifica el tipus de la sessio
+	 * @param hores Identifica el temps de durada de la sessió en hores
+	 * @param unlink Precisa la necessitat de trencar la navegavilitat
+	 * de la sessioGrup cap a la sessioAssignada, o no.
+	 */
+	private void desassignaSessio(String tipus, int hores, boolean unlink){
+		SessioGAssignada sessio = this.getSessio(tipus, hores);
+		
+		//Eliminació de la sessio a la classe Grup
+		sessions.removeIf(item -> item.getSessioGrup().getTipus().equals(tipus) &&
+								  item.getSessioGrup().getHores() == hores);
+		
+		//Elimina la sessio a la classe SessioGrup
+		if(unlink) sessio.getSessioGrup().eliminarSessio(tipus, hores);
+	}
+	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
 	/** 
@@ -275,8 +305,8 @@ public class Grup {
 	 * @throws Exception
 	 */
 	public void assignaSessio(String tipus, int hores) throws Exception{
-		if(this.checkSessio(tipus, hores)) throw new Exception("El grup ja conté una sessió amb el mateix tipus i hores");
-		else if(!assig.checkSessioG(tipus, hores)) 
+		//if(this.checkSessio(tipus, hores)) throw new Exception("El grup ja conté una sessió amb el mateix tipus i hores");
+		if(!assig.checkSessioG(tipus, hores)) 
 			throw new Exception("L'assignatura a la qual pertany el grup no te cap sessio de Grup del tipus indicat.");
 		
 		SessioGrup sessioGrup = assig.getSessioG(tipus, hores);
@@ -290,35 +320,15 @@ public class Grup {
 	}
 	
 	/**
-	 * Desassigna una sessió del Grup i l'esborra del set, si hi és.
-	 * Altrament no fa res.
-	 * @param tipus Identifica el tipus de la sessio
-	 * @param hores Identifica el temps de durada de la sessió en hores
-	 */
-	public void eliminaSessio(String tipus, int hores){
-		SessioGAssignada sessio = this.getSessio(tipus, hores);
-		
-		//Eliminació de la sessio a la classe Grup
-		sessions.removeIf(item -> item.getSessioGrup().getTipus().equals(tipus) &&
-								  item.getSessioGrup().getHores() == hores);
-		
-		//Elimina la sessio a la classe SessioGrup
-		sessio.getSessioGrup().eliminarSessio(tipus, hores);
-	}
-
-	/**
 	 * Desassigna aquella sessió del Grup igual a la sessió afegida per
 	 * paràmetre i l'esborra del set, si hi és.
 	 * Altrament no fa res.
 	 * @param sessio Referencia a la sessió que és preten esborrar.
 	 * @throws Exception
 	 */
-	public void eliminaSessio(SessioGAssignada sessio) throws Exception {
-		if(sessio.getGrup().getNumero() != this.numero) throw new Exception("La sessió no és del Grup corresponent");
-		else if(!sessio.getGrup().getAssignatura().getNom().equals(this.getAssignatura().getNom()))
-			throw new Exception("La sessió a esborrar no és de la mateixa assignatura que el grup.");
-		
-		this.eliminaSessio(sessio.getSessioGrup().getTipus(), sessio.getSessioGrup().getHores());
+	public void desassignaSessio(SessioGAssignada sessio) throws Exception {
+		this.checkSessioAdequada(sessio);
+		this.desassignaSessio(sessio.getSessioGrup().getTipus(), sessio.getSessioGrup().getHores(), true);
 	}
 	
 	/**
@@ -336,6 +346,17 @@ public class Grup {
 			throw new Exception("El grup ja conté una sessió amb el mateix tipus i hores");
 		*/
 		sessions.add(sessio);
+	}
+	
+	/**
+	 * Elimina del set la sessio passada per parametre, si hi és.
+	 * Altrament no fa res.
+	 * @param sessio Referencia a la sessio que es preten esborrar.
+	 * @throws Exception
+	 */
+	public void eliminaSessio(SessioGAssignada sessio) throws Exception{
+		this.checkSessioAdequada(sessio);
+		this.desassignaSessio(sessio.getSessioGrup().getTipus(), sessio.getSessioGrup().getHores(), false);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
