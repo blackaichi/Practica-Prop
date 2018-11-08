@@ -1,6 +1,6 @@
 package classes;
 
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * 
@@ -25,31 +25,26 @@ public class SessioGrup extends Sessio{
 	/////////////////////////////////////////////////////////////
 	/////////////////////////  Privats  /////////////////////////
 	
-	private void checkSessioAssignada(Grup g, SessioGrup sg) throws Exception {
-		for (SessioGAssignada s : sessionsGA) {
-			if (s.getGrup() == g && s.getSessioGrup() == sg) throw new Exception("No podem afegir una nova sessió de grup assignada si ja existeix una amb mateix grup i sessió de grup");
-		}
-	}
-	
+	/**
+	 * Elimina una sessió de grup assignada del HashSet
+	 * @param sGA la sessió de grup assignada que volem esborrar
+	 */
 	private void eliminaElementHashSet(SessioGAssignada sGA) {
-		for (SessioGAssignada s : sessionsGA) { // suposo que esborra el que toca
-			if (s.getGrup().getNumero() == sGA.getGrup().getNumero() && s.getSessioGrup().getTipus() == tipus
-					&& s.getSessioGrup().getHores() == hores && s.getSessioGrup().getAssignatura().getNom() == assignatura.getNom()) {
-				sessionsGA.remove(s);
-				break;
-			}
-		}
+		sessionsGA.removeIf(item -> item.getSessioGrup().getTipus().equals(tipus) &&
+							item.getSessioGrup().getHores() == hores);
 	}
 	
 	/////////////////////////////////////////////////////////////
 	//////////////////////  Constructora  ///////////////////////
 	
 	/**
-	 * Creadora de SessioGrup amb assignatura com a paràmetre
+	 * Creadora de SessioGrup amb assignatura com a paràmetre, per defecte nsessio = 1
 	 * @param assig l'assignatura a la qual pertany la sessió del grup
+	 * @throws Exception La superclasse llançarà una excepció en cas de 
 	 */
 	public SessioGrup(Assignatura assig) throws Exception{
 		super(assig); // crida a la constructora de Sessio 
+		nsessions = 1;
 		sessionsGA = new HashSet<SessioGAssignada>();
 	}
 	
@@ -75,6 +70,19 @@ public class SessioGrup extends Sessio{
 		super(assig, hores, tipus); // crida a la constructora de Sessio 
 		if (hores > assignatura.getHTeo()) throw new Exception("La sessió no pot ser de més hores de les que són permeses a l'assignatura per Grup");
 		setnsessions(nsessions);
+		sessionsGA = new HashSet<SessioGAssignada>();
+	}
+	
+	/**
+	 * Creadora de SessioGrup amb tots els paràmetres, per defecte nsessions = 1
+	 * @param assig l'assignatura a la qual pertany la sessió del grup
+	 * @param hores nombre d'hores de la sessió
+	 * @param tipus tipus de la sessió
+	 */
+	public SessioGrup(Assignatura assig, int hores, String tipus) throws Exception{
+		super(assig, hores, tipus); // crida a la constructora de Sessio 
+		if (hores > assignatura.getHTeo()) throw new Exception("La sessió no pot ser de més hores de les que són permeses a l'assignatura per Grup");
+		setnsessions(1);
 		sessionsGA = new HashSet<SessioGAssignada>();
 	}
 	
@@ -129,7 +137,6 @@ public class SessioGrup extends Sessio{
 	 */
 	public void assignaSessio(int numero) throws Exception {
 		Grup grup = assignatura.getGrup(numero); // obtenim el grup que necessitem
-		checkSessioAssignada(grup, this);
 		SessioGAssignada sGA = new SessioGAssignada(grup, this); // creem una sessió assignada
 		
 		sessionsGA.add(sGA); // afegim la sessió assignada al nostre hashset

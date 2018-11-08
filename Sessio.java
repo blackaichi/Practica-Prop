@@ -56,8 +56,10 @@ public class Sessio {
 	/**
 	 * Assigna una assignatura a la sessió
 	 * @param assig assignatura que pertany la sessió
+	 * @throws Exception en cas de que el paràmetre assignatura sigui null
 	 */
-	public void setAssignatura(Assignatura assignatura) {
+	public void setAssignatura(Assignatura assignatura) throws Exception {
+		if (assignatura == null) throw new Exception("L'assignatura no pot ser nula");
 		this.assignatura = assignatura;
 	}
 		
