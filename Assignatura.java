@@ -65,9 +65,8 @@ public class Assignatura {
 	}
 	
 /**
- * Assigna quantes hores de teoria te l'Assignatura.
- * @param hteo: nombre d'hores de teoria de l'Assignatura que entra l'usuari.
- * @throws Exception si hteo < 1.
+ * Assigna el nom de l'Assignatura.
+ * @param nom: nom de l'Assignatura que entra l'usuari.
  */
 	public void setNom(String nom) throws Exception {
 		this.nom = nom;
@@ -100,7 +99,7 @@ public class Assignatura {
  * Retorna el Nom de l'Assignatura.
  * @return Nom de l'Assignatura.
  */
-	public int getNom() {
+	public String getNom() {
 		return this.nom;
 	}
 	
@@ -118,33 +117,6 @@ public class Assignatura {
  */
 	public int getHLab() {
 		return this.hlab;
-	}
-
-/////////////////////////////////////////////////////////////
-///////////////////////  Funcions  //////////////////////////
-	
-/**
- * Cambia el Nom de l'Assignatura.
- * @param tipus: nou Nom de l'Assignatura.
- */
-	public void modificaNom(String nom) {
-		this.nom = nom;
-	}
-	
-/**
- * Cambia Cambia les hores de teoria de l'Assignatura.
- * @param tipus: nou valor de hores de teoria de l'Assignatura.
- */
-	public void modificaHTeo(int hteo) {
-		this.hteo = hteo;
-	}
-
-/**
- * Cambia Cambia les hores de laboratori de l'Assignatura.
- * @param tipus: nou valor de hores de laboratori de l'Assignatura.
- */
-	public void modificaHLab(int hlab) {
-		this.hlab = hlab;
 	}
 	
 }
