@@ -67,8 +67,9 @@ public class Grup {
 	 * @param hores Identifica el temps de durada de la sessió en hores
 	 * @param unlink Precisa la necessitat de trencar la navegavilitat
 	 * de la sessioGrup cap a la sessioAssignada, o no.
+	 * @throws Exception
 	 */
-	private void desassignaSessio(String tipus, int hores, boolean unlink){
+	private void desassignaSessio(String tipus, int hores, boolean unlink) throws Exception{
 		SessioGAssignada sessio = this.getSessio(tipus, hores);
 		
 		//Eliminació de la sessio a la classe Grup
@@ -76,7 +77,7 @@ public class Grup {
 								  item.getSessioGrup().getHores() == hores);
 		
 		//Elimina la sessio a la classe SessioGrup
-		if(unlink) sessio.getSessioGrup().eliminarSessio(tipus, hores);
+		if(unlink) sessio.getSessioGrup().eliminarSessio(sessio);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -116,6 +117,7 @@ public class Grup {
 	/** 
 	 * Assigna un numero identificatiu al grup.
 	 * @param numero Identifica el grup. 
+	 * @throws Exception
 	 */
 	public void setNumero(int numero) throws Exception {
 		if(this.numero == numero) return; //En cas de fer un canvi inutil.
@@ -128,6 +130,7 @@ public class Grup {
 	/** 
 	 * Assigna una quantitat de places al grup.
 	 * @param places Indica el nombre de places assignades al grup. 
+	 * @throws Exception
 	 */
 	public void setPlaces(int places) throws Exception {
 		if(places < 0) throw new Exception("Grup amb capacitat negativa.");
@@ -139,6 +142,7 @@ public class Grup {
 	/** 
 	 * Assigna una franja horaria al grup.
 	 * @param franja Descriu la nova franja horaria del grup.
+	 * @throws Exception
 	 */
 	public void setFranja(String franja) throws Exception {
 		if(franja.equals("NAN")) this.franja = franja;
@@ -305,8 +309,8 @@ public class Grup {
 	 * @throws Exception
 	 */
 	public void assignaSessio(String tipus, int hores) throws Exception{
-		//if(this.checkSessio(tipus, hores)) throw new Exception("El grup ja conté una sessió amb el mateix tipus i hores");
-		if(!assig.checkSessioG(tipus, hores)) 
+		if(this.checkSessio(tipus, hores)) throw new Exception("El grup ja conté una sessió amb el mateix tipus i hores");
+		else if(!assig.checkSessioG(tipus, hores)) 
 			throw new Exception("L'assignatura a la qual pertany el grup no te cap sessio de Grup del tipus indicat.");
 		
 		SessioGrup sessioGrup = assig.getSessioG(tipus, hores);
@@ -342,9 +346,9 @@ public class Grup {
 		else if(sessio.getGrup().getNumero() != this.numero) throw new Exception("La sessió no és del Grup corresponent");
 		else if(!sessio.getSessioGrup().getAssignatura().getNom().equals(this.getAssignatura().getNom()))
 			throw new Exception("La sessió i el grup són d'assignatures diferents.");
-		/*else if(this.checkSessio(sessio.getSessioGrup().getTipus(), sessio.getSessioGrup().getHores()))
+		else if(this.checkSessio(sessio.getSessioGrup().getTipus(), sessio.getSessioGrup().getHores()))
 			throw new Exception("El grup ja conté una sessió amb el mateix tipus i hores");
-		*/
+		
 		sessions.add(sessio);
 	}
 	

@@ -50,7 +50,7 @@ public class SubGrup {
 	 * de la sessioSubGrup cap a la sessioAssignada, o no.
 	 * @throws Exception
 	 */
-	private void desassignaSessio(String tipus, int hores, boolean unlink) {
+	private void desassignaSessio(String tipus, int hores, boolean unlink) throws Exception {
 		SessioSGAssignada sessio = this.getSessio(tipus, hores);
 		
 		//Elimina la sessio de la classe SubGrup
@@ -58,7 +58,7 @@ public class SubGrup {
 								  item.getSessioSubGrup().getHores() == hores);
 		
 		//Elimina la sessio de la classe SessioSubGrup
-		if(unlink) sessio.getSessioSubGrup().eliminarSessio(tipus, hores);
+		if(unlink) sessio.getSessioSubGrup().eliminarSessio(sessio);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
