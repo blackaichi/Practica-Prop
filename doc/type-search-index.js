@@ -1,1 +1,1 @@
-typeSearchIndex = [{"p":"classes","l":"Grup"},{"p":"classes","l":"SubGrup"}]
+typeSearchIndex = [{"p":"classes","l":"Assignatura"},{"p":"classes","l":"ExceptionManager"},{"p":"classes","l":"Grup"},{"p":"classes","l":"Grup_Driver"},{"p":"classes","l":"PlaEstudis"},{"p":"classes","l":"Sessio"},{"p":"classes","l":"SessioAssignada"},{"p":"classes","l":"SessioGAssignada"},{"p":"classes","l":"SessioGrup"},{"p":"classes","l":"SessioSGAssignada"},{"p":"classes","l":"SessioSubGrup"},{"p":"classes","l":"SubGrup"}]
