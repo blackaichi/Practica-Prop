@@ -11,21 +11,21 @@ public class SessioGAssignada extends SessioAssignada{
 	//////////////////////// Variables //////////////////////////
 	
 	/**
-	 * Identifica el grup al qual pertany la sessio
+	 * Identifica el grup al qual pertany la sessió
 	 */
 	private Grup grup;
 	
 	/**
-	 * Identifica la sessio de grup a la qual pertany
+	 * Identifica la sessió de grup a la qual pertany
 	 */
 	private SessioGrup sessioGrup;
 	
 	/////////////////////////////////////////////////////////////
 	//////////////////////  Constructora  ///////////////////////
-
+	
 	/**
-	* Creadora de SessioGAssignada sense paràmetres
-	*/
+	 * Creadora de SessioGAssignada sense paràmetres
+	 */
 	public SessioGAssignada() throws Exception {
 		super();
 	}

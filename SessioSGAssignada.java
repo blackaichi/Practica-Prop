@@ -11,12 +11,12 @@ public class SessioSGAssignada extends SessioAssignada{
 	//////////////////////// Variables //////////////////////////
 
 	/**
-	 * Identifica el subgrup al qual pertany la sessio
+	 * Identifica el subgrup al qual pertany la sessió
 	 */
 	private SubGrup subGrup;
 	
 	/**
-	 * Identifica la sessio de subgrup a la qual pertany
+	 * Identifica la sessió de subgrup a la qual pertany
 	 */
 	private SessioSubGrup sessioSubGrup;
 	
@@ -24,8 +24,8 @@ public class SessioSGAssignada extends SessioAssignada{
 	//////////////////////  Constructora  ///////////////////////
 	
 	/**
-	* Creadora de SessioSGAssignada sense paràmetres
-	*/
+	 * Creadora de SessioSGAssignada sense paràmetres
+	 */
 	public SessioSGAssignada() throws Exception {
 		super();
 	}
@@ -63,16 +63,16 @@ public class SessioSGAssignada extends SessioAssignada{
 	/////////////////////////////////////////////////////////////
 	////////////////////////  Getters  //////////////////////////
 	/**
-	 * retorna subgrup al qual pertany la sessio del subgrup
-	 * @return el subgrup al qual pertany la sessio del subgrup
+	 * retorna subgrup al qual pertany la sessió del subgrup
+	 * @return el subgrup al qual pertany la sessió del subgrup
 	 */
 	public SubGrup getSubGrup() {
 		return subGrup;
 	}
 	
 	/**
-	 * retorna la sessio del subgrup al qual pertany
-	 * @return sessio subgrup a la qual pertany
+	 * retorna la sessió del subgrup al qual pertany
+	 * @return sessió subgrup a la qual pertany
 	 */
 	public SessioSubGrup getSessioSubGrup() {
 		return sessioSubGrup;

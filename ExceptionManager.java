@@ -3,6 +3,8 @@ package classes;
 /**
  * 
  * @author hector.morales.carnice@est.fib.upc.edu
+ * @author eric.casanovas@est.fib.upc.edu
+ * @author adria.manero@est.fib.upc.edu
  *
  */
 public class ExceptionManager {

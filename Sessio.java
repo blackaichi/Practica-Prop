@@ -29,18 +29,17 @@ public class Sessio {
 	//////////////////////  Constructora  ///////////////////////
 
 	/**
-	 * Creadora de Sessio sense paràmetres
+	 * Creadora de Sessio amb assig i tipus com a paràmetres, per defecte hores = 1
 	 * @param assig assignatura a la qual pertany la sessió
 	 */
 	public Sessio(Assignatura assig, String tipus) throws Exception {
 		int check;
-		if ((check = setAssignatura(assig)) != 0) ExceptionManager.thrower(check);
-		hores = 0;
+		setHores(1);
 		if ((check = setTipus(tipus)) != 0) ExceptionManager.thrower(check);
 	}
 	
 	/**
-	 * Creadora de Sessio amb paràmetres
+	 * Creadora de Sessio amb tots els paràmetres
 	 * @param assig assignatura a la qual pertany la sessió
 	 * @param hores nombre d'hores de la sessió que entra l'usuari
 	 * @param tipus tipus de sessió que entra l'usuari

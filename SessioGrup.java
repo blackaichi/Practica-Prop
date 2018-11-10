@@ -38,7 +38,7 @@ public class SessioGrup extends Sessio{
 	//////////////////////  Constructora  ///////////////////////
 	
 	/**
-	 * Creadora de SessioGrup amb assignatura i tipus com a paràmetre, per defecte nsessio = 1
+	 * Creadora de SessioGrup amb assignatura i tipus com a paràmetre, per defecte nsessio = 1 i hores = 1
 	 * @param assig l'assignatura a la qual pertany la sessió del grup
 	 * @param tipus el tipus de sessió del grup
 	 */
