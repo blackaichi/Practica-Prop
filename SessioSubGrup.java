@@ -15,42 +15,36 @@ public class SessioSubGrup extends Sessio{
 	/**
 	 * Indica el nombre màxim de sessions d'aquest tipus
 	 */
-	private int nsessions = 0;
+	private int nsessions;
 	
 	/**
 	 * Registra totes les sessions de subgrup assignades
 	 */
-	private HashSet<SessioSGAssignada> sessionsSGA = new HashSet<SessioSGAssignada>();
+	private HashSet<SessioSGAssignada> sessionsSGA;
 	
 	/////////////////////////////////////////////////////////////
 	/////////////////////////  Privats  /////////////////////////
 	
-	private void checkSessioAssignada(SubGrup sg, SessioSubGrup ssg) throws Exception {
-		for (SessioSGAssignada s : sessionsSGA) {
-			if (s.getSubGrup() == sg && s.getSessioSubGrup() == ssg) throw new Exception("No podem afegir una nova sessió de grup assignada si ja existeix una amb mateix subgrup i sessió de subgrup");
-		}
+	/**
+	 * Elimina una sessió de subGrup assignada del HashSet
+	 * @param sSGA la sessió de grup assignada que volem esborrar
+	 */
+	private void eliminaElementHashSet(SessioSGAssignada sSGA) {
+		sessionsSGA.removeIf(item -> item.getSessioSubGrup().getTipus().equals(tipus) &&
+							item.getSessioSubGrup().getHores() == hores);
 	}
 	
 	/////////////////////////////////////////////////////////////
 	//////////////////////  Constructora  ///////////////////////
 	
 	/**
-	 * Creadora de SessioSubGrup amb assignatura com a paràmetre
+	 * Creadora de SessioSubGrup amb assignatura i tipus com a paràmetre, per defecte nsessio = 1
 	 * @param assig l'assignatura a la qual pertany la sessió del subgrup
+	 * @param tipus el tipus de sessió del subGrup
 	 */
-	public SessioSubGrup(Assignatura assig) throws Exception{
-		super(assig); // crida a la constructora de Sessio		
-		this.sessionsSGA = new HashSet<SessioSGAssignada>();
-	}
-	
-	/**
-	 * Creadora de SessioSubGrup amb assignatura i nsessions com a paràmetres
-	 * @param assig l'assignatura a la qual pertany la sessió del subgrup
-	 * @param nsessions nombre de sessions de la sessió del subgrup
-	 */
-	public SessioSubGrup(Assignatura assig, int nsessions) throws Exception{
-		super(assig); // crida a la constructora de Sessio
-		this.setnsessions(nsessions);		
+	public SessioSubGrup(Assignatura assig, String tipus) throws Exception{
+		super(assig, tipus); // crida a la constructora de Sessio		
+		setnsessions(1);
 		this.sessionsSGA = new HashSet<SessioSGAssignada>();
 	}
 	
@@ -62,24 +56,38 @@ public class SessioSubGrup extends Sessio{
 	 * @param nsessions nombre de sessions de la sessió del subgrup
 	 */
 	public SessioSubGrup(Assignatura assig, int hores, String tipus, int nsessions) throws Exception{
-		super(assig, hores, tipus); // crida a la constructora de Sessio
-		if (hores > assignatura.getHLab()) throw new Exception("La sessió no pot ser de més hores de les que són permeses a l'assignatura per Subgrup");
-		this.setnsessions(nsessions);
-		this.sessionsSGA = new HashSet<SessioSGAssignada>();
+		super(assig, hores, tipus); // crida a la constructora de Sessio 
+		if (hores > assignatura.getHLab()) ExceptionManager.thrower(101);
+		int checker;
+		if ((checker = setnsessions(nsessions)) != 0) ExceptionManager.thrower(checker);
+		sessionsSGA = new HashSet<SessioSGAssignada>();
+	}
+	
+	/**
+	 * Creadora de SessioSubGrup amb assignatura, hores i tipus com a paràmetres, per defecte nsessions = 1
+	 * @param assig l'assignatura a la qual pertany la sessió del subGrup
+	 * @param hores nombre d'hores de la sessió
+	 * @param tipus tipus de la sessió
+	 */
+	public SessioSubGrup(Assignatura assig, int hores, String tipus) throws Exception{
+		super(assig, hores, tipus); // crida a la constructora de Sessio 
+		if (hores > assignatura.getHLab()) ExceptionManager.thrower(101);
+		setnsessions(1);
+		sessionsSGA = new HashSet<SessioSGAssignada>();
 	}
 	
 	/////////////////////////////////////////////////////////////
 	////////////////////////  Setters  //////////////////////////
 	
 	/**
-	 * Assigna quantes sessions té el grup
-	 * @param n nombre de sessions
-	 * @throws Exception si nsessions és 0 o negatiu
+	 * Assigna quantes sessions té el subGrup
+	 * @param nsessions nombre de sessions
 	 */
-	public void setnsessions(int n) throws Exception {
-		if (n < 1) throw new Exception("El nombre de sessions ha de ser més gran que 0");
-		if (assignatura.getHLab() < nsessions) throw new Exception("el nombre d'hores és inferior al nombre de sessions");
-		this.nsessions = n;
+	public int setnsessions(int nsessions) throws Exception {
+		if (nsessions < 1) return 95;
+		if (assignatura.getHLab() < nsessions) return 102;
+		this.nsessions = nsessions;
+		return 0;
 	}
 	
 	/////////////////////////////////////////////////////////////
@@ -101,57 +109,64 @@ public class SessioSubGrup extends Sessio{
 		return sessionsSGA;
 	}
 	
+	/**
+	 * Retorna la quantitat de sessions tenim assignades
+	 * @return quantitat de sessions assignades
+	 */
+	public int getnSessionsAssignades() {
+		return sessionsSGA.size();
+	}
+	
 	/////////////////////////////////////////////////////////////
 	///////////////////////  Funcions  //////////////////////////
 	
 	/**
 	 * Assigna una nova sessió i la guarda al Hashset on tenim les sessions assignades
 	 * @param numero numero de subgrup al qual assignarem la sessió 
-	 * @throws Exception si ja hi ha un subgrup i sessió iguals als que volem assignar
 	 */
-	public void assignaSessio(int numerogrup, int numerosubgrup) throws Exception {
+	public void assignaSessio(int numerogrup, int numerosubgrup) {
 		SubGrup subgrup = assignatura.getGrup(numerogrup).getSubGrup(numerosubgrup); // obtenim el subgrup que necessitem
-		checkSessioAssignada(subgrup, this);
 		SessioSGAssignada sSGA = new SessioSGAssignada(subgrup, this); // creem una sessió assignada
 		
-		this.sessionsSGA.add(sSGA); // afegim la sessió assignada al nostre hashset
-		subgrup.afegeixSessio(sSGA); // demanem a subgrup que també es guardi la sessió assignada
+		sessionsSGA.add(sSGA); // afegim la sessió assignada al nostre hashset
+		int checker;
+		if ((checker = subgrup.afegeixSessio(sSGA)) != 0) ExceptionManager.thrower(checker); // demanem a subgrup que també es guardi la sessió assignada
 	}
 	
 	/**
 	 * Desassigna la sessió assignada passada per paràmetre
 	 * @param sSGA la sessió de subgrup assignada que volem desassignar
-	 * @throws Exception quan no podem desassignar la sessgió assignada perquè pertany a assignatures diferents el subgrup i la sessió de subgrup
 	 */
-	public void desassignaSessio(SessioSGAssignada sSGA) throws Exception{
-		if (!sSGA.getSubGrup().getGrup().getAssignatura().getNom().equals(assignatura.getNom())) throw new Exception("No podem desassignar una sessió assignada si la seva sessió de subgrup i subgrup pertanyen a assignatures diferents");
+	public int desassignaSessio(SessioSGAssignada sSGA) {
+		if (!sSGA.getSubGrup().getGrup().getAssignatura().getNom().equals(assignatura.getNom())) return 103;
 		SubGrup subgrup = sSGA.getSubGrup();
 		
-		this.sessionsSGA.remove(sSGA);
-		subgrup.eliminaSessio(sSGA);
+		eliminaElementHashSet(sSGA);
+		int checker;
+		if ((checker = subgrup.eliminaSessio(sSGA)) != 0) ExceptionManager.thrower(checker);
+		return 0;
 	}
 	
 	/**
 	 * Afegeix una nova sessió assignada al Hashset que previament ha assignat la classe subgrup
 	 * @param sSGA la sessió de subgrup assignada que hem de guardar al Hashset
-	 * @throws Exception quan la sessió assignada no pertanyi a la mateixa assignatura que la sessió o si la sessio ja esta assignada
 	 */
-	void afegirSessio(SessioSGAssignada sSGA) throws Exception {
-		if (this.sessionsSGA.contains(sSGA)) throw new Exception("No podem afegir una sessió assignada que ja esta assignada");
-		else if (!sSGA.getSubGrup().getGrup().getAssignatura().getNom().equals(assignatura.getNom())) throw new Exception("No podem afegir una sessió assignada si la seva sessió de subgrup i subgrup pertanyen a assignatures diferents");
+	public int afegirSessio(SessioSGAssignada sSGA) throws Exception {
+		if (this.sessionsSGA.contains(sSGA)) return 98;
+		else if (!sSGA.getSubGrup().getGrup().getAssignatura().getNom().equals(assignatura.getNom())) return 104;
 		
-		this.sessionsSGA.add(sSGA);
+		sessionsSGA.add(sSGA);
+		return 0;
 	}
 	
 	/**
 	 * Elimina una sessió assignada del Hashset que previament ja ha desassignat la classe subgrup
 	 * @param sSGA la sessió del subgrup desassignada que hem d'eliminar del Hashset
-	 * @throws Exception quan no existeixi la sessió assignada passada per paràmetre
 	 */
-	void eliminarSessio(SessioSGAssignada sSGA) throws Exception {
-		if (!sessionsSGA.contains(sSGA)) throw new Exception("No podem eliminar una sessió assignada que no esta assignada");
-		else if (!sSGA.getSubGrup().getGrup().getAssignatura().getNom().equals(assignatura.getNom())) throw new Exception("No podem eliminar una sessió assignada si la seva sessió de subgrup i subgrup pertanyen a assignatures diferents");
+	public int eliminarSessio(SessioSGAssignada sSGA) {
+		if (!sSGA.getSubGrup().getGrup().getAssignatura().getNom().equals(assignatura.getNom())) return 105;
 		
-		this.sessionsSGA.remove(sSGA);
+		eliminaElementHashSet(sSGA);
+		return 0;
 	}
 }

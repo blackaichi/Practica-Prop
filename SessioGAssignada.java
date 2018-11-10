@@ -37,8 +37,8 @@ public class SessioGAssignada extends SessioAssignada{
 	 */
 	public SessioGAssignada(Grup grup, SessioGrup sessioG) throws Exception {
 		super();
-		this.setGrup(grup);
-		this.setSessioGrup(sessioG);
+		setGrup(grup);
+		setSessioGrup(sessioG);
 	}
 	
 	/////////////////////////////////////////////////////////////

@@ -37,8 +37,8 @@ public class SessioSGAssignada extends SessioAssignada{
 	 */
 	public SessioSGAssignada(SubGrup subGrup, SessioSubGrup sessioSG) throws Exception {
 		super();
-		this.setSubGrup(subGrup);
-		this.setSessioSubGrup(sessioSG);
+		setSubGrup(subGrup);
+		setSessioSubGrup(sessioSG);
 	}
 	
 	/////////////////////////////////////////////////////////////

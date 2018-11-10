@@ -10,7 +10,7 @@ public class ExceptionManager {
 	static private String[] titles;
 	
 	/*!!!IMPORTANT!!!
-	 * 1 - 	AVANS DE COMENÇAR A AFEGIR TITOLS, I PER TANT, MODIFICAR EL FITXER,
+	 * 1 - 	ABANS DE COMENÇAR A AFEGIR TITOLS, I PER TANT, MODIFICAR EL FITXER,
 	 * 		PREGUNTEU SI ALGÚ L'ESTÀ MODIFICANT I ESPEREU A QUE EN FACI EL COMMIT
 	 * 		DEFINITIU AL GIT. LLAVORS, DESCARREGUEU EL NOU FITXER I PODREU PROCEDIR.
 	 * 
@@ -74,9 +74,45 @@ public class ExceptionManager {
 			titles[83] = "La sessió a esborrar no és de la mateixa assignatura que el subGrup.";
 			
 			//SESSIO 90:109 :
+			titles[90] = "L'assignatura no pot ser nula.";
+			titles[91] = "L'hora no pot ser negativa ni 0.";
+			titles[92] = "Tipus no pot ser un string buit.";
+			titles[93] = "Tipus ha de contindre únicament lletres.";
+			titles[94] = "La sessió no pot ser de més hores de les que són permeses a l'assignatura per Grup.";
+			titles[95] = "El nombre de sessions ha de ser més gran que 0.";
+			titles[96] = "El nombre d'hores del grup és inferior al nombre de sessions.";
+			titles[97] = "No podem desassignar una sessió assignada si la seva sessió de grup i grup pertanyen a assignatures diferents.";
+			titles[98] = "No podem afegir una sessió assignada que ja esta assignada.";
+			titles[99] = "No podem afegir una sessió assignada si la seva sessió de grup i grup pertanyen a assignatures diferents.";
+			titles[100] = "No podem eliminar una sessió assignada si la seva sessió de grup i grup pertanyen a assignatures diferents.";
+			titles[101] = "La sessió no pot ser de més hores de les que són permeses a l'assignatura per SubGrup.";
+			titles[102] = "El nombre d'hores del subgrup és inferior al nombre de sessions.";
+			titles[103] = "No podem desassignar una sessió assignada si la seva sessió de subGrup i subGrup pertanyen a assignatures diferents.";
+			titles[104] = "No podem afegir una sessió assignada si la seva sessió de subgrup i subgrup pertanyen a assignatures diferents.";
+			titles[105] = "No podem eliminar una sessió assignada si la seva sessió de subgrup i subgrup pertanyen a assignatures diferents.";
 			
 			//SESSIO ASSIGNADA 110:129 :
-						
+			titles[110] = ".";
+			titles[111] = ".";
+			titles[112] = ".";
+			titles[113] = ".";
+			titles[114] = ".";
+			titles[115] = ".";
+			titles[116] = ".";
+			titles[117] = ".";
+			titles[118] = ".";
+			titles[119] = ".";
+			titles[120] = ".";
+			titles[121] = ".";
+			titles[122] = ".";
+			titles[123] = ".";
+			titles[124] = ".";
+			titles[125] = ".";
+			titles[126] = ".";
+			titles[127] = ".";
+			titles[128] = ".";
+			titles[129] = ".";	
+			
 			//CAMPUS 130:149 :
 			
 			//AULA 150:169 :
