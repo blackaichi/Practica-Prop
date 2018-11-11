@@ -33,12 +33,12 @@ public class SubGrup {
 	 * @param sessio Referencia la sessió a comprovar.
 	 * @throws Exception
 	 */
-	private void checkSessioAdequada(SessioSGAssignada sessio) throws Exception{
-		if(sessio.getSubGrup().getNumero() != this.numero) throw new Exception("La sessió no és del SubGrup corresponent");
-		else if(sessio.getSubGrup().getGrup().getNumero() != this.getGrup().getNumero())
-			throw new Exception("La sessió no és del Grup del SubGrup corresponent.");
-		else if(!sessio.getSubGrup().getGrup().getAssignatura().getNom().equals(this.getGrup().getAssignatura().getNom()))
-			throw new Exception("La sessió a esborrar no és de la mateixa assignatura que el subGrup.");
+	private int checkSessioAdequada(SessioSGAssignada sessio) {
+		if(sessio.getSubGrup().getNumero() != this.numero) return 79;
+		else if(sessio.getSubGrup().getGrup().getNumero() != this.getGrup().getNumero()) return 80;
+		else if(!sessio.getSubGrup().getGrup().getAssignatura().getNom().equals(this.getGrup().getAssignatura().getNom())) return 83;
+		
+		return 0;
 	}
 	
 	/**
@@ -50,7 +50,7 @@ public class SubGrup {
 	 * de la sessioSubGrup cap a la sessioAssignada, o no.
 	 * @throws Exception
 	 */
-	private void desassignaSessio(String tipus, int hores, boolean unlink) throws Exception {
+	private int desassignaSessio(String tipus, int hores, boolean unlink) {
 		SessioSGAssignada sessio = this.getSessio(tipus, hores);
 		
 		//Elimina la sessio de la classe SubGrup
@@ -58,13 +58,14 @@ public class SubGrup {
 								  item.getSessioSubGrup().getHores() == hores);
 		
 		//Elimina la sessio de la classe SessioSubGrup
-		if(unlink) sessio.getSessioSubGrup().eliminarSessio(sessio);
+		if(unlink) return sessio.getSessioSubGrup().eliminarSessio(sessio);
+		else return 0;
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
-	public SubGrup(Grup grup) throws NullPointerException{
-		this.setGrup(grup);
+	public SubGrup(Grup grup) throws Exception{
+		ExceptionManager.thrower(this.setGrup(grup));
 		
 		numero = places = 0;
 		sessions = new HashSet<>();
@@ -77,9 +78,9 @@ public class SubGrup {
 	 * @param places Descriu la capacitat del SubGrup.
 	 */
 	public SubGrup(Grup grup, int numero, int places) throws Exception {
-		this.setGrup(grup);
-		this.setNumero(numero);
-		this.setPlaces(places, false);
+		ExceptionManager.thrower(this.setGrup(grup));
+		ExceptionManager.thrower(this.setNumero(numero));
+		ExceptionManager.thrower(this.setPlaces(places, false));
 		
 		sessions = new HashSet<>();
 	}
@@ -89,13 +90,15 @@ public class SubGrup {
 	/** 
 	 * Assigna un numero identificatiu al subGrup.
 	 * @param numero Identifica el subGrup. 
+	 * @throws Excepció codificada en forma d'enter.
 	 */
-	public void setNumero(int numero) throws Exception {
-		if(this.numero == numero) return; //En cas de fer un canvi inutil.
-		else if(numero < 0) throw new Exception("Número de subgrup negatiu.");
-		else if(grup.checkSubGrup(numero)) throw new Exception("El número de subGrup ja existeix al Grup.");
+	public int setNumero(int numero) {
+		if(this.numero == numero) return 1; //En cas de fer un canvi inutil.
+		else if(numero < 0) return 50;
+		else if(grup.checkSubGrup(numero)) return 70;
 		
 		this.numero = numero;
+		return 0;
 	}
 	
 	/** 
@@ -105,14 +108,15 @@ public class SubGrup {
 	 * @param incr Permet que, enlloc de fer saltar una excepció si la quantitat de places nova subruix
 	 * del total de places del grup, la diferencia de places necessaries per obrir les places s'incrementi
 	 * al total de places del grup.
+	 * @throws Excepció codificada en forma d'enter.
 	 */
-	public void setPlaces(int places, boolean incr) throws Exception{
-		if(this.places == places) return; //En cas de fer un canvi inutil.
-		else if(places < 0) throw new Exception("Nombre negatiu de places.");
-		else if(grup.getPlaces() - grup.getPlacesAssignades() - this.places < places)
-			throw new Exception("Subgrup amb més places que el Grup");
+	public int setPlaces(int places, boolean incr){
+		if(this.places == places) return 1; //En cas de fer un canvi inutil.
+		else if(places < 0) return 71;
+		else if(grup.getPlaces() - grup.getPlacesAssignades() - this.places < places) return 72;
 		
 		this.places = places;
+		return 0;
 	}
 	
 	/**
@@ -120,9 +124,11 @@ public class SubGrup {
 	 * @param grup Apunta al grup que engloba al subGrup.
 	 * @throws NullPointerException
 	 */
-	public void setGrup(Grup grup) throws NullPointerException{
-		if(grup == null) throw new NullPointerException("El subGrup ha de formar part d'un Grup");
-		else this.grup = grup;
+	public int setGrup(Grup grup) {
+		if(grup == null) return 73;
+		
+		this.grup = grup;
+		return 0;
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -182,12 +188,12 @@ public class SubGrup {
 	 * Grup; altrament llança una excepció.
 	 * @param incr Quantitat de places a afegir.
 	 */
-	public void obrirPlaces(int nplaces) throws Exception {
-		if(nplaces < 0) throw new Exception("Nombre negatiu de places.");
-		else if(grup.getPlaces() - grup.getPlacesAssignades() < nplaces)
-			throw new Exception("No hi ha proutes places al grup");
+	public int obrirPlaces(int nplaces) {
+		if(nplaces < 0) return 71;
+		else if(grup.getPlaces() - grup.getPlacesAssignades() < nplaces) return 74;
 		
 		this.places += nplaces;
+		return 0;
 	}
 	
 	/**
@@ -196,33 +202,34 @@ public class SubGrup {
 	 * altrament llança una excepció.
 	 * @param nplaces Quantitat positiva de places a tancar.
 	 */
-	public void tancarPlaces(int nplaces) throws Exception {
-		if(nplaces < 0) throw new Exception("Nombre negatiu de places.");
-		else if(this.places - nplaces < 0)
-			throw new Exception("No hi ha proutes places per tancar.");
+	public int tancarPlaces(int nplaces) {
+		if(nplaces < 0) return 71;
+		else if(this.places - nplaces < 0) return 75;
 		
 		this.places -= nplaces;
+		return 0;
 	}
 	
 	/**
 	 * Assigna un nova sessió al SubGrup i l'enregistra.
 	 * @param tipus Identifica el tipus de la sessio
 	 * @param hores Identifica el temps de durada de la sessió en hores
-	 * @throws Exception
+	 * @return Excepció codificada en forma d'enter.
+	 * @throws Exception rebuda durant la donada d'alta d'una SessioAssginada,
+	 * o bé, durant el linkatge amb sessioSubGrup.
 	 */
-	public void assignaSessio(String tipus, int hores) throws Exception {
-		if(this.checkSessio(tipus, hores)) throw new Exception("El subGrup ja conté una sessió amb el mateix tipus i hores");
-		else if(!grup.getAssignatura().checkSessioSG(tipus, hores))
-			throw new Exception("L'assignatura del grup al qual pertany el subGrup no te cap sessio de subGrup del tipus indicat.");
+	public int assignaSessio(String tipus, int hores) throws Exception{
+		if(this.checkSessio(tipus, hores)) return 76;
+		else if(!grup.getAssignatura().checkSessioSG(tipus, hores)) return 77;
 	
 		SessioSubGrup sessioSubGrup = grup.getAssignatura().getSessioSG(tipus, hores);
 		SessioSGAssignada sessio = new SessioSGAssignada(this, sessioSubGrup);
 		
-		//Enllaç amb la classe SubGrup
-		sessions.add(sessio);
-		
 		//Enllaç amb la classe SessioSubGrup
-		sessioSubGrup.afegirSessio(sessio);
+		int checker;
+		if((checker = sessioSubGrup.afegirSessio(sessio)) != 0) return checker;
+		else sessions.add(sessio); //Enllaç amb la classe SubGrup
+		return 0;
 	}
 	
 	/**
@@ -232,9 +239,10 @@ public class SubGrup {
 	 * @param sessio Referencia a la sessió que és preten esborrar.
 	 * @throws Exception
 	 */
-	public void desassignaSessio(SessioSGAssignada sessio) throws Exception {
-		this.checkSessioAdequada(sessio);
-		this.desassignaSessio(sessio.getSessioSubGrup().getTipus(), sessio.getSessioSubGrup().getHores(), true);
+	public int desassignaSessio(SessioSGAssignada sessio) {
+		int checker;
+		if((checker = this.checkSessioAdequada(sessio)) != 0) return checker;
+		else return this.desassignaSessio(sessio.getSessioSubGrup().getTipus(), sessio.getSessioSubGrup().getHores(), true);
 	}
 	
 	/**
@@ -243,17 +251,15 @@ public class SubGrup {
 	 * @param sessio Referencia a la SessioSGAssignada que es preten afegir.
 	 * @throws Exception
 	 */
-	public void afegeixSessio(SessioSGAssignada sessio) throws Exception{
-		if(sessions.contains(sessio)) throw new Exception("El subGrup ja conté aquesta sessió.");
-		else if(sessio.getSubGrup().getNumero() != this.numero) throw new Exception("La sessió no és del SubGrup corresponent");
-		else if(sessio.getSubGrup().getGrup().getNumero() != this.getGrup().getNumero())
-			throw new Exception("La sessió no és del Grup del SubGrup corresponent.");
-		else if(!sessio.getSessioSubGrup().getAssignatura().getNom().equals(this.getGrup().getAssignatura().getNom()))
-			throw new Exception("La sessió i el grup del subGrup són d'assignatures diferents.");
-		/*else if(this.checkSessio(sessio.getSessioSubGrup().getTipus(), sessio.getSessioSubGrup().getHores()))
-			throw new Exception("El subGrup ja conté una sessió amb el mateix tipus i hores");
-		*/
+	public int afegeixSessio(SessioSGAssignada sessio) {
+		if(sessions.contains(sessio)) return 78;
+		else if(sessio.getSubGrup().getNumero() != this.numero) return 79;
+		else if(sessio.getSubGrup().getGrup().getNumero() != this.getGrup().getNumero()) return 80;
+		else if(!sessio.getSessioSubGrup().getAssignatura().getNom().equals(this.getGrup().getAssignatura().getNom())) return 81;
+		else if(this.checkSessio(sessio.getSessioSubGrup().getTipus(), sessio.getSessioSubGrup().getHores())) return 82;
+
 		sessions.add(sessio);
+		return 0;
 	}
 	
 	/**
@@ -262,9 +268,10 @@ public class SubGrup {
 	 * @param sessio Referencia a la sessio que es preten esborrar.
 	 * @throws Exception
 	 */
-	public void eliminaSessio(SessioSGAssignada sessio) throws Exception{
-		this.checkSessioAdequada(sessio);
-		this.desassignaSessio(sessio.getSessioSubGrup().getTipus(), sessio.getSessioSubGrup().getHores(), false);
+	public int eliminaSessio(SessioSGAssignada sessio) {
+		int checker;
+		if((checker = this.checkSessioAdequada(sessio)) != 0) return checker;
+		else return this.desassignaSessio(sessio.getSessioSubGrup().getTipus(), sessio.getSessioSubGrup().getHores(), false);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
