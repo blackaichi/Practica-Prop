@@ -116,8 +116,17 @@ public class ExceptionManager {
 			titles[129] = ".";	
 			
 			//CAMPUS 130:149 :
+			titles[130] = "No hi han aules"; 
+			titles[131] = "Ja conté l'aula" ;
+			titles[132] = "L'aula ja s'ha eliminat o no pertany al campus";
+			
 			
 			//AULA 150:169 :
+			titles[150] = "La capacitat de l'aula no pot ser 0 o negativa";
+			titles[151] = "No hi ha material";
+			titles[152] = "L'aula ha de formar part d'un campus";
+			titles[153] = "Ja conte el material";
+			titles[154] = "No conte el material";
 			
 			//HORARI 170:189 :
 			
