@@ -123,8 +123,9 @@ public class SessioGrup extends Sessio{
 	/**
 	 * Assigna una nova sessió i la guarda al Hashset on tenim les sessions assignades
 	 * @param numero numero de grup al qual assignarem la sessió 
+	 * @throws Exception 
 	 */
-	public void assignaSessio(int numero) {
+	public void assignaSessio(int numero) throws Exception {
 		Grup grup = assignatura.getGrup(numero); // obtenim el grup que necessitem
 		SessioGAssignada sGA = new SessioGAssignada(grup, this); // creem una sessió assignada
 		
@@ -136,8 +137,9 @@ public class SessioGrup extends Sessio{
 	/**
 	 * Desassigna la sessió assignada passada per paràmetre
 	 * @param sGA la sessió de grup assignada que volem desassignar
+	 * @throws Exception 
 	 */
-	public int desassignaSessio(SessioGAssignada sGA) {
+	public int desassignaSessio(SessioGAssignada sGA) throws Exception {
 		if (!sGA.getGrup().getAssignatura().getNom().equals(assignatura.getNom())) return 97;
 		Grup grup = sGA.getGrup();
 		
