@@ -214,20 +214,22 @@ public class SubGrup {
 	 * Assigna un nova sessió al SubGrup i l'enregistra.
 	 * @param tipus Identifica el tipus de la sessio
 	 * @param hores Identifica el temps de durada de la sessió en hores
-	 * @throws Exception
+	 * @return Excepció codificada en forma d'enter.
+	 * @throws Exception rebuda durant la donada d'alta d'una SessioAssginada,
+	 * o bé, durant el linkatge amb sessioSubGrup.
 	 */
-	public int assignaSessio(String tipus, int hores) {
+	public int assignaSessio(String tipus, int hores) throws Exception{
 		if(this.checkSessio(tipus, hores)) return 76;
 		else if(!grup.getAssignatura().checkSessioSG(tipus, hores)) return 77;
 	
 		SessioSubGrup sessioSubGrup = grup.getAssignatura().getSessioSG(tipus, hores);
 		SessioSGAssignada sessio = new SessioSGAssignada(this, sessioSubGrup);
 		
-		//Enllaç amb la classe SubGrup
-		int checker;
-		if((checker = sessions.add(sessio)) != 0) return checker;
 		//Enllaç amb la classe SessioSubGrup
-		else return sessioSubGrup.afegirSessio(sessio);
+		int checker;
+		if((checker = sessioSubGrup.afegirSessio(sessio)) != 0) return checker;
+		else sessions.add(sessio); //Enllaç amb la classe SubGrup
+		return 0;
 	}
 	
 	/**

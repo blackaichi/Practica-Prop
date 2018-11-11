@@ -265,9 +265,10 @@ public class Grup {
 	 * @param incr Quantitat de places a afegir.
 	 * @return Excepció codificada en forma d'enter.
 	 */
-	public void obrirPlaces(int nplaces) throws Exception {
-		if(nplaces < 0) throw new Exception("Nombre negatiu de places.");
+	public int obrirPlaces(int nplaces) {
+		if(nplaces < 0) return 71;
 		this.places += nplaces;
+		return 0;
 	}
 	
 	/**
@@ -293,8 +294,9 @@ public class Grup {
 	 * @param incr 	 Permet que, enlloc de fer saltar una excepció quan un subgrup subruix al total de places del grup,
 	 * la diferencia de places necessaries per obrir el subgrup s'incremente al total de places del grup.
 	 * @return Excepció codificada en forma d'enter.
+	 * @throws Excepció rebuda durant la creació del subgrup.
 	 */
-	public int altaSubGrup(int numero, int places, boolean incr){
+	public int altaSubGrup(int numero, int places, boolean incr) throws Exception{
 		if(this.checkSubGrup(numero)) return 58;
 		else if(places > this.places) return 59;
 		else if(places < 0) return 60;
@@ -303,15 +305,18 @@ public class Grup {
 			else return 61;
 		}
 		
-		return subGrups.add(new SubGrup(this, numero, places));
+		subGrups.add(new SubGrup(this, numero, places));
+		return 0;
 	}
 	
 	/**
 	 * Elimina el subgrup amb el numero definit, si existeix; altrament no fa res.
 	 * @param numero Descriu el grup que es preten eliminar.
+	 * @return Excepció codificada en forma d'enter.
 	 */
-	public void baixaSubGrup(int numero) {
+	public int baixaSubGrup(int numero) {
 		subGrups.removeIf(item -> item.getNumero() == numero);
+		return 0;
 	}
 	
 	/**
@@ -319,19 +324,20 @@ public class Grup {
 	 * @param tipus Identifica el tipus de la sessio de grup.
 	 * @param hores Identifica el temps de durada de la sessió en hores
 	 * @return Excepció codificada en forma d'enter.
+	 * @throws Exceptions llençada durant la donada d'alta d'una SessioAssignada.
 	 */
-	public int assignaSessio(String tipus, int hores) {
+	public int assignaSessio(String tipus, int hores) throws Exception {
 		if(this.checkSessio(tipus, hores)) return 62;
 		else if(!assig.checkSessioG(tipus, hores)) return 63;
 		
 		SessioGrup sessioGrup = assig.getSessioG(tipus, hores);
 		SessioGAssignada sessio = new SessioGAssignada(this, sessioGrup);
 		
-		int checker;
-		//Enllaç amb la classe Grup:
-		if((checker = sessions.add(sessio)) != 0) return checker;
 		//Enllaç amb la classe SessioGrup
-		else return sessioGrup.afegirSessio(sessio);
+		int checker;
+		if((checker = sessioGrup.afegirSessio(sessio)) != 0) return checker;
+		else sessions.add(sessio); //Enllaç amb la classe Grup:
+		return 0;
 	}
 	
 	/**
@@ -359,7 +365,8 @@ public class Grup {
 		else if(!sessio.getSessioGrup().getAssignatura().getNom().equals(this.getAssignatura().getNom())) return 65;
 		else if(this.checkSessio(sessio.getSessioGrup().getTipus(), sessio.getSessioGrup().getHores())) return 66;
 		
-		return sessions.add(sessio);
+		sessions.add(sessio);
+		return 0;
 	}
 	
 	/**
