@@ -4,6 +4,7 @@ import java.util.*;
 
 /**
  * 
+ * @autor correu_fib
  * @author hector.morales.carnice@est.fib.upc.edu
  *
  */
@@ -172,9 +173,18 @@ public class Aula {
 	 * @return True si hi és, false si no.
 	 */
 	public boolean checkEquip(String equip) {
+		if(equip == null) return false;
 		for(String equipament: this.equip)
 			if(equipament.equals(equip)) return true;
 		
 		return false;
+	}
+
+	/**
+	 * Indica la quantita d'equip que conté l'aula.
+	 * @return Un enter superior o igual a 0.
+	 */
+	public int quantEquip() {
+		return this.equip.size();
 	}
 }

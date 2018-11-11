@@ -4,7 +4,6 @@ import java.util.*;
 
 /**
  * 
- * @author correu-fib
  * @author hector.morales.carnice@est.fib.upc.edu
  *
  */
@@ -86,6 +85,7 @@ public class Campus {
 	 * @return Una referencia a aula, és null en cas de que no hi sigui.
 	 */
 	public Aula getAula(String nom) {
+		if(nom == null) return null;
 		for(Aula aula: aules)
 			if(aula.getNom().equals(nom)) return aula;
 		
@@ -107,6 +107,7 @@ public class Campus {
 	 * @return Una referencia a campus, és null en cas de que no hi sigui.
 	 */
 	static public Campus getCampus(String nom) {
+		if(nom == null) return null;
 		for(Campus campus: campusCreats)
 			if(campus.getNom().equals(nom)) return campus;
 		
