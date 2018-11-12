@@ -1,0 +1,32 @@
+RESTRICCIONS UNARIES	
+hores on no es pot fer classe per grup
+hores on no es pot fer classe per assignatura
+hores on s’ha de fer classe per grup
+hores on s’ha de fer classe per assignatura
+fer servir aules amb l’equipament necessari
+possibilitat de solapament entre grups/subgrups (diferents grups/subgrups)
+evitar solapaments entre grups/subgrups (mateix grup/subgrup)
+restriccio de grup a matí o tarda
+restriccio de fer n sessions
+fer teoria abans del laboratori
+aules adaptades (wilchers son part del equipament)
+
+RESTRICCIONS BINARIES
+x no es pot solapar amb y
+si una assignatura es correquisit d’una altra no poden solaparse
+
+RESTRICCIONS GLOBALS
+horari lectiu
+horari tarda/matí
+[hores reservades per examens]
+prerrequisits i correquisits
+
+RESTRICCIONS D’ESCENARI
+no tenir dues classes en la mateixa aula i hora
+no tenir dues classes en el mateix dia, assignatura i grup/subgrup
+no tenir classe en dies festius
+no tenir classe fora d’horari lectiu
+un grup/supgrup no pot anar de matins si es de tarda i viceversa
+mateixes hores setmanals per grups/subgrups
+no pot haver cicles de requisits
+tots els grups tenen el mateix nombre d’hores i sessions per una mateixa assignatura
