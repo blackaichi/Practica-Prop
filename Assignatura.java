@@ -31,9 +31,14 @@ public class Assignatura {
 	HashSet<PlaEstudis> plansEstudis;
 		
 	/**
-	 * Sessions que pertanyen a l'Assignatura
+	 * SessionsGrup que pertanyen a l'Assignatura
 	 */
-	HashSet<Sessio> sessions;
+	HashSet<SessioGrup> sessionsG;
+	
+	/**
+	 * SessionsSubGrup que pertanyen a l'Assignatura
+	 */
+	HashSet<SessioSubGrup> sessionsSG;
 		
 	/**
 	 * Grups que pertanyen a l'Assignatura
@@ -44,28 +49,18 @@ public class Assignatura {
 	//////////////////////// Privades //////////////////////////
 		
 	/**
-	 * Retorna si ja existeix una Sessio igual en aquesta Assignatura.
-	 * @param hores: Numero d'hores de la sessió.
-	 * @param tipus: Tipus de la sessió.
-	 * @return Cert si la sessió ja existeix o fals altrament.
-	 */
-	private boolean checkSessio(String tipus, int hores) {
-		for(Sessio s : sessions) {
-			if (s.getHores() == hores && s.getTipus().equals(tipus)) return true;
-		}
-		return false;
-	}
-		
-	/**
 	 * Retorna si ja existeix un Pla d'Estudis igual en aquesta Assignatura.
 	 * @param nom: Nom del Pla d'Estudis.
 	 * @return Cert si el Pla d'Estudis ja existeix o fals altrament.
 	 */
-	public boolean checkPlaEstudis(String nom) {
-		for(PlaEstudis p : plansEstudis) {
-			if (p.getNom().equals(nom)) return true;
+	public boolean checkPlaEstudis(String nom) throws Exception {
+		if (nom == null) throw new Exception();
+		else {
+			for(PlaEstudis p : plansEstudis) {
+				if (p.getNom().equals(nom)) return true;
+			}
+			return false;
 		}
-		return false;
 	}
 	
 	/////////////////////////////////////////////////////////////
@@ -77,8 +72,8 @@ public class Assignatura {
 	 * @param hteo: hores de teoria de l'assignatura.
 	 * @param hlab: hores de laboratori de l'assignatura.
 	 */
-	public Assignatura(String nom, int hteo, int hlab) throws Exception {
-		ExceptionManager.thrower(this.setNom(nom));
+	public Assignatura(PlaEstudis plaEst, String nom, int hteo, int hlab) throws Exception {
+		ExceptionManager.thrower(this.setNom(plaEst,nom));
 		ExceptionManager.thrower(this.setHTeo(hteo));
 		ExceptionManager.thrower(this.setHLab(hlab));
 	}
@@ -87,8 +82,8 @@ public class Assignatura {
 	 * Creadora de Assignatura sense parametres.
 	 * @param plaEstudis: Pla d'Estudis que pertany l'Assignatura.
 	 */
-	public Assignatura() throws Exception {
-		this.nom = new String("NAN");
+	public Assignatura(PlaEstudis plaEst, String nom) throws Exception {
+		ExceptionManager.thrower(this.setNom(plaEst,nom));
 		this.hteo = 0;
 		this.hlab = 0;
 	}
@@ -101,9 +96,10 @@ public class Assignatura {
 	 * @param nom: nom de l'Assignatura que entra l'usuari.
 	 * @throws Exception si nom no cambia o nom ja existeix en el Pla d'Estudis.
 	 */
-	public int setNom(String nom) throws Exception {
-		if(this.nom.equals(nom)) return 1;
-		else if(plaEstudis.checkAssignatura(nom)) return 20;
+	public int setNom(PlaEstudis plaEst, String nom) {
+		if (nom == null) return 29;
+		else if(this.nom.equals(nom)) return 1;
+		else if(plaEst.checkAssignatura(nom)) return 20;
 		this.nom = nom;
 		return 0;
 	}
@@ -113,7 +109,7 @@ public class Assignatura {
 	 * @param hteo: nombre d'hores de teoria de l'Assignatura que entra l'usuari.
 	 * @throws Exception si hteo < 0 o hteo no cambia.
 	 */
-	public int setHTeo(int hteo) throws Exception {
+	public int setHTeo(int hteo) {
 		if (this.hteo == hteo) return 1;
 		else if (hteo < 0) return 21;// error: les hores de teo són negatives
 		this.hteo = hteo;
@@ -131,15 +127,6 @@ public class Assignatura {
 		this.hlab = hlab;
 		return 0;
 	}
-	/*	
-
-		public int setPlaEstudis(PlaEstudis plaEst) throws Exception {
-			if (this.plaEstudis == plaEst) return 1;
-			else if (plaEst == null) return 26;// error: les hores de teo són negatives
-			this.plaEstudis = plaEst;
-			return 0;
-		}
-		*/
 	
 	/////////////////////////////////////////////////////////////
 	////////////////////////Getters  //////////////////////////
@@ -172,20 +159,26 @@ public class Assignatura {
 	 * Retorna la sessioG = Tipus + Hores de l'Assignatura.
 	 * @return SessioG de l'Assignatura.
 	 */
-	public SessioGrup getSessioG(String tipus, int hores) {
-		for(Sessio s: sessions)
-			if(s.getTipus().equals(tipus) && s.getHores() == hores) return s;
-		return null;
+	public SessioGrup getSessioG(String tipus, int hores) throws Exception {
+		if (nom == null) throw new Exception();
+		else {
+			for(SessioGrup s: sessionsG)
+				if(s.getTipus().equals(tipus) && s.getHores() == hores) return s;
+			return null;
+		}
 	}
 		
 	/**
 	 * Retorna la sessioSG = Tipus + Hores de l'Assignatura.
 	 * @return SessioSG de l'Assignatura.
 	 */
-	public SessioSubGrup getSessioSG(String tipus, int hores) {
-		for(Sessio s: sessions)
-			if(s.getTipus().equals(tipus) && s.getHores() == hores) return s;
-		return null;
+	public SessioSubGrup getSessioSG(String tipus, int hores) throws Exception {
+		if (tipus == null) throw new Exception();
+		else {
+			for(SessioSubGrup s: sessionsSG)
+				if(s.getTipus().equals(tipus) && s.getHores() == hores) return s;
+			return null;
+		}
 	}
 		
 	/**
@@ -208,10 +201,11 @@ public class Assignatura {
 	 * @param capacitat: Indica quina capacitat ha de tenir el Grup.
 	 * @return Excepció codificada en forma d'enter.
 	 */
-	public int altaGrup(int numero, int capacitat) {
+	public int altaGrup(int numero, int capacitat, String franja) throws Exception{
+		if (franja == null) return 29;
 		if (this.checkGrup(numero)) return 23;
-		else if (capacitat < 0) return 24;
-		grups.add(new Grup(this,numero,capacitat));
+		if (capacitat < 0) return 24;
+		grups.add(new Grup(this,numero,capacitat,franja));
 		return 0;
 	}
 		
@@ -236,10 +230,27 @@ public class Assignatura {
 	 * @return Excepció codificada en forma d'enter.
 	 * @throws Exception 
 	 */
-	public int altaSessio(String tipus, int hores) throws Exception {
-		if (this.checkSessio(tipus,hores)) return 25;
+	public int altaSessioG(String tipus, int hores) throws Exception {
+		if (tipus == null) return 29;
+		if (this.checkSessioG(tipus,hores)) return 25;
 		else if (hores < 0) return 26;
-		sessions.add(new Sessio(this,hores,tipus));
+		sessionsG.add(new SessioGrup(this,hores,tipus));
+		return 0;
+	}
+	
+	/** 
+	 * Crea una nova Sessio dins l'Assignatura corresponent sempre i quant els atributs entrats
+	 * compleixin amb les especificacions. Altrament llança una excepció.
+	 * @param hores: Indica el numero d'hores de la Sessio.
+	 * @param tipus: Indica el tipus de la Sessio
+	 * @return Excepció codificada en forma d'enter.
+	 * @throws Exception 
+	 */
+	public int altaSessioSG(String tipus, int hores) throws Exception {
+		if (tipus == null) return 29;
+		if (this.checkSessioSG(tipus,hores)) return 25;
+		else if (hores < 0) return 26;
+		sessionsSG.add(new SessioSubGrup(this,hores,tipus));
 		return 0;
 	}
 		
@@ -249,13 +260,23 @@ public class Assignatura {
 	 * @param tipus: tipus de la sessio que volem donar de baixa.
 	 * @return Excepció codificada en forma d'enter.
 	 */
-	public int baixaSessio(String tipus, int hores) {
-		if (checkSessio(tipus,hores)) { 
-			sessions.removeIf(item -> item.getHores() == hores && item.getTipus().equals(tipus));
-		}
-		else {
-			return 28;
-		}
+	public int baixaSessioG(String tipus, int hores) throws Exception {
+		if (tipus == null) return 29;
+		if (checkSessioG(tipus,hores)) sessionsG.removeIf(item -> item.getHores() == hores && item.getTipus().equals(tipus));
+		else return 28;
+		return 0;
+	}
+	
+	/**
+	 * Dona de baixa la  Sessio = Hores + Tipus sempre i quant existeixi en aquesta Assignatura.
+	 * @param hores: hores de la sessio que volem donar de baixa.
+	 * @param tipus: tipus de la sessio que volem donar de baixa.
+	 * @return Excepció codificada en forma d'enter.
+	 */
+	public int baixaSessioSG(String tipus, int hores) throws Exception {
+		if (tipus == null) return 29;
+		if (checkSessioSG(tipus,hores)) sessionsSG.removeIf(item -> item.getHores() == hores && item.getTipus().equals(tipus));
+		else return 28;
 		return 0;
 	}
 		
@@ -267,6 +288,7 @@ public class Assignatura {
 	 * @throws Exception 
 	 */
 	public int altaPlaEstudis(String nom) throws Exception {
+		if (nom == null) return 29;
 		if (this.checkPlaEstudis(nom)) return 27;
 		plansEstudis.add(new PlaEstudis(nom));
 		return 0;
@@ -277,7 +299,8 @@ public class Assignatura {
 	 * @param nom: nom del Pla d'Estudis que volem donar de baixa.
 	 * @return Excepció codificada en forma d'enter.
 	 */
-	public int baixaPlaEstudis(String nom) {
+	public int baixaPlaEstudis(String nom) throws Exception {
+		if (nom == null) return 29;
 		if(checkPlaEstudis(nom)) {
 			plansEstudis.removeIf(item -> item.getNom().equals(nom));
 		}
@@ -306,9 +329,10 @@ public class Assignatura {
 		 * @param tipus: Tipus de la sessióG.
 		 * @return Cert si la sessióG existeix o fals altrament.
 		 */
-	public boolean checkSessioG(String tipus, int hores) {
-		for(Sessio s : sessions) {
-			if (s.getHores() == hores && s.getTipus().equals(tipus)) return s.checkSessioG(tipus,hores);
+	public boolean checkSessioG(String tipus, int hores) throws Exception {
+		if (tipus == null) throw new Exception();
+		for(Sessio s : sessionsG) {
+			if (s.getHores() == hores && s.getTipus().equals(tipus)) return true;
 		}
 		return false;
 	}
@@ -319,9 +343,10 @@ public class Assignatura {
 		 * @param tipus: Tipus de la sessióSG.
 		 * @return Cert si la sessióSG existeix o fals altrament.
 		 */
-	public boolean checkSessioSG(String tipus, int hores) {
-		for(Sessio s : sessions) {
-			if (s.getHores() == hores && s.getTipus().equals(tipus)) return s.checkSessioSG(tipus,hores);
+	public boolean checkSessioSG(String tipus, int hores) throws Exception {
+		if (tipus == null) ExceptionManager.thrower(29);		
+		for(Sessio s : sessionsSG) {
+			if (s.getHores() == hores && s.getTipus().equals(tipus)) return false;
 		}
 		return false;
 	}

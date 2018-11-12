@@ -42,7 +42,7 @@ public class PlaEstudis {
 	 * @param nom: nom de l'Assignatura que volem comprobar.
 	 * @return Cert si l'Assignatura ja existeix o fals altrament.
 	 */
-	private boolean checkAssignatura(String nom) {
+	public boolean checkAssignatura(String nom) {
 		for(Assignatura a : assignatures) {
 			if (a.getNom().equals(nom)) return true;
 		}
@@ -169,7 +169,7 @@ public class PlaEstudis {
 	 */
 	public int altaAssignatura(String nom, int hteo, int hlab) throws Exception{
 		if (this.checkAssignatura(nom)) return 32;
-		assignatures.add(new Assignatura(nom,hteo,hlab));
+		assignatures.add(new Assignatura(this,nom,hteo,hlab));
 		return 0;
 	}
 		
