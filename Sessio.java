@@ -1,14 +1,21 @@
 package classes;
 
+import java.util.*;
+
 /**
  * 
  * @author eric.casanovas@est.fib.upc.edu
  *
  */
 
-public class Sessio {
+public abstract class Sessio {
     /////////////////////////////////////////////////////////////
 	//////////////////////// Variables //////////////////////////
+	
+	/**
+	 * Registra l'equip necessari per la sessió
+	 */
+	private HashSet<String> material;
 	
 	/**
 	 * Quantes hores té aquesta sessió
@@ -25,17 +32,41 @@ public class Sessio {
 	 */
 	protected Assignatura assignatura;
 	
+	/**
+	 * Nombre de sessions que es poden assignar
+	 */
+	protected int nsessions;
+	
 	/////////////////////////////////////////////////////////////
 	//////////////////////  Constructora  ///////////////////////
 
 	/**
-	 * Creadora de Sessio amb assig i tipus com a paràmetres, per defecte hores = 1
+	 * Creadora de Sessio amb assig i tipus com a paràmetres, per defecte hores = 1 i nsessions = 1
 	 * @param assig assignatura a la qual pertany la sessió
+	 * @param tipus tipus de la sessió
+	 * @throws Exception
 	 */
-	public Sessio(Assignatura assig, String tipus) throws Exception {
-		int check;
+	protected Sessio(Assignatura assig, String tipus) throws Exception {
+		ExceptionManager.thrower(setAssignatura(assig));
+		ExceptionManager.thrower(setTipus(tipus));
 		setHores(1);
-		if ((check = setTipus(tipus)) != 0) ExceptionManager.thrower(check);
+		setnsessions(1);
+		material = new HashSet<String>();
+	}
+	
+	/**
+	 * Creadora de Sessio amb Assignatura, hores i tipus com a paràmetres, per defecte nsessions = 1
+	 * @param assig assignatura a la qual pertany la sessió
+	 * @param hores nombre d'hores de la sessió que entra l'usuari
+	 * @param tipus tipus de sessió que entra l'usuari
+	 * @throws Exception
+	 */
+	protected Sessio(Assignatura assig, int hores, String tipus) throws Exception {
+		ExceptionManager.thrower(setAssignatura(assig));
+		ExceptionManager.thrower(setTipus(tipus));
+		ExceptionManager.thrower(setHores(hores));
+		setnsessions(1);
+		material = new HashSet<String>();
 	}
 	
 	/**
@@ -43,12 +74,15 @@ public class Sessio {
 	 * @param assig assignatura a la qual pertany la sessió
 	 * @param hores nombre d'hores de la sessió que entra l'usuari
 	 * @param tipus tipus de sessió que entra l'usuari
+	 * @param nsessions nombre de sessions que es poden assignar
+	 * @throws Exception
 	 */
-	public Sessio(Assignatura assig, int hores, String tipus) throws Exception {
-		int check;
-		if ((check = setAssignatura(assig)) != 0) ExceptionManager.thrower(check);
-		if ((check = setHores(hores)) != 0) ExceptionManager.thrower(check);
-		if ((check = setTipus(tipus)) != 0) ExceptionManager.thrower(check);
+	protected Sessio(Assignatura assig, int hores, String tipus, int nsessions) throws Exception {
+		ExceptionManager.thrower(setAssignatura(assig));
+		ExceptionManager.thrower(setTipus(tipus));
+		ExceptionManager.thrower(setHores(hores));
+		ExceptionManager.thrower(setnsessions(nsessions));		
+		material = new HashSet<String>();
 	}
 	
 	/////////////////////////////////////////////////////////////
@@ -56,8 +90,8 @@ public class Sessio {
 	
 	/**
 	 * Assigna una assignatura a la sessió
-	 * @param assig assignatura que pertany la sessió
-	 * @throws Exception en cas de que el paràmetre assignatura sigui null
+	 * @param assignatura assignatura a la qual pertany la sessió
+	 * @return 0 en cas de que no hi hagi error, altrament hi ha error
 	 */
 	public int setAssignatura(Assignatura assignatura) {
 		if (assignatura == null) return 90;
@@ -68,17 +102,14 @@ public class Sessio {
 	/**
 	 * Assigna quantes hores té la sessió
 	 * @param hores nombre d'hores de la sessió
-	 * @throws Exception si hora < 1
+	 * @return 0 en cas de que no hi hagi error, altrament hi ha error
 	 */
-	public int setHores(int hores) throws Exception {
-		if (hores < 1) return 91;
-		this.hores = hores;
-		return 0;
-	}
+	public abstract int setHores(int hores);
 	
 	/**
 	 * Assigna de quin tipus es la sessió
 	 * @param tipus tipus de la sessió
+	 * @return 0 en cas de que no hi hagi error, altrament hi ha error
 	 */
 	public int setTipus(String tipus) {
 		if (tipus == null || tipus.isEmpty()) return 92;
@@ -89,6 +120,20 @@ public class Sessio {
 		this.tipus = tipus;
 		return 0;
 	}
+	
+	/**
+	 * Assigna material a la sessió
+	 * @param material Tot el material necessari per la sessió
+	 */
+	public void setMaterial(HashSet <String> material) {
+		this.material = material;
+	}
+	
+	/**
+	 * Assigna nsessions a la sessió
+	 * @param nsessions nombre de sessions de la sessió
+	 */
+	public abstract int setnsessions(int nsessions);
 	
 	/////////////////////////////////////////////////////////////
 	////////////////////////  Getters  //////////////////////////
@@ -117,7 +162,38 @@ public class Sessio {
 		return assignatura;
 	}
 	
+	/**
+	 * Retorna el material necessari per la sessió en un HashSet de String
+	 * @return el material necessari per la sessió
+	 */
+	public HashSet <String> getMaterial() {
+		return material;
+	}
+	
 	/////////////////////////////////////////////////////////////
 	///////////////////////  Funcions  //////////////////////////
 	
+	/**
+	 * Afegeix material a la sessió
+	 * @param equip material a afegir
+	 * @return 0 en cas de que no hi hagi error, altrament hi ha error
+	 */
+	public int addMaterial(String equip) {
+		if (equip == null || equip.isEmpty()) return 108;
+		if (material.contains(equip)) return 106;
+		material.add(equip);
+		return 0;
+	}
+	
+	/**
+	 * Elimina material a la sessió
+	 * @param equip material a eliminar
+	 * @return 0 en cas de que no hi hagi error, altrament hi ha error
+	 */
+	public int delMaterial(String equip) {
+		if (equip == null|| equip.isEmpty()) return 108;
+		if (!material.contains(equip)) return 107;
+		material.remove(equip);
+		return 0;
+	}
 }

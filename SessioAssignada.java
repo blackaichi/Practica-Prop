@@ -16,7 +16,7 @@ public class SessioAssignada {
 	/**
 	* Creadora de SessioAssignada sense paràmetres
 	*/
-	public SessioAssignada() throws Exception {}
+	protected SessioAssignada() throws Exception {}
 	
 	/////////////////////////////////////////////////////////////
 	////////////////////////  Setters  //////////////////////////

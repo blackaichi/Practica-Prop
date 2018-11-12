@@ -24,13 +24,6 @@ public class SessioGAssignada extends SessioAssignada{
 	//////////////////////  Constructora  ///////////////////////
 	
 	/**
-	 * Creadora de SessioGAssignada sense paràmetres
-	 */
-	public SessioGAssignada() throws Exception {
-		super();
-	}
-	
-	/**
 	 * Creadora de SessioGAssignada amb tots els paràmetres
 	 * @param grup grup al qual pertany la sessió assignada
 	 * @param sessioG sessió de grup a la qual pertany la sessió assignada
@@ -81,6 +74,5 @@ public class SessioGAssignada extends SessioAssignada{
 	
 	/////////////////////////////////////////////////////////////
 	///////////////////////  Funcions  //////////////////////////
-	
 	
 }

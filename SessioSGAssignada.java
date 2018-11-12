@@ -24,13 +24,6 @@ public class SessioSGAssignada extends SessioAssignada{
 	//////////////////////  Constructora  ///////////////////////
 	
 	/**
-	 * Creadora de SessioSGAssignada sense paràmetres
-	 */
-	public SessioSGAssignada() throws Exception {
-		super();
-	}
-	
-	/**
 	 * Creadora de SessioSGAssignada amb tots els paràmetres
 	 * @param subGrup subgrup al qual pertany la sessió assignada
 	 * @param sessioSG sessió de subgrup a la qual pertany la sessió assignada
