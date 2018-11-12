@@ -91,10 +91,11 @@ public class Grup {
 	 * subGrups inicialment és buit.
 	 * @throws Exception
 	 */
-	public Grup(Assignatura assig) throws Exception {
+	public Grup(Assignatura assig, int numero) throws Exception {
+		ExceptionManager.thrower(this.setNumero(numero));
 		ExceptionManager.thrower(this.setAssignatura(assig));
 		
-		numero = places = 0;
+		places = 0;
 		franja = new String("NAN");
 		
 		subGrups = new HashSet<>();
@@ -108,11 +109,12 @@ public class Grup {
 	 * @throws Exception
 	 */
 	public Grup(Assignatura assig, int numero, int places, String franja) throws Exception {
-		ExceptionManager.thrower(this.setAssignatura(assig));
 		ExceptionManager.thrower(this.setNumero(numero));
 		ExceptionManager.thrower(this.setPlaces(places));
 		ExceptionManager.thrower(this.setFranja(franja));
-		
+		/* Arribats aquí, tots els parametres entrats son adequats,
+		 * per tant, es pot procedir a linkar la classe:*/
+		ExceptionManager.thrower(this.setAssignatura(assig));
 		subGrups = new HashSet<>();
 	}
 	
@@ -124,9 +126,9 @@ public class Grup {
 	 * @retrun Excepció codificada en forma d'enter.
 	 */
 	public int setNumero(int numero) {
-		if(this.numero == numero) return 1; //En cas de fer un canvi inutil.
-		else if(numero < 0) return 50;
-		else if(assig.checkGrup(numero)) return 51;
+		if(numero <= 0) return 50;
+		else if(this.numero == numero) return 1; //En cas de fer un canvi inutil.
+		else if(this.getAssignatura() != null && assig.checkGrup(numero)) return 51;
 
 		this.numero = numero;
 		return 0;
@@ -138,7 +140,8 @@ public class Grup {
 	 * @retrun Excepció codificada en forma d'enter.
 	 */
 	public int setPlaces(int places){
-		if(places < 0) return 52;
+		if(places <= 0) return 52;
+		else if(this.getPlaces() == places) return 1; //En cas d'un canvi inutil.
 		else if(places < this.getPlacesAssignades()) return 53;
 		
 		this.places = places;
@@ -165,8 +168,12 @@ public class Grup {
 	 */
 	public int setAssignatura(Assignatura assig) {
 		if(assig == null) return 55;
-		else this.assig = assig;
+		else if(this.getAssignatura() != null) { //En cas d'una modificació:
+			if(this.assig.getNom().equals(assig.getNom())) return 1;
+			else if(assig.checkGrup(this.getNumero())) return 51;
+		}
 		
+		this.assig = assig;
 		return 0;
 	}
 	

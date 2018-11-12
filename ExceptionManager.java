@@ -38,9 +38,9 @@ public class ExceptionManager {
 			//ASSIGNATURA 30:49 :
 			
 			//GRUP 50: 69:
-			titles[50] = "Identificació negativa.";
+			titles[50] = "Identificació negativa o igual a 0.";
 			titles[51] = "El número de Grup ja existeix en aquesta Assignatura.";
-			titles[52] = "Grup amb capacitat negativa.";
+			titles[52] = "Grup amb capacitat negativa o igual a 0.";
 			titles[53] = "Grup amb menys places que places sumen els seus SubGrups.";
 			titles[54] = "Franja incorrecte.";
 			titles[55] = "El grup ha de formar part d'una Assignatura.";
@@ -61,7 +61,7 @@ public class ExceptionManager {
 			
 			//SUBGRUP 70:89 :
 			titles[70] = "El número de subGrup ja existeix al Grup.";
-			titles[71] = "Nombre negatiu de places.";
+			titles[71] = "Nombre negatiu o igual a 0 de places.";
 			titles[72] = "Subgrup amb més places que el Grup.";
 			titles[73] = "El subGrup ha de formar part d'un Grup";
 			titles[74] = "No hi ha proutes places al grup";
@@ -95,7 +95,7 @@ public class ExceptionManager {
 			titles[106] = "No podem afegir un material que ja es necessari per la sessió.";
 			titles[107] = "No podem eliminar un material que no existeix a la sessió.";
 			titles[108] = "Equip no pot ser null o buit.";
-					
+			
 			//SESSIO ASSIGNADA 110:129 :
 			titles[110] = ".";
 			titles[111] = ".";
@@ -119,17 +119,18 @@ public class ExceptionManager {
 			titles[129] = ".";	
 			
 			//CAMPUS 130:149 :
-			titles[130] = "No hi han aules"; 
-			titles[131] = "Ja conté l'aula" ;
-			titles[132] = "L'aula ja s'ha eliminat o no pertany al campus";
+			titles[130] = "El nom del campus no pot ser null."; 
+			titles[131] = "El nom de l'aula no pot ser null." ;
+			titles[132] = "El campus ja conté aquesta aula.";
 			
 			
 			//AULA 150:169 :
-			titles[150] = "La capacitat de l'aula no pot ser 0 o negativa";
-			titles[151] = "No hi ha material";
-			titles[152] = "L'aula ha de formar part d'un campus";
-			titles[153] = "Ja conte el material";
-			titles[154] = "No conte el material";
+			titles[150] = "Campus no pot ser null.";
+			titles[151] = "El campus ja conté una aula amb la mateixa identificació";
+			titles[152] = "El nom no pot ser null.";
+			titles[153] = "Capacitat negativa o igual a 0.";
+			titles[154] = "L'equip no pot ser null.";
+			titles[155] = "L'equip ja existeix en aquesta aula.";
 			
 			//HORARI 170:189 :
 			

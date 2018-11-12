@@ -64,10 +64,11 @@ public class SubGrup {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
-	public SubGrup(Grup grup) throws Exception{
+	public SubGrup(Grup grup, int numero) throws Exception{
 		ExceptionManager.thrower(this.setGrup(grup));
+		ExceptionManager.thrower(this.setNumero(numero));
 		
-		numero = places = 0;
+		places = 0;
 		sessions = new HashSet<>();
 	}
 	

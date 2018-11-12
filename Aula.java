@@ -2,216 +2,188 @@ package classes;
 
 import java.util.*;
 
+/**
+ * 
+ * @author hector.morales.carnice@est.fib.upc.edu
+ *
+ */
 public class Aula {
-	
 	/**
-	 * Identificador de l'aula
+	 * Identifica l'aula dins d'un capus concret.
 	 */
-	private String id_aula;
+	private String nom;
 	/**
-	 * Capacitat de l'aula
+	 * Descriu la capacitat de l'aula.
 	 */
 	private int capacitat;
 	/**
-	 * Material extra que conte l'aula
+	 * Enregistra tot l'equip/material present a l'aula.
 	 */
-	private HashSet<String> materials;
-	
-	private Boolean modificat = false;
+	private HashSet<String> equip;
 	
 	/**
-	 * Campus al que pertany l'aula
+	 * Referencia al campus al qual pertany l'aula.
 	 */
 	private Campus campus;
-	///////////////////////////////////////////////
-	////////////////////////PRIVADES///////////////
-	private int comprova_Excepcions(String excep) throws Exception{
-		if (excep.contentEquals("La capacitat de l'aula no pot ser 0 o negativa")) return 150;
-		else if (excep.contentEquals("No hi ha material")) return 151;
-		else if (excep.contentEquals("L'aula ha de formar part d'un campus")) return 152;
-		else if (excep.contentEquals("Ja conte el material")) return 153;
-		else if (excep.contentEquals("No conte el material")) return 154;
-		else return 0;
-	}
+	
+	////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////  PRIVADES  /////////////////////////////////////
+	
+	////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
+	/**
+	 * Constructora de la classe Aula.
+	 * @param campus Referencia al campus al qual pertany l'aula.
+	 * @param nom Identifica l'aula dins del campus.
+	 * @throws Exception
+	 */
+	public Aula(Campus campus, String nom, int capacitat) throws Exception {
+		ExceptionManager.thrower(this.setCampus(campus));
+		ExceptionManager.thrower(this.setNom(nom));
+		ExceptionManager.thrower(this.setCapacitat(capacitat));
 		
-	///////////////////////////////////////////////
-	////////////////////////PUBLIQUES///////////////
-	
-	/**
-	 * Creadora de la classe sense parametres
-	 * @param a aula assignada
-	 * @throws Exception si la capacitat de l'aula es '0' o negativa o be si el material es un cjt buit
-	 */
-	public Aula(Campus c) throws Exception {
-		this.setCampus(c);
-		id_aula = new String("");
-		capacitat = 0;
-		materials = new HashSet<>();
-		//aules.add(this);
+		this.equip = new HashSet<>();
 	}
 	
+	////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////  SETTERS  /////////////////////////////////////
 	/**
-	 * Creadora de la classe amb parametres
-	 * @param id_aula identificador de l'aula
-	 * @param capacitat capacitat de l'aula
-	 * @param material material que conte l'aula
- 	 * @throws Exception si la capacitat de l'aula es '0' o negativa o be si el material es un cjt buit
+	 * Assigna un campus a l'aula.
+	 * @param campus Referencia al campus que es preten assignar.
+	 * @return Excepció codificada en forma d'enter.
 	 */
-	public Aula(String id_aula, int capacitat, HashSet<String> material, Campus c) throws Exception {
-		this.setIdAula(id_aula);
-		this.setCapacitat(capacitat);
-		this.setMaterial(material);
-		this.campus.setCampus(c);
-		c.afegirAula(this);
-		modificat = true;
-	}
-	
-	/////////////////////////////////////////////////////////////
-	///////////////////////////SETTERS///////////////////////////
-	/**
-	 * Setter de id_aula
-	 * @param id_aula nou identificador de l'aula
-	 * @throws Exception 
-	 */
-	public void setIdAula(String id_aula) throws Exception {
-		if (modificat) campus.modificarAula(this.getIdAula(), this.getCapacitat(), this.getMaterial());
-		this.id_aula = id_aula;
-	}
-	 /**
-	  * Setter de la capacitat
-	  * @param capacitat nova capacitat
-	  * @throws Exception si la capacitat de l'aula es '0' o negativa
-	  */
-	public void setCapacitat(int capacitat) throws Exception{
-		if (capacitat <= 0) comprova_Excepcions("La capacitat de l'aula no pot ser '0' o negativa");
-		else {
-			this.capacitat = capacitat;
-			if (modificat) campus.modificarAula(this.getIdAula(), this.getCapacitat(), this.getMaterial());
+	public int setCampus(Campus campus) {
+		if(campus == null) return 150; //Campus no pot ser null
+		else if(this.campus != null) { //En cas d'una modificació:
+			if(campus.getNom() == this.campus.getNom()) return 1;
+			else if(campus.checkAula(this.getNom())) return 151; //El campus ja conté una aula amb la mateixa identificació
 		}
+		
+		this.campus = campus;
+		return 0;
 	}
+	
 	/**
-	 * Setter del cjt. material
-	 * @param material 
-	 * @throws Exception si el cjt material es buit
+	 * Assigna un nom dentificatiu a l'aula.
+	 * @param nom Identifica a l'aula. 
+	 * @return Excepció en forma d'enter.
 	 */
-	public void setMaterial(HashSet<String> material) throws Exception {
-		if (material.isEmpty()) comprova_Excepcions("No hi ha material");
-		else {
-			this.materials = material;
-			if (modificat) campus.modificarAula(this.getIdAula(), this.getCapacitat(), this.getMaterial());
+	public int setNom(String nom) {
+		if(nom == null) return 152; //El nom no pot ser null
+		else if(this.nom != null) { //En cas d'una modificació:
+			if(this.nom.equals(nom)) return 1;
+			else if(this.campus != null && this.campus.checkAula(nom)) return 151; //El campus ja conté una aula amb la mateixa identificació
 		}
-	}
-	
-	public void setCampus(Campus c) throws Exception{
-		if (c == null)  comprova_Excepcions("L'aula ha de formar part d'un campus");
-		campus.eliminarAula(this);
-		this.campus = c;
-		campus.afegirAula(this);
-	}
-	
-	/////////////////////////////////////////////////////////////
-	///////////////////////////GETTERS///////////////////////////
-	/**
-	 * Getter de l'aula
-	 * @return objecte aula
-	 */
-	public Aula getAula() {
-		return this;
+		
+		this.nom = nom;
+		return 0;
 	}
 	
 	/**
-	 * Getter de id_aula
-	 * @return id_aula
+	 * Assigna una capacitat a l'aula.
+	 * @param capacitat Descriu la capacitat de l'aula.
+	 * @return Excepció codificada en forma d'enter.
 	 */
-	public String getIdAula() {
-		return this.id_aula;
+	public int setCapacitat(int capacitat) {
+		if(capacitat <= 0) return 153; //No pot haver capacitat <= 0;
+		else if(this.capacitat == capacitat) return 1;
+		
+		this.capacitat = capacitat;
+		return 0;
 	}
-	/**
-	 * Getter de la capacitat de l'aula
-	 * @return capacitat
-	 */
 	
+	////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////  GETTERS  /////////////////////////////////////
+	/**
+	 * Retorna el nom que identifica l'aula.
+	 * @return Un string no null i tampoc buit.
+	 */
+	public String getNom() {
+		return this.nom;
+	}
+	
+	/**
+	 * Retorna el campus al qual pertany l'aula.
+	 * @return Referencia al campus de l'aula.
+	 */
+	public Campus getCampus() {
+		return this.campus;
+	}
+	
+	/**
+	 * Retorna la capacitat de l'aula.
+	 * @return Enter superior a 0.
+	 */
 	public int getCapacitat() {
 		return this.capacitat;
 	}
-	/**
-	 * Getter del cjt. de materials
-	 * @return materials
-	 */
-	public HashSet<String> getMaterial() throws Exception {
-		if (materials.isEmpty()) comprova_Excepcions("No hi ha material");
-		return this.materials;
-	}
-	
 	
 	/**
-	 * Getter del campus on pertany l'aula
-	 * @return objecte campus
+	 * Retorna un set amb tot l'equipament de l'aula.
+	 * @return Un set d'strings buit o amb molts elements.
 	 */
-	public Campus getCampus() {	
-		return campus;
+	public HashSet<String> getEquip(){
+		return this.equip;
 	}
+	
+	////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////  MODIFICADORES  /////////////////////////////////
 	/**
-	 * Getter de les aules que pertanyen al campus
-	 * @return aules
+	 * Afegeix, si no hi es, equip al set d'equip de l'aula.
+	 * @param equip Descriu l'equip a afegir.
+	 * @return Excepció codificada en forma d'enter.
 	 */
-	/*
-	public HashSet<aula> getAules() {
-		return aules;
-	}
-	*/
-	/////////////////////////////////////////////////////////////
-	///////////////////////////FUNCIONS//////////////////////////
-	/**
-	 * Assigna tots els atributs de l'aula
-	 * @param a Objecte aula on assignem els atributs
-	 * @return el parametre aula
-	 */
-	public Aula assignaAula(Aula a) {
-		if (a.id_aula == this.id_aula) {
-			a.capacitat = this.capacitat;
-			a.materials = this.materials;
-			a.campus = this.campus;
-		}
-		return a;
+	public int afegirEquip(String equip) {
+		if(equip == null) return 154; //L'equip no pot ser null;
+		else if(this.checkEquip(equip.toLowerCase())) return 155; //L'equip ja existeix en aquesta aula.
+		
+		this.equip.add(equip.toLowerCase());
+		return 0;
 	}
 	
 	/**
-	 * Afegir el material 'material' al set de material
-	 * @param material string del nou material
-	 * @throws Exception si el material ja esta inclos
+	 * Esborra, si hi és, l'equip passat per parametre del set d'equips
+	 * de l'aula. Altrament no fa res.
+	 * @param equip Descriu l'equip a eliminar.
+	 * @return Excepció codificada en forma d'enter.
 	 */
-	public void afegir_material(String material) throws Exception {
-		if (this.materials.contains(material)) comprova_Excepcions("Ja conte el material");
-		else this.materials.add(material);
-	}
-	/**
-	 * Esborrar el material 'material' del set de material
-	 * @param material string del material a esborrar.
-	 * @throws Exception si el material no esta en el cjt.
-	 */
-	public void esborrar_material(String material) throws Exception {
-		if (material.isEmpty()) comprova_Excepcions("No hi ha material");
-		else if (!this.materials.contains(material)) comprova_Excepcions("No conte el material");
-		else this.materials.remove(material);
-	}
-	/**
-	 * Retorna el numero de materials que conte una aula
-	 * @return la quantitat de materials en una aula
-	 */
-	public int numMaterials() {
-		return materials.size();
+	public int eliminaEquip(String equip) {
+		if(equip == null) return 154;
+		else this.equip.removeIf(item -> item.equals(equip.toLowerCase()));
+		
+		return 0;
 	}
 	
 	/**
-	 * Indica si l'aula conte el material
-	 * @param material material que estem buscant
-	 * @return true si l'aula el té, false en cas contrari
+	 * Buida TOT l'equip de l'aula.
+	 * @return Excepció codificada en forma d'enter.
 	 */
+	public int resetEquip() {
+		this.equip.clear();
+		return 0;
+	}
 	
-	public Boolean conteMaterial(String material) {
-		if (material.contains(material)) return true;
-		else return false;
+	////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////  CONSULTORES  ///////////////////////////////////
+	/**
+	 * Retorna true si, i només si, l'equipament consultat ja existeix
+	 * a l'aula. Altrament retorna false.
+	 * @param equip Descriu l'equip a consultar.
+	 * @return True si hi és, false si no.
+	 */
+	public boolean checkEquip(String equip) {
+		if(equip == null) return false;
+		for(String equipament: this.equip)
+			if(equipament.equals(equip)) return true;
+		
+		return false;
+	}
+
+	/**
+	 * Indica la quantita d'equip que conté l'aula.
+	 * @return Un enter superior o igual a 0.
+	 */
+	public int quantEquip() {
+		return this.equip.size();
 	}
 }
-
