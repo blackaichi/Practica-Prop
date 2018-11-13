@@ -1,5 +1,5 @@
 package restriccions;
 
-public class Escenari extends Restriccio{
+public class Escenari extends Restriccio {
 
 }

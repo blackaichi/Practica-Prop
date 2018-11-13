@@ -1,5 +1,5 @@
 package restriccions;
 
-public class Binaria extends Restriccio{
+public class Binaria extends Restriccio {
 
 }

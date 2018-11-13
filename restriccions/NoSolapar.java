@@ -9,14 +9,14 @@ import classes.*;
  *
  */
 
-public class NoSolapar extends Binaria{
+public class NoSolapar extends Binaria {
 	/////////////////////////////////////////////////////////////
 	//////////////////////// Variables //////////////////////////
 	
 	/**
 	 * Map on guardarem totes les assignatures que no poden solapar-se
 	 */
-	private static Map<Assignatura, Vector<Assignatura>> nosolapaments = new HashMap<Assignatura, Vector<Assignatura>>();
+	private Map<Assignatura, Vector<Assignatura>> nosolapaments = new HashMap<Assignatura, Vector<Assignatura>>();
 	
 	/////////////////////////////////////////////////////////////
 	/////////////////////////  Privats  /////////////////////////
@@ -27,7 +27,7 @@ public class NoSolapar extends Binaria{
 	 * @param b assignatura que volem saber si es correquisit de b
 	 * @return true si son correquisits, false altrament
 	 */
-	private static Boolean esPodenSolapar(Assignatura a, Assignatura b) {
+	private Boolean esPodenSolapar(Assignatura a, Assignatura b) {
 		Vector<Assignatura> c = nosolapaments.get(a);
 		if (c.size() != 0)
 			for (Assignatura d : c) 
@@ -41,7 +41,7 @@ public class NoSolapar extends Binaria{
 	 * @param b vector d'assignatures
 	 * @return true si l'assignatura esta dins del vector d'assignatures, false altrament
 	 */
-	private static Boolean cerca(Assignatura a, Vector<Assignatura> b) {
+	private Boolean cerca(Assignatura a, Vector<Assignatura> b) {
 		for (Assignatura d : b) 
 			if (d.getNom().equals(a.getNom())) return true;
 		return false;
@@ -56,7 +56,7 @@ public class NoSolapar extends Binaria{
 	 * @param sg2 sessió de grup 2
 	 * @return 1 si no es poden solapar, 0 si es poden solapar, altrament error 
 	 */
-	public static int checkSolapar(SessioGrup sg1, SessioGrup sg2) {
+	public int checkSolapar(SessioGrup sg1, SessioGrup sg2) {
 		if (sg1 == null || sg2 == null) return 192;
 		else if (sg1.getTipus().equals(sg2.getTipus()) && sg1.getHores() == sg2.getHores()) return 194;
 		else if (esPodenSolapar(sg1.getAssignatura(), sg2.getAssignatura())) return 0;
@@ -69,7 +69,7 @@ public class NoSolapar extends Binaria{
 	 * @param ssg2 sessió de subgrup 2
 	 * @return 1 si no es poden solapar, 0 si es poden solapar, altrament error
 	 */
-	public static int checkSolapar(SessioSubGrup ssg1, SessioSubGrup ssg2) {
+	public int checkSolapar(SessioSubGrup ssg1, SessioSubGrup ssg2) {
 		if (ssg1 == null || ssg2 == null) return 193;
 		else if (ssg1.getTipus().equals(ssg2.getTipus()) && ssg1.getHores() == ssg2.getHores()) return 195;
 		else if (esPodenSolapar(ssg1.getAssignatura(), ssg2.getAssignatura())) return 0;
@@ -82,7 +82,8 @@ public class NoSolapar extends Binaria{
 	 * @param b l'assignatura que volem que no es pugui solapar
 	 * @return 0 si no hi ha cap error, altrament error
 	 */
-	public static int addNoSolapar(Assignatura a, Assignatura b) {
+	public int addNoSolapar(Assignatura a, Assignatura b) {
+		if (a == null || b == null) return 196;
 		Vector<Assignatura> c = nosolapaments.get(a);
 		Vector<Assignatura> d = nosolapaments.get(b);
 		if (cerca(b, c) || cerca(a, d)) return 190;
@@ -99,7 +100,8 @@ public class NoSolapar extends Binaria{
 	 * @param b l'assignatura que volem que es torni a poder solapar
 	 * @return 0 si no hi ha cap error, altrament 0
 	 */
-	public static int delNoSolapar(Assignatura a, Assignatura b) {
+	public int delNoSolapar(Assignatura a, Assignatura b) {
+		if (a == null || b == null) return 196;
 		Vector<Assignatura> c = nosolapaments.get(a);
 		Vector<Assignatura> d = nosolapaments.get(b);
 		if (!cerca(b, c) || !cerca(a, d)) return 191;
