@@ -171,6 +171,14 @@ public class ExceptionManager {
 			titles[203] = "Les sessions de subgrup passades com a paràmetres no poden ser nules.";
 			titles[204] = "Les sessions de grup passades com a paràmetre no poden ser iguals.";
 			titles[205] = "Les sessions de subgrup passades com a paràmetre no poden ser iguals.";
+			
+			//HoresSenseClasseGrup 210:219 :
+			titles[210] = "EL grup no pot ser null.";
+			titles[211] = "No hi ha cap grup associat.";
+			titles[212] = "no s'ha entrat hores a prohibir.";
+			titles[213] = "El dia ha d'estar entre 0 i 6; ambdos inclosos.";
+			titles[214] = "Alguna de le hores estrandes és inferior a 0, o superior a 23.";
+			titles[215] = "Alguna de les hores viola la franja del pla d'estudis.";
 		}
 	}
 	
