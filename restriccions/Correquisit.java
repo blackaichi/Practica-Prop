@@ -54,23 +54,10 @@ public class Correquisit extends Binaria{
 	 * @param sg2 sessió de grup 2
 	 * @return 1 si no es poden solapar, 0 si es poden solapar, altrament error 
 	 */
-	public int checkCorrequisit(SessioGrup sg1, SessioGrup sg2) {
-		if (sg1 == null || sg2 == null) return 202;
-		else if (sg1.getTipus().equals(sg2.getTipus()) && sg1.getHores() == sg2.getHores()) return 204;
-		if (esCorrequisit(sg1.getAssignatura(), sg2.getAssignatura())) return 1;
-		return 0;
-	}
-	
-	/**
-	 * Indica si la sessió de subgrup ssg1 pot solapar-se amb la sessió de subgrup ssg2
-	 * @param ssg1 sessió de subgrup 1
-	 * @param ssg2 sessió de subgrup 2
-	 * @return 1 si no es poden solapar, 0 si es poden solapar, altrament error
-	 */
-	public int checkCorrequisit(SessioSubGrup ssg1, SessioSubGrup ssg2) {
-		if (ssg1 == null || ssg2 == null) return 203;
-		else if (ssg1.getTipus().equals(ssg2.getTipus()) && ssg1.getHores() == ssg2.getHores()) return 205;
-		if (esCorrequisit(ssg1.getAssignatura(), ssg2.getAssignatura())) return 1;
+	public int checkCorrequisit(Assignatura a, Assignatura b) {
+		if (a == null || b == null) return 202;
+		else if (a.getNom().equals(b.getNom())) return 203;
+		else if (esCorrequisit(a, b)) return 1;
 		return 0;
 	}
 	
@@ -81,7 +68,7 @@ public class Correquisit extends Binaria{
 	 * @return 0 si no hi ha cap error, altrament error
 	 */
 	public int addNoSolapar(Assignatura a, Assignatura b) {
-		if (a == null || b == null) return 206;
+		if (a == null || b == null) return 202;
 		Vector<Assignatura> c = correquisits.get(a);
 		Vector<Assignatura> d = correquisits.get(b);
 		if (cerca(b, c) || cerca(a, d)) return 200;
@@ -99,7 +86,7 @@ public class Correquisit extends Binaria{
 	 * @return 0 si no hi ha cap error, altrament error
 	 */
 	public int delNoSolapar(Assignatura a, Assignatura b) {
-		if (a == null || b == null) return 206; 
+		if (a == null || b == null) return 202; 
 		Vector<Assignatura> c = correquisits.get(a);
 		Vector<Assignatura> d = correquisits.get(b);
 		if (!cerca(b, c) || !cerca(a, d)) return 201;
