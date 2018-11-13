@@ -41,6 +41,11 @@ public class Grup {
 	 * Linca el grup amb la seva restricció d'hores aptes.
 	 */
 	private HoresSenseClasseGrup horesAptes;
+	/**
+	 * Linca el grup amb la seva restricció de grups amb
+	 * els quals no es pot solapar.
+	 */
+	private NoSolaparGrup disjunts;
 	
 	////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////  PRIVADES  /////////////////////////////////////
@@ -206,8 +211,10 @@ public class Grup {
 	 * @throws Exception rebuda al donar d'alta la restricció.
 	 */
 	public int setHoresAptes(Map<Integer, int[]> franja, boolean apte, boolean force) throws Exception {
-		HoresSenseClasseGrup hores = new HoresSenseClasseGrup(this);
-		this.horesAptes = hores;
+		if(this.horesAptes == null) {
+			HoresSenseClasseGrup hores = new HoresSenseClasseGrup(this);
+			this.horesAptes = hores;
+		}
 		
 		if(franja == null) return 0;
 		else for(Map.Entry<Integer, int[]> iter: franja.entrySet()) {
