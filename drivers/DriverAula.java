@@ -66,14 +66,19 @@ public class DriverAula {
 		Campus c = new Campus("Campus Nord");
 		Aula a = new Aula(c, "A6001", 40);
 		Scanner reader = new Scanner(System.in);
-		String s = reader.next();
-		int size1 = a.getEquip().size();
-		a.afegirEquip(s);
-		int size2 = a.getEquip().size();
-		a.eliminaEquip(s);
-		int size3 = a.getEquip().size();
+		String equip = reader.next();
+		int size1 = a.quantEquip();
+		a.afegirEquip(equip);
+		if (checkEquip(equip)) System.out.println("CheckEquip OK");
+		else System.out.println("CheckEquip ERROR");
+		int size2 = a.quantEquip();
+		a.eliminaEquip(equip);
+		int size3 = a.quantEquip();
 		if (size3 == size1 && size1 + 1 == size2) System.out.println("AddDelEquip OK");
 		else System.out.println("AddDelEquip ERROR");
+		a.resetEquip();
+		if (a.quantEquip() == 0) System.out.println("ResetEquip OK");
+		else System.out.println("ResetEquip ERROR");
 	}
 }
 
