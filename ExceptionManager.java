@@ -26,7 +26,7 @@ public class ExceptionManager {
 	 */
 	static private void ExceptionManagerInitializer() {
 		if(titles == null) {
-			titles = new String[200];
+			titles = new String[500]; //Mes val que en sobrin, que no que en faltin equisdé
 			
 			//DECLARACIONS GENERALS 0:9 :
 			titles[0] = "NO_ERROR";
