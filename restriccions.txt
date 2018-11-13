@@ -3,9 +3,9 @@
 
 RESTRICCIONS UNARIES	
 **hores on no es pot fer classe per grup :: GRUP
---hores on no es pot fer classe per assignatura :: ASSIGNATURA
+**hores on no es pot fer classe per assignatura :: ASSIGNATURA
 **hores on s’ha de fer classe per grup :: GRUP
---hores on s’ha de fer classe per assignatura :: ASSIGNATURA
+**hores on s’ha de fer classe per assignatura :: ASSIGNATURA
 **fer servir aules amb l’equipament necessari :: AULA I SESSIO
 possibilitat de solapament entre grups/subgrups (diferents grups/subgrups) :: HORARI
 evitar solapaments entre grups/subgrups (mateix grup/subgrup) :: HORARI
