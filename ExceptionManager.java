@@ -34,8 +34,27 @@ public class ExceptionManager {
 			//titles[2] = "INT_NEGATIU";
 					
 			//PLA ESTUDIS 10:29 :
+			titles[10] = "Ja existeix un Pla d'Estudis amb el mateix nom";
+			titles[11] = "Dia incorrecte 0 <= dia <= 6";
+			titles[12] = "Franja incorrecta";
+			titles[13] = "Ja existeix una assignatura amb el mateix nom";
+			titles[14] = "No existeix l'assignatura";
+			titles[15] = "El dia no te franjas";
+			
 			
 			//ASSIGNATURA 30:49 :
+			titles[30] = "Nom no pot ser null";
+			titles[31] = "PlaEst no pot ser null";
+			titles[32] = "Ja existeix una assignatura amb aquest nom";
+			titles[33] = "Les hores de teoria no poden ser negatives";
+			titles[34] = "Les hores de laboratori no poden ser negatives";
+			titles[35] = "Franja no pot ser nul";
+			titles[36] = "Ja existeix un grup amb el mateix numero";
+			titles[37] = "La capacitat d'un grup no pot ser negativa";
+			titles[38] = "El tipus de sessio no pot ser nul";
+			titles[39] = "Ja existeix una sessioG igual";
+			titles[40] = "Assignatura no pot ser null";
+			titles[41] = "Ja existeix una SessioSG";
 			
 			//GRUP 50: 69:
 			titles[50] = "Identificació negativa o igual a 0.";

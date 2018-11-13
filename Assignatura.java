@@ -93,10 +93,10 @@ public class Assignatura {
 	 * @throws Exception si nom no cambia o nom ja existeix en el Pla d'Estudis.
 	 */
 	public int setNom(PlaEstudis plaEst, String nom) throws Exception {
-		if (nom == null) return -1;
+		if (nom == null) return 30;
 		else if(this.nom != null && this.nom.equals(nom)) return 1;
-		else if (plaEst == null) return -1;
-		else if(plaEst.checkAssignatura(nom)) return 20;
+		else if (plaEst == null) return 31;
+		else if(plaEst.checkAssignatura(nom)) return 32;
 		this.nom = nom;
 		return 0;
 	}
@@ -108,7 +108,7 @@ public class Assignatura {
 	 */
 	public int setHTeo(int hteo) {
 		if (this.hteo == hteo) return 1;
-		else if (hteo < 0) return 21;// error: les hores de teo són negatives
+		else if (hteo < 0) return 33;
 		this.hteo = hteo;
 		return 0;
 	}
@@ -120,14 +120,14 @@ public class Assignatura {
 	 */
 	public int setHLab(int hlab) {
 		if (this.hlab == hlab) return 1;
-		else if (hlab < 0) return 22;// error: les hores de lab són negatives
+		else if (hlab < 0) return 34;// error: les hores de lab són negatives
 		this.hlab = hlab;
 		return 0;
 	}
-	public int setPlaEstudis(PlaEstudis plEs) {
-		if (plEs == null) return -1;
-		if (plEs == this.plaEstudis) return 1;
-		this.plaEstudis = plEs;
+	public int setPlaEstudis(PlaEstudis plaEst) {
+		if (plaEst == null) return 31;
+		if (plaEst == this.plaEstudis) return 1;
+		this.plaEstudis = plaEst;
 		return 0;
 	}
 	/////////////////////////////////////////////////////////////
@@ -161,26 +161,23 @@ public class Assignatura {
 	 * Retorna la sessioG = Tipus + Hores de l'Assignatura.
 	 * @return SessioG de l'Assignatura.
 	 */
-	public SessioGrup getSessioG(String tipus, int hores) throws Exception {
-		if (nom == null) throw new Exception();
-		else {
-			for(SessioGrup s: sessionsG)
-				if(s.getTipus().equals(tipus) && s.getHores() == hores) return s;
-			return null;
-		}
+	public SessioGrup getSessioG(String tipus, int hores, Assignatura assig) throws Exception {
+		if (assig == null) ExceptionManager.thrower(40);
+		for(SessioGrup s: sessionsG)
+			if (s.getHores() == hores && s.getTipus().equals(tipus) && s.getAssignatura().getNom().equals(this.nom) && s.getAssignatura().getPlaEstudis().getNom().equals(this.getPlaEstudis().getNom())) return s;
+		return null;
 	}
 		
 	/**
 	 * Retorna la sessioSG = Tipus + Hores de l'Assignatura.
 	 * @return SessioSG de l'Assignatura.
 	 */
-	public SessioSubGrup getSessioSG(String tipus, int hores) throws Exception {
-		if (tipus == null) throw new Exception();
-		else {
-			for(SessioSubGrup s: sessionsSG)
-				if(s.getTipus().equals(tipus) && s.getHores() == hores) return s;
-			return null;
-		}
+	public SessioSubGrup getSessioSG(String tipus, int hores, Assignatura assig) throws Exception {
+		if (tipus == null) ExceptionManager.thrower(38);
+		if (assig == null) ExceptionManager.thrower(40);
+		for(SessioSubGrup s: sessionsSG)
+			if (s.getHores() == hores && s.getTipus().equals(tipus) && s.getAssignatura().getNom().equals(this.nom) && s.getAssignatura().getPlaEstudis().getNom().equals(this.getPlaEstudis().getNom())) return s;
+		return null;
 	}
 		
 	/**
@@ -189,7 +186,7 @@ public class Assignatura {
 	 */
 	public Grup getGrup(int idgrup) {
 		for(Grup g: grups)
-			if(g.getNumero() == idgrup) return g;
+			if(g.getNumero() == idgrup && g.getAssignatura().getNom().equals(this.getNom())) return g;
 		return null;
 	}	
 		
@@ -208,9 +205,9 @@ public class Assignatura {
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	public int altaGrup(int numero, int capacitat, String franja) throws Exception{
-		if (franja == null) return 29;
-		if (this.checkGrup(numero)) return 23;
-		if (capacitat < 0) return 24;
+		if (franja == null) return 35;
+		if (this.checkGrup(numero)) return 36;
+		if (capacitat < 0) return 37;
 		grups.add(new Grup(this,numero,capacitat,franja));
 		return 0;
 	}
@@ -225,7 +222,7 @@ public class Assignatura {
 			grups.removeIf(item -> item.getNumero() == numero);
 			return 0;
 		}
-		else return 27;
+		else return 36;
 	}
 			
 	/** 
@@ -237,9 +234,9 @@ public class Assignatura {
 	 * @throws Exception 
 	 */
 	public int altaSessioG(String tipus, int hores) throws Exception {
-		if (tipus == null) return 29;
-		if (this.checkSessioG(tipus,hores)) return 25;
-		else if (hores < 0) return 26;
+		if (tipus == null) return 38;
+		if (this.checkSessioG(tipus,hores)) return 39;
+		else if (hores < 0) return 36;
 		sessionsG.add(new SessioGrup(this,hores,tipus));
 		return 0;
 	}
@@ -253,9 +250,9 @@ public class Assignatura {
 	 * @throws Exception 
 	 */
 	public int altaSessioSG(String tipus, int hores) throws Exception {
-		if (tipus == null) return 29;
-		if (this.checkSessioSG(tipus,hores)) return 25;
-		else if (hores < 0) return 26;
+		if (tipus == null) return 38;
+		if (this.checkSessioSG(tipus,hores)) return 41;
+		else if (hores < 0) return 36;
 		sessionsSG.add(new SessioSubGrup(this,hores,tipus));
 		return 0;
 	}
@@ -267,9 +264,9 @@ public class Assignatura {
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	public int baixaSessioG(String tipus, int hores) throws Exception {
-		if (tipus == null) return 29;
+		if (tipus == null) return 38;
 		if (checkSessioG(tipus,hores)) sessionsG.removeIf(item -> item.getHores() == hores && item.getTipus().equals(tipus));
-		else return 28;
+		else return 39;
 		return 0;
 	}
 	
@@ -280,9 +277,9 @@ public class Assignatura {
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	public int baixaSessioSG(String tipus, int hores) throws Exception {
-		if (tipus == null) return 29;
+		if (tipus == null) return 38;
 		if (checkSessioSG(tipus,hores)) sessionsSG.removeIf(item -> item.getHores() == hores && item.getTipus().equals(tipus));
-		else return 28;
+		else return 41;
 		return 0;
 	}
 				
@@ -296,7 +293,7 @@ public class Assignatura {
 	 */
 	public boolean checkGrup(int numero) {
 		for(Grup g : grups) {
-			if (g.getNumero() == numero) return true;
+			if (g.getNumero() == numero && g.getAssignatura().getNom().equals(this.nom)) return true;
 		}
 		return false;
 	}
@@ -308,9 +305,9 @@ public class Assignatura {
 		 * @return Cert si la sessióG existeix o fals altrament.
 		 */
 	public boolean checkSessioG(String tipus, int hores) throws Exception {
-		if (tipus == null) throw new Exception();
+		if (tipus == null) ExceptionManager.thrower(38);
 		for(Sessio s : sessionsG) {
-			if (s.getHores() == hores && s.getTipus().equals(tipus)) return true;
+			if (s.getHores() == hores && s.getTipus().equals(tipus) && s.getAssignatura().getNom().equals(this.nom) && s.getAssignatura().getPlaEstudis().getNom().equals(this.getPlaEstudis().getNom())) return true;
 		}
 		return false;
 	}
@@ -322,9 +319,9 @@ public class Assignatura {
 		 * @return Cert si la sessióSG existeix o fals altrament.
 		 */
 	public boolean checkSessioSG(String tipus, int hores) throws Exception {
-		if (tipus == null) ExceptionManager.thrower(29);		
+		if (tipus == null) ExceptionManager.thrower(38);		
 		for(Sessio s : sessionsSG) {
-			if (s.getHores() == hores && s.getTipus().equals(tipus)) return false;
+			if (s.getHores() == hores && s.getTipus().equals(tipus) && s.getAssignatura().getNom().equals(this.nom) && s.getAssignatura().getPlaEstudis().getNom().equals(this.getPlaEstudis().getNom())) return true;
 		}
 		return false;
 	}

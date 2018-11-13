@@ -84,7 +84,7 @@ public class PlaEstudis {
 	 */
 	public int setNom(String nom) {
 		if(this.nom != null && this.nom.equals(nom)) return 1;
-		else if(!checkPlansEstudis(nom)) return 30;
+		else if(!checkPlansEstudis(nom)) return 10;
 		this.nom = nom;
 		return 0;
 	}
@@ -96,9 +96,8 @@ public class PlaEstudis {
 	 * param finalFranja: Hora final de la franja que entra l'usuari.
 	 */
 	public int setFranja(int dia, int iniciFranja, int finalFranja) throws Exception {
-		if (dia < 0 || dia > 6) return 32;
-		else if (iniciFranja < 0 || finalFranja < 0 || iniciFranja > 24 || finalFranja > 24) return 33;
-		else if (iniciFranja >= finalFranja) return 34;
+		if (dia < 0 || dia > 6) return 11;
+		else if (iniciFranja < 0 || finalFranja < 0 || iniciFranja > 24 || finalFranja > 24 || iniciFranja >= finalFranja) return 12;
 		else {
 			boolean[] valor = this.franja.get(dia);
 			if (valor == null) {
@@ -115,14 +114,6 @@ public class PlaEstudis {
 		return 0;
 	}
 			
-		/*	public int setAssignatura(Assignatura assig) {
-				if (this.assig == assig) return 1;
-				else if (assig == null) return 31;
-				this.assig = assig;
-				
-				return 0;
-			}*/
-			
 	/////////////////////////////////////////////////////////////
 	//////////////////////// Getters  //////////////////////////
 			
@@ -138,7 +129,7 @@ public class PlaEstudis {
 	 * Retorna la franja del dia indicat del Pla d'Estudis.
 	 * @return Franja del dia en cas que el dia tingui una franja associada. Altrament retorna null.
 	 */
-	boolean[] getFranjaDia(int dia) {
+	public boolean[] getFranjaDia(int dia) {
 		if(checkDiaFranja(dia))	return this.franja.get(dia);
 		else return null;
 	}
@@ -147,7 +138,7 @@ public class PlaEstudis {
 	 * Retorna la franja la setmana del Pla d'Estudis.
 	 * @return Franja de la setmana.
 	 */
-	Map<Integer, boolean[]> getFranjaSetmana() {
+	public Map<Integer, boolean[]> getFranjaSetmana() {
 		return this.franja;
 	}
 			
@@ -163,7 +154,7 @@ public class PlaEstudis {
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	public int altaAssignatura(String nom, int hteo, int hlab) throws Exception{
-		if (this.checkAssignatura(nom)) return 32;
+		if (this.checkAssignatura(nom)) return 13;
 		assignatures.add(new Assignatura(this,nom,hteo,hlab));
 		return 0;
 	}
@@ -176,7 +167,7 @@ public class PlaEstudis {
 	 */
 	public int baixaAssignatura(String nom) throws Exception {
 		if (checkAssignatura(nom)) assignatures.removeIf(item -> item.getNom().equals(nom));
-		else return 35;
+		else return 14;
 		return 0;
 	}
 		
@@ -189,7 +180,7 @@ public class PlaEstudis {
 	 */
 	public int treuFranja(int dia, int iniciFranja, int finalFranja) {
 		boolean[] valor = this.franja.get(dia);
-		if (valor == null) return 36;
+		if (valor == null) return 15;
 		else {
 			for (int i = iniciFranja; i < finalFranja; i++) {
 				if(valor[i] = true) {
