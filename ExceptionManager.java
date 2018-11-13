@@ -159,18 +159,14 @@ public class ExceptionManager {
 			// NoSolapar 190:199 :
 			titles[190] = "No podem afegir el solapament perque ja existeix."; 
 			titles[191] = "No podem eliminar un solapament que no existeix." ;
-			titles[192] = "Les sessions de grup passades com a paràmetres no poden ser nules.";
-			titles[193] = "Les sessions de subgrup passades com a paràmetres no poden ser nules.";
-			titles[194] = "Les sessions de grup passades com a paràmetre no poden ser iguals.";
-			titles[195] = "Les sessions de subgrup passades com a paràmetre no poden ser iguals.";
+			titles[192] = "Les assignatures passades com a paràmetre no poden ser nules.";
+			titles[193] = "Les assignatures passades com a paràmetre no poden ser iguals.";
 			
 			// Correquisit 200:209 : 
 			titles[200] = "No podem afegir el correquisit perque ja existeix."; 
 			titles[201] = "No podem eliminar un correquisit que no existeix." ;
 			titles[202] = "Les sessions de grup passades com a paràmetres no poden ser nules.";
-			titles[203] = "Les sessions de subgrup passades com a paràmetres no poden ser nules.";
-			titles[204] = "Les sessions de grup passades com a paràmetre no poden ser iguals.";
-			titles[205] = "Les sessions de subgrup passades com a paràmetre no poden ser iguals.";
+			titles[203] = "Les assignatures passades com a paràmetre no poden ser iguals.";
 			
 			//HoresSenseClasseGrup 210:219 :
 			titles[210] = "EL grup no pot ser null.";
