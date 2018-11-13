@@ -1,32 +1,37 @@
+** FETES
+-- Casi copiat del de grup (HoresSesnseClasseGrup)
+
 RESTRICCIONS UNARIES	
-hores on no es pot fer classe per grup :: GRUP
-hores on no es pot fer classe per assignatura :: ASSIGNATURA
-hores on s’ha de fer classe per grup :: GRUP
-hores on s’ha de fer classe per assignatura :: ASSIGNATURA
-fer servir aules amb l’equipament necessari :: AULA I SESSIO
+**hores on no es pot fer classe per grup :: GRUP
+--hores on no es pot fer classe per assignatura :: ASSIGNATURA
+**hores on s’ha de fer classe per grup :: GRUP
+--hores on s’ha de fer classe per assignatura :: ASSIGNATURA
+**fer servir aules amb l’equipament necessari :: AULA I SESSIO
 possibilitat de solapament entre grups/subgrups (diferents grups/subgrups) :: HORARI
 evitar solapaments entre grups/subgrups (mateix grup/subgrup) :: HORARI
-restriccio de grup a matí o tarda :: GRUP
-restriccio de fer n sessions :: SESSIO
+**restriccio de grup a matí o tarda :: GRUP
+**restriccio de fer n sessions :: SESSIO
 fer teoria abans del laboratori :: HORARI
-aules adaptades (wilchers son part del equipament) :: ELEMENT
+**aules adaptades (wilchers son part del equipament) :: ELEMENT
 
 RESTRICCIONS BINARIES
-x no es pot solapar amb y :: SESSIO ASSIGNADA
-si una assignatura es correquisit d’una altra no poden solaparse :: SESSIO ASSIGNADA
+Assignatura a no es pot solapar amb Assignatura b :: ASSIGNATURA
+si una assignatura es correquisit d’una altra no poden solaparse :: ASSIGNATURA
+Grup a no es pot solapar amb grup b :: Grup
+Subgrup a no es pot solapar amb subgrup b :: SubGrup
 
 RESTRICCIONS GLOBALS
-horari lectiu :: PLA ESTUDIS
-horari tarda/matí :: GRUP I SUBGRUP
-[hores reservades per examens] :: PLA ESTUDIS
-prerrequisits i correquisits :: SESSIO ASSIGNADA
+**horari lectiu :: PLA ESTUDIS
+**horari tarda/matí :: GRUP I SUBGRUP
+**[hores reservades per examens] :: PLA ESTUDIS
+**prerrequisits i correquisits :: SESSIO ASSIGNADA
 
 RESTRICCIONS D’ESCENARI
-no tenir dues classes en la mateixa aula i hora :: ELEMENT
-no tenir dues classes en el mateix dia, assignatura i grup/subgrup :: ELEMENT
-no tenir classe en dies festius :: PLA ESTUDIS
-no tenir classe fora d’horari lectiu :: PLA ESTUDIS
-un grup/supgrup no pot anar de matins si es de tarda i viceversa :: GRUP I SUBGRUP
-mateixes hores setmanals per grups/subgrups :: SESSIO
+**no tenir dues classes en la mateixa aula i hora :: ELEMENT
+**no tenir dues classes en el mateix dia, assignatura i grup/subgrup :: ELEMENT
+**no tenir classe en dies festius :: PLA ESTUDIS
+**no tenir classe fora d’horari lectiu :: PLA ESTUDIS
+**un grup/supgrup no pot anar de matins si es de tarda i viceversa :: GRUP I SUBGRUP
+**mateixes hores setmanals per grups/subgrups :: SESSIO
 no pot haver cicles de requisits :: ASSIGNATURA??
-tots els grups tenen el mateix nombre d’hores i sessions per una mateixa assignatura :: SESSIOASSIGNADA
+**tots els grups tenen el mateix nombre d’hores i sessions per una mateixa assignatura :: SESSIOASSIGNADA
