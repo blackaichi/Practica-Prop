@@ -88,6 +88,16 @@ public class Grup {
 		else return 0;
 	}
 	
+	/**
+	 * Actualitza l'estat de les horesAptes segons la franja horaria
+	 * del grup que es preten assignar.
+	 * @param franja Indica si el grup ha de ser de matí, tarda, o qualsevol d'ambdós.
+	 * @return Excepció codificada en forma d'enter.
+	 */
+	private int actualitzaHoresAptes(String franja) {		
+		return 0;
+	}
+	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
 	/** 
@@ -102,7 +112,7 @@ public class Grup {
 		ExceptionManager.thrower(this.setAssignatura(assig));
 		
 		places = 0;
-		franja = new String("NAN");
+		franja = new String("MT");
 		
 		subGrups = new HashSet<>();
 	}
@@ -160,9 +170,10 @@ public class Grup {
 	 * @retrun Excepció codificada en forma d'enter.
 	 */
 	public int setFranja(String franja) {
-		if(franja.equals("NAN")) this.franja = franja;
+		if(franja == null) return 54;
 		else if(!"MT".contains(franja.toUpperCase())) return 54;
 		
+		this.actualitzaHoresAptes(franja.toUpperCase());
 		this.franja = franja.toUpperCase();
 		return 0;
 	}
@@ -207,15 +218,6 @@ public class Grup {
 		}
 		
 		return 0;
-	}
-	
-	/**
-	 * Restaura les hores aptes per defecte.
-	 * @return Excepció codificada en forma d'enter.
-	 */
-	public int resetHoresAptes() {
-		if(this.horesAptes == null) return 0;
-		else return this.horesAptes.restore();
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -427,6 +429,15 @@ public class Grup {
 		int checker;
 		if((checker = this.checkSessioAdequada(sessio)) != 0) return checker;
 		else return this.desassignaSessio(sessio.getSessioGrup().getTipus(), sessio.getSessioGrup().getHores(), false);
+	}
+	
+	/**
+	 * Restaura les hores aptes per defecte.
+	 * @return Excepció codificada en forma d'enter.
+	 */
+	public int resetHoresAptes() {
+		if(this.horesAptes == null) return 0;
+		else return this.horesAptes.restore();
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
