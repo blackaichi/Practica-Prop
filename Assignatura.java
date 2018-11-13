@@ -28,7 +28,7 @@ public class Assignatura {
 	/**
 	 * Plans d'Estudis que pertanyen a l'Assignatura
 	 */
-	HashSet<PlaEstudis> plansEstudis;
+	PlaEstudis plaEstudis;
 		
 	/**
 	 * SessionsGrup que pertanyen a l'Assignatura
@@ -48,20 +48,6 @@ public class Assignatura {
 	/////////////////////////////////////////////////////////////
 	//////////////////////// Privades //////////////////////////
 		
-	/**
-	 * Retorna si ja existeix un Pla d'Estudis igual en aquesta Assignatura.
-	 * @param nom: Nom del Pla d'Estudis.
-	 * @return Cert si el Pla d'Estudis ja existeix o fals altrament.
-	 */
-	public boolean checkPlaEstudis(String nom) throws Exception {
-		if (nom == null) throw new Exception();
-		else {
-			for(PlaEstudis p : plansEstudis) {
-				if (p.getNom().equals(nom)) return true;
-			}
-			return false;
-		}
-	}
 	
 	/////////////////////////////////////////////////////////////
 	//////////////////////  Constructora  ///////////////////////
@@ -76,6 +62,12 @@ public class Assignatura {
 		ExceptionManager.thrower(this.setNom(plaEst,nom));
 		ExceptionManager.thrower(this.setHTeo(hteo));
 		ExceptionManager.thrower(this.setHLab(hlab));
+		ExceptionManager.thrower(this.setPlaEstudis(plaEst));
+		this.sessionsG = new HashSet<SessioGrup>();
+		this.sessionsSG = new HashSet<SessioSubGrup>();
+		this.grups = new HashSet<Grup>();
+
+
 	}
 		
 	/**
@@ -86,6 +78,10 @@ public class Assignatura {
 		ExceptionManager.thrower(this.setNom(plaEst,nom));
 		this.hteo = 0;
 		this.hlab = 0;
+		this.plaEstudis = plaEst;
+		this.sessionsG = new HashSet<SessioGrup>();
+		this.sessionsSG = new HashSet<SessioSubGrup>();
+		this.grups = new HashSet<Grup>();
 	}
 		
 	/////////////////////////////////////////////////////////////
@@ -96,9 +92,10 @@ public class Assignatura {
 	 * @param nom: nom de l'Assignatura que entra l'usuari.
 	 * @throws Exception si nom no cambia o nom ja existeix en el Pla d'Estudis.
 	 */
-	public int setNom(PlaEstudis plaEst, String nom) {
-		if (nom == null) return 29;
-		else if(this.nom.equals(nom)) return 1;
+	public int setNom(PlaEstudis plaEst, String nom) throws Exception {
+		if (nom == null) return -1;
+		else if(this.nom != null && this.nom.equals(nom)) return 1;
+		else if (plaEst == null) return -1;
 		else if(plaEst.checkAssignatura(nom)) return 20;
 		this.nom = nom;
 		return 0;
@@ -121,13 +118,18 @@ public class Assignatura {
 	 * @param hlab: nombre d'hores de laboratori de l'Assignatura que entra l'usuari.
 	 * @throws Exception si hlab < 0 o hlab no cambia.
 	 */
-	public int setHLab(int hlab) throws Exception {
+	public int setHLab(int hlab) {
 		if (this.hlab == hlab) return 1;
 		else if (hlab < 0) return 22;// error: les hores de lab són negatives
 		this.hlab = hlab;
 		return 0;
 	}
-	
+	public int setPlaEstudis(PlaEstudis plEs) {
+		if (plEs == null) return -1;
+		if (plEs == this.plaEstudis) return 1;
+		this.plaEstudis = plEs;
+		return 0;
+	}
 	/////////////////////////////////////////////////////////////
 	////////////////////////Getters  //////////////////////////
 		
@@ -190,7 +192,11 @@ public class Assignatura {
 			if(g.getNumero() == idgrup) return g;
 		return null;
 	}	
-			
+		
+	
+	public PlaEstudis getPlaEstudis() {
+		return this.plaEstudis;
+	}
 	/////////////////////////////////////////////////////////////
 	//////////////////////// Modificadores  ////////////////////
 	
@@ -279,35 +285,7 @@ public class Assignatura {
 		else return 28;
 		return 0;
 	}
-		
-	/** 
-	 * Crea una nou Pla d'Estudis relacionat amb l'Assignatura sempre i quant els atributs entrats
-	 * compleixin amb les especificacions. Altrament llança una excepció.
-	 * @param nom: Indica el nom del Pla d'Estudis.
-	 * @return Excepció codificada en forma d'enter.
-	 * @throws Exception 
-	 */
-	public int altaPlaEstudis(String nom) throws Exception {
-		if (nom == null) return 29;
-		if (this.checkPlaEstudis(nom)) return 27;
-		plansEstudis.add(new PlaEstudis(nom));
-		return 0;
-	}
-		
-	/**
-	 * Dona de baixa el PlaEstudis = nom sempre i quant existeixi en aquesta Assignatura.
-	 * @param nom: nom del Pla d'Estudis que volem donar de baixa.
-	 * @return Excepció codificada en forma d'enter.
-	 */
-	public int baixaPlaEstudis(String nom) throws Exception {
-		if (nom == null) return 29;
-		if(checkPlaEstudis(nom)) {
-			plansEstudis.removeIf(item -> item.getNom().equals(nom));
-		}
-		else return 29;
-		return 0;
-	}
-		
+				
 	/////////////////////////////////////////////////////////////
 	//////////////////////// Funcions  //////////////////////////
 		

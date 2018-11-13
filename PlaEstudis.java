@@ -38,19 +38,21 @@ public class PlaEstudis {
 	}
 	
 	/**
-	 * Retorna si ja existeix una Assignatura amb el mateix nom en aquest Pla d'Estudis.
+	 * Retorna cert si ja existeix una Assignatura amb el mateix nom en aquest Pla d'Estudis.
 	 * @param nom: nom de l'Assignatura que volem comprobar.
 	 * @return Cert si l'Assignatura ja existeix o fals altrament.
 	 */
 	public boolean checkAssignatura(String nom) {
+		if (nom == null) return false;
 		for(Assignatura a : assignatures) {
 			if (a.getNom().equals(nom)) return true;
 		}
+	
 		return false;
 	}	
 		
 	/**
-	 * Retorna si ja existeix el dia al Map de Franja.
+	 * Retorna cert si ja existeix el dia al Map de Franja.
 	 * @param dia: Dia que volem comprobar.
 	 * @return Cert si el dia ja existeix o fals altrament.
 	 */
@@ -67,16 +69,9 @@ public class PlaEstudis {
 	 */
 	public PlaEstudis(String nom) throws Exception {
 		ExceptionManager.thrower(this.setNom(nom));
-
 		this.franja = new HashMap<Integer,boolean[] >();
-	}
-			
-	/**
-	 * Creadora de Pla d'Estudis sense parametres.
-	 */
-	public PlaEstudis() throws Exception {
-		nom = new String("NAN");
-		this.franja = new HashMap<Integer, boolean[] >();
+		this.assignatures = new HashSet<Assignatura>();
+
 	}
 		
 	/////////////////////////////////////////////////////////////
@@ -88,7 +83,7 @@ public class PlaEstudis {
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	public int setNom(String nom) {
-		if(this.nom.equals(nom)) return 1;
+		if(this.nom != null && this.nom.equals(nom)) return 1;
 		else if(!checkPlansEstudis(nom)) return 30;
 		this.nom = nom;
 		return 0;
@@ -136,7 +131,7 @@ public class PlaEstudis {
 	 * @return Nom del Pla d'Estudis.
 	 */
 	public String getNom() {
-		return nom;
+		return this.nom;
 	}
 			
 	/**
@@ -177,8 +172,9 @@ public class PlaEstudis {
 	 * Dona de baixa l'Assignatura = nom sempre i quan existeixi en aquest Pla d'Estudis.
 	 * @param nom: nom de l'Assignatura que volem donar de baixa.
 	 * @return Excepció codificada en forma d'enter.
+	 * @throws Exception 
 	 */
-	public int baixaAssignatura(String nom) {
+	public int baixaAssignatura(String nom) throws Exception {
 		if (checkAssignatura(nom)) assignatures.removeIf(item -> item.getNom().equals(nom));
 		else return 35;
 		return 0;
