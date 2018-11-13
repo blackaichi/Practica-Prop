@@ -33,7 +33,7 @@ public class HoresSenseClasseGrup extends Unaria{
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	private int setGrup(Grup grup) {
-		if(grup == null) return 0; //TODO: EL grup no pot ser null.
+		if(grup == null) return 210;
 		
 		this.grup = grup;
 		return 0;
@@ -44,7 +44,7 @@ public class HoresSenseClasseGrup extends Unaria{
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	private int setMascara() {
-		if(this.grup == null) return 0; //TODO: No hi ha cap grup associat.
+		if(this.grup == null) return 211;
 		
 		for(int d = 0; d < 7; d++)
 			this.mascara[d] = this.grup.getAssignatura().getPlaEstudis().getFranjaDia(d);
@@ -59,10 +59,10 @@ public class HoresSenseClasseGrup extends Unaria{
 	 * @return True si no violen les hores, false altrament.
 	 */
 	private int checkDiaIHores(int dia, int[] hores) {
-		if(hores == null) return 0; //TODO: no s'ha entrat hores a prohibir.
-		else if(dia < 0 && dia > 6) return 0; //TODO: el dia ha d'estar entre 0 i 6; ambdos inclosos.
+		if(hores == null) return 212;
+		else if(dia < 0 && dia > 6) return 213;
 		else for(int hora: hores)
-			if(hora < 0 || hora > 23) return 0; //TODO: alguna de le hores estrandes esta fora de rang.
+			if(hora < 0 || hora > 23) return 214;
 		
 		return 0;
 	}
@@ -84,7 +84,7 @@ public class HoresSenseClasseGrup extends Unaria{
 		for(int hora: hores)
 			if(!this.mascara[dia][hora] && !force) {
 				this.horesDisponibles = clone(reboke);
-				return 0; //TODO: Alguna de les hores viola la franja del pla d'estudis.
+				return 215;
 			}
 			else if(this.mascara[dia][hora]) this.horesDisponibles[dia][hora] = permet;
 		
