@@ -1,5 +1,6 @@
 package classes;
 
+import restriccions.*;
 import java.util.*;
 
 /**
@@ -35,6 +36,11 @@ public class Grup {
 	 * Registra totes les sessions a les quals pertany el Grup.
 	 */
 	private HashSet<SessioGAssignada> sessions;
+	
+	/**
+	 * Linca el grup amb la seva restricció d'hores aptes.
+	 */
+	private HoresSenseClasseGrup horesAptes;
 	
 	////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////  PRIVADES  /////////////////////////////////////
@@ -175,6 +181,41 @@ public class Grup {
 		
 		this.assig = assig;
 		return 0;
+	}
+	
+	/**
+	 * Assigna la restricció d'hores aptes per aquest grup.
+	 * @param franja indica per cada dia quines hores poden o no ser assignades.
+	 * En cas de que sigui null per defecte s'assignen les hores lectives del
+	 * pla d'estudis corresponent.
+	 * @param apte Indica si l'acció que es preten fer es permetre o denegar aquelles hores.
+	 * @param force Permet forçar l'assignació de la franja encara que aquesta violi en 
+	 * part les hores lectives del pla d'estudis.
+	 * @return Excepció codificada en forma d'enter.
+	 * @throws Exception rebuda al donar d'alta la restricció.
+	 */
+	public int setHoresAptes(Map<Integer, int[]> franja, boolean apte, boolean force) throws Exception {
+		HoresSenseClasseGrup hores = new HoresSenseClasseGrup(this);
+		this.horesAptes = hores;
+		
+		if(franja == null) return 0;
+		else for(Map.Entry<Integer, int[]> iter: franja.entrySet()) {
+			int checker = 0;
+			if(apte) checker = this.horesAptes.permetHores(force, Integer.valueOf(iter.getKey()), iter.getValue());
+			else checker = this.horesAptes.permetHores(force, Integer.valueOf(iter.getKey()), iter.getValue());
+			if(checker != 0) return checker;
+		}
+		
+		return 0;
+	}
+	
+	/**
+	 * Restaura les hores aptes per defecte.
+	 * @return Excepció codificada en forma d'enter.
+	 */
+	public int resetHoresAptes() {
+		if(this.horesAptes == null) return 0;
+		else return this.horesAptes.restore();
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
