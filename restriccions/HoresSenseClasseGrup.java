@@ -54,22 +54,6 @@ public class HoresSenseClasseGrup extends Unaria{
 	}
 	
 	/**
-	 * Clona el contingut d'un array de booleans.
-	 * @param toClone Array a clonar.
-	 * @return Array clonat.
-	 */
-	private boolean[][] clone(boolean[][] toClone){
-		if(toClone == null) return null;
-		
-		boolean[][] cloned = new boolean[toClone.length][toClone[0].length];
-		for(int i = 0; i < toClone.length; i++)
-			for(int j = 0; j < toClone[0].length; j++)
-				cloned[i][j] = toClone[i][j];
-		
-		return cloned;
-	}
-	
-	/**
 	 * Vigila que cap de les hores entradas no sigui incongruent.
 	 * @param hores Conjunt d'hores a revisar.
 	 * @return True si no violen les hores, false altrament.
@@ -105,6 +89,22 @@ public class HoresSenseClasseGrup extends Unaria{
 			else if(this.mascara[dia][hora]) this.horesDisponibles[dia][hora] = permet;
 		
 		return 0;
+	}
+	
+	/**
+	 * Clona el contingut d'un array de booleans.
+	 * @param toClone Array a clonar.
+	 * @return Array clonat.
+	 */
+	static public boolean[][] clone(boolean[][] toClone){
+		if(toClone == null) return null;
+		
+		boolean[][] cloned = new boolean[toClone.length][toClone[0].length];
+		for(int i = 0; i < toClone.length; i++)
+			for(int j = 0; j < toClone[0].length; j++)
+				cloned[i][j] = toClone[i][j];
+		
+		return cloned;
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -176,5 +176,14 @@ public class HoresSenseClasseGrup extends Unaria{
 		
 		if(this.horesDisponibles[dia][hora]) return 0;
 		else return 1;
+	}
+
+	/**
+	 * Retorna la matriu de booleans que descriu les hores disponibles
+	 * en aquesta restricció.
+	 * @return Una matriu de booleans de 7x24.
+	 */
+	public boolean[][] getHoresAptes(){
+		return this.horesDisponibles;
 	}
 }
