@@ -3,6 +3,12 @@ package drivers;
 import java.util.*;
 import classes.*;
 
+/**
+ * 
+ * @author eric.casanovas@est.fib.upc.edu
+ *
+ */
+
 public class DriverSessioGrup {
 	
 	/**
@@ -31,7 +37,8 @@ public class DriverSessioGrup {
 	 */
 	private static void checkConstructora1() throws Exception {
 		System.out.println("Per la constructora 1 necessitarem Assignatura i tipus de sessió.");
-		Assignatura a = new Assignatura("prop", 2, 2);
+		PlaEstudis p = new PlaEstudis("fib");
+		Assignatura a = new Assignatura(p, "prop", 2, 2);
 		String t = "problemes";
 		SessioGrup s = new SessioGrup(a, t);
 		System.out.print("Correcte.");
@@ -44,7 +51,8 @@ public class DriverSessioGrup {
 	private static void checkConstructora2() throws Exception {
 		System.out.println("Per la constructora 2 necessitarem Assignatura, hores," + 
 				   		   "tipus de sessió i nombre de sessions.");
-		Assignatura a = new Assignatura("prop", 2, 2);
+		PlaEstudis p = new PlaEstudis("fib");
+		Assignatura a = new Assignatura(p, "prop", 2, 2);
 		String t = "problemes";
 		int h = 2;
 		int ns = 1;
@@ -59,7 +67,8 @@ public class DriverSessioGrup {
 	private static void checkConstructora3() throws Exception {
 		System.out.println("Per la constructora 2 necessitarem Assignatura, hores i" + 
 				   "tipus de sessió.");
-		Assignatura a = new Assignatura("prop", 2, 2);
+		PlaEstudis p = new PlaEstudis("fib");
+		Assignatura a = new Assignatura(p, "prop", 2, 2);
 		String t = "problemes";
 		int h = 2;
 		SessioGrup s = new SessioGrup(a, h, t);
@@ -67,12 +76,13 @@ public class DriverSessioGrup {
 	}
 	
 	/**
-	 * COmprova setters i getters
+	 * Comprova setters i getters
 	 * @throws Exception
 	 */
 	private static void checkSetGet() throws Exception {
-		Assignatura a = new Assignatura("prop", 2, 2);
-		Assignatura b = new Assignatura("IES", 2, 2);
+		PlaEstudis p = new PlaEstudis("fib");
+		Assignatura a = new Assignatura(p, "prop", 2, 2);
+		Assignatura b = new Assignatura(p, "IES", 2, 2);
 		SessioGrup s = new SessioGrup(b, "null");
 		HashSet<String> material = new HashSet<String>();
 		material.add("PCs");
@@ -108,7 +118,8 @@ public class DriverSessioGrup {
 	 * @throws Exception
 	 */
 	private static void checkAddDel() throws Exception {
-		Assignatura a = new Assignatura("prop", 2, 2);
+		PlaEstudis p = new PlaEstudis("fib");
+		Assignatura a = new Assignatura(p, "prop", 2, 2);
 		SessioGrup s = new SessioGrup(a, "problemes");
 		Scanner reader = new Scanner(System.in);
 		String m = reader.next();

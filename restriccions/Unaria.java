@@ -1,5 +1,5 @@
 package restriccions;
 
-public class Unaria extends Restriccio {
+public class Unaria extends Restriccio{
 
 }
