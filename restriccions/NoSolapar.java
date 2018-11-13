@@ -9,14 +9,14 @@ import classes.*;
  *
  */
 
-public class Correquisit extends Binaria{
+public class NoSolapar extends Binaria{
 	/////////////////////////////////////////////////////////////
 	//////////////////////// Variables //////////////////////////
 	
 	/**
-	 * Map on guardarem tots els correquisits
+	 * Map on guardarem totes les assignatures que no poden solapar-se
 	 */
-	private static Map<Assignatura, Vector<Assignatura>> correquisits = new HashMap<Assignatura, Vector<Assignatura>>();
+	private static Map<Assignatura, Vector<Assignatura>> nosolapaments = new HashMap<Assignatura, Vector<Assignatura>>();
 	
 	/////////////////////////////////////////////////////////////
 	/////////////////////////  Privats  /////////////////////////
@@ -27,13 +27,14 @@ public class Correquisit extends Binaria{
 	 * @param b assignatura que volem saber si es correquisit de b
 	 * @return true si son correquisits, false altrament
 	 */
-	private static Boolean esCorrequisit(Assignatura a, Assignatura b) {
-		Vector<Assignatura> c = correquisits.get(a);
+	private static Boolean esPodenSolapar(Assignatura a, Assignatura b) {
+		Vector<Assignatura> c = nosolapaments.get(a);
 		if (c.size() != 0)
-			for (Assignatura d : c) if (d.getNom().equals(b.getNom())) return true;
-		return false;
+			for (Assignatura d : c) 
+				if (d.getNom().equals(b.getNom())) return false;
+		return true;
 	}
-
+	
 	/**
 	 * Busca si l'assignatura passada per paràmetre esta dins del vector d'assignatures
 	 * @param a assignatura per buscar si esta dins el vector
@@ -45,6 +46,7 @@ public class Correquisit extends Binaria{
 			if (d.getNom().equals(a.getNom())) return true;
 		return false;
 	}
+	
 	/////////////////////////////////////////////////////////////
 	///////////////////////// Publics ///////////////////////////
 	
@@ -54,11 +56,11 @@ public class Correquisit extends Binaria{
 	 * @param sg2 sessió de grup 2
 	 * @return 1 si no es poden solapar, 0 si es poden solapar, altrament error 
 	 */
-	public static int checkCorrequisit(SessioGrup sg1, SessioGrup sg2) {
-		if (sg1 == null || sg2 == null) return 202;
-		else if (sg1.getTipus().equals(sg2.getTipus()) && sg1.getHores() == sg2.getHores()) return 204;
-		if (esCorrequisit(sg1.getAssignatura(), sg2.getAssignatura())) return 1;
-		return 0;
+	public static int checkSolapar(SessioGrup sg1, SessioGrup sg2) {
+		if (sg1 == null || sg2 == null) return 192;
+		else if (sg1.getTipus().equals(sg2.getTipus()) && sg1.getHores() == sg2.getHores()) return 194;
+		else if (esPodenSolapar(sg1.getAssignatura(), sg2.getAssignatura())) return 0;
+		return 1;
 	}
 	
 	/**
@@ -67,44 +69,44 @@ public class Correquisit extends Binaria{
 	 * @param ssg2 sessió de subgrup 2
 	 * @return 1 si no es poden solapar, 0 si es poden solapar, altrament error
 	 */
-	public static int checkCorrequisit(SessioSubGrup ssg1, SessioSubGrup ssg2) {
-		if (ssg1 == null || ssg2 == null) return 203;
-		else if (ssg1.getTipus().equals(ssg2.getTipus()) && ssg1.getHores() == ssg2.getHores()) return 205;
-		if (esCorrequisit(ssg1.getAssignatura(), ssg2.getAssignatura())) return 1;
-		return 0;
+	public static int checkSolapar(SessioSubGrup ssg1, SessioSubGrup ssg2) {
+		if (ssg1 == null || ssg2 == null) return 193;
+		else if (ssg1.getTipus().equals(ssg2.getTipus()) && ssg1.getHores() == ssg2.getHores()) return 195;
+		else if (esPodenSolapar(ssg1.getAssignatura(), ssg2.getAssignatura())) return 0;
+		return 1;
 	}
 	
 	/**
-	 * Afegir un correquisit al Map entre les assignatures a i b
-	 * @param a l'assignatura que volem que sigui correquisit
-	 * @param b l'assignatura que volem que sigui correquisit
+	 * Afegir una restricció de no solapar al Map entre les assignatures a i b
+	 * @param a l'assignatura que volem que no es pugui solapar
+	 * @param b l'assignatura que volem que no es pugui solapar
 	 * @return 0 si no hi ha cap error, altrament error
 	 */
 	public static int addNoSolapar(Assignatura a, Assignatura b) {
-		Vector<Assignatura> c = correquisits.get(a);
-		Vector<Assignatura> d = correquisits.get(b);
-		if (cerca(b, c) || cerca(a, d)) return 200;
+		Vector<Assignatura> c = nosolapaments.get(a);
+		Vector<Assignatura> d = nosolapaments.get(b);
+		if (cerca(b, c) || cerca(a, d)) return 190;
 		c.add(b);
 		d.add(a);
-		correquisits.put(a, c);
-		correquisits.put(b, d);
+		nosolapaments.put(a, c);
+		nosolapaments.put(b, d);
 		return 0;
 	}
 	
 	/**
-	 * Eliminar un correquisit al Map entre les assignatures a i b
-	 * @param a l'assignatura que volem eliminar de correquisit
-	 * @param b l'assignatura que volem eliminar de correquisit
-	 * @return 0 si no hi ha cap error, altrament error
+	 * Eliminar una restricció de no solapar al Map entre les assignatures a i b
+	 * @param a l'assignatura que volem que es torni a poder solapar
+	 * @param b l'assignatura que volem que es torni a poder solapar
+	 * @return 0 si no hi ha cap error, altrament 0
 	 */
-	public static int delNoSolapar(Assignatura a, Assignatura b) throws Exception {
-		Vector<Assignatura> c = correquisits.get(a);
-		Vector<Assignatura> d = correquisits.get(b);
-		if (!cerca(b, c) || !cerca(a, d)) return 201;
+	public static int delNoSolapar(Assignatura a, Assignatura b) {
+		Vector<Assignatura> c = nosolapaments.get(a);
+		Vector<Assignatura> d = nosolapaments.get(b);
+		if (!cerca(b, c) || !cerca(a, d)) return 191;
 		c.indexOf(b); c.remove(b);
 		d.indexOf(a); d.remove(a);
-		correquisits.put(a, c);
-		correquisits.put(b, d);
+		nosolapaments.put(a, c);
+		nosolapaments.put(b, d);
 		return 0;
 	}
 }
