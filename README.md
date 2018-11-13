@@ -9,8 +9,8 @@ Practica feta per:
 - Èric Casanovas (https://github.com/blackaichi)
 
 Repartiment treball (consultar UML.png):
-- Aleix: crear les classes Campus i Aula.
-- Hèctor: crear les classes Grup i Subgrup.
-- Adrià: crear les classes Pla d'Estudis i Assignatura.
-- Èric: crear les classes Sessio, SessioSG, SessioG, SessioAssignada, SessioSGAssignada, SessioGAssignada. Crear UML amb argoUML.
+- Aleix: crear les classes Campus, Aula, DriverCampus, DriverAula.
+- Hèctor: crear les classes Grup, Subgrup, Campus, Aula, DriverGrup, DriverSubGrup.
+- Adrià: crear les classes PlaEstudis, Assignatura, DriverPlaEstudis, DriverAssignatura.
+- Èric: crear les classes Sessio, SessioSG, SessioG, SessioAssignada, SessioSGAssignada, SessioGAssignada, DriverSessioSG, DriverSessioG, DriverSessioSGAssignada, DriverSessioGAssignada, NoSolapar, Correquisit, EquipamentNecessari. Crear UML amb argoUML.
 - Comú: Hem fet diverses quedades al llarg del primer mes per concretar les restriccions que havia de tenir l'horari, les que podia definir l'usuari i per la creació del diagrama de classes.
