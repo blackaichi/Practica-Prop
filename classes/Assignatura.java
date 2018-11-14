@@ -177,7 +177,23 @@ public class Assignatura {
 			if (s.getHores() == hores && s.getTipus().equals(tipus) && s.getAssignatura().getNom().equals(this.nom) && s.getAssignatura().getPlaEstudis().getNom().equals(this.getPlaEstudis().getNom())) return s;
 		return null;
 	}
-		
+	
+	/**
+	 * Retorna totes les sessionsG de l'assignatura.
+	 * @return SessioG de l'Assignatura.
+	 */
+	public HashSet<SessioGrup> getSessionsG() throws Exception {
+		return this.sessionsG;
+	}
+	
+	/**
+	 * Retorna totes les sessionsSG de l'assignatura.
+	 * @return SessioSG de l'Assignatura.
+	 */
+	public HashSet<SessioSubGrup> getSessionsSG() throws Exception {
+		return this.sessionsSG;
+	}
+	
 	/**
 	 * Retorna la sessioSG = Tipus + Hores de l'Assignatura.
 	 * @return SessioSG de l'Assignatura.
@@ -411,5 +427,5 @@ public class Assignatura {
 		corr.delNoSolapar(this, assig);
 		return 0;
 	}
-
+    
 }

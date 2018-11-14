@@ -241,8 +241,23 @@ public class PlaEstudis {
 		return rangmati;
 	}
 	
-	HashSet<Assignatura> getAssignatures() {
+	public HashSet<Assignatura> getAssignatures() {
 		return this.assignatures;
+	}
+	
+	public HashSet<SessioGrup> getSessionsGrupA() throws Exception {
+		HashSet<SessioGrup> sessionsG = new HashSet<SessioGrup>();
+		for (Assignatura a : this.assignatures) {
+			sessionsG.addAll(a.getSessionsG());
+		}
+		return sessionsG;
+	}
+	public HashSet<SessioSubGrup> getSessionsSubGrupA() throws Exception {
+		HashSet<SessioSubGrup> sessionsSG = new HashSet<SessioSubGrup>();
+		for (Assignatura a : this.assignatures) {
+			sessionsSG.addAll(a.getSessionsSG());
+		}
+		return sessionsSG;
 	}
 	
 		
