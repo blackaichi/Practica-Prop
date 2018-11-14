@@ -66,7 +66,7 @@ public class PlaEstudis {
 	 * @param dia: Dia que volem comprobar.
 	 * @return Cert si el dia ja existeix o fals altrament.
 	 */
-	private boolean checkDiaFranja(int dia) {
+	public boolean checkDiaFranja(int dia) {
 		return this.franja.containsKey(dia);
 	}
 		

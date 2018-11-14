@@ -1,9 +1,7 @@
 package classes;
 
 import java.util.*;
-
-import restriccions.HoresAptesGrupSubGrup;
-import restriccions.Solapaments;
+import restriccions.*;
 
 /**
  * 
@@ -37,7 +35,7 @@ public class SubGrup {
 	 * Linca el subGrup amb la seva restricció de grups i/o
 	 * subgrups amb els quals no es pot solapar.
 	 */
-	private Solapaments disjunts;
+	private SolapamentsGrupSubGrup disjunts;
 	
 	////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////  PRIVADES  /////////////////////////////////////
@@ -81,7 +79,7 @@ public class SubGrup {
 	 */
 	private void iniRestriccions() throws Exception {
 		HoresAptesGrupSubGrup horesApt = new HoresAptesGrupSubGrup(null, this);
-		Solapaments disjunts = new Solapaments(null, this);
+		SolapamentsGrupSubGrup disjunts = new SolapamentsGrupSubGrup(null, this);
 		
 		this.horesAptes = horesApt;
 		this.disjunts = disjunts;

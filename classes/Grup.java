@@ -45,7 +45,7 @@ public class Grup {
 	 * Linca el grup amb la seva restricció de grups amb
 	 * els quals no es pot solapar.
 	 */
-	private Solapaments disjunts;
+	private SolapamentsGrupSubGrup disjunts;
 	
 	////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////  PRIVADES  /////////////////////////////////////
@@ -109,7 +109,7 @@ public class Grup {
 	 */
 	private void iniRestriccions() throws Exception {
 		HoresAptesGrupSubGrup horesApt = new HoresAptesGrupSubGrup(this, null);
-		Solapaments disjunts = new Solapaments(this, null);
+		SolapamentsGrupSubGrup disjunts = new SolapamentsGrupSubGrup(this, null);
 		
 		this.horesAptes = horesApt;
 		this.disjunts = disjunts;
