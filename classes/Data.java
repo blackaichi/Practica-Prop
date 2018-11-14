@@ -48,7 +48,7 @@ public class Data {
 	 * @return 0 si s'ha fet correctament, altrament error
 	 */
 	public int setHora(int hora) {
-		if (hora < 0 || hora > 7) return 221;
+		if (hora < 0 || hora > 23) return 221;
 		this.hora = hora;
 		return 0;
 	}
