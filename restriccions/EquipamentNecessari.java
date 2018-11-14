@@ -9,35 +9,37 @@ import classes.*;
  *
  */
 
-public class EquipamentNecessari extends Unaria {
+public class EquipamentNecessari {
+	
+	private Element element;
 	
 	/**
-	 * Comprova si hi ha alguna aula adient per la sessió
+	 * Retorna les aules adients per la sessió
 	 * @param a aules que podem assignar a la sessió
 	 * @param sGA sessió que hem d'assignar un aula
-	 * @return 
+	 * @return les aules adients per la sessió
+	 * @throws Exception 
 	 */
-	public int checkadient(HashSet<Aula> a, SessioGAssignada sGA) {
-		if (a == null) return 210; 
-		if (sGA == null) return 211; 
-		int n = 0;
-		HashSet<String> matSessio = sGA.getSessioGrup().getMaterial();
-		for (Aula b : a) {
-			if (matSessio.containsAll(b.getEquip())) ++n;
-		}
-		if (n == 0) return 213;
-		return -n;
+	public HashSet<Aula> aulesadients(HashSet<Aula> a, SessioGAssignada sGA) throws Exception {
+		if (a == null) ExceptionManager.thrower(210); 
+		if (sGA == null) ExceptionManager.thrower(210);
+		HashSet <Aula> aux = a;
+		aux.removeIf(item -> !sGA.getSessioGrup().getMaterial().containsAll(item.getEquip()));
+		return aux;
 	}
 	
-	public int checkadient(HashSet<Aula> a, SessioSGAssignada sSGA) {
-		if (a == null) return 210; 
-		if (sSGA == null) return 212;
-		int n = 0;
-		HashSet<String> matSessio = sSGA.getSessioSubGrup().getMaterial();
-		for (Aula b : a) {
-			if (matSessio.containsAll(b.getEquip())) ++n;
-		}
-		if (n == 0) return 213;
-		return -n;
+	/**
+	 * Retorna les aules adients per la sessió
+	 * @param a aules que podem assignar a la sessió
+	 * @param sSGA sessió que hem d'assignar un aula
+	 * @return les aules adients per la sessió
+	 * @throws Exception
+	 */
+	public HashSet<Aula> aulesadients(HashSet<Aula> a, SessioSGAssignada sSGA) throws Exception {
+		if (a == null) ExceptionManager.thrower(210); 
+		if (sSGA == null) ExceptionManager.thrower(212);
+		HashSet <Aula> aux = a;
+		aux.removeIf(item -> !sSGA.getSessioSubGrup().getMaterial().containsAll(item.getEquip()));
+		return aux;
 	}
 }
