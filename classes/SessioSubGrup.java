@@ -77,6 +77,7 @@ public class SessioSubGrup extends Sessio{
 	public int setnsessions(int nsessions) {
 		if (nsessions < 1) return 95;
 		if (assignatura.getHLab() < nsessions) return 102;
+		if (this.nsessions == nsessions) return 1;
 		this.nsessions = nsessions;
 		return 0;
 	}
@@ -90,6 +91,7 @@ public class SessioSubGrup extends Sessio{
 	public int setHores(int hores) {
 		if (hores < 1) return 91;
 		if (hores > assignatura.getHLab()) return 101;
+		if (this.hores == hores) return 1;
 		this.hores = hores;
 		return 0;
 	}

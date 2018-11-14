@@ -30,8 +30,8 @@ public class SessioSGAssignada extends SessioAssignada{
 	 */
 	public SessioSGAssignada(SubGrup subGrup, SessioSubGrup sessioSG) throws Exception {
 		super();
-		setSubGrup(subGrup);
-		setSessioSubGrup(sessioSG);
+		ExceptionManager.thrower(setSubGrup(subGrup));
+		ExceptionManager.thrower(setSessioSubGrup(sessioSG));
 	}
 	
 	/////////////////////////////////////////////////////////////
@@ -40,21 +40,30 @@ public class SessioSGAssignada extends SessioAssignada{
 	/**
 	 * Assigna el subgrup a la sessió assignada de subgrup
 	 * @param subGrup subgrup al qual pertany la sessió assignada
+	 * @return 0 en cas de fet correctament, altrament error
 	 */
-	public void setSubGrup(SubGrup subGrup) {
+	public int setSubGrup(SubGrup subGrup) {
+		if (subGrup == null) return 112;
+		if (this.subGrup == subGrup) return 1;
 		this.subGrup = subGrup;
+		return 0;
 	}
 	
 	/**
 	 * Assigna la sessió de subgrup a la sessió de subgrup assignada
 	 * @param sessioSG sessió de subgrup a la qual pertany la sessió assignada
+	 * @return 0 en cas de fet correctament, altrament error
 	 */
-	public void setSessioSubGrup(SessioSubGrup sessioSG) {
-		this.sessioSubGrup = sessioSG;
+	public int setSessioSubGrup(SessioSubGrup sessioSG) {
+		if (sessioSG == null) return 113;
+		if (sessioSubGrup == sessioSG) return 1;
+		sessioSubGrup = sessioSG;
+		return 0;
 	}
 	
 	/////////////////////////////////////////////////////////////
 	////////////////////////  Getters  //////////////////////////
+	
 	/**
 	 * retorna subgrup al qual pertany la sessió del subgrup
 	 * @return el subgrup al qual pertany la sessió del subgrup

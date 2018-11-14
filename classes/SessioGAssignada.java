@@ -30,8 +30,8 @@ public class SessioGAssignada extends SessioAssignada{
 	 */
 	public SessioGAssignada(Grup grup, SessioGrup sessioG) throws Exception {
 		super();
-		setGrup(grup);
-		setSessioGrup(sessioG);
+		ExceptionManager.thrower(setGrup(grup));
+		ExceptionManager.thrower(setSessioGrup(sessioG));
 	}
 	
 	/////////////////////////////////////////////////////////////
@@ -40,17 +40,25 @@ public class SessioGAssignada extends SessioAssignada{
 	/**
 	 * Assigna el grup a la sessió assignada de grup
 	 * @param grup grup al qual pertany la sessió assignada
+	 * @return 0 en cas de fet correctament, altrament error
 	 */
-	public void setGrup(Grup grup) {
+	public int setGrup(Grup grup) {
+		if (grup == null) return 110;
+		if (grup == this.grup) return 1;
 		this.grup = grup;
+		return 0;
 	}
 	
 	/**
 	 * Assigna la sessió de grup a la sessió de grup assignada
 	 * @param sessioG sessió de grup a la qual pertany la sessió assignada
+	 * @return 0 en cas de fet correctament, altrament error
 	 */
-	public void setSessioGrup(SessioGrup sessioG) {
-		this.sessioGrup = sessioG;
+	public int setSessioGrup(SessioGrup sessioG) {
+		if (sessioG == null) return 111;
+		if (sessioGrup == sessioG) return 1;
+		sessioGrup = sessioG;
+		return 0;
 	}
 	
 	/////////////////////////////////////////////////////////////

@@ -116,10 +116,10 @@ public class ExceptionManager {
 			titles[108] = "Equip no pot ser null o buit.";
 			
 			//SESSIO ASSIGNADA 110:129 :
-			titles[110] = ".";
-			titles[111] = ".";
-			titles[112] = ".";
-			titles[113] = ".";
+			titles[110] = "El paràmetre grup no pot ser null.";
+			titles[111] = "El paràmetre sessió grup no pot ser null.";
+			titles[112] = "El paràmetre subgrup no pot ser null.";
+			titles[113] = "El paràmetre sessió subgrup no pot ser null.";
 			titles[114] = ".";
 			titles[115] = ".";
 			titles[116] = ".";
