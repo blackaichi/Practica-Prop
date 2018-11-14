@@ -46,17 +46,25 @@ public class Assignatura {
 	 */
 	HashSet<Grup> grups;
 	
+	/**
+	 * Lincament a NoCiclesRequisits
+	 */
 	private NoCiclesRequisits noCicles;
 	
+	/**
+	 * Lincament a HoresSenseClasseAssignatura
+	 */
 	private HoresSenseClasseAssignatura horesAptes;
 	
+	/**
+	 * Lincament a Correquisit
+	 */
 	private Correquisit corr;
 	
+	/**
+	 * Lincament a NoSolaparAssignatura
+	 */
 	private NoSolaparAssignatura solapament;
-		
-	/////////////////////////////////////////////////////////////
-	//////////////////////// Privades //////////////////////////
-		
 	
 	/////////////////////////////////////////////////////////////
 	//////////////////////  Constructora  ///////////////////////
@@ -127,7 +135,7 @@ public class Assignatura {
 	/**
 	 * Assigna quantes hores de laboratori te l'Assignatura.
 	 * @param hlab: nombre d'hores de laboratori de l'Assignatura que entra l'usuari.
-	 * @throws Exception si hlab < 0 o hlab no cambia.
+	 * @throws Excepció codificada en forma d'enter..
 	 */
 	public int setHLab(int hlab) {
 		if (this.hlab == hlab) return 1;
@@ -135,12 +143,84 @@ public class Assignatura {
 		this.hlab = hlab;
 		return 0;
 	}
+	
+	/**
+	 * Assigna el Pla d'Estudis que pertany l'assignatura.
+	 * @param PlaEst: pla d'estudis.
+	 * @throws .Excepció codificada en forma d'enter.
+	 */
 	public int setPlaEstudis(PlaEstudis plaEst) {
 		if (plaEst == null) return 31;
 		if (plaEst == this.plaEstudis) return 1;
 		this.plaEstudis = plaEst;
 		return 0;
 	}
+	
+	/**
+	 * Indica amb quina assignatura no es pot solapar l'assignatura actual.
+	 * @param assig: assignatura que no es pot solapar.
+	 * @return Excepció codificada en forma d'enter.
+	 */	
+	public int setSolapament(Assignatura assig) throws Exception {
+		if (assig == null) return -1;
+		corr.addNoSolapar(this, assig);
+		return 0;
+	}
+	
+	/**
+	 * Retorna cert si a es igual a l'assignatura actual.
+	 * @param a: Assignatura que volem comprobar si es igual.
+	 * @return Excepció codificada en forma d'enter.
+	 */
+	public int setCorrequisit(Assignatura assig) throws Exception {
+		if (assig == null) return -1;
+		corr.addNoSolapar(this, assig);
+		return 0;
+	}
+	
+	/**
+	 * Assigna la restricció d'hores aptes per aquest grup.
+	 * @param franja indica per cada dia quines hores poden o no ser assignades.
+	 * En cas de que sigui null per defecte s'assignen les hores lectives del
+	 * pla d'estudis corresponent.
+	 * @param apte Indica si l'acció que es preten fer es permetre o denegar aquelles hores.
+	 * @param force Permet forçar l'assignació de la franja encara que aquesta violi en 
+	 * part les hores lectives del pla d'estudis.
+	 * @return Excepció codificada en forma d'enter.
+	 */
+	public int setHoresAptes(Map<Integer, int[]> franja, boolean apte, boolean force) throws Exception {
+		if(this.horesAptes == null) {
+			HoresSenseClasseAssignatura hores = new HoresSenseClasseAssignatura(this);
+			this.horesAptes = hores;
+		}
+		
+		if(franja == null) return 0;
+		else for(Map.Entry<Integer, int[]> iter: franja.entrySet()) {
+			int checker = 0;
+			if(apte) checker = this.horesAptes.permetHores(force, Integer.valueOf(iter.getKey()), iter.getValue());
+			else checker = this.horesAptes.permetHores(force, Integer.valueOf(iter.getKey()), iter.getValue());
+			if(checker != 0) return checker;
+		}
+		
+		return 0;
+	}
+	
+	/**
+	 * Assigna un requisit a l'assignatura.
+	 * @param assigs: Assignatura requisit.
+	 * @return Excepció codificada en forma d'enter.
+	 */
+	public int setRequisit(Assignatura assigs) throws Exception {
+		if (assigs == null) ExceptionManager.thrower(-1);
+		else {
+			this.noCicles.afegeixRequisits(assigs);
+			if (noCicles.isReachable(this,this)) {
+			 	ExceptionManager.thrower(-1); //TODO: numero excepcio
+			}
+		}
+		 return 0;
+	}
+	
 	/////////////////////////////////////////////////////////////
 	////////////////////////Getters  //////////////////////////
 		
@@ -215,7 +295,10 @@ public class Assignatura {
 		return null;
 	}	
 		
-	
+	/**
+	 * Retorna el Pla d'Estudis de l'Assignatura.
+	 * @return Pla d'Estudis de l'Assignatura.
+	 */
 	public PlaEstudis getPlaEstudis() {
 		return this.plaEstudis;
 	}
@@ -307,6 +390,38 @@ public class Assignatura {
 		else return 41;
 		return 0;
 	}
+	
+	/**
+	 * Elimina un requisit a l'assignatura.
+	 * @param assigs: Requisit a eliminar.
+	 * @return Excepció codificada en forma d'enter.
+	 */
+	public int delRequisit(Assignatura assigs) throws Exception {  //TODO:
+		if (assigs == null) ExceptionManager.thrower(-1);
+		if(!this.noCicles.treuRequisit(assigs)) ExceptionManager.thrower(-1);
+		return 0;
+	}
+	/**
+	 * Elimina un correquisit de l'assignatura actual.
+	 * @param a: Correquisit que volem eliminar.
+	 * @return Excepció codificada en forma d'enter.
+	 */	
+	public int delCorrequisit(Assignatura assig) throws Exception {
+		if (assig == null) return -1;
+		corr.delNoSolapar(this, assig);
+		return 0;
+	}
+	
+	/**
+	 * Elimina una instància de no-solapament de l'assignatura actual.
+	 * @param assig: assignatura que vull eliminar de no-solapar.
+	 * @return Excepció codificada en forma d'enter.
+	 */	
+	public int delSolapament(Assignatura assig) throws Exception {
+		if (assig == null) return -1;
+		corr.delNoSolapar(this, assig);
+		return 0;
+	}
 				
 	/////////////////////////////////////////////////////////////
 	//////////////////////// Funcions  //////////////////////////
@@ -338,7 +453,7 @@ public class Assignatura {
 	}
 			
 		/**
-	 * Retorna si ja existeix una SessioSG igual en aquesta Assignatura.
+		 * Retorna si ja existeix una SessioSG igual en aquesta Assignatura.
 		 * @param hores: Numero d'hores de la sessióSG.
 		 * @param tipus: Tipus de la sessióSG.
 		 * @return Cert si la sessióSG existeix o fals altrament.
@@ -350,24 +465,7 @@ public class Assignatura {
 		}
 		return false;
 	}
-	
-	public int setHoresAptes(Map<Integer, int[]> franja, boolean apte, boolean force) throws Exception {
-		if(this.horesAptes == null) {
-			HoresSenseClasseAssignatura hores = new HoresSenseClasseAssignatura(this);
-			this.horesAptes = hores;
-		}
-		
-		if(franja == null) return 0;
-		else for(Map.Entry<Integer, int[]> iter: franja.entrySet()) {
-			int checker = 0;
-			if(apte) checker = this.horesAptes.permetHores(force, Integer.valueOf(iter.getKey()), iter.getValue());
-			else checker = this.horesAptes.permetHores(force, Integer.valueOf(iter.getKey()), iter.getValue());
-			if(checker != 0) return checker;
-		}
-		
-		return 0;
-	}
-	
+		//TODO
 	/*public int delHoresAptes(Map<Integer, int[]> franja, boolean force) throws Exception {
 		if(this.horesAptes == null) {
 			HoresSenseClasseAssignatura hores = new HoresSenseClasseAssignatura(this);
@@ -385,47 +483,14 @@ public class Assignatura {
 		return 0;
 	}*/
 	
-	public int setRequisit(Assignatura assigs) throws Exception {
-		if (assigs == null) ExceptionManager.thrower(-1);
-		else {
-			this.noCicles.afegeixRequisits(assigs);
-			if (noCicles.isReachable(this,this)) {
-			 	ExceptionManager.thrower(-1); //TODO: numero excepcio
-			}
-		}
-		 return 0;
-	}
-	public int delRequisit(Assignatura assigs) throws Exception {  //TODO:
-		if (assigs == null) ExceptionManager.thrower(-1);
-		if(!this.noCicles.treuRequisit(assigs)) ExceptionManager.thrower(-1);
-		return 0;
-	}
-	
+	/**
+	 * Retorna cert si a es igual a l'assignatura actual.
+	 * @param a: Assignatura que volem comprobar si es igual.
+	 * @return Excepció codificada en forma d'enter.
+	 */
 	public boolean esIgual(Assignatura a) throws Exception {
 		if (a == null) ExceptionManager.thrower(-1);
 		return a.getNom().equals(this.nom ) && a.getPlaEstudis().getNom().equals(this.plaEstudis.getNom());
 	}
-
-	public int setCorrequisit(Assignatura assig) throws Exception {
-		if (assig == null) return -1;
-		corr.addNoSolapar(this, assig);
-		return 0;
-	}
-	public int delCorrequisit(Assignatura assig) throws Exception {
-		if (assig == null) return -1;
-		corr.delNoSolapar(this, assig);
-		return 0;
-	}
-	
-	public int setSolapament(Assignatura assig) throws Exception {
-		if (assig == null) return -1;
-		corr.delNoSolapar(this, assig);
-		return 0;
-	}
-	public int delSolapament(Assignatura assig) throws Exception {
-		if (assig == null) return -1;
-		corr.delNoSolapar(this, assig);
-		return 0;
-	}
-    
+	 
 }
