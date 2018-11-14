@@ -163,7 +163,7 @@ public class Assignatura {
 	 */	
 	public int setSolapament(Assignatura assig) throws Exception {
 		if (assig == null) return -1;
-		corr.addNoSolapar(this, assig);
+		solapament.addNoSolapar(this, assig);
 		return 0;
 	}
 	
@@ -301,6 +301,22 @@ public class Assignatura {
 	 */
 	public PlaEstudis getPlaEstudis() {
 		return this.plaEstudis;
+	}
+	
+	/**
+	 * Retorna l'instancia NoSolaparAssignatura de l'Assignatura.
+	 * @return NoSolaparAssignatura.
+	 */
+	public NoSolaparAssignatura getSolapaments() {
+		return this.solapament;
+	}
+	
+	/**
+	 * Retorna l'instancia NoSolaparAssignatura de l'Assignatura.
+	 * @return NoSolaparAssignatura.
+	 */
+	public Correquisit getCorrequisit() {
+		return this.corr;
 	}
 	/////////////////////////////////////////////////////////////
 	//////////////////////// Modificadores  ////////////////////
