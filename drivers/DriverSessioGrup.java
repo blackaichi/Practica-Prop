@@ -17,11 +17,13 @@ public class DriverSessioGrup {
 	 */
 	public static void main (String [ ] args) throws Exception {
 		System.out.print("Benvingut a l'eina de comprovació de la classe SessioGrup");
-		System.out.println("1- Constructora1, 2- Constructora2, 3- Constructora3, 4- Setters/Getters, 5- Add/delMaterial, else- Stop");
-		System.out.print("Enter an integer: ");
-		Scanner reader = new Scanner(System.in);
-		int n = reader.nextInt();
+		int n = 1;
+		Scanner reader = null;
 		while (n == 1 || n == 2 || n == 3 || n == 4 || n == 5) {
+			System.out.println("1- Constructora1, 2- Constructora2, 3- Constructora3, 4- Setters/Getters, 5- Add/delMaterial, else- Stop");
+			System.out.print("Enter an integer: ");
+			reader = new Scanner(System.in);
+			n = reader.nextInt();
 			if (n == 1) checkConstructora1();
 			if (n == 2)	checkConstructora2();
 			if (n == 3) checkConstructora3();
@@ -41,7 +43,7 @@ public class DriverSessioGrup {
 		Assignatura a = new Assignatura(p, "prop", 2, 2);
 		String t = "problemes";
 		SessioGrup s = new SessioGrup(a, t);
-		System.out.print("Correcte.");
+		System.out.println("Correcte.");
 	}
 	
 	/**
@@ -57,7 +59,7 @@ public class DriverSessioGrup {
 		int h = 2;
 		int ns = 1;
 		SessioGrup s = new SessioGrup(a, h, t, ns);
-		System.out.print("Correcte.");
+		System.out.println("Correcte.");
 	}
 	
 	/**
@@ -72,7 +74,7 @@ public class DriverSessioGrup {
 		String t = "problemes";
 		int h = 2;
 		SessioGrup s = new SessioGrup(a, h, t);
-		System.out.print("Correcte.");
+		System.out.println("Correcte.");
 	}
 	
 	/**
@@ -93,7 +95,7 @@ public class DriverSessioGrup {
 		int h = reader.nextInt();
 		System.out.println("Introdueixi el tipus: ");
 		String t = reader.next();
-		System.out.println("Introdueixi el nombre de sessions: ");
+		System.out.println("Introdueixi el nombre de sessions(int)(si es més gran que 2 dirà error perquè Assignatura tindra menys hores que sessions): ");
 		int ns = reader.nextInt();
 		s.setAssignatura(a);
 		if (s.getAssignatura().getNom().equals("prop")) System.out.println("get/setAssignatura OK");
