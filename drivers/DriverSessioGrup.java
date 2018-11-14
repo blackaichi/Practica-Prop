@@ -90,12 +90,13 @@ public class DriverSessioGrup {
 		material.add("PCs");
 		System.out.println("Pels getters he creat una SessioGrup amb Assignatura identificada per nom->prop" +
 						   " els altres paràmetres els definirà l'usuari.");
-		System.out.println("Introdueixi les hores: ");
+		System.out.print("Introdueixi les hores(int): ");
 		Scanner reader = new Scanner(System.in);
 		int h = reader.nextInt();
-		System.out.println("Introdueixi el tipus: ");
+		System.out.print("Introdueixi el tipus(String): ");
 		String t = reader.next();
-		System.out.println("Introdueixi el nombre de sessions(int)(si es més gran que 2 dirà error perquè Assignatura tindra menys hores que sessions): ");
+		System.out.println("si es més gran que 2 dirà error perquè Assignatura tindra menys hores que sessions");
+		System.out.print("Introdueixi el nombre de sessions(int): ");
 		int ns = reader.nextInt();
 		s.setAssignatura(a);
 		if (s.getAssignatura().getNom().equals("prop")) System.out.println("get/setAssignatura OK");
@@ -124,6 +125,7 @@ public class DriverSessioGrup {
 		Assignatura a = new Assignatura(p, "prop", 2, 2);
 		SessioGrup s = new SessioGrup(a, "problemes");
 		Scanner reader = new Scanner(System.in);
+		System.out.println("Nom del material(String): ");
 		String m = reader.next();
 		int m1 = s.getMaterial().size();
 		s.addMaterial(m);

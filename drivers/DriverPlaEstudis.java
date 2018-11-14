@@ -38,11 +38,15 @@ public class DriverPlaEstudis {
 	
 	/**
 	 * Comprovem el correcte funcionament dels sets i gets
+	 * @throws Exception 
 	 */
 	@Test 
-	public void testSetGet() {
+	public void testSetGet() throws Exception {
 		PE2.setNom("UB");
 		assertEquals(PE2.getNom(), "UB");
+		int[] rang = new int[] {8,13,15,20};
+		PE3.setRangDia(2, rang);
+		assertEquals(rang, PE3.getFranjaDia(2));
 	}
 	
 	/**
