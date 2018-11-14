@@ -2,6 +2,9 @@ package classes;
 
 import java.util.*;
 
+import restriccions.HoresAptesGrupSubGrup;
+import restriccions.Solapaments;
+
 /**
  * 
  * @author hector.morales.carnice@est.fib.upc.edu
@@ -25,6 +28,16 @@ public class SubGrup {
 	 * Registra totes les sessions a les quals pertany el subGrup.
 	 */
 	private HashSet<SessioSGAssignada> sessions;
+	
+	/**
+	 * Linca el subGrup amb la seva restricció d'hores aptes.
+	 */
+	private HoresAptesGrupSubGrup horesAptes;
+	/**
+	 * Linca el subGrup amb la seva restricció de grups i/o
+	 * subgrups amb els quals no es pot solapar.
+	 */
+	private Solapaments disjunts;
 	
 	////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////  PRIVADES  /////////////////////////////////////
@@ -62,11 +75,24 @@ public class SubGrup {
 		else return 0;
 	}
 	
+	/**
+	 * Inicialitza adequadament les restriccions del Grup.
+	 * @throws Excepciño rebuda durant la donada d'alta de les restriccions.
+	 */
+	private void iniRestriccions() throws Exception {
+		HoresAptesGrupSubGrup horesApt = new HoresAptesGrupSubGrup(null, this);
+		Solapaments disjunts = new Solapaments(null, this);
+		
+		this.horesAptes = horesApt;
+		this.disjunts = disjunts;
+	}
+	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
 	public SubGrup(Grup grup, int numero) throws Exception{
-		ExceptionManager.thrower(this.setGrup(grup));
 		ExceptionManager.thrower(this.setNumero(numero));
+		ExceptionManager.thrower(this.setGrup(grup));
+		this.iniRestriccions();
 		
 		places = 0;
 		sessions = new HashSet<>();
@@ -79,9 +105,10 @@ public class SubGrup {
 	 * @param places Descriu la capacitat del SubGrup.
 	 */
 	public SubGrup(Grup grup, int numero, int places) throws Exception {
-		ExceptionManager.thrower(this.setGrup(grup));
 		ExceptionManager.thrower(this.setNumero(numero));
 		ExceptionManager.thrower(this.setPlaces(places, false));
+		ExceptionManager.thrower(this.setGrup(grup));
+		this.iniRestriccions();
 		
 		sessions = new HashSet<>();
 	}
@@ -130,6 +157,44 @@ public class SubGrup {
 		
 		this.grup = grup;
 		return 0;
+	}
+	
+	/**
+	 * Assigna la restricció d'hores aptes per aquest subGrup.
+	 * @param franja indica per cada dia quines hores poden o no ser assignades.
+	 * En cas de que sigui null per defecte s'assignen les hores lectives del
+	 * pla d'estudis corresponent.
+	 * @param apte Indica si l'acció que es preten fer es permetre o denegar aquelles hores.
+	 * @param force Permet forçar l'assignació de la franja encara que aquesta violi en 
+	 * part les hores lectives del pla d'estudis.
+	 * @return Excepció codificada en forma d'enter.
+	 * @throws Exception rebuda al donar d'alta la restricció.
+	 */
+	public int setHoresAptes(Map<Integer, int[]> franja, boolean apte, boolean force) {
+		if(franja == null) return 0;
+		else for(Map.Entry<Integer, int[]> iter: franja.entrySet()) {
+			int checker = 0;
+			if(apte) checker = this.horesAptes.permetHores(force, Integer.valueOf(iter.getKey()), iter.getValue());
+			else checker = this.horesAptes.permetHores(force, Integer.valueOf(iter.getKey()), iter.getValue());
+			if(checker != 0) return checker;
+		}
+		
+		return 0;
+	}
+	
+	/**
+	 * Restringeix la possibilitat de que aquest subGrup es solapi amb el grup
+	 * i/o subGrup passats per parametre; sempre i quan aquests compleixin
+	 * les restriccions d'integritat globals.
+	 * @param grup Referencia el grup a restringir.
+	 * @param subGrup Referencia el subGrup a restringir.
+	 * @return Excepció codificada en forma d'enter.
+	 */
+	public int setSolapament(Grup grup, SubGrup subGrup, boolean permet) {
+		if(grup == null || subGrup == null) return 250; //no poden ser els dos nulls.
+		else if(subGrup != null && this.equals(subGrup)) return 252; //Un Subgrup no pot ser disjunt amb si mateix.
+		
+		return this.disjunts.setSolapament(grup, subGrup, permet);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -275,6 +340,15 @@ public class SubGrup {
 		else return this.desassignaSessio(sessio.getSessioSubGrup().getTipus(), sessio.getSessioSubGrup().getHores(), false);
 	}
 	
+	/**
+	 * Restaura les hores aptes per defecte.
+	 * @return Excepció codificada en forma d'enter.
+	 */
+	public int resetHoresAptes() {
+		if(this.horesAptes == null) return 0;
+		else return this.horesAptes.restore();
+	}
+	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  CONSULTORES  ///////////////////////////////////
 	/**
@@ -310,5 +384,16 @@ public class SubGrup {
 			if(sessio.getSessioSubGrup().getTipus().equals(tipus)) return true;
 		
 		return false;
+	}
+
+	/**
+	 * Retorna true si, i només si, el subGrup entrat es identic al subGrup
+	 * en qüestió.
+	 * @param subGrup Referencia al subGrup a comparar.
+	 * @return Un booleà que representa la similitud entre ambdós.
+	 */
+	public boolean equals(SubGrup subGrup) {
+		return this.getNumero() == subGrup.getNumero() &&
+				this.getGrup().equals(subGrup.getGrup());
 	}
 }

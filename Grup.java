@@ -40,12 +40,12 @@ public class Grup {
 	/**
 	 * Linca el grup amb la seva restricció d'hores aptes.
 	 */
-	private HoresSenseClasseGrup horesAptes;
+	private HoresAptesGrupSubGrup horesAptes;
 	/**
 	 * Linca el grup amb la seva restricció de grups amb
 	 * els quals no es pot solapar.
 	 */
-	private NoSolaparGrup disjunts;
+	private Solapaments disjunts;
 	
 	////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////  PRIVADES  /////////////////////////////////////
@@ -103,6 +103,18 @@ public class Grup {
 		return 0;
 	}
 	
+	/**
+	 * Inicialitza adequadament les restriccions del Grup.
+	 * @throws Excepciño rebuda durant la donada d'alta de les restriccions.
+	 */
+	private void iniRestriccions() throws Exception {
+		HoresAptesGrupSubGrup horesApt = new HoresAptesGrupSubGrup(this, null);
+		Solapaments disjunts = new Solapaments(this, null);
+		
+		this.horesAptes = horesApt;
+		this.disjunts = disjunts;
+	}
+	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
 	/** 
@@ -115,6 +127,7 @@ public class Grup {
 	public Grup(Assignatura assig, int numero) throws Exception {
 		ExceptionManager.thrower(this.setNumero(numero));
 		ExceptionManager.thrower(this.setAssignatura(assig));
+		this.iniRestriccions();
 		
 		places = 0;
 		franja = new String("MT");
@@ -136,6 +149,8 @@ public class Grup {
 		/* Arribats aquí, tots els parametres entrats son adequats,
 		 * per tant, es pot procedir a linkar la classe:*/
 		ExceptionManager.thrower(this.setAssignatura(assig));
+		this.iniRestriccions();
+		
 		subGrups = new HashSet<>();
 	}
 	
@@ -210,12 +225,7 @@ public class Grup {
 	 * @return Excepció codificada en forma d'enter.
 	 * @throws Exception rebuda al donar d'alta la restricció.
 	 */
-	public int setHoresAptes(Map<Integer, int[]> franja, boolean apte, boolean force) throws Exception {
-		if(this.horesAptes == null) {
-			HoresSenseClasseGrup hores = new HoresSenseClasseGrup(this);
-			this.horesAptes = hores;
-		}
-		
+	public int setHoresAptes(Map<Integer, int[]> franja, boolean apte, boolean force) {
 		if(franja == null) return 0;
 		else for(Map.Entry<Integer, int[]> iter: franja.entrySet()) {
 			int checker = 0;
@@ -225,6 +235,21 @@ public class Grup {
 		}
 		
 		return 0;
+	}
+	
+	/**
+	 * Restringeix la possibilitat de que aquest grup es solapi amb el grup
+	 * i/o subGrups passats per parametre; sempre i quan aquests compleixin
+	 * les restriccions d'integritat globals.
+	 * @param grup Referencia el grup a restringir.
+	 * @param subGrup Referencia el subGrup a restringir.
+	 * @return Excepció codificada en forma d'enter.
+	 */
+	public int setSolapament(Grup grup, SubGrup subGrup, boolean permet) {
+		if(grup == null || subGrup == null) return 250; // no poden ser els dos nulls.
+		else if(grup != null && this.equals(grup)) return 251; //Un grup no pot ser disjunt amb si mateix.
+		
+		return this.disjunts.setSolapament(grup, subGrup, permet);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -502,5 +527,17 @@ public class Grup {
 			if(sessio.getSessioGrup().getTipus().equals(tipus)) return true;
 		
 		return false;
+	}
+
+	/**
+	 * Retorna true si, i només si, el Grup entrat es identic al grup en
+	 * qüestió.
+	 * @param subGrup Referencia al Grup a comparar.
+	 * @return Un booleà que representa la similitud entre ambdós.
+	 */
+	public boolean equals(Grup grup) { 
+		return this.getNumero() == grup.getNumero() &&
+				this.getAssignatura().getNom().equals(grup.getAssignatura().getNom()) &&
+				this.getAssignatura().getPlaEstudis().getNom().equals(grup.getAssignatura().getPlaEstudis().getNom());
 	}
 }

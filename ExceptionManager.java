@@ -193,6 +193,14 @@ public class ExceptionManager {
 			titles[239] = ".";
 			titles[240] = ".";		
 			}
+		
+			//Solapaments 250:259 :
+			titles[250] = "No poden ser ambdos null.";
+			titles[251] = "Un grup no pot ser disjunt amb si mateix.";
+			titles[252] = "Un Subgrup no pot ser disjunt amb si mateix.";
+			titles[253] = "S'ha d'assignar a un grup o subgup.";
+			titles[254] = "Només es pot assignar un d'ambdos.";
+			titles[255] = "Només es pot comprovar d'un en un.";
 	}
 	
 	/**
