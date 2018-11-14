@@ -40,6 +40,9 @@ public class ExceptionManager {
 			titles[13] = "Ja existeix una assignatura amb el mateix nom";
 			titles[14] = "No existeix l'assignatura";
 			titles[15] = "El dia no te franjas";
+			titles[16] = "Rang incorrecte";
+			titles[17] = "Valor no pot ser null";
+			titles[18] = "Nom no pot ser null";
 			
 			
 			//ASSIGNATURA 30:49 :
@@ -55,6 +58,8 @@ public class ExceptionManager {
 			titles[39] = "Ja existeix una sessioG igual";
 			titles[40] = "Assignatura no pot ser null";
 			titles[41] = "Ja existeix una SessioSG";
+			titles[42] = "Hi ha un cicle de requisits";
+			titles[43] = "L'Assignatura no forma part dels requisits";
 			
 			//GRUP 50: 69:
 			titles[50] = "Identificació negativa o igual a 0.";
