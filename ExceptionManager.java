@@ -184,14 +184,15 @@ public class ExceptionManager {
 			titles[230] = "El paràmetre data no pot ser nul.";
 			titles[231] = "El paràmetre sessioGAssignada no pot ser nul.";
 			titles[232] = "El paràmetre sessioSGAssignada no pot ser nul.";
-			titles[233] = "El paràmetre aula no pot ser nul.";
-			titles[234] = ".";
+			titles[233] = "El paràmetre campus no pot ser nul.";
+			titles[234] = "El paràmetre horari no pot ser nul.";
 			titles[235] = ".";
 			titles[236] = ".";
 			titles[237] = ".";
 			titles[238] = ".";
 			titles[239] = ".";
-			titles[240] = ".";		}
+			titles[240] = ".";		
+			}
 	}
 	
 	/**
