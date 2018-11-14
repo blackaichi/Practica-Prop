@@ -3,6 +3,12 @@ package drivers;
 import java.util.*;
 import classes.*;
 
+/**
+ * 
+ * @author eric.casanovas@est.fib.upc.edu
+ *
+ */
+
 public class DriverData {
 	
 	/**
