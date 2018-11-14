@@ -18,7 +18,7 @@ public class PlaEstudis {
 	private String nom;
 		
 	/**
-	 * Horari lectiu per dia del Pla d'Estudis
+	 * Hores de teoria  de l'Assignatura
 	 */
 	Map<Integer, boolean[] > franja;
 		
@@ -27,19 +27,11 @@ public class PlaEstudis {
 	 */
 	HashSet<Assignatura> assignatures;
 	
-	/**
-	 * Rang del Pla d'estudis
-	 */
 	int[][] rangDia;
 			
 	//////////////////////////////////////////////////////////
 	//////////////////////  Privades  ///////////////////////
 	
-	/**
-	 * Retorna cert si ja existeix un Pla d'Estudis amb el mateix nom.
-	 * @param nom: nom del Pla d'Estudis que volem comprobar.
-	 * @return Cert si el Pla d'Estudis ja existeix o fals altrament.
-	 */
 	private boolean checkPlansEstudis(String nom) {
 		for(PlaEstudis p : plansEstudis) {
 			if (p.getNom().equals(nom)) return false;
@@ -66,7 +58,7 @@ public class PlaEstudis {
 	 * @param dia: Dia que volem comprobar.
 	 * @return Cert si el dia ja existeix o fals altrament.
 	 */
-	public boolean checkDiaFranja(int dia) {
+	private boolean checkDiaFranja(int dia) {
 		return this.franja.containsKey(dia);
 	}
 		
@@ -103,7 +95,8 @@ public class PlaEstudis {
 	/**
 	 * Assigna la franja [iniciFranjaM,finalFranjaM,iniciFranjaT,finalFranjaT] al Pla d'Estudis.
 	 * @param dia: dia de la franja que entra l'usuari.
-	 * @param franja: Franja que entra l'usuari.
+	 * @param iniciFranja: Hora d'inici de la franja que entra l'usuari.
+	 * param finalFranja: Hora final de la franja que entra l'usuari.
 	 */
 	public int setFranja(int dia, int[] franja) throws Exception {
 		if (dia < 0 || dia > 6) return 11;
@@ -124,22 +117,7 @@ public class PlaEstudis {
 		}
 		return 0;
 	}
-		
-	/**
-	 * Posa el rang corresponent al dia indicat.
-	 * @param dia: Dia que volem posar el rang.
-	 * @param rang: rang que volem assignar.
-	 * @return Excepció codificada en forma d'enter.
-	 */
-	public int setRangDia(int dia, int[] rang) throws Exception {
-		if (dia < 0 || dia > 6) return -1;
-		else if(rang == null || rang.length != 4) return -1;
-		this.rangDia[dia] = rang;
-		this.setFranja(dia, Arrays.copyOfRange(rang,0,2));
-		this.setFranja(dia, Arrays.copyOfRange(rang,2,4));
-		return 0;
-	}
-	
+			
 	/////////////////////////////////////////////////////////////
 	//////////////////////// Getters  //////////////////////////
 			
@@ -167,73 +145,12 @@ public class PlaEstudis {
 	public Map<Integer, boolean[]> getFranjaSetmana() {
 		return this.franja;
 	}
-	
 	/**
-	 * Retorna el rang corresponent del Matí del dia indicat.
-	 * @param dia: Dia que volem demanar el rang.
-	 * @return rang de la matí del dia indicat.
-	 */
-	public int[] getRangMati(int dia) throws Exception {
-		if (dia < 0 || dia > 6) ExceptionManager.thrower(12);
-		int[] rangmati = new int[2];
-		rangmati[0] = this.rangDia[dia][0];
-		rangmati[1] = this.rangDia[dia][1];
-		return rangmati;
-	}
-	
-	/**
-	 * Retorna el rang corresponent de la tarda del dia indicat.
-	 * @param dia: Dia que volem demanar el rang.
-	 * @return rang de la tarda del dia indicat.
-	 */
-	public int[] getRangTarda(int dia) throws Exception {
-		if (dia < 0 || dia > 6) ExceptionManager.thrower(12);
-		int[] rangmati = new int[2];
-		rangmati[0] = this.rangDia[dia][2];
-		rangmati[1] = this.rangDia[dia][3];
-		return rangmati;
-	}
-	
-	/**
-	 * Retorna el set d'Assignatures que pertanyen al Pla d'Estudis.
-	 * @return Set d'Assignatures del pla.
+	 * Retorna totes les assignatures que pertanyen al pla d'Estudis
+	 * @return assignatures
 	 */
 	public HashSet<Assignatura> getAssignatures() {
 		return this.assignatures;
-	}
-	
-	/**
-	 * Retorna el set de SessionsGrupAssignades que pertanyen al Pla d'Estudis.
-	 * @return Set d'Assignatures del pla.
-	 */
-	public HashSet<SessioGAssignada> getSessionsGrupA() throws Exception {
-		HashSet<SessioGrup> sessionsG = new HashSet<SessioGrup>();
-		HashSet<SessioGAssignada> sessionsGA = new HashSet<SessioGAssignada>();
-		
-		for (Assignatura a : this.assignatures) {
-			sessionsG.addAll(a.getSessionsG());
-		}
-		for (SessioGrup sg : sessionsG) {
-			sessionsGA.addAll(sg.getAllSessionsGA());
-		}
-		return sessionsGA;
-	}
-	
-	/**
-	 * Retorna el set de SessionsGrupAssignades que pertanyen al Pla d'Estudis.
-	 * @return Set d'Assignatures del pla.
-	 */
-	public HashSet<SessioSGAssignada> getSessionsSubGrupA() throws Exception {
-		HashSet<SessioSubGrup> sessionsSG = new HashSet<SessioSubGrup>();
-		HashSet<SessioSGAssignada> sessionsSGA = new HashSet<SessioSGAssignada>();
-		
-		for (Assignatura a : this.assignatures) {
-			sessionsSG.addAll(a.getSessionsSG());
-		}
-		for (SessioSubGrup ssg : sessionsSG) {
-			sessionsSGA.addAll(ssg.getAllSessionsSGA());
-		}
-		return sessionsSGA;
 	}
 			
 	/////////////////////////////////////////////////////////////
@@ -287,6 +204,57 @@ public class PlaEstudis {
 			this.franja.put(dia,valor);
 		}
 		return 0;
+	}
+	
+	/**
+	 * Posa el rang corresponent al dia indicat.
+	 * @param dia: Dia que volem posar el rang.
+	 * @param rang: rang que volem assignar.
+	 * @return Excepció codificada en forma d'enter.
+	 * @throws Exception 
+	 */
+	public int setRangDia(int dia, int[] rang) throws Exception {
+		if (dia < 0 || dia > 6) return -1;
+		else if(rang == null || rang.length != 4) return -1;
+		this.rangDia[dia] = rang;
+		this.setFranja(dia, Arrays.copyOfRange(rang,0,2));
+		this.setFranja(dia, Arrays.copyOfRange(rang,2,4));
+		return 0;
+	}
+	
+	/**
+	 * Donem el rang corresponent del Matí del dia indicat.
+	 * @param dia: Dia que volem demanar el rang.
+	 * @return Excepció codificada en forma d'enter.
+	 */
+	public int[] getRangMati(int dia) throws Exception {
+		if (dia < 0 || dia > 6) ExceptionManager.thrower(12);
+		int[] rangmati = new int[2];
+		rangmati[0] = this.rangDia[dia][0];
+		rangmati[1] = this.rangDia[dia][1];
+		return rangmati;
+	}
+	
+	/**
+	 * Donem el rang corresponent de la tarda del dia indicat.
+	 * @param dia: Dia que volem demanar el rang.
+	 * @return Excepció codificada en forma d'enter.
+	 */
+	public int[] getRangTarda(int dia) throws Exception {
+		if (dia < 0 || dia > 6) ExceptionManager.thrower(12);
+		int[] rangmati = new int[2];
+		rangmati[0] = this.rangDia[dia][2];
+		rangmati[1] = this.rangDia[dia][3];
+		return rangmati;
+	}
+	
+	
+	/**
+	 * Retorna el numero d'assignatures donades d'alta en la classe PlaEstudis
+	 * @return assignatures.size()
+	 */
+	public int quantesAssignatures() {
+		return this.assignatures.size();
 	}
 		
 }
