@@ -201,6 +201,9 @@ public class ExceptionManager {
 			titles[253] = "S'ha d'assignar a un grup o subgup.";
 			titles[254] = "Només es pot assignar un d'ambdos.";
 			titles[255] = "Només es pot comprovar d'un en un.";
+			
+			//EquipamentNecessari 260:269 :
+			titles[260] = "El paràmetre element no pot ser nul.";
 	}
 	
 	/**

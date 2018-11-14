@@ -44,7 +44,25 @@ public class Element {
 	 */
 	private Horari horari;
 	
+	/**
+	 * Equipament necessari
+	 */
 	private EquipamentNecessari equip;
+	
+	////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////  PRIVADES  /////////////////////////////////////
+
+	/**
+	 * Retorna les aules no assignades del campus
+	 * @return les aules lliures del campus
+	 */
+	private HashSet<Aula> getAulesLliures() {
+		HashSet<Aula> aulesLliures = campus.getAllAules();
+		for (Aula ocupada : aulesOcupades) {
+			aulesLliures.removeIf(item -> item.getNom().equals(ocupada.getNom()));
+		}
+		return aulesLliures;
+	}
 	
 	/////////////////////////////////////////////////////////////
 	//////////////////////  Constructora  ///////////////////////
@@ -62,7 +80,7 @@ public class Element {
 		ExceptionManager.thrower(setData(data));
 		ExceptionManager.thrower(setHorari(horari));
 		aulesOcupades = new HashSet<Aula>();
-		
+		equip = new EquipamentNecessari(this);
 	}
 	
 	/**
@@ -78,6 +96,7 @@ public class Element {
 		ExceptionManager.thrower(setData(data));
 		ExceptionManager.thrower(setHorari(horari));
 		aulesOcupades = new HashSet<Aula>();
+		equip = new EquipamentNecessari(this);
 	}
 	
 	/////////////////////////////////////////////////////////////
@@ -129,6 +148,11 @@ public class Element {
 		return 0;
 	}
 	
+	/**
+	 * Assigna un horari a l'element
+	 * @param horari horari de l'element
+	 * @return 0 si s'ha fet correctament, altrament error
+	 */
 	public int setHorari(Horari horari) {
 		if (horari == null) return 234;
 		this.horari = horari;
@@ -170,30 +194,34 @@ public class Element {
 		return campus;
 	}
 	
+	/**
+	 * Retorna l'horari de l'element
+	 * @return l'horari de l'element
+	 */
 	public Horari getHorari() {
 		return horari;
 	}
 	
 	/////////////////////////////////////////////////////////////
 	///////////////////////  Funcions  //////////////////////////
-
 	
-	private HashSet<Aula> getAulesLliures() {
-		HashSet <Aula> aulesLliures = campus.getAllAules();
-		for (Aula ocupada : aulesOcupades) {
-			aulesLliures.removeIf(item -> item.getNom().equals(ocupada.getNom()));
-		}
-		return aulesLliures;
+	/**
+	 * Retorna les aules adients per la sessió de grup sGA
+	 * @param sGA una sessió de grup assignada
+	 * @return les aules adients per la sessió
+	 * @throws Exception
+	 */
+	public HashSet<Aula> getAules(SessioGAssignada sGA) throws Exception {
+		return equip.aulesAdients(getAulesLliures(), sGA);
 	}
 	
-	
-	public HashSet<Aula> getAules(SessioGAssignada sGA) {
-		HashSet <Aula> aules = getAulesLliures();
-		
-	}
-	
-	
-	public HashSet<Aula> getAules(SessioSGAssignada sSGA) {
-		
+	/**
+	 * Retorna les aules adients per la sessió de subgrup sSGA
+	 * @param sGA una sessió de subgrup assignada
+	 * @return les aules adients per la sessió
+	 * @throws Exception
+	 */
+	public HashSet<Aula> getAules(SessioSGAssignada sSGA) throws Exception {
+		return equip.aulesAdients(getAulesLliures(), sSGA);
 	}
 }
