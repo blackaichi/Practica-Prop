@@ -318,6 +318,14 @@ public class Assignatura {
 	public Correquisit getCorrequisit() {
 		return this.corr;
 	}
+	
+	/**
+	 * Retorna l'instancia HoresSenseClasseAssignatura de l'Assignatura.
+	 * @return HoresSenseClasseAssignatura.
+	 */
+	public HoresSenseClasseAssignatura getHoresAptes() {
+		return this.horesAptes;
+	}
 	/////////////////////////////////////////////////////////////
 	//////////////////////// Modificadores  ////////////////////
 	
