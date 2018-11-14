@@ -1,5 +1,6 @@
 package classes;
 import java.util.*;
+import restriccions.*;
 /**
  * 
  * @author adria.manero@est.fib.upc.edu
@@ -44,6 +45,14 @@ public class Assignatura {
 	 * Grups que pertanyen a l'Assignatura
 	 */
 	HashSet<Grup> grups;
+	
+	private NoCiclesRequisits noCicles;
+	
+	private HoresSenseClasseAssignatura horesAptes;
+	
+	private Correquisit corr;
+	
+	private NoSolapar solapament;
 		
 	/////////////////////////////////////////////////////////////
 	//////////////////////// Privades //////////////////////////
@@ -59,6 +68,7 @@ public class Assignatura {
 	 * @param hlab: hores de laboratori de l'assignatura.
 	 */
 	public Assignatura(PlaEstudis plaEst, String nom, int hteo, int hlab) throws Exception {
+		 this.noCicles = new NoCiclesRequisits(this);
 		ExceptionManager.thrower(this.setNom(plaEst,nom));
 		ExceptionManager.thrower(this.setHTeo(hteo));
 		ExceptionManager.thrower(this.setHLab(hlab));
@@ -75,6 +85,7 @@ public class Assignatura {
 	 * @param plaEstudis: Pla d'Estudis que pertany l'Assignatura.
 	 */
 	public Assignatura(PlaEstudis plaEst, String nom) throws Exception {
+		this.noCicles = new NoCiclesRequisits(this);
 		ExceptionManager.thrower(this.setNom(plaEst,nom));
 		this.hteo = 0;
 		this.hlab = 0;
@@ -323,5 +334,82 @@ public class Assignatura {
 		}
 		return false;
 	}
+	
+	public int setHoresAptes(Map<Integer, int[]> franja, boolean apte, boolean force) throws Exception {
+		if(this.horesAptes == null) {
+			HoresSenseClasseAssignatura hores = new HoresSenseClasseAssignatura(this);
+			this.horesAptes = hores;
+		}
 		
+		if(franja == null) return 0;
+		else for(Map.Entry<Integer, int[]> iter: franja.entrySet()) {
+			int checker = 0;
+			if(apte) checker = this.horesAptes.permetHores(force, Integer.valueOf(iter.getKey()), iter.getValue());
+			else checker = this.horesAptes.permetHores(force, Integer.valueOf(iter.getKey()), iter.getValue());
+			if(checker != 0) return checker;
+		}
+		
+		return 0;
+	}
+	
+	/*public int delHoresAptes(Map<Integer, int[]> franja, boolean force) throws Exception {
+		if(this.horesAptes == null) {
+			HoresSenseClasseAssignatura hores = new HoresSenseClasseAssignatura(this);
+			this.horesAptes = hores;
+		}
+		
+		if(franja == null) return 0;
+		else for(Map.Entry<Integer, int[]> iter: franja.entrySet()) {
+			int checker = 0;
+			if(apte) checker = this.horesAptes.permetHores(force, Integer.valueOf(iter.getKey()), iter.getValue());
+			else checker = this.horesAptes.permetHores(force, Integer.valueOf(iter.getKey()), iter.getValue());
+			if(checker != 0) return checker;
+		}
+		
+		return 0;
+	}*/
+	
+	public int setRequisit(Assignatura assigs) throws Exception {
+		if (assigs == null) ExceptionManager.thrower(-1);
+		else {
+			this.noCicles.afegeixRequisits(assigs);
+			if (noCicles.isReachable(this,this)) {
+			 	ExceptionManager.thrower(-1); //TODO: numero excepcio
+			}
+		}
+		 return 0;
+	}
+	public int delRequisit(Assignatura assigs) throws Exception {  //TODO:
+		if (assigs == null) ExceptionManager.thrower(-1);
+		if(!this.noCicles.treuRequisit(assigs)) ExceptionManager.thrower(-1);
+		return 0;
+	}
+	
+	public boolean esIgual(Assignatura a) throws Exception {
+		if (a == null) ExceptionManager.thrower(-1);
+		return a.getNom().equals(this.nom ) && a.getPlaEstudis().getNom().equals(this.plaEstudis.getNom());
+	}
+
+	public int setCorrequisit(Assignatura assig) throws Exception {
+		if (assig == null) return -1;
+		corr.addNoSolapar(this, assig);
+		return 0;
+	}
+	public int delCorrequisit(Assignatura assig) throws Exception {
+		if (assig == null) return -1;
+		corr.delNoSolapar(this, assig);
+		return 0;
+	}
+	
+	public int setSolapament(Assignatura assig) throws Exception {
+		if (assig == null) return -1;
+		corr.delNoSolapar(this, assig);
+		return 0;
+	}
+	public int delSolapament(Assignatura assig) throws Exception {
+		if (assig == null) return -1;
+		corr.delNoSolapar(this, assig);
+		return 0;
+	}
+
 }
