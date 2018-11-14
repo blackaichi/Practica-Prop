@@ -26,6 +26,8 @@ public class PlaEstudis {
 	 * Assignatures que pertanyen al Pla d'Estudis
 	 */
 	HashSet<Assignatura> assignatures;
+	
+	int[][] rangDia;
 			
 	//////////////////////////////////////////////////////////
 	//////////////////////  Privades  ///////////////////////
@@ -70,6 +72,7 @@ public class PlaEstudis {
 	public PlaEstudis(String nom) throws Exception {
 		ExceptionManager.thrower(this.setNom(nom));
 		this.franja = new HashMap<Integer,boolean[] >();
+		this.rangDia = new int[7][4];
 		this.assignatures = new HashSet<Assignatura>();
 
 	}
@@ -90,21 +93,22 @@ public class PlaEstudis {
 	}
 			
 	/**
-	 * Assigna la franja del Pla d'Estudis.
+	 * Assigna la franja [iniciFranjaM,finalFranjaM,iniciFranjaT,finalFranjaT] al Pla d'Estudis.
 	 * @param dia: dia de la franja que entra l'usuari.
 	 * @param iniciFranja: Hora d'inici de la franja que entra l'usuari.
 	 * param finalFranja: Hora final de la franja que entra l'usuari.
 	 */
-	public int setFranja(int dia, int iniciFranja, int finalFranja) throws Exception {
+	public int setFranja(int dia, int[] franja) throws Exception {
 		if (dia < 0 || dia > 6) return 11;
-		else if (iniciFranja < 0 || finalFranja < 0 || iniciFranja > 24 || finalFranja > 24 || iniciFranja >= finalFranja) return 12;
+		else if (franja == null) return -1;
+		else if (franja[0] > franja[1]) return 12;
 		else {
 			boolean[] valor = this.franja.get(dia);
 			if (valor == null) {
 				valor = new boolean[24];
 			}
 
-			for (int i = iniciFranja; i < finalFranja; i++) {
+			for (int i = franja[0]; i < franja[1]; i++) {
 				if(valor[i] = false) {
 					valor[i] = true;
 				}
@@ -172,17 +176,20 @@ public class PlaEstudis {
 	}
 		
 	/**
-	 * Elimina la franja [iniciFranja,finalFranja] sempre i quan aquest dia tingui franjes assignades.
+	 * Elimina la franja [iniciFranjaM,finalFranjaM,iniciFranjaT,finalFranjaT] sempre i quan aquest dia tingui franjes assignades.
 	 * @param dia: Dia que volem eliminar la franja.
 	 * @param iniciFranja: Hora d'inici de la franja a eliminar.
 	 * @param finalFranja: Hora final de la franja a eliminar.
 	 * @return Excepció codificada en forma d'enter.
 	 */
-	public int treuFranja(int dia, int iniciFranja, int finalFranja) {
-		boolean[] valor = this.franja.get(dia);
-		if (valor == null) return 15;
+	public int delFranja(int dia, int[] franja) throws Exception {
+		if (dia < 0 || dia > 6) return 11;
+		else if (franja == null) return -1;
+		else if (franja[0] > franja[1]) return 12;
 		else {
-			for (int i = iniciFranja; i < finalFranja; i++) {
+			boolean[] valor = this.franja.get(dia);
+			if (valor == null) return -1;
+			for (int i = franja[0]; i < franja[1]; i++) {
 				if(valor[i] = true) {
 					valor[i] = false;
 				}
@@ -191,5 +198,52 @@ public class PlaEstudis {
 		}
 		return 0;
 	}
+	
+	/**
+	 * Posa el rang corresponent al dia indicat.
+	 * @param dia: Dia que volem posar el rang.
+	 * @param rang: rang que volem assignar.
+	 * @return Excepció codificada en forma d'enter.
+	 * @throws Exception 
+	 */
+	public int setRangDia(int dia, int[] rang) throws Exception {
+		if (dia < 0 || dia > 6) return -1;
+		else if(rang == null || rang.length != 4) return -1;
+		this.rangDia[dia] = rang;
+		this.setFranja(dia, Arrays.copyOfRange(rang,0,2));
+		this.setFranja(dia, Arrays.copyOfRange(rang,2,4));
+		return 0;
+	}
+	
+	/**
+	 * Donem el rang corresponent del Matí del dia indicat.
+	 * @param dia: Dia que volem demanar el rang.
+	 * @return Excepció codificada en forma d'enter.
+	 */
+	public int[] getRangMati(int dia) throws Exception {
+		if (dia < 0 || dia > 6) ExceptionManager.thrower(12);
+		int[] rangmati = new int[2];
+		rangmati[0] = this.rangDia[dia][0];
+		rangmati[1] = this.rangDia[dia][1];
+		return rangmati;
+	}
+	
+	/**
+	 * Donem el rang corresponent de la tarda del dia indicat.
+	 * @param dia: Dia que volem demanar el rang.
+	 * @return Excepció codificada en forma d'enter.
+	 */
+	public int[] getRangTarda(int dia) throws Exception {
+		if (dia < 0 || dia > 6) ExceptionManager.thrower(12);
+		int[] rangmati = new int[2];
+		rangmati[0] = this.rangDia[dia][2];
+		rangmati[1] = this.rangDia[dia][3];
+		return rangmati;
+	}
+	
+	HashSet<Assignatura> getAssignatures() {
+		return this.assignatures;
+	}
+	
 		
 }
