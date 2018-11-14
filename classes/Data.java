@@ -5,7 +5,7 @@ public class Data {
 	//////////////////////// Variables //////////////////////////
 	
 	/**
-	 * Dia de la data 0..7
+	 * Dia de la data 0..6
 	 */
 	int dia;
 	
@@ -37,7 +37,7 @@ public class Data {
 	 * @return 0 si s'ha fet correctament, altrament error
 	 */
 	public int setDia(int dia) {
-		if (dia < 0 || dia > 7) return 220;
+		if (dia < 0 || dia > 6) return 220;
 		this.dia = dia;
 		return 0;
 	}
@@ -75,5 +75,12 @@ public class Data {
 	/////////////////////////////////////////////////////////////
 	///////////////////////  Funcions  //////////////////////////
 	
-	
+	public void incrementaHora(int n) {
+		hora += n;
+		while (hora > 23) {
+			hora -= 24;
+			++dia;
+		}
+		if (dia > 6) dia = dia%7;
+	}
 }
