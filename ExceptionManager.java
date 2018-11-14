@@ -175,7 +175,23 @@ public class ExceptionManager {
 			titles[213] = "El dia ha d'estar entre 0 i 6; ambdos inclosos.";
 			titles[214] = "Alguna de le hores estrandes és inferior a 0, o superior a 23.";
 			titles[215] = "Alguna de les hores viola la franja del pla d'estudis.";
-		}
+			
+			//Data 220:229 :
+			titles[220] = "Dia ha de ser més gran o igual a 0 i més petit o igual a 7.";
+			titles[221] = "Hora ha de ser més gran o igual a 0 i més petit o igual a 23.";
+			
+			//Element 230:249 :
+			titles[230] = "El paràmetre data no pot ser nul.";
+			titles[231] = "El paràmetre sessioGAssignada no pot ser nul.";
+			titles[232] = "El paràmetre sessioSGAssignada no pot ser nul.";
+			titles[233] = "El paràmetre aula no pot ser nul.";
+			titles[234] = ".";
+			titles[235] = ".";
+			titles[236] = ".";
+			titles[237] = ".";
+			titles[238] = ".";
+			titles[239] = ".";
+			titles[240] = ".";		}
 	}
 	
 	/**
