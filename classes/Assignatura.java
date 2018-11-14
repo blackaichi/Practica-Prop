@@ -162,7 +162,7 @@ public class Assignatura {
 	 * @return Excepció codificada en forma d'enter.
 	 */	
 	public int setSolapament(Assignatura assig) throws Exception {
-		if (assig == null) return -1;
+		if (assig == null) return 40;
 		solapament.addNoSolapar(this, assig);
 		return 0;
 	}
@@ -173,7 +173,7 @@ public class Assignatura {
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	public int setCorrequisit(Assignatura assig) throws Exception {
-		if (assig == null) return -1;
+		if (assig == null) return 40;
 		corr.addNoSolapar(this, assig);
 		return 0;
 	}
@@ -211,11 +211,11 @@ public class Assignatura {
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	public int setRequisit(Assignatura assigs) throws Exception {
-		if (assigs == null) ExceptionManager.thrower(-1);
+		if (assigs == null) ExceptionManager.thrower(40);
 		else {
 			this.noCicles.afegeixRequisits(assigs);
 			if (noCicles.isReachable(this,this)) {
-			 	ExceptionManager.thrower(-1); //TODO: numero excepcio
+			 	ExceptionManager.thrower(42); //TODO: numero excepcio
 			}
 		}
 		 return 0;
@@ -413,8 +413,8 @@ public class Assignatura {
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	public int delRequisit(Assignatura assigs) throws Exception {  //TODO:
-		if (assigs == null) ExceptionManager.thrower(-1);
-		if(!this.noCicles.treuRequisit(assigs)) ExceptionManager.thrower(-1);
+		if (assigs == null) ExceptionManager.thrower(40);
+		if(!this.noCicles.treuRequisit(assigs)) ExceptionManager.thrower(43);
 		return 0;
 	}
 	/**
@@ -423,7 +423,7 @@ public class Assignatura {
 	 * @return Excepció codificada en forma d'enter.
 	 */	
 	public int delCorrequisit(Assignatura assig) throws Exception {
-		if (assig == null) return -1;
+		if (assig == null) return 40;
 		corr.delNoSolapar(this, assig);
 		return 0;
 	}
@@ -434,7 +434,7 @@ public class Assignatura {
 	 * @return Excepció codificada en forma d'enter.
 	 */	
 	public int delSolapament(Assignatura assig) throws Exception {
-		if (assig == null) return -1;
+		if (assig == null) return 40;
 		corr.delNoSolapar(this, assig);
 		return 0;
 	}
@@ -505,8 +505,24 @@ public class Assignatura {
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	public boolean esIgual(Assignatura a) throws Exception {
-		if (a == null) ExceptionManager.thrower(-1);
+		if (a == null) ExceptionManager.thrower(40);
 		return a.getNom().equals(this.nom ) && a.getPlaEstudis().getNom().equals(this.plaEstudis.getNom());
+	}
+	
+	/**
+	 * Retorna el numero de SessionsG donades d'alta
+	 * @return assignatures.size()
+	 */
+	public int quantesSessionsG() {
+		return this.sessionsG.size();
+	}
+	
+	/**
+	 * Retorna el numero de sessionsSG donades d'alta
+	 * @return assignatures.size()
+	 */
+	public int quantesSessionsSG() {
+		return this.sessionsSG.size();
 	}
 	 
 }
