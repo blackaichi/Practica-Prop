@@ -69,7 +69,7 @@ public class DriverAula {
 		String equip = reader.next();
 		int size1 = a.quantEquip();
 		a.afegirEquip(equip);
-		if (checkEquip(equip)) System.out.println("CheckEquip OK");
+		if (a.checkEquip(equip)) System.out.println("CheckEquip OK");
 		else System.out.println("CheckEquip ERROR");
 		int size2 = a.quantEquip();
 		a.eliminaEquip(equip);
