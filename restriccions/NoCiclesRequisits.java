@@ -5,7 +5,7 @@ import classes.*;
 
 /**
  * 
- * @author eric.casanovas@est.fib.upc.edu
+ * @author adria.manero@est.fib.upc.edu
  *
  */
 
@@ -43,12 +43,12 @@ public class NoCiclesRequisits {
 	 * @param assig: Assignatura que volem treure dels requisits.
 	 * @return Execpció en forma d'enter.
 	 */
-	public int treuRequisit(Assignatura assig) {
+	public boolean treuRequisit(Assignatura assig) {
 		if(this.requisits.contains(assig)) {
 			this.requisits.remove(assig);
-			return 0;
+			return true;
 		}
-		return -1; //TODO: posar numero
+		return false; //TODO: posar numero
 	}
 	
 	/**
@@ -67,9 +67,10 @@ public class NoCiclesRequisits {
 	 * @param assig_t: Assignatura que volem comprobar el cicle.
 	 * @param assig_t: Assignatura que volem comprobar el cicle.
 	 * @return Execpció en forma d'enter.
+	 * @throws Exception 
 	 */
-	public boolean isReachable(Assignatura assig_t, Assignatura assig_f ) {
-		if (assig_t.equals(assig_f)) {
+	public boolean isReachable(Assignatura assig_t, Assignatura assig_f ) throws Exception {
+		if (assig_t.esIgual(assig_f)) {
 	        return true;
 	    }
 	    for (Assignatura nxt : requisits) {
@@ -83,3 +84,4 @@ public class NoCiclesRequisits {
 	
 }
 	
+

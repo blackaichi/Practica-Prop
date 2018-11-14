@@ -2,7 +2,13 @@ package restriccions;
 
 import classes.*;
 
-public class HoresSenseClasseAssignatura {
+/**
+ * 
+ * @author adria.manero@est.fib.upc.edu
+ *
+ */
+
+public class HoresSenseClasseAssignatura extends Unaria{
 	/**
 	 * En definitiva, conté les hores lectives del pla
 	 * d'estudis. Es evident que no es pot ni prohibir ni
