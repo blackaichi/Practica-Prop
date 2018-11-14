@@ -52,7 +52,7 @@ public class Assignatura {
 	
 	private Correquisit corr;
 	
-	private NoSolapar solapament;
+	private NoSolaparAssignatura solapament;
 		
 	/////////////////////////////////////////////////////////////
 	//////////////////////// Privades //////////////////////////
