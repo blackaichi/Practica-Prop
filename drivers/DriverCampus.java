@@ -44,23 +44,21 @@ public class DriverCampus {
 		System.out.println("Introdueix el nom del campus");
 		Scanner reader = new Scanner(System.in);
 		String nom = reader.next();
-		System.out.println("Introdueix el nom del nou campus");
-		String nomCampus = reader.next();
- 		Campus nou = new Campus(nomCampus);
+		reader.close();
  		c.setNom(nom);
 		if (c.getNom().equals(nom)) System.out.println("Get/Set nom OK");
 		else System.out.println("Get/Set nom ERROR");
 		
-		if (c.checkAula("A5101")) System.out.println("Get/Set Aula OK");
+		if (c.getAula("A5101") != null) System.out.println("Get/Set Aula OK");
 		else System.out.println("Get/Set Aula ERROR");
 		
-		if(c.quantesAules() == 1) System.out.println("Get/Set AllAules OK");
+		if(c.getAllAules().size() == 1) System.out.println("Get/Set AllAules OK");
 		else System.out.println("Get/Set AllAules ERROR");
 		
-		if (Campus.checkCampus(nom)) System.out.println("Get/Set Campus OK");
+		if (Campus.getCampus(nom) != null) System.out.println("Get/Set Campus OK");
 		else System.out.println("Get/Set Campus ERROR");
 		
-		if (Campus.quantsCampus() == 2) System.out.println("Get/Set AllCampus OK");
+		if (Campus.quantsCampus() == 1) System.out.println("Get/Set AllCampus OK");
 		else System.out.println("Get/Set AllCampus ERROR");
 	}
 	/**
@@ -68,10 +66,12 @@ public class DriverCampus {
 	 */
 	public static void checkAddDelAula() throws Exception {
 		Campus c = new Campus("Campus Nord");
-		Scanner reader = new Scanner(System.in);
-		String s = reader.next();
+		if (Campus.checkCampus("Campus Nord")) System.out.println("checkCampus OK");
+		else System.out.println("checkCampus ERROR");
 		int size1 = c.quantesAules();
 		c.altaAula("A6001", 40);
+		if (c.checkAula("A6001")) System.out.println("checkAula OK");
+		else System.out.println("checkAula ERROR");
 		int size2 = c.quantesAules();
 		c.baixaAula("A6001");
 		int size3 = c.quantesAules();
