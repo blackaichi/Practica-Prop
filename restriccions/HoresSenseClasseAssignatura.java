@@ -8,7 +8,7 @@ import classes.*;
  *
  */
 
-public class HoresSenseClasseAssignatura extends Unaria{
+public class HoresSenseClasseAssignatura {
 	/**
 	 * En definitiva, conté les hores lectives del pla
 	 * d'estudis. Es evident que no es pot ni prohibir ni
