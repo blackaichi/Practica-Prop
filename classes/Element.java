@@ -1,6 +1,7 @@
 package classes;
 
 import java.util.*;
+import restriccions.*;
 
 /**
  * 
@@ -16,42 +17,34 @@ public class Element {
 	/**
 	 * Aula assignada a l'element
 	 */
-	Aula aula;
+	private Campus campus;
+	
+	/**
+	 * Aules ja ocupades
+	 */
+	private HashSet<Aula> aulesOcupades;
 	
 	/**
 	 * Sessió de grup de l'element
 	 */
-	SessioGAssignada sessioGrup;
+	private SessioGAssignada sessioGrup;
 	
 	/**
 	 * Sessió de subgrup de l'element
 	 */
-	SessioSGAssignada sessioSubGrup;
+	private SessioSGAssignada sessioSubGrup;
 	
 	/**
 	 * Data de l'element
 	 */
-	Data data;
+	private Data data;
 	
 	/**
 	 * Horari al qual pertany l'element
 	 */
-	Horari horari;
+	private Horari horari;
 	
-	/**
-	 * HashSet on guardarem les aules
-	 */
-	HashSet<Aula> aules;
-	
-	/**
-	 * HashSet on guardarem les sessions de grup assignades
-	 */
-	HashSet<SessioGAssignada> sessionsGrup;
-	
-	/**
-	 * HashSet on guardarem les sessions de subgrup assignades
-	 */
-	HashSet<SessioGAssignada> sessionsSubGrup;
+	private EquipamentNecessari equip;
 	
 	/////////////////////////////////////////////////////////////
 	//////////////////////  Constructora  ///////////////////////
@@ -63,10 +56,13 @@ public class Element {
 	 * @param data data de l'element
 	 * @throws Exception
 	 */
-	public Element(Aula a, SessioGAssignada sGA, Data data) throws Exception {
-		ExceptionManager.thrower(setAula(a));
+	public Element(Campus c, SessioGAssignada sGA, Data data, Horari horari) throws Exception {
+		ExceptionManager.thrower(setCampus(c));
 		ExceptionManager.thrower(setSessioGAssignada(sGA));
 		ExceptionManager.thrower(setData(data));
+		ExceptionManager.thrower(setHorari(horari));
+		aulesOcupades = new HashSet<Aula>();
+		
 	}
 	
 	/**
@@ -76,10 +72,12 @@ public class Element {
 	 * @param data data de l'element
 	 * @throws Exception
 	 */
-	public Element(Aula a, SessioSGAssignada sSGA, Data data) throws Exception {
-		ExceptionManager.thrower(setAula(a));
+	public Element(Campus c, SessioSGAssignada sSGA, Data data, Horari horari) throws Exception {
+		ExceptionManager.thrower(setCampus(c));
 		ExceptionManager.thrower(setSessioSGAssignada(sSGA));
 		ExceptionManager.thrower(setData(data));
+		ExceptionManager.thrower(setHorari(horari));
+		aulesOcupades = new HashSet<Aula>();
 	}
 	
 	/////////////////////////////////////////////////////////////
@@ -104,6 +102,7 @@ public class Element {
 	public int setSessioGAssignada(SessioGAssignada sGA) {
 		if (sGA == null) return 231;
 		this.sessioGrup = sGA;
+		sessioSubGrup = null;
 		return 0;
 	}
 	
@@ -115,6 +114,7 @@ public class Element {
 	public int setSessioSGAssignada(SessioSGAssignada sSGA) {
 		if (sSGA == null) return 232;
 		this.sessioSubGrup = sSGA;
+		sessioGrup = null;
 		return 0;
 	}
 
@@ -123,12 +123,18 @@ public class Element {
 	 * @param a aula de l'element
 	 * @return 0 si s'ha fet correctament, altrament error
 	 */
-	public int setAula(Aula a) {
-		if (a == null) return 233;
-		aula = a;
+	public int setCampus(Campus c) {
+		if (c == null) return 233;
+		campus = c;
 		return 0;
 	}
 	
+	public int setHorari(Horari horari) {
+		if (horari == null) return 234;
+		this.horari = horari;
+		return 0;
+	}
+
 	/////////////////////////////////////////////////////////////
 	////////////////////////  Getters  //////////////////////////
 	
@@ -160,10 +166,34 @@ public class Element {
 	 * Retorna l'aula de l'element
 	 * @return l'aula de l'element
 	 */
-	public Aula getAula() {
-		return aula;
+	public Campus getCampus() {
+		return campus;
+	}
+	
+	public Horari getHorari() {
+		return horari;
 	}
 	
 	/////////////////////////////////////////////////////////////
 	///////////////////////  Funcions  //////////////////////////
+
+	
+	private HashSet<Aula> getAulesLliures() {
+		HashSet <Aula> aulesLliures = campus.getAllAules();
+		for (Aula ocupada : aulesOcupades) {
+			aulesLliures.removeIf(item -> item.getNom().equals(ocupada.getNom()));
+		}
+		return aulesLliures;
+	}
+	
+	
+	public HashSet<Aula> getAules(SessioGAssignada sGA) {
+		HashSet <Aula> aules = getAulesLliures();
+		
+	}
+	
+	
+	public HashSet<Aula> getAules(SessioSGAssignada sSGA) {
+		
+	}
 }
