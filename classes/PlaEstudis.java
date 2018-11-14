@@ -53,7 +53,7 @@ public class PlaEstudis {
 	 * @return Cert si l'Assignatura ja existeix o fals altrament.
 	 */
 	public boolean checkAssignatura(String nom) {
-		if (nom.equals(null)) return false;
+		if (nom == null) return false;
 		for(Assignatura a : assignatures) {
 			if (a.getNom().equals(nom)) return true;
 		}
@@ -94,7 +94,7 @@ public class PlaEstudis {
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	public int setNom(String nom) {
-		if (nom.equals(null)) return 18;
+		if (nom == null) return 18;
 		else if(this.nom != null && this.nom.equals(nom)) return 1;
 		else if(!checkPlansEstudis(nom)) return 10;
 		this.nom = nom;
