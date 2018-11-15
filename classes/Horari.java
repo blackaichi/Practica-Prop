@@ -45,7 +45,9 @@ public class Horari {
 	 */
 	private HashSet<Aula> aulesDelCampus;
 	
-	//TODO: Controlador d'nSessions;
+	//Controlador d'nSessions:
+	private Map<SessioGAssignada, Integer> ocurrencies_g;
+	private Map<SessioSGAssignada, Integer> ocurrencies_sg;
 	
 	////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////  PRIVADES  /////////////////////////////////////
@@ -58,7 +60,7 @@ public class Horari {
 	 * @return Una Aula que pot o no complir amb tots els requisits.
 	 */
 	private Aula seleccionaAulaAdient(Map<Integer, Map<Integer, HashSet<Segment>>> horari, SessioGAssignada sessio, int dia, int hora) {
-		return this.getMaximaAulaAdient(horari, sessio.getSessioGrup().getMaterial(), dia, hora, sessio.getSessioGrup().getHores());
+		return this.getMaximaAulaAdient(horari, sessio.getSessioGrup().getMaterial(), sessio.getGrup().getPlaces(), dia, hora, sessio.getSessioGrup().getHores());
 	}
 	
 	/**
@@ -70,7 +72,7 @@ public class Horari {
 	 * @return Una Aula que pot o no complir amb tots els requisits.
 	 */
 	private Aula seleccionaAulaAdient(Map<Integer, Map<Integer, HashSet<Segment>>> horari, SessioSGAssignada sessio, int dia, int hora) {
-		return this.getMaximaAulaAdient(horari, sessio.getSessioSubGrup().getMaterial(), dia, hora, sessio.getSessioSubGrup().getHores());
+		return this.getMaximaAulaAdient(horari, sessio.getSessioSubGrup().getMaterial(), sessio.getSubGrup().getPlaces(), dia, hora, sessio.getSessioSubGrup().getHores());
 	}
 	
 	/**
@@ -151,6 +153,11 @@ public class Horari {
 		return true;
 	}
 	
+	private boolean checkNSessions(Sessio sessio, Map<Integer, Map<Integer, HashSet<Segment>>> horari, int dia) {
+		
+		return true;
+	}
+	
 	/**
 	 * Funció recursiva que, en definitiva, genera l'horari adient.
 	 * @param index Controla la sessio a processar.
@@ -218,6 +225,8 @@ public class Horari {
 	 */
 	public Horari() {
 		this.horarisGenerat = new HashSet<>();
+		this.ocurrencies_g = new HashMap<>();
+		this.ocurrencies_sg = new HashMap<>();
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -277,14 +286,15 @@ public class Horari {
 	 * @param durada Indica per quantes hores consecutives cal reservar aquella aula.
 	 * @return L'aula mes adient.
 	 */
-	private Aula getMaximaAulaAdient(Map<Integer, Map<Integer, HashSet<Segment>>> horari, HashSet<String> equip, int dia, int hora, int durada) {
+	private Aula getMaximaAulaAdient(Map<Integer, Map<Integer, HashSet<Segment>>> horari, HashSet<String> equip, int places, int dia, int hora, int durada) {
 		Map<Integer, HashSet<Aula>> aulesCandidates = new HashMap<>();
-		for(Aula aula: this.aulesDelCampus) if(!this.checkAula(horari, aula, dia, hora, durada)) { //Si l'aula esta ocupada, es descarta.
-			if(aulesCandidates.get(aula.matchEquip(equip)) == null)
-				aulesCandidates.put(aula.matchEquip(equip), new HashSet<>());
-			
-			aulesCandidates.get(aula.matchEquip(equip)).add(aula);
-		}
+		for(Aula aula: this.aulesDelCampus)
+			if(!this.checkAula(horari, aula, dia, hora, durada) || aula.getCapacitat() < places) { //Si l'aula esta ocupada, es descarta.
+				if(aulesCandidates.get(aula.matchEquip(equip)) == null)
+					aulesCandidates.put(aula.matchEquip(equip), new HashSet<>());
+				
+				aulesCandidates.get(aula.matchEquip(equip)).add(aula);
+			}
 		
 		int maximMatch = 0;
 		for(int match: aulesCandidates.keySet()) //Selecciona aquella Key que conté més coincidencies.
@@ -324,10 +334,14 @@ public class Horari {
 	 * @param index indica la posicio de l'element a eliminar.
 	 */
 	private void kill() {
-		if(!sessionsDeGrup.isEmpty())
-			this.sessionsDeGrup.remove(this.sessionsDeGrup.iterator().next());
-		else if(!sessionsDeGrup.isEmpty())
-			this.sessionsDeSubGrup.remove(this.sessionsDeSubGrup.iterator().next());
+		if(!sessionsDeGrup.isEmpty()) {
+			SessioGAssignada sessio = this.sessionsDeGrup.iterator().next();
+			this.sessionsDeGrup.remove(sessio);
+		}
+		else if(!sessionsDeGrup.isEmpty()) {
+			SessioSGAssignada sessio = this.sessionsDeSubGrup.iterator().next();
+			this.sessionsDeSubGrup.remove(sessio);
+		}
 	}
 	
 	/**
