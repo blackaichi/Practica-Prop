@@ -41,6 +41,15 @@ public class NoSolaparAssignatura {
 	///////////////////////// Publics ///////////////////////////
 
 	/**
+	 * Creadora de NoSolaparAssignatura
+	 * @param a l'assignatura de la classe
+	 */
+	public NoSolaparAssignatura(Assignatura a) {
+		assignatura = a;
+		nosolapaments = new Vector<Assignatura>();
+	}
+	
+	/**
 	 * Indica si l'assignatura passada per paràmetre és correquisit
 	 * @return 1 si no es poden solapar, 0 si es poden solapar, altrament error 
 	 */
