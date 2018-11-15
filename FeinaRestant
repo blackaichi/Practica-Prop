@@ -1,25 +1,15 @@
-Assignatura: Acabar codis error 
-Aula: Res
-Campus: Res
-Data: Res
-Element: S'ha d'acabar i driver
-ExcMan: Drivers??
-Grup: Arreglar driver (Aleix)
-Horari: Acabar-la i driver
-PlaEstudis: Acabar codis error i Driver JUNIT (Manero i Eric)
-Sessio: Res
-SessioXG: Res
-SessioXGAssignada: Res
-SubGrup: Driver JUNIT (Eric)
-Correquisit: Driver (Eric)
-EquipamentNecessari: Driver i relinkar horari? (Eric)
-HoresAptesGrupsSub: Arreglar driver(Aleix)
-HoresSenseClasseAssignatura: Res
-NoCiclesRequisits: Arreglar driver(Aleix)
-NoSolaparAssignatura: Drivers (Eric)
-SolapamentsGrupSubgrup: Drivers
+Aleix: 
+- Descripció dels casos d'ús
+- Drivers: HoresAptesGrupSubgrup, HoresSenseClasseAssignatura, NoCiclesRequisits, SolapamentGrupSubGrup
 
-Casos Us + Descripció
-UML + Descripció
-Relacio classes/persona
-Descriure algorisme
+Manero:
+- UML
+- Driver: SubGrup, NoSolapamentAssignatura
+
+Hector:
+- Fer Horari
+- Descriure algoritme horari
+
+Eric: 
+- JUNIT: PlaEstudi, Subgrup
+- Driver: PlaEstudi
