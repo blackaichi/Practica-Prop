@@ -6,26 +6,18 @@ import static org.junit.Assert.assertEquals;
 import org.junit.*;
 import classes.*;
 
-/**
- * 
- * @author eric.casanovas@est.fib.upc.edu
- *
- */
-
 public class JUNITPlaEstudis {
 	
-	private PlaEstudis PE1;
-	private PlaEstudis PE2;
-	private PlaEstudis PE3;
-	private Assignatura a;
-	private Assignatura b;
+	private static PlaEstudis PE1;
+	private static PlaEstudis PE2;
+	private static PlaEstudis PE3;
 	
 	
 	/**
 	 * Iniciem alguns plans d'estudis
 	 */
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void setUp() throws Exception {
 		PE1 = new PlaEstudis("UPC");
 		PE2 = new PlaEstudis("UAB");
 		PE3 = new PlaEstudis("UDA");
@@ -42,7 +34,8 @@ public class JUNITPlaEstudis {
 	/**
 	 * Comprovem que salti error en cas de no passar-li nom
 	 */
-	@Test (expected = Exception.class)	public void testErrorConstructora() throws Exception {
+	@Test (expected = Exception.class)
+	public void testErrorConstructora() throws Exception {
 		PlaEstudis PE = new PlaEstudis("");
 	}
 	
@@ -70,9 +63,13 @@ public class JUNITPlaEstudis {
 	/**
 	 * Comprovem que salti error en cas de intentar violar la clau primaria de PlaEstudis
 	 */
-	@Test (expected = Exception.class)
+	@Test 
 	public void testSetNomError() {
-		PE1.setNom("UDA");
+		try {
+			PE1.setNom("UDA");
+		}catch(Exception e) {
+			Assert.fail("Exception " + e);
+		}
 	}	
 	
 	/**
