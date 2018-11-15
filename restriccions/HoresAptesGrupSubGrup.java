@@ -50,7 +50,7 @@ public class HoresAptesGrupSubGrup {
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	private int setMascara() {
-		if(this.grup == null) return 211;
+		if(this.grup == null && this.subGrup == null) return 211;
 		
 		for(int dia = 0; dia < 7; dia++) {
 			if(this.grup != null) this.mascara = clone(this.grup.getAssignatura().getPlaEstudis().getFranjaSetmana());
