@@ -76,20 +76,35 @@ public class Horari {
 	}
 	
 	/**
+	 * Encapsula les comprovacions de restriccions intrinseques del grup.
+	 * @param horari Referencia sobre quin horari comrovar les restricicons.
+	 * @param dia Indica el dia.
+	 * @param horaIni Indica l'hora.
+	 * @param grup Referencia el grup el qual comprovar.
+	 * @return Un booleà.
+	 */
+	private boolean checkRestriccionsDeGrup(Map<Integer, Map<Integer, HashSet<Segment>>> horari, int dia, int horaIni, Grup grup) {
+		if((!grup.getFranja().equals("MT") && !this.enRang(grup.getFranja().equals("M"), horaIni)) ||
+		   (grup.getRestriccioHoresAptes().checkPotFerClasse(dia, horaIni) != 0)) return false;
+		
+		else for(Segment segment: horari.get(dia).get(horaIni))
+			if(grup.getSolapaments().checkPotSolapar(segment.getSessio().first.getGrup(), segment.getSessio().second.getSubGrup()) != 0)
+				return false;
+					
+		return true;		
+	}
+	
+	/**
 	 * Retorna true si, i només si, totes les restriccions de Grup es compleixen
 	 * per un grup en un dia i hora donats.
+	 * @param horari Referencia sobre quin horari comrovar les restricicons.
 	 * @param dia Indica el dia.
 	 * @param horaIni Indica l'hora.
 	 * @param sessio Referencia al grup.
 	 * @return Un booleà.
 	 */
 	private boolean checkAllRestriccionsDeGrup(Map<Integer, Map<Integer, HashSet<Segment>>> horari, int dia, int horaIni, SessioGAssignada sessio) {
-		if(sessio.getGrup().getRestriccioHoresAptes().checkPotFerClasse(dia, horaIni) != 0) return false;
-		else for(Segment segment: horari.get(dia).get(horaIni))
-			if(sessio.getGrup().getSolapaments().checkPotSolapar(segment.getSessio().first.getGrup(), segment.getSessio().second.getSubGrup()) != 0)
-				return false;
-			
-		return true;
+		return checkRestriccionsDeGrup(horari, dia, horaIni, sessio.getGrup());
 	}
 	
 	/**
@@ -102,8 +117,9 @@ public class Horari {
 	 */
 	private boolean checkAllRestriccionsDeSubGrup(Map<Integer, Map<Integer, HashSet<Segment>>> horari, int dia, int horaIni, SessioSGAssignada sessio) {
 		//Un subGrup no pot fer classe fora de les hores aptes del seu grup:
-		if(sessio.getSubGrup().getRestriccioHoresAptes().checkPotFerClasse(dia, horaIni) != 0 ||
-		   sessio.getSubGrup().getGrup().getRestriccioHoresAptes().checkPotFerClasse(dia, horaIni) != 0) return false;
+		if((sessio.getSubGrup().getRestriccioHoresAptes().checkPotFerClasse(dia, horaIni) != 0) ||
+		   this.checkRestriccionsDeGrup(horari, dia, horaIni, sessio.getSubGrup().getGrup())) return false;
+		
 		else for(Segment segment: horari.get(dia).get(horaIni))
 			if(sessio.getSubGrup().getSolapaments().checkPotSolapar(segment.getSessio().first.getGrup(), segment.getSessio().second.getSubGrup()) != 0)
 				return false;
@@ -155,8 +171,14 @@ public class Horari {
 		return true;
 	}
 	
+	/**
+	 * Controla la quantitat de vegades que s'ha de fer una sessio.
+	 * @param sessio Referencia a la sessió a checkejar.
+	 * @param horari Referencia a l'horaria sobre el qual fer la comporvació.
+	 * @param dia Dia en qual s'esta checkejant.
+	 * @return Un booleà.
+	 */
 	private boolean checkNSessions(Sessio sessio, Map<Integer, Map<Integer, HashSet<Segment>>> horari, int dia) {
-		
 		return true;
 	}
 	
@@ -168,6 +190,7 @@ public class Horari {
 	 * @throws Exception
 	 */
 	private void backTracking(Map<Integer, Map<Integer, HashSet<Segment>>> horari, int nHoraris) throws Exception {
+		System.out.println(">>> Ha entrat! <<<");
 		if(this.horarisGenerat.size() >= nHoraris) return; // Si ja tenim nhorari, no és continua.
 		Pair<SessioGAssignada, SessioSGAssignada> corrent = this.nextSessio();
 		
@@ -385,11 +408,25 @@ public class Horari {
 	}
 
 	/**
+	 * Retorna true si, i només si, l'hora es troba dins del rang indicat;
+	 * altrament retorna false.
+	 * @param rang Indica el rang.
+	 * @param hora Indica l'hora a comporvar.
+	 * @return Un booleà.
+	 */
+	private boolean enRang(boolean mati, int hora) {
+		int[] rang = mati? this.plaEstudis.getRangMati() : this.plaEstudis.getRangTarda(); 
+		if(hora < rang[0] || rang[1] < hora ) return false;
+		else return true;
+	}
+	
+	/**
 	 * PER A TESTOS: Imprimeix per pantalla un horari concret.
 	 * @param horari Referencia l'horari a imprimir.
 	 */
 	static public void printHorari(Map<Integer, Map<Integer, HashSet<Segment>>> horari) {
-		if(horari == null || horari.isEmpty()) System.out.println("Ep! L'horari es buit! :( ");
+		if(horari == null) System.out.println("Ep! L'horari es NULL! :( ");
+		else if(horari.isEmpty()) System.out.println("Ep! L'horari es buit! :( ");
 		else for(int dia: horari.keySet()) {
 			System.out.println("DIA: ".concat(String.valueOf(dia)));
 			for(int hora: horari.get(dia).keySet()) {
