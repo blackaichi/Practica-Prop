@@ -162,6 +162,13 @@ public class HoresAptesGrupSubGrup {
 	public int restore() {
 		return setMascara();
 	}
+	/**
+	 * Retorna la matriu de booleans mascara
+	 * @return mascara
+	 */
+	public boolean[][] getMascara() {
+		return this.mascara;
+	}
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  CONSULTORES  ///////////////////////////////////
