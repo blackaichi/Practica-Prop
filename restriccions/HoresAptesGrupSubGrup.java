@@ -1,7 +1,6 @@
 package restriccions;
 
-import java.util.Arrays;
-
+import java.util.*;
 import classes.*;
 import utils.ExceptionManager;
 
@@ -16,12 +15,12 @@ public class HoresAptesGrupSubGrup {
 	 * d'estudis. Es evident que no es pot ni prohibir ni
 	 * assigna hores a un grup fora de les hores lectives.
 	 */
-	private boolean[][] mascara;
+	private Map<Integer, boolean[]> mascara;
 	/**
 	 * Marca amb bool aquelles hores en les que el grup
 	 * té "permís" per fer hores.
 	 */
-	private boolean[][] horesDisponibles;
+	private Map<Integer, boolean[]> horesDisponibles;
 	
 	/**
 	 * Referencia el grup o subGrup al qual es restringeix.
@@ -54,8 +53,8 @@ public class HoresAptesGrupSubGrup {
 		if(this.grup == null) return 211;
 		
 		for(int dia = 0; dia < 7; dia++) {
-			if(this.grup != null) this.mascara[dia] = Arrays.copyOf(this.grup.getAssignatura().getPlaEstudis().getFranjaDia(dia), this.grup.getAssignatura().getPlaEstudis().getFranjaDia(dia).length);
-			else this.mascara[dia] = Arrays.copyOf(this.subGrup.getGrup().getAssignatura().getPlaEstudis().getFranjaDia(dia), this.subGrup.getGrup().getAssignatura().getPlaEstudis().getFranjaDia(dia).length);
+			if(this.grup != null) this.mascara = clone(this.grup.getAssignatura().getPlaEstudis().getFranjaSetmana());
+			else this.mascara = clone(this.subGrup.getGrup().getAssignatura().getPlaEstudis().getFranjaSetmana());
 		}
 		
 		this.horesDisponibles = clone(mascara); //inicialment son iguals;
@@ -89,13 +88,13 @@ public class HoresAptesGrupSubGrup {
 		int checker = this.checkDiaIHores(dia, hores);
 		if(checker != 0) return checker;
 		
-		boolean[][] reboke = clone(this.horesDisponibles);
+		Map<Integer, boolean[]> reboke = clone(this.horesDisponibles);
 		for(int hora: hores)
-			if(!this.mascara[dia][hora] && !force) {
+			if(!this.mascara.get(dia)[hora] && !force) {
 				this.horesDisponibles = clone(reboke);
 				return 215;
 			}
-			else if(this.mascara[dia][hora]) this.horesDisponibles[dia][hora] = permet;
+			else if(this.mascara.get(dia)[hora]) this.horesDisponibles.get(dia)[hora] = permet;
 		
 		return 0;
 	}
@@ -105,9 +104,14 @@ public class HoresAptesGrupSubGrup {
 	 * @param toClone Array a clonar.
 	 * @return Array clonat.
 	 */
-	static public boolean[][] clone(boolean[][] toClone){
+	static public Map<Integer, boolean[]> clone(Map<Integer, boolean[]> toClone){
 		if(toClone == null) return null;
-		return Arrays.copyOf(toClone, toClone.length);
+		
+		Map<Integer, boolean[]> cloned = new HashMap<>();
+		for(int dia: toClone.keySet())
+			cloned.put(dia, Arrays.copyOf(toClone.get(dia), toClone.get(dia).length));
+		
+		return cloned;
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -119,8 +123,6 @@ public class HoresAptesGrupSubGrup {
 	 */
 	public HoresAptesGrupSubGrup(Grup grup, SubGrup subGrup) throws Exception {
 		ExceptionManager.thrower(this.linker(grup, subGrup));
-		
-		this.mascara = new boolean[7][24];
 		ExceptionManager.thrower(this.setMascara());
 	}
 	
@@ -130,8 +132,17 @@ public class HoresAptesGrupSubGrup {
 	 * Retorna la mascara de la restricció.
 	 * @return una matriu de booleans.
 	 */
-	public boolean[][] getMascara(){
+	public Map<Integer, boolean[]> getMascara(){
 		return this.mascara;
+	}
+	
+	/**
+	 * Retorna la matriu de booleans que descriu les hores disponibles
+	 * en aquesta restricció.
+	 * @return Una matriu de booleans de 7x24.
+	 */
+	public Map<Integer, boolean[]> getHoresAptes(){
+		return this.horesDisponibles;
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -187,16 +198,7 @@ public class HoresAptesGrupSubGrup {
 		int checker = this.checkDiaIHores(dia, hores);
 		if(checker != 0) return checker;
 		
-		if(this.horesDisponibles[dia][hora]) return 0;
+		if(this.horesDisponibles.get(dia)[hora]) return 0;
 		else return 1;
-	}
-
-	/**
-	 * Retorna la matriu de booleans que descriu les hores disponibles
-	 * en aquesta restricció.
-	 * @return Una matriu de booleans de 7x24.
-	 */
-	public boolean[][] getHoresAptes(){
-		return this.horesDisponibles;
 	}
 }
