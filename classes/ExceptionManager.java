@@ -163,11 +163,11 @@ public class ExceptionManager {
 			titles[192] = "Les assignatures passades com a paràmetre no poden ser nules.";
 			titles[193] = "Les assignatures passades com a paràmetre no poden ser iguals.";
 			
-			// Correquisit 200:209 : 
-			titles[200] = "No podem afegir el correquisit perque ja existeix."; 
-			titles[201] = "No podem eliminar un correquisit que no existeix." ;
-			titles[202] = "Les sessions de grup passades com a paràmetres no poden ser nules.";
-			titles[203] = "Les assignatures passades com a paràmetre no poden ser iguals.";
+			// NoSolaparAssignatura 200:209 : 
+			titles[200] = "No podem afegir un no solapar si ja existeix."; 
+			titles[201] = "No podem eliminar un no solapar que no existeix." ;
+			titles[202] = "L'assignatura passada com a paràmetre no pot ser nula.";
+			titles[203] = "L'assignatura ja te un no solapar.";
 			
 			//HoresSenseClasseGrup 210:219 :
 			titles[210] = "EL grup no pot ser null.";
@@ -195,14 +195,6 @@ public class ExceptionManager {
 			titles[240] = ".";		
 			}
 		
-			//Solapaments 250:259 :
-			titles[250] = "No poden ser ambdos null.";
-			titles[251] = "Un grup no pot ser disjunt amb si mateix.";
-			titles[252] = "Un Subgrup no pot ser disjunt amb si mateix.";
-			titles[253] = "S'ha d'assignar a un grup o subgup.";
-			titles[254] = "Només es pot assignar un d'ambdos.";
-			titles[255] = "Només es pot comprovar d'un en un.";
-			
 			//EquipamentNecessari 260:269 :
 			titles[260] = "El paràmetre element no pot ser nul.";
 	}
