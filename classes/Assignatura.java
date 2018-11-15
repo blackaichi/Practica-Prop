@@ -463,5 +463,14 @@ public class Assignatura {
 	public int quantesSessionsSG() {
 		return this.sessionsSG.size();
 	}
+	
+	/**
+	 * Retorna el numero de SessionsG donades d'alta
+	 * @return assignatures.size()
+	 */
+	public int quantsGrups() {
+		return this.grups.size();
+	}
+
 	 
 }
