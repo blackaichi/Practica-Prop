@@ -76,7 +76,6 @@ public class SessioGrup extends Sessio{
 	@Override
 	public int setnsessions(int nsessions) {
 		if (nsessions < 1) return 95;
-		if (assignatura.getHTeo() < nsessions) return 96;
 		if (this.nsessions == nsessions) return 1;
 		this.nsessions = nsessions;
 		return 0;
@@ -90,7 +89,6 @@ public class SessioGrup extends Sessio{
 	@Override
 	public int setHores(int hores) {
 		if (hores < 1) return 91;
-		if (hores > assignatura.getHTeo()) return 94;
 		if (this.hores == hores) return 1;
 		this.hores = hores;
 		return 0;

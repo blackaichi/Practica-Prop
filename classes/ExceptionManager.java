@@ -104,15 +104,11 @@ public class ExceptionManager {
 			titles[91] = "L'hora no pot ser negativa ni 0.";
 			titles[92] = "Tipus no pot ser un string null o buit.";
 			titles[93] = "Tipus ha de contindre únicament lletres.";
-			titles[94] = "La sessió no pot ser de més hores de les que són permeses a l'assignatura per Grup.";
 			titles[95] = "El nombre de sessions ha de ser més gran que 0.";
-			titles[96] = "El nombre d'hores del grup és inferior al nombre de sessions.";
 			titles[97] = "No podem desassignar una sessió assignada si la seva sessió de grup i grup pertanyen a assignatures diferents.";
 			titles[98] = "No podem afegir una sessió assignada que ja esta assignada.";
 			titles[99] = "No podem afegir una sessió assignada si la seva sessió de grup i grup pertanyen a assignatures diferents.";
 			titles[100] = "No podem eliminar una sessió assignada si la seva sessió de grup i grup pertanyen a assignatures diferents.";
-			titles[101] = "La sessió no pot ser de més hores de les que són permeses a l'assignatura per SubGrup.";
-			titles[102] = "El nombre d'hores del subgrup és inferior al nombre de sessions.";
 			titles[103] = "No podem desassignar una sessió assignada si la seva sessió de subGrup i subGrup pertanyen a assignatures diferents.";
 			titles[104] = "No podem afegir una sessió assignada si la seva sessió de subgrup i subgrup pertanyen a assignatures diferents.";
 			titles[105] = "No podem eliminar una sessió assignada si la seva sessió de subgrup i subgrup pertanyen a assignatures diferents.";
