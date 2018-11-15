@@ -1,5 +1,6 @@
 package drivers;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.*;
@@ -10,6 +11,9 @@ public class DriverPlaEstudis {
 	private PlaEstudis PE1;
 	private PlaEstudis PE2;
 	private PlaEstudis PE3;
+	private Assignatura a;
+	private Assignatura b;
+	
 	
 	/**
 	 * Iniciem alguns plans d'estudis
@@ -37,16 +41,24 @@ public class DriverPlaEstudis {
 	}
 	
 	/**
-	 * Comprovem el correcte funcionament dels sets i gets
+	 * Comprovem el correcte funcionament de setRangDia i els gets del rang
 	 * @throws Exception 
 	 */
 	@Test 
-	public void testSetGet() throws Exception {
+	public void testSetGetRangDia() throws Exception {
+		int[] rang = new int[] {8,13,15,20};
+		PE3.setRangDia(rang);
+		assertArrayEquals(new int[] {8,13}, PE3.getRangMati());
+		assertArrayEquals(new int[] {15,20}, PE3.getRangTarda());
+	}
+	
+	/**
+	 * Comprovem el correcte funcionament de setNom i getNom
+	 */
+	@Test
+	public void getSetNom() {
 		PE2.setNom("UB");
 		assertEquals(PE2.getNom(), "UB");
-		int[] rang = new int[] {8,13,15,20};
-		PE3.setRangDia(2, rang);
-		assertEquals(rang, PE3.getFranjaDia(2));
 	}
 	
 	/**
@@ -55,10 +67,19 @@ public class DriverPlaEstudis {
 	@Test (expected = Exception.class)
 	public void testSetNomError() {
 		PE1.setNom("UDA");
+	}	
+	
+	/**
+	 * Comprova que funcioni donar d'alta i donar de baixa assignatures
+	 * @throws Exception
+	 */
+	@Test
+	public void checkAssignatures() throws Exception {
+		assertEquals(PE1.altaAssignatura("PROP"), 0);
+		assertEquals(PE3.altaAssignatura("IES"), 0);
+		assertEquals(PE1.quantesAssignatures(), 1);
+		assertEquals(PE2.quantesAssignatures(), 0);
+		assertEquals(PE1.baixaAssignatura("PROP"), 0);
+		assertEquals(PE1.quantesAssignatures(), 0);
 	}
-	
-	
-	
-	
-	
 }
