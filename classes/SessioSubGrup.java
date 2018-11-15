@@ -36,6 +36,7 @@ public class SessioSubGrup extends Sessio{
 	 * Creadora de SessioSubGrup amb assignatura i tipus com a paràmetre
 	 * @param assig l'assignatura a la qual pertany la sessió del subgrup
 	 * @param tipus tipus de la sessió 
+	 * @throws Exception
 	 */
 	public SessioSubGrup(Assignatura assig, String tipus) throws Exception{
 		super(assig, tipus); // crida a la constructora de Sessio
@@ -47,6 +48,7 @@ public class SessioSubGrup extends Sessio{
 	 * @param assig l'assignatura a la qual pertany la sessió del subgrup
 	 * @param hores nombre d'hores de la sessió
 	 * @param tipus tipus de la sessió
+	 * @throws Exception
 	 */
 	public SessioSubGrup(Assignatura assig, int hores, String tipus) throws Exception{
 		super(assig, hores, tipus); // crida a la constructora de Sessio 
@@ -59,6 +61,7 @@ public class SessioSubGrup extends Sessio{
 	 * @param hores nombre d'hores de la sessió
 	 * @param tipus tipus de la sessió
 	 * @param nsessions nombre de sessions que es poden assignar
+	 * @throws Exception
 	 */
 	public SessioSubGrup(Assignatura assig, int hores, String tipus, int nsessions) throws Exception{
 		super(assig, hores, tipus, nsessions); // crida a la constructora de Sessio 
@@ -71,7 +74,7 @@ public class SessioSubGrup extends Sessio{
 	/**
 	 * Assigna quantes sessions té el subGrup
 	 * @param nsessions nombre de sessions
-	 * @return 0 en cas de que no hi hagi error, altrament hi ha error
+	 * @return 0 en cas de que no hi hagi error, altrament error
 	 */
 	@Override
 	public int setnsessions(int nsessions) {
@@ -84,7 +87,7 @@ public class SessioSubGrup extends Sessio{
 	/**
 	 * Assigna quantes hores té la sessió
 	 * @param hores nombre d'hores de la sessió
-	 * @return 0 en cas de que no hi hagi error, altrament hi ha error
+	 * @return 0 en cas de que no hi hagi error, altrament error
 	 */
 	@Override
 	public int setHores(int hores) {
@@ -96,14 +99,6 @@ public class SessioSubGrup extends Sessio{
 	
 	/////////////////////////////////////////////////////////////
 	////////////////////////  Getters  //////////////////////////
-	
-	/**
-	 * Retorna el nombre de sessions que es poden assignar
-	 * @return el nombre de sessions que es poden assignar
-	 */
-	public int getnsessions() {
-		return nsessions;
-	}
 	
 	/**
 	 * Retorna totes les sessions de subgrup assignades
@@ -127,7 +122,7 @@ public class SessioSubGrup extends Sessio{
 	/**
 	 * Assigna una nova sessió i la guarda al Hashset on tenim les sessions assignades
 	 * @param numero número de subgrup al qual assignarem la sessió
-	 * @return 0 en cas de que no hi hagi error, altrament hi ha error
+	 * @return 0 en cas de que no hi hagi error, altrament error
 	 */
 	public int assignaSessio(int numerogrup, int numerosubgrup) throws Exception {
 		SubGrup subgrup = assignatura.getGrup(numerogrup).getSubGrup(numerosubgrup); // obtenim el subgrup que necessitem
@@ -142,7 +137,7 @@ public class SessioSubGrup extends Sessio{
 	/**
 	 * Desassigna la sessió assignada passada per paràmetre
 	 * @param sSGA la sessió de subgrup assignada que volem desassignar
-	 * @return 0 en cas de que no hi hagi error, altrament hi ha error
+	 * @return 0 en cas de que no hi hagi error, altrament error
 	 */
 	public int desassignaSessio(SessioSGAssignada sSGA) {
 		if (!sSGA.getSubGrup().getGrup().getAssignatura().getNom().equals(assignatura.getNom())) return 103;
@@ -157,7 +152,7 @@ public class SessioSubGrup extends Sessio{
 	/**
 	 * Afegeix una nova sessió assignada al Hashset que previament ha assignat la classe subgrup
 	 * @param sSGA la sessió de subgrup assignada que hem de guardar al Hashset
-	 * @return 0 en cas de que no hi hagi error, altrament hi ha error
+	 * @return 0 en cas de que no hi hagi error, altrament error
 	 */
 	public int afegirSessio(SessioSGAssignada sSGA) throws Exception {
 		if (this.sessionsSGA.contains(sSGA)) return 98;
@@ -170,7 +165,7 @@ public class SessioSubGrup extends Sessio{
 	/**
 	 * Elimina una sessió assignada del Hashset que previament ja ha desassignat la classe subgrup
 	 * @param sSGA la sessió del subgrup desassignada que hem d'eliminar del Hashset
-	 * @return 0 en cas de que no hi hagi error, altrament hi ha error
+	 * @return 0 en cas de que no hi hagi error, altrament error
 	 */
 	public int eliminarSessio(SessioSGAssignada sSGA) {
 		if (!sSGA.getSubGrup().getGrup().getAssignatura().getNom().equals(assignatura.getNom())) return 105;

@@ -36,6 +36,7 @@ public class SessioGrup extends Sessio{
 	 * Creadora de SessioGrup amb assignatura i tipus com a paràmetre
 	 * @param assig l'assignatura a la qual pertany la sessió del grup
 	 * @param tipus tipus de la sessió
+	 * @throws Exception
 	 */
 	public SessioGrup(Assignatura assig, String tipus) throws Exception{
 		super(assig, tipus); // crida a la constructora de Sessio 
@@ -47,6 +48,7 @@ public class SessioGrup extends Sessio{
 	 * @param assig l'assignatura a la qual pertany la sessió del grup
 	 * @param hores nombre d'hores de la sessió
 	 * @param tipus tipus de la sessió
+	 * @throws Exception 
 	 */
 	public SessioGrup(Assignatura assig, int hores, String tipus) throws Exception{
 		super(assig, hores, tipus); // crida a la constructora de Sessio 
@@ -59,6 +61,7 @@ public class SessioGrup extends Sessio{
 	 * @param hores nombre d'hores de la sessió
 	 * @param tipus tipus de la sessió
 	 * @param nsessions nombre de sessions que es poden assignar
+	 * @throws Exception
 	 */
 	public SessioGrup(Assignatura assig, int hores, String tipus, int nsessions) throws Exception{
 		super(assig, hores, tipus, nsessions); // crida a la constructora de Sessio 
@@ -69,9 +72,9 @@ public class SessioGrup extends Sessio{
 	////////////////////////  Setters  //////////////////////////
 
 	/**
-	 * Assigna quantes sessions té el grup
+	 * Assigna quantes sessions té la sessió
 	 * @param nsessions nombre de sessions
-	 * @return 0 en cas de que no hi hagi error, altrament hi ha error
+	 * @return 0 en cas de que no hi hagi error, altrament error
 	 */
 	@Override
 	public int setnsessions(int nsessions) {
@@ -84,7 +87,7 @@ public class SessioGrup extends Sessio{
 	/**
 	 * Assigna quantes hores té la sessió
 	 * @param hores nombre d'hores de la sessió
-	 * @return 0 en cas de que no hi hagi error, altrament hi ha error
+	 * @return 0 en cas de que no hi hagi error, altrament error
 	 */
 	@Override
 	public int setHores(int hores) {
@@ -96,14 +99,6 @@ public class SessioGrup extends Sessio{
 	
 	/////////////////////////////////////////////////////////////
 	////////////////////////  Getters  //////////////////////////
-	
-	/**
-	 * Retorna el nombre de sessions que es poden assignar
-	 * @return el nombre de sessions que es poden assignar
-	 */
-	public int getnsessions() {
-		return nsessions;
-	}
 	
 	/**
 	 * Retorna totes les sessions de grup assignades
@@ -127,7 +122,7 @@ public class SessioGrup extends Sessio{
 	/**
 	 * Assigna una nova sessió i la guarda al Hashset on tenim les sessions assignades
 	 * @param numero número de grup al qual assignarem la sessió 
-	 * @return 0 en cas de que no hi hagi error, altrament hi ha error
+	 * @return 0 en cas de que no hi hagi error, altrament error
 	 */
 	public int assignaSessio(int numero) throws Exception {
 		Grup grup = assignatura.getGrup(numero); // obtenim el grup que necessitem
@@ -142,7 +137,7 @@ public class SessioGrup extends Sessio{
 	/**
 	 * Desassigna la sessió assignada passada per paràmetre
 	 * @param sGA la sessió de grup assignada que volem desassignar
-	 * @return 0 en cas de que no hi hagi error, altrament hi ha error
+	 * @return 0 en cas de que no hi hagi error, altrament error
 	 */
 	public int desassignaSessio(SessioGAssignada sGA) {
 		if (!sGA.getGrup().getAssignatura().getNom().equals(assignatura.getNom())) return 97;
@@ -157,7 +152,7 @@ public class SessioGrup extends Sessio{
 	/**
 	 * Afegeix una nova sessió assignada al Hashset que previament ha assignat la classe grup
 	 * @param sGA la sessió de grup assignada que hem de guardar al Hashset
-	 * @return 0 en cas de que no hi hagi error, altrament hi ha error
+	 * @return 0 en cas de que no hi hagi error, altrament error
 	 */
 	public int afegirSessio(SessioGAssignada sGA) {
 		if (sessionsGA.contains(sGA)) return 98;
@@ -170,7 +165,7 @@ public class SessioGrup extends Sessio{
 	/**
 	 * Elimina una sessió assignada del Hashset que previament ja ha desassignat la classe grup
 	 * @param sGA la sessió del grup desassignada que hem d'eliminar del Hashset
-	 * @return 0 en cas de que no hi hagi error, altrament hi ha error
+	 * @return 0 en cas de que no hi hagi error, altrament error
 	 */
 	public int eliminarSessio(SessioGAssignada sGA) {
 		if (!sGA.getGrup().getAssignatura().getNom().equals(assignatura.getNom())) return 100;

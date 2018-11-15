@@ -19,7 +19,7 @@ public abstract class Sessio {
 	private HashSet<String> material;
 	
 	/**
-	 * Quantes hores té aquesta sessió
+	 * Quantes hores té cada sessió
 	 */	
 	protected int hores;
 	
@@ -34,7 +34,7 @@ public abstract class Sessio {
 	protected Assignatura assignatura;
 	
 	/**
-	 * Nombre de sessions que es poden assignar
+	 * Nombre de sessions que s'han de fer
 	 */
 	protected int nsessions;
 	
@@ -92,7 +92,7 @@ public abstract class Sessio {
 	/**
 	 * Assigna una assignatura a la sessió
 	 * @param assignatura assignatura a la qual pertany la sessió
-	 * @return 0 en cas de que no hi hagi error, altrament hi ha error
+	 * @return 0 en cas de que no hi hagi error, altrament error
 	 */
 	public int setAssignatura(Assignatura assignatura) {
 		if (assignatura == null) return 90;
@@ -103,14 +103,14 @@ public abstract class Sessio {
 	/**
 	 * Assigna quantes hores té la sessió
 	 * @param hores nombre d'hores de la sessió
-	 * @return 0 en cas de que no hi hagi error, altrament hi ha error
+	 * @return 0 en cas de que no hi hagi error, altrament error
 	 */
 	public abstract int setHores(int hores);
 	
 	/**
 	 * Assigna de quin tipus es la sessió
 	 * @param tipus tipus de la sessió
-	 * @return 0 en cas de que no hi hagi error, altrament hi ha error
+	 * @return 0 en cas de que no hi hagi error, altrament error
 	 */
 	public int setTipus(String tipus) {
 		if (tipus == null || tipus.isEmpty()) return 92;
@@ -125,19 +125,31 @@ public abstract class Sessio {
 	/**
 	 * Assigna material a la sessió
 	 * @param material Tot el material necessari per la sessió
+	 * @return 0 en cas de que no hi hagi error, altrament error
 	 */
-	public void setMaterial(HashSet <String> material) {
+	public int setMaterial(HashSet <String> material) {
+		if (material == null) return 109;
 		this.material = material;
+		return 0;
 	}
 	
 	/**
 	 * Assigna nsessions a la sessió
 	 * @param nsessions nombre de sessions de la sessió
+	 * @return 0 en cas de que no hi hagi error, altrament error
 	 */
 	public abstract int setnsessions(int nsessions);
 	
 	/////////////////////////////////////////////////////////////
 	////////////////////////  Getters  //////////////////////////
+	
+	/**
+	 * Retorna el nombre de sessions que es poden assignar
+	 * @return el nombre de sessions que es poden assignar
+	 */
+	public int getnsessions() {
+		return nsessions;
+	}
 	
 	/**
 	 * Retorna el nombre d'hores de la sessió
@@ -177,7 +189,7 @@ public abstract class Sessio {
 	/**
 	 * Afegeix material a la sessió
 	 * @param equip material a afegir
-	 * @return 0 en cas de que no hi hagi error, altrament hi ha error
+	 * @return 0 en cas de que no hi hagi error, altrament error
 	 */
 	public int addMaterial(String equip) {
 		if (equip == null || equip.isEmpty()) return 108;
@@ -189,7 +201,7 @@ public abstract class Sessio {
 	/**
 	 * Elimina material a la sessió
 	 * @param equip material a eliminar
-	 * @return 0 en cas de que no hi hagi error, altrament hi ha error
+	 * @return 0 en cas de que no hi hagi error, altrament error
 	 */
 	public int delMaterial(String equip) {
 		if (equip == null|| equip.isEmpty()) return 108;

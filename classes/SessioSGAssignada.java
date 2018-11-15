@@ -29,6 +29,7 @@ public class SessioSGAssignada extends SessioAssignada{
 	 * Creadora de SessioSGAssignada amb tots els paràmetres
 	 * @param subGrup subgrup al qual pertany la sessió assignada
 	 * @param sessioSG sessió de subgrup a la qual pertany la sessió assignada
+	 * @throws Exception
 	 */
 	public SessioSGAssignada(SubGrup subGrup, SessioSubGrup sessioSG) throws Exception {
 		super();
