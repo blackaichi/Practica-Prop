@@ -1,7 +1,6 @@
 package drivers;
 
-import java.util.Scanner;
-
+import java.util.*;
 import classes.*;
 
 public class DriverCampus {
