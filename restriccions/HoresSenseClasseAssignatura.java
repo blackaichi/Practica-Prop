@@ -13,7 +13,7 @@ public class HoresSenseClasseAssignatura {
 	/**
 	 * En definitiva, conté les hores lectives del pla
 	 * d'estudis. Es evident que no es pot ni prohibir ni
-	 * assigna hores a una assignatura fora de les hores lectives.
+	 * assignar hores a una assignatura fora de les hores lectives.
 	 */
 	private boolean[][] mascara;
 	/**
@@ -188,4 +188,13 @@ public class HoresSenseClasseAssignatura {
 	public boolean[][] getHoresAptes(){
 		return this.horesDisponibles;
 	}
+	
+	/**
+	 * Retorna la matriu de booleans que descriu les hores lectives del pla d'estudis
+	 * @return Una matriu de booleans.
+	 */
+	public boolean[][] getMascara() {
+		return this.mascara;
+	}
+	
 }
