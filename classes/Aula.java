@@ -186,4 +186,18 @@ public class Aula {
 	public int quantEquip() {
 		return this.equip.size();
 	}
+
+	/**
+	 * Indica quants elements de tots els indicats en equip conté
+	 * l'aula.
+	 * @param equip Indica tot l'equipament que es requereix.
+	 * @return Un enter superior o igual a 0.
+	 */
+	public int matchEquip(HashSet<String> equip) {
+		int counter = 0;
+		if(equip != null) for(String equipament: this.getEquip())
+			if(equip.contains(equipament.toLowerCase())) counter++;
+		
+		return counter;
+	}
 }
