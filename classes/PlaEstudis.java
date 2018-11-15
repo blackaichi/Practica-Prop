@@ -97,7 +97,7 @@ public class PlaEstudis {
 	public int setNom(String nom) {
 		if (nom == null || nom.isEmpty()) return 18;
 		else if(this.nom != null && this.nom.equals(nom)) return 1;
-		else if(!checkPlansEstudis(nom)) return 10;
+		else if(checkPlansEstudis(nom)) return 10;
 		plansEstudis.add(nom);
 		this.nom = nom;
 		return 0;
@@ -119,12 +119,24 @@ public class PlaEstudis {
 			}
 
 			for (int i = franja[0]; i < franja[1]; i++) {
-				if((valor[i] = false) && ((i >= rangDia[0] && i < rangDia[1]) || (i >= rangDia[2] && i < rangDia[3]))) {
+				if(valor[i] = false) {
 					valor[i] = true;
 				}
 			}
 			this.franja.put(dia,valor);
 		}
+		return 0;
+	}
+	
+	/**
+	 * Assigna la franja [iniciFranjaM,finalFranjaM,iniciFranjaT,finalFranjaT] al Pla d'Estudis.
+	 * @param dia: dia de la franja que entra l'usuari.
+	 * @param franja: Franja que entra l'usuari.
+	 */
+	public int setFranja(int dia, boolean[] franja) throws Exception {
+		if (dia < 0 || dia > 6) return 11;
+		else if (franja == null) return 12;
+		else this.franja.put(dia,franja);
 		return 0;
 	}
 		
