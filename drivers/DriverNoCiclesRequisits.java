@@ -3,7 +3,11 @@ package drivers;
 import java.util.*;
 import classes.*;
 import restriccions.*;
-
+/**
+ * 
+ * @author Aleix Lluch Serra
+ *
+ */
 public class DriverNoCiclesRequisits {
 	/**
 	 * Funció main del DriverNoCiclesRequisits, l'administrador introdueix un número 

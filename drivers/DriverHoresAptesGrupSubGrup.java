@@ -3,7 +3,11 @@ package drivers;
 import java.util.*;
 import classes.*;
 import restriccions.*;
-
+/**
+ * 
+ * @author Aleix LLuch Serra
+ *
+ */
 public class DriverHoresAptesGrupSubGrup {
 	
 	/**
@@ -18,7 +22,7 @@ public class DriverHoresAptesGrupSubGrup {
 		System.out.print("Enter an integer: ");
 		Scanner reader = new Scanner(System.in);
 		int n = reader.nextInt();
-		while (n == 1 || n == 2 || n == 3) {
+		while (n == 1 || n == 2) {
 			if (n == 1) CheckConstructora();
 			else CheckModificadoresiConsultores();
 		}
@@ -57,13 +61,11 @@ public class DriverHoresAptesGrupSubGrup {
 		if (hags.checkPotFerClasse(5, 4) == 0) System.out.println("permetHores i checkPotFerClasse OK");
 		
 		hags.restore();
-		boolean[][] horesaptes = hags.getHoresAptes();
-		boolean[][] horesa = hags.getMascara();
+		Map<Integer, boolean[]> horesaptes = hags.getHoresAptes();
+		Map<Integer, boolean[]> horesa = hags.getMascara();
 		boolean trobat = false;
-		for (int i=0; i < horesaptes.length; ++i) {
-			for (int j = 0; j < horesaptes.length; ++j) {
-				if (horesaptes[i][j] != horesa[i][j]) trobat = true;
-			}
+		for (Map.Entry<Integer, boolean[]> b : horesaptes) {
+			
 		}
 		if (trobat) System.out.println("Restore, getHoresAptes i getMascara ERROR");
 		else System.out.println("Restore, getHoresAptes i getMascara OK");

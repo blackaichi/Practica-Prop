@@ -3,7 +3,11 @@ package drivers;
 import java.util.*;
 import classes.*;
 
-
+/**
+ * 
+ * @author Aleix Lluch Serra
+ *
+ */
 public class DriverAula {
 	/**
 	 * Funcio main del driver DriverAula, introdueixes un numero i comprova l'operació correponent.

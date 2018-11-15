@@ -3,6 +3,11 @@ package drivers;
 import java.util.*;
 import classes.*;
 import restriccions.*;
+/**
+ * 
+ * @author Aleix Lluch Serra
+ *
+ */
 
 public class DriverHoresSenseClasseAssignatura {
 	/**
@@ -50,18 +55,11 @@ public class DriverHoresSenseClasseAssignatura {
 		else System.out.println("prohibirHores i checkPotFerClasse ERROR");
 		hsca.permetHores(force, dia, hores);
 		if (hsca.checkPotFerClasse(5, 4) == 0) System.out.println("permetHores i checkPotFerClasse OK");
-		
 		hsca.restore();
-		boolean[][] horesaptes = hsca.getHoresAptes();
-		boolean[][] horesa = hsca.getMascara();
-		boolean trobat = false;
-		for (int i=0; i < horesaptes.length; ++i) {
-			for (int j = 0; j < horesaptes.length; ++j) {
-				if (horesaptes[i][j] != horesa[i][j]) trobat = true;
-			}
-		}
+		/*
 		if (trobat) System.out.println("Restore, getHoresAptes i getMascara ERROR");
 		else System.out.println("Restore, getHoresAptes i getMascara OK");
+		*/
 	}
 }
 

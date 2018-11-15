@@ -3,7 +3,11 @@ package drivers;
 import java.util.*;
 import classes.*;
 import utils.*;
-
+/**
+ * 
+ * @author Aleix Lluch Serra
+ *
+ */
 public class DriverGrup {
 	/**
 	 * Funció main del driver DriverGrup, l'administrador introdueix un número 
@@ -35,7 +39,7 @@ public class DriverGrup {
 		public static void CheckConstructora1() throws Exception {
 			System.out.println("Per la primera contructora necessitem un objecte Assignatura i el numero de Grup");
 			PlaEstudis pe = new PlaEstudis("Pla");
-			Assignatura a = new Assignatura(pe, "BD", 10, 10);
+			Assignatura a = new Assignatura(pe, "BD");
 			Grup g = new Grup(a, 20);
 			System.out.println("Correcte");
 		}
@@ -47,7 +51,7 @@ public class DriverGrup {
 			System.out.println("Per la segona contructora necessitem un objecte Assignatura, el numero de Grup, les places que té"
 					+ "i la franja horaria que ocupa");
 			PlaEstudis pe = new PlaEstudis("Pla");
-			Assignatura a = new Assignatura(pe, "BD", 10, 10);
+			Assignatura a = new Assignatura(pe, "BD");
 			int numero = 10;
 			int places = 30;
 			String franja = "Matí";
@@ -60,7 +64,7 @@ public class DriverGrup {
 		 */
 		public static void CheckGetSetGrup() throws Exception {
 			PlaEstudis pe = new PlaEstudis("Pla");
-			Assignatura a = new Assignatura(pe, "BD", 10, 10);
+			Assignatura a = new Assignatura(pe, "BD");
 			Scanner reader = new Scanner(System.in);
 			int numero = 0;
 			int places = 0;
@@ -82,7 +86,7 @@ public class DriverGrup {
 			else System.out.println("Get/Set franja ERROR");
 			System.out.println("Introdueix el nou nom de l'assignatura(String)");
 			String nom = reader.next();
-			Assignatura a1 = new Assignatura(pe, nom, 10, 10);
+			Assignatura a1 = new Assignatura(pe, nom);
 			g.setAssignatura(a1);
 			if (g.getAssignatura().getNom().equals(nom)) System.out.println("Get/Set Assignatura OK");
 			else System.out.println("Get/Set Assignatura ERROR");
@@ -113,7 +117,7 @@ public class DriverGrup {
 		 */
 		public static void CheckModificadoresSubgrup() throws Exception {
 			PlaEstudis pe = new PlaEstudis("Pla");
-			Assignatura a = new Assignatura(pe, "BD", 10, 10);
+			Assignatura a = new Assignatura(pe, "BD");
 			Grup g = new Grup(a, 20);
 			int size1 = g.quantsSubGrups();
 			g.altaSubGrup(11, 20, true);
@@ -135,7 +139,7 @@ public class DriverGrup {
 		 */
 		public static void CheckModificadoresSessio() throws Exception {
 			PlaEstudis pe = new PlaEstudis("Pla");
-			Assignatura a = new Assignatura(pe, "BD", 10, 10);
+			Assignatura a = new Assignatura(pe, "BD");
 			Grup g = new Grup(a, 20);
 			g.assignaSessio("teoria", 10);
 			SessioGAssignada sgat = g.getSessio("teoria", 10);
@@ -157,8 +161,8 @@ public class DriverGrup {
 		 */
 		public static void CheckConsultores() throws Exception {
 			PlaEstudis pe = new PlaEstudis("Pla");
-			Assignatura a = new Assignatura(pe, "BD", 10, 10);
-			Grup g = new Grup(a, 20);
+			Assignatura a = new Assignatura(pe, "BD");
+			Grup g = new Grup(a, 10);
 			g.assignaSessio("teoria", 10);
 			if (g.checkSessio("teoria", 10)) System.out.println("CheckSessio OK");
 			else System.out.println("CheckSessio ERROR");
