@@ -15,16 +15,6 @@ public class Assignatura {
 	 * Nom  de l'Assignatura
 	 */
 	private String nom;
-	
-	/**
-	 * Hores de teoria  de l'Assignatura
-	 */
-	private int hteo;
-		
-	/**
-	 * Hores de laboratori  de l'Assignatura
-	 */
-	private int hlab;
 		
 	/**
 	 * Plans d'Estudis que pertanyen a l'Assignatura
@@ -72,35 +62,16 @@ public class Assignatura {
 	/**
 	 * Creadora de Assignatura amb parametres.
 	 * @param nom: nom de l'assignatura.
-	 * @param hteo: hores de teoria de l'assignatura.
-	 * @param hlab: hores de laboratori de l'assignatura.
 	 */
-	public Assignatura(PlaEstudis plaEst, String nom, int hteo, int hlab) throws Exception {
+	public Assignatura(PlaEstudis plaEst, String nom) throws Exception {
 		 this.noCicles = new NoCiclesRequisits(this);
 		ExceptionManager.thrower(this.setNom(plaEst,nom));
-		ExceptionManager.thrower(this.setHTeo(hteo));
-		ExceptionManager.thrower(this.setHLab(hlab));
 		ExceptionManager.thrower(this.setPlaEstudis(plaEst));
 		this.sessionsG = new HashSet<SessioGrup>();
 		this.sessionsSG = new HashSet<SessioSubGrup>();
 		this.grups = new HashSet<Grup>();
 
 
-	}
-		
-	/**
-	 * Creadora de Assignatura sense parametres.
-	 * @param plaEstudis: Pla d'Estudis que pertany l'Assignatura.
-	 */
-	public Assignatura(PlaEstudis plaEst, String nom) throws Exception {
-		this.noCicles = new NoCiclesRequisits(this);
-		ExceptionManager.thrower(this.setNom(plaEst,nom));
-		this.hteo = 0;
-		this.hlab = 0;
-		this.plaEstudis = plaEst;
-		this.sessionsG = new HashSet<SessioGrup>();
-		this.sessionsSG = new HashSet<SessioSubGrup>();
-		this.grups = new HashSet<Grup>();
 	}
 		
 	/////////////////////////////////////////////////////////////
@@ -117,30 +88,6 @@ public class Assignatura {
 		else if (plaEst == null) return 31;
 		else if(plaEst.checkAssignatura(nom)) return 32;
 		this.nom = nom;
-		return 0;
-	}
-		
-	/**
-	 * Assigna quantes hores de teoria te l'Assignatura.
-	 * @param hteo: nombre d'hores de teoria de l'Assignatura que entra l'usuari.
-	 * @throws Exception si hteo < 0 o hteo no cambia.
-	 */
-	public int setHTeo(int hteo) {
-		if (this.hteo == hteo) return 1;
-		else if (hteo < 0) return 33;
-		this.hteo = hteo;
-		return 0;
-	}
-		
-	/**
-	 * Assigna quantes hores de laboratori te l'Assignatura.
-	 * @param hlab: nombre d'hores de laboratori de l'Assignatura que entra l'usuari.
-	 * @throws Excepció codificada en forma d'enter..
-	 */
-	public int setHLab(int hlab) {
-		if (this.hlab == hlab) return 1;
-		else if (hlab < 0) return 34;// error: les hores de lab són negatives
-		this.hlab = hlab;
 		return 0;
 	}
 	
@@ -230,22 +177,6 @@ public class Assignatura {
 	 */
 	public String getNom() {
 		return this.nom;
-	}
-		
-	/**
-	 * Retorna les hores de teoria de l'Assignatura.
-	 * @return Hores de teoria de l'Assignatura.
-	 */
-	public int getHTeo() {
-		return this.hteo;
-	}
-		
-	/**
-	 * Retorna les hores de laboratori de l'Assignatura.
-	 * @return Hores de laboratori de l'Assignatura.
-	 */
-	public int getHLab() {
-		return this.hlab;
 	}
 		
 	/**

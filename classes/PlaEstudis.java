@@ -248,9 +248,9 @@ public class PlaEstudis {
 	 * @param hlab: Indica quantes hores de laboratori té l'assignatura.
 	 * @return Excepció codificada en forma d'enter.
 	 */
-	public int altaAssignatura(String nom, int hteo, int hlab) throws Exception{
+	public int altaAssignatura(String nom) throws Exception{
 		if (this.checkAssignatura(nom)) return 13;
-		assignatures.add(new Assignatura(this,nom,hteo,hlab));
+		assignatures.add(new Assignatura(this,nom));
 		return 0;
 	}
 		
