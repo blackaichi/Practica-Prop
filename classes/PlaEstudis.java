@@ -115,6 +115,7 @@ public class PlaEstudis {
 		if (dia < 0 || dia > 6) return 11;
 		else if (franja == null) return 12;
 		else if (franja[0] > franja[1]) return 12;
+		else if (franja.length != 2) return -1; //TODO
 		else {
 			boolean[] valor = this.franja.get(dia);
 			if (valor == null) {

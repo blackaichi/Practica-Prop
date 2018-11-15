@@ -235,6 +235,14 @@ public class Assignatura {
 	public HoresSenseClasseAssignatura getHoresAptes() {
 		return this.horesAptes;
 	}
+	
+	/**
+	 * Retorna l'instancia HoresSenseClasseAssignatura de l'Assignatura.
+	 * @return HoresSenseClasseAssignatura.
+	 */
+	public HashSet<Grup> getGrups() {
+		return this.grups;
+	}
 	/////////////////////////////////////////////////////////////
 	//////////////////////// Modificadores  ////////////////////
 	
