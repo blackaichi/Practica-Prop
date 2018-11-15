@@ -172,7 +172,7 @@ public class Horari {
 		Pair<SessioGAssignada, SessioSGAssignada> corrent = this.nextSessio();
 		
 		if(corrent.isNull()) { //si s'ha lograt afegir TOTES les sessions vol dir que tenim un HORARI CANDIDAT!
-			this.horarisGenerat.add(horari); //Guardem l'horari obtingut;
+			this.horarisGenerat.add(new HashMap<Integer, Map<Integer, HashSet<Segment>>>(horari)); //Guardem l'horari obtingut;
 			return; //S'hi s'ha arribat al final s'acaba.
 		}
 		
@@ -382,5 +382,22 @@ public class Horari {
 		}
 		
 		return false;
+	}
+
+	/**
+	 * PER A TESTOS: Imprimeix per pantalla un horari concret.
+	 * @param horari Referencia l'horari a imprimir.
+	 */
+	static public void printHorari(Map<Integer, Map<Integer, HashSet<Segment>>> horari) {
+		if(horari == null || horari.isEmpty()) System.out.println("Ep! L'horari es buit! :( ");
+		else for(int dia: horari.keySet()) {
+			System.out.println("DIA: ".concat(String.valueOf(dia)));
+			for(int hora: horari.get(dia).keySet()) {
+				System.out.println("	HORA: ".concat(String.valueOf(hora)));
+				for(Segment segment: horari.get(dia).get(hora)) {
+					System.out.println("		 AULA SESSIÓ: ".concat(segment.aula.getNom()));
+				}
+			}
+		}
 	}
 }
