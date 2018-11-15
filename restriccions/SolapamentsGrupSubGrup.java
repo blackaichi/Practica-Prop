@@ -109,6 +109,24 @@ public class SolapamentsGrupSubGrup {
 		return 0;
 	}
 
+	/**
+	 * Substitueix el numero identificador d'un grup o subGrup per un de nou.
+	 * Considerant que s'ha fet un canvi.
+	 * @param grup Referencia al grup.
+	 * @param subGrup Referencia al sub grup.
+	 * @param newNumero Indica quina es la nova identificació.
+	 * @return Exepció codificada en forma d'enter.
+	 */
+	public int actualitza(Grup grup, SubGrup subGrup, int newNumero) {
+		if(grup == null && subGrup == null) return 253;
+		else if(grup != null && subGrup != null) return 250;
+		
+		String assignatura = grup != null? grup.getAssignatura().getNom() : subGrup.getGrup().getAssignatura().getNom();
+		this.disjuntesGlobals.get(assignatura).remove(grup != null? grup.getNumero() : subGrup.getNumero());
+		this.disjuntesGlobals.get(assignatura).add(newNumero);
+		return 0;
+	}
+	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  CONSULTORES  ///////////////////////////////////
 	/**

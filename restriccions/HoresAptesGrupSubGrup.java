@@ -46,22 +46,6 @@ public class HoresAptesGrupSubGrup {
 	}
 	
 	/**
-	 * Assigna la mascara segons el pla d'estudis del grup.
-	 * @return Excepció codificada en forma d'enter.
-	 */
-	private int setMascara() {
-		if(this.grup == null && this.subGrup == null) return 211;
-		
-		for(int dia = 0; dia < 7; dia++) {
-			if(this.grup != null) this.mascara = clone(this.grup.getAssignatura().getPlaEstudis().getFranjaSetmana());
-			else this.mascara = clone(this.subGrup.getGrup().getAssignatura().getPlaEstudis().getFranjaSetmana());
-		}
-		
-		this.horesDisponibles = clone(mascara); //inicialment son iguals;
-		return 0;
-	}
-	
-	/**
 	 * Vigila que cap de les hores entradas no sigui incongruent.
 	 * @param hores Conjunt d'hores a revisar.
 	 * @return True si no violen les hores, false altrament.
@@ -123,7 +107,28 @@ public class HoresAptesGrupSubGrup {
 	 */
 	public HoresAptesGrupSubGrup(Grup grup, SubGrup subGrup) throws Exception {
 		ExceptionManager.thrower(this.linker(grup, subGrup));
-		ExceptionManager.thrower(this.setMascara());
+		ExceptionManager.thrower(this.setMascara(true));
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////  SETTERS  /////////////////////////////////////
+	/**
+	 * Assigna la mascara segons el pla d'estudis del grup o subGrup.
+	 * @param cascade Indica si, en configurar la mascara, es volen igualar
+	 * les horesDisponibles amb la mascara, o bé és vol conservar la configuració
+	 * present d'aquestes horesDisponibles.
+	 * @return Excepció codificada en forma d'enter.
+	 */
+	public int setMascara(boolean cascade) {
+		if(this.grup == null && this.subGrup == null) return 211;
+		
+		for(int dia = 0; dia < 7; dia++) {
+			if(this.grup != null) this.mascara = clone(this.grup.getAssignatura().getPlaEstudis().getFranjaSetmana());
+			else this.mascara = clone(this.subGrup.getGrup().getAssignatura().getPlaEstudis().getFranjaSetmana());
+		}
+		
+		if(cascade) this.horesDisponibles = clone(mascara); //inicialment son iguals;
+		return 0;
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -178,7 +183,7 @@ public class HoresAptesGrupSubGrup {
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	public int restore() {
-		return setMascara();
+		return setMascara(true);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
