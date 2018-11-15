@@ -31,7 +31,7 @@ public class PlaEstudis {
 	/**
 	 * Rang del Pla d'estudis
 	 */
-	int[][] rangDia;
+	int[] rangDia;
 			
 	//////////////////////////////////////////////////////////
 	//////////////////////  Privades  ///////////////////////
@@ -81,7 +81,7 @@ public class PlaEstudis {
 	public PlaEstudis(String nom) throws Exception {
 		ExceptionManager.thrower(this.setNom(nom));
 		this.franja = new HashMap<Integer,boolean[] >();
-		this.rangDia = new int[7][4];
+		this.rangDia = new int[4];
 		this.assignatures = new HashSet<Assignatura>();
 
 	}
@@ -95,7 +95,7 @@ public class PlaEstudis {
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	public int setNom(String nom) {
-		if (nom == null) return 18;
+		if (nom == null || nom.isEmpty()) return 18;
 		else if(this.nom != null && this.nom.equals(nom)) return 1;
 		else if(!checkPlansEstudis(nom)) return 10;
 		this.nom = nom;
@@ -118,7 +118,7 @@ public class PlaEstudis {
 			}
 
 			for (int i = franja[0]; i < franja[1]; i++) {
-				if(valor[i] = false) {
+				if((valor[i] = false) && ((i >= rangDia[0] && i < rangDia[1]) || (i >= rangDia[2] && i < rangDia[3]))) {
 					valor[i] = true;
 				}
 			}
@@ -133,12 +133,9 @@ public class PlaEstudis {
 	 * @param rang: rang que volem assignar.
 	 * @return Excepció codificada en forma d'enter.
 	 */
-	public int setRangDia(int dia, int[] rang) throws Exception {
-		if (dia < 0 || dia > 6) return 11;
-		else if(rang == null || rang.length != 4) return 16;
-		this.rangDia[dia] = rang;
-		this.setFranja(dia, Arrays.copyOfRange(rang,0,2));
-		this.setFranja(dia, Arrays.copyOfRange(rang,2,4));
+	public int setRangDia(int[] rang) throws Exception {
+		if(rang == null || rang.length != 4) return 16;
+		this.rangDia = rang;
 		return 0;
 	}
 	
@@ -178,8 +175,8 @@ public class PlaEstudis {
 	public int[] getRangMati(int dia) throws Exception {
 		if (dia < 0 || dia > 6) ExceptionManager.thrower(12);
 		int[] rangmati = new int[2];
-		rangmati[0] = this.rangDia[dia][0];
-		rangmati[1] = this.rangDia[dia][1];
+		rangmati[0] = this.rangDia[0];
+		rangmati[1] = this.rangDia[1];
 		return rangmati;
 	}
 	
@@ -191,8 +188,8 @@ public class PlaEstudis {
 	public int[] getRangTarda(int dia) throws Exception {
 		if (dia < 0 || dia > 6) ExceptionManager.thrower(12);
 		int[] rangmati = new int[2];
-		rangmati[0] = this.rangDia[dia][2];
-		rangmati[1] = this.rangDia[dia][3];
+		rangmati[0] = this.rangDia[2];
+		rangmati[1] = this.rangDia[3];
 		return rangmati;
 	}
 	
