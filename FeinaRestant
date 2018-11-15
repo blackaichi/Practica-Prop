@@ -4,7 +4,7 @@ Campus: Res
 Data: Res
 Element: S'ha d'acabar i driver
 ExcMan: Drivers??
-Grup: Driver
+Grup: Res
 Horari: Acabar-la i driver
 PlaEstudis: Acabar codis error i Driver JUNIT (Manero i Eric)
 Sessio: Res
@@ -13,9 +13,9 @@ SessioXGAssignada: Res
 SubGrup: Driver JUNIT (Eric)
 Correquisit: Driver (Eric)
 EquipamentNecessari: Driver i relinkar horari? (Eric)
-HoresAptesGrupsSub: Driver
-HoresSenseClasseAssignatura: Driver 
-NoCiclesRequisits: Driver
+HoresAptesGrupsSub: Driver (Aleix)
+HoresSenseClasseAssignatura: Driver (Aleix)
+NoCiclesRequisits: Driver (Aleix)
 NoSolaparAssignatura: Drivers (Eric)
 SolapamentsGrupSubgrup: Drivers
 
