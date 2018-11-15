@@ -6,7 +6,7 @@ import classes.*;
 
 public class DriverAula {
 	/**
-	 * Funcio main del driver, introdueixes un numero i comprova l'operació correponent
+	 * Funcio main del driver DriverAula, introdueixes un numero i comprova l'operació correponent.
 	 * @throws Exception
 	 */
 	public static void main(String [] args) throws Exception {
@@ -23,7 +23,7 @@ public class DriverAula {
 		reader.close();
 	}
 	/**
-	 * Comprova la constructora
+	 * Comprova la constructora.
 	 * @throws Exception
 	 */
 	
@@ -34,18 +34,18 @@ public class DriverAula {
 		System.out.println("Correcte");
 	}
 	/**
-	 * Comprova els getters i els setters
+	 * Comprova els getters i els setters.
 	 * @throws Exception
 	 */
 	public static void checkGetSet() throws Exception {
 		Campus c = new Campus("Campus Nord");
 		Aula a = new Aula(c, "A5101", 30);
-		System.out.println("Introdueix la capacitat");
+		System.out.println("Introdueix la capacitat(Enter):");
 		Scanner reader = new Scanner(System.in);
 		int cap = reader.nextInt();
-		System.out.println("Introdueix el nom de l'aula");
+		System.out.println("Introdueix el nom de l'aula(String):");
 		String nom = reader.next();
-		System.out.println("Introdueix el nom del campus");
+		System.out.println("Introdueix el nom del campus(String):");
 		String nomCampus = reader.next();
 		reader.close();
  		Campus nou = new Campus(nomCampus);
@@ -63,13 +63,14 @@ public class DriverAula {
 		else System.out.println("Get/Set equip ERROR");
 	}
 	/**
-	 * Comprova les funcions add i del de l'equip de materials que te cada aula
+	 * Comprova les funcions add i del de l'equip de materials que te cada aula.
 	 * @throws Exception
 	 */
 	public static void checkAddDelEquip() throws Exception {
 		Campus c = new Campus("Campus Nord");
 		Aula a = new Aula(c, "A6001", 40);
 		Scanner reader = new Scanner(System.in);
+		System.out.println("Introdueix l'equip(material) de l'aula(String):");
 		String equip = reader.next();
 		reader.close();
 		int size1 = a.quantEquip();
@@ -86,3 +87,4 @@ public class DriverAula {
 		else System.out.println("ResetEquip ERROR");
 	}
 }
+
