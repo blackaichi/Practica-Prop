@@ -89,8 +89,8 @@ public class SubGrup {
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
 	public SubGrup(Grup grup, int numero) throws Exception{
-		ExceptionManager.thrower(this.setNumero(numero));
 		ExceptionManager.thrower(this.setGrup(grup));
+		ExceptionManager.thrower(this.setNumero(numero));
 		this.iniRestriccions();
 		
 		places = 0;
@@ -104,9 +104,9 @@ public class SubGrup {
 	 * @param places Descriu la capacitat del SubGrup.
 	 */
 	public SubGrup(Grup grup, int numero, int places) throws Exception {
+		ExceptionManager.thrower(this.setGrup(grup));
 		ExceptionManager.thrower(this.setNumero(numero));
 		ExceptionManager.thrower(this.setPlaces(places, false));
-		ExceptionManager.thrower(this.setGrup(grup));
 		this.iniRestriccions();
 		
 		sessions = new HashSet<>();
@@ -247,6 +247,10 @@ public class SubGrup {
 	
 	/**
 	 * Retorna la restriccio d'hores aptes.
+	 * Tot i que en un principi pugui semblar que, aixi com està fet, a un subGrup
+	 * se li poden assignar hores aptes que divergeixen de les hores aptes del seu Grup;
+	 * a l'hora de crear l'horari el generador te en compte que, donat un subGrup, les seves
+	 * hores aptes compleixin també les del seu Grup.
 	 * @return Restriccions.
 	 */
 	public HoresAptesGrupSubGrup getRestriccioHoresAptes() {
