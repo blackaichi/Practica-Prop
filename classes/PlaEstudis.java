@@ -40,13 +40,13 @@ public class PlaEstudis {
 	 * Retorna cert si ja existeix un Pla d'Estudis amb el mateix nom.
 	 * @param nom: nom del Pla d'Estudis que volem comprobar.
 	 * @return Cert si el Pla d'Estudis ja existeix o fals altrament.
-	 *//*
+	 */
 	private boolean checkPlansEstudis(String nom) {
-		for(PlaEstudis p : plansEstudis) {
-			if (p.getNom().equals(nom)) return false;
+		for(String p : plansEstudis) {
+			if (p.equals(nom)) return false;
 		}
 		return true;
-	}*/
+	}
 	
 	/**
 	 * Retorna cert si ja existeix una Assignatura amb el mateix nom en aquest Pla d'Estudis.
@@ -96,11 +96,10 @@ public class PlaEstudis {
 	 */
 	public int setNom(String nom) {
 		if (nom == null || nom.isEmpty()) return 18;
+		else if (this.nom == null) this.nom = nom;
 		else if(this.nom != null && this.nom.equals(nom)) return 1;
-		else if(plansEstudis.contains(nom)) return 10;
-		if (this.nom != null) plansEstudis.removeIf(item -> item.equals(this.nom));
-		this.nom = nom;
-		plansEstudis.add(this.nom);
+		else if(checkPlansEstudis(nom)) return 10;
+		plansEstudis.add(nom);
 		return 0;
 	}
 			
@@ -128,7 +127,7 @@ public class PlaEstudis {
 		}
 		return 0;
 	}
-
+	
 	/**
 	 * Assigna la franja [iniciFranjaM,finalFranjaM,iniciFranjaT,finalFranjaT] al Pla d'Estudis.
 	 * @param dia: dia de la franja que entra l'usuari.
@@ -140,7 +139,7 @@ public class PlaEstudis {
 		else this.franja.put(dia,franja);
 		return 0;
 	}
-	
+		
 	/**
 	 * Posa el rang corresponent al dia indicat.
 	 * @param dia: Dia que volem posar el rang.
@@ -306,13 +305,5 @@ public class PlaEstudis {
 	 */
 	public int quantesAssignatures() {
 		return this.assignatures.size();
-	}
-	
-	/**
-	 * Retorna quants plans d'estudis hi han
-	 * @return quants plans d'estudis hi han
-	 */
-	public static int quantsPlansEstudis() {
-		return plansEstudis.size();
 	}
 }
