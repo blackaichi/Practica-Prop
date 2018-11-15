@@ -6,6 +6,12 @@ import restriccions.*;
 
 public class DriverHoresAptesGrupSubGrup {
 	
+	/**
+	 * Funció main del DriverHoresAptesGrupSubGrup, l'administrador introdueix un número 
+	 * enter i es comproven les funcions corresponents de la restriccio.
+	 * @param args
+	 * @throws Exception
+	 */
 	public static void main (String [] args) throws Exception {
 		System.out.print("Benvingut a l'eina de comprovació de la restriccio HoresSenseClasseAssignatura");
 		System.out.print("1-CheckConstructora, 2-CheckModificadoresiConsultores");
@@ -18,7 +24,10 @@ public class DriverHoresAptesGrupSubGrup {
 		}
 		reader.close();
 	}
-	
+	/**
+	 * Aquí es comprova la constructora.
+	 * @throws Exception
+	 */
 	public static void CheckConstructora() throws Exception {
 		System.out.println("Per la contructora necessitem un objecte Grup i un objecte SubGrup");
 		PlaEstudis pe = new PlaEstudis("Pla");
@@ -28,7 +37,10 @@ public class DriverHoresAptesGrupSubGrup {
 		HoresAptesGrupSubGrup hags = new HoresAptesGrupSubGrup(g, sg);
 		System.out.println("Correcte");
 	}
-	
+	/**
+	 * Comprova les funcions públiques de la restricció.
+	 * @throws Exception
+	 */
 	public static void CheckModificadoresiConsultores() throws Exception {
 		PlaEstudis pe = new PlaEstudis("Pla");
 		Assignatura a = new Assignatura(pe, "prop");
@@ -58,3 +70,4 @@ public class DriverHoresAptesGrupSubGrup {
 	}
 
 }
+

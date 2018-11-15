@@ -5,6 +5,12 @@ import classes.*;
 import restriccions.*;
 
 public class DriverHoresSenseClasseAssignatura {
+	/**
+	 * Funció main del DriverHoresSenseClasseAssignatura, l'administrador introdueix un número 
+	 * enter i es comproven les funcions corresponents de la restriccio.
+	 * @param args
+	 * @throws Exception
+	 */
 	public static void main (String [] args) throws Exception {
 		System.out.print("Benvingut a l'eina de comprovació de la restriccio HoresSenseClasseAssignatura");
 		System.out.print("1-CheckConstructora, 2-CheckModificadoresiConsultores");
@@ -17,7 +23,10 @@ public class DriverHoresSenseClasseAssignatura {
 		}
 		reader.close();
 	}
-	
+	/**
+	 * Aquí es comprova la constructora de la restriccio HoresSenseClasseAssignatura.
+	 * @throws Exception
+	 */
 	public static void CheckConstructora() throws Exception {
 		System.out.println("Per la contructora necessitem un objecte Assignatura");
 		PlaEstudis pe = new PlaEstudis("Pla");
@@ -25,7 +34,10 @@ public class DriverHoresSenseClasseAssignatura {
 		HoresSenseClasseAssignatura hsca = new HoresSenseClasseAssignatura(a);
 		System.out.println("Correcte");
 	}
-	
+	/**
+	 * Comprova les funcions públiques de la restriccio. 
+	 * @throws Exception
+	 */
 	public static void CheckModificadoresiConsultores() throws Exception {
 		PlaEstudis pe = new PlaEstudis("Pla");
 		Assignatura a = new Assignatura(pe, "prop");
@@ -52,3 +64,4 @@ public class DriverHoresSenseClasseAssignatura {
 		else System.out.println("Restore, getHoresAptes i getMascara OK");
 	}
 }
+
