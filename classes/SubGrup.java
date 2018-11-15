@@ -151,8 +151,10 @@ public class SubGrup {
 	public int setPlaces(int places, boolean incr){
 		if(this.places == places) return 1; //En cas de fer un canvi inutil.
 		else if(places < 0) return 71;
-		else if(!incr && grup.getPlaces() - grup.getPlacesAssignades() < places - this.places) return 72;
-		else this.grup.setPlaces(places - this.places + grup.getPlacesAssignades());
+		else if(grup.getPlaces() - grup.getPlacesAssignades() < places - this.places) {
+			if(incr) this.grup.setPlaces(places - this.places + grup.getPlacesAssignades());
+			else return 72;
+		}
 		
 		this.places = places;
 		return 0;
