@@ -17,11 +17,13 @@ public class DriverSessioGAssignada {
 	 */
 	public static void main (String [ ] args) throws Exception {
 		System.out.print("Benvingut a l'eina de comprovació de la classe SessioGAssignada");
-		System.out.println("1- Constructora, 2- Setters/Getters,  else- Stop");
-		System.out.print("Enter an integer: ");
-		Scanner reader = new Scanner(System.in);
-		int n = reader.nextInt();
+		Scanner reader = null;
+		int n = 1;
 		while (n == 1 || n == 2) {
+			System.out.println("1- Constructora, 2- Setters/Getters,  else- Stop");
+			System.out.print("Enter an integer: ");
+			reader = new Scanner(System.in);
+			n = reader.nextInt();
 			if (n == 1) checkConstructora();
 			if (n == 2)	checkSetGet();
 		}
@@ -40,7 +42,7 @@ public class DriverSessioGAssignada {
 		String t = "problemes";
 		SessioGrup s = new SessioGrup(a, t);
 		SessioGAssignada sGA = new SessioGAssignada(g,s);
-		System.out.print("Correcte.");
+		System.out.println("Correcte.");
 	}
 
 	/**
