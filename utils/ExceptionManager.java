@@ -63,7 +63,7 @@ public class ExceptionManager {
 			
 			//GRUP 50: 69:
 			titles[50] = "Identificació negativa o igual a 0.";
-			titles[51] = "El número de Grup ja existeix en aquesta Assignatura.";
+			titles[51] = "El número de Grup ja existeix en aquest pla d'estudis.";
 			titles[52] = "Grup amb capacitat negativa o igual a 0.";
 			titles[53] = "Grup amb menys places que places sumen els seus SubGrups.";
 			titles[54] = "Franja incorrecte.";
@@ -84,7 +84,7 @@ public class ExceptionManager {
 			titles[69] = "La sessió no és de la mateixa assignatura que el grup.";
 			
 			//SUBGRUP 70:89 :
-			titles[70] = "El número de subGrup ja existeix al Grup.";
+			titles[70] = "El número de subGrup ja existeix al pla d'estudis.";
 			titles[71] = "Nombre negatiu o igual a 0 de places.";
 			titles[72] = "Subgrup amb més places que el Grup.";
 			titles[73] = "El subGrup ha de formar part d'un Grup";
@@ -182,6 +182,14 @@ public class ExceptionManager {
 			titles[220] = "Dia ha de ser més gran o igual a 0 i més petit o igual a 7.";
 			titles[221] = "Hora ha de ser més gran o igual a 0 i més petit o igual a 23.";
 		
+			//SolapamentsGrupSubGrup 250:259 :
+			titles[250] = "No poden assignar-se ambdós elements.";
+			titles[251] = "Un grup no pot ser disjunt de si mateix.";
+			titles[252] = "Un subGrup no pot ser disjunt de si mateix.";
+			titles[253] = "S'ha d'assignar a un grup o subgup.";
+			titles[254] = "Només es pot assignar un d'ambdos.";
+			titles[255] = "Només es pot comprovar d'un en un.";
+			
 			//EquipamentNecessari 260:269 :
 			titles[260] = "El paràmetre element no pot ser nul.";
 		}

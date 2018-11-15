@@ -18,15 +18,15 @@ public class Segment {
 	/**
 	 * Referencia a l'horari del qual es segment.
 	 */
-	public Horari horari;
+	private Horari horari;
 	/**
 	 * Registra la data a la qual pertany dins l'horari.
 	 */
-	public Data data;
+	private Data data;
 	/**
 	 * Registra l'aula a la qual es du a terme la sessio.
 	 */
-	public Aula aula;
+	private Aula aula;
 	
 	/**
 	 * Registren la sessio que es dua terme en aquest segment.
@@ -77,6 +77,30 @@ public class Segment {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////  GETTERS  /////////////////////////////////////
+	/**
+	 * Retorna l'horaria al qual pertany el segment.
+	 * @return Un horari.
+	 */
+	public Horari getHorari() {
+		return this.horari;
+	}
+	
+	/**
+	 * Retorna la data en la que es du a terme la sessió del segment.
+	 * @return Una data.
+	 */
+	public Data getData() {
+		return this.data;
+	}
+	
+	/**
+	 * Retorna l'aula a la qual es du a terme la sessió del segment.
+	 * @return Una aula.
+	 */
+	public Aula getAula() {
+		return this.aula;
+	}
+	
 	/**
 	 * Retorna un pair amb la sessio corresponent diferent de null;
 	 * @return Pair de sessions.
