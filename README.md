@@ -10,7 +10,7 @@ Practica feta per:
 
 Repartiment treball (consultar UML.png):
 - Aleix: crear les classes Campus, Aula, DriverCampus, DriverAula.
-- Hèctor: crear les classes Grup, Subgrup, Campus, Aula, ExceptionManager, Solapaments, HoresAptesGrupSubGrup, Horari, Segment, Pair.
+- Hèctor: crear les classes Grup, Subgrup, Campus, Aula, ExceptionManager, SolapamentsGrupSubGrup, HoresAptesGrupSubGrup, Horari, Segment, Pair.
 - Adrià: crear les classes PlaEstudis, Assignatura, DriverPlaEstudis, DriverAssignatura.
 - Èric: crear les classes Sessio, SessioSG, SessioG, SessioAssignada, SessioSGAssignada, SessioGAssignada, DriverSessioSG, DriverSessioG, DriverSessioSGAssignada, DriverSessioGAssignada, NoSolaparAssignatura.
 - Comú: Hem fet diverses quedades al llarg del primer mes per concretar les restriccions que havia de tenir l'horari, les que podia definir l'usuari i per la creació del diagrama de classes.
