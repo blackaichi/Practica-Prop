@@ -6,7 +6,7 @@ import classes.*;
 
 public class DriverCampus {
 	/**
-	 * Funcio main del driver, introdueixes un numero i comprova l'operació correponent
+	 * Funcio main del driver DriverCampus, introdueixes un numero i comprova l'operació correponent.
 	 * @throws Exception
 	 */
 	public static void main(String [] args) throws Exception {
@@ -23,25 +23,26 @@ public class DriverCampus {
 		reader.close();
 	}
 	/**
-	 * Comprova la constructora
+	 * Comprova la constructora.
 	 * @throws Exception
 	 */
 	
 	public static void checkConstructora() throws Exception {
 		System.out.println("Per la constructora necessitem atributs com el nom");
 		Scanner reader = new Scanner(System.in);
+		System.out.println("Introdueix el nom del campus(String):");
 		String nom = reader.next();
 		Campus c = new Campus(nom);
 		System.out.println("Correcte");
 	}
 	/**
-	 * Comprova els getters i els setters
+	 * Comprova els getters i els setters.
 	 * @throws Exception
 	 */
 	public static void checkGetSet() throws Exception {
 		Campus c = new Campus("Campus Nord");
 		Aula a = new Aula(c, "A5101", 30);
-		System.out.println("Introdueix el nom del campus");
+		System.out.println("Introdueix el nom del campus(String):");
 		Scanner reader = new Scanner(System.in);
 		String nom = reader.next();
 		reader.close();
@@ -62,7 +63,7 @@ public class DriverCampus {
 		else System.out.println("Get/Set AllCampus ERROR");
 	}
 	/**
-	 * Comprova les funcions add i del de les aules que conte cada campus
+	 * Comprova les funcions add i del de les aules que conte cada campus.
 	 */
 	public static void checkAddDelAula() throws Exception {
 		Campus c = new Campus("Campus Nord");
