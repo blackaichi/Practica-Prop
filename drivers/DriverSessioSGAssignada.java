@@ -35,7 +35,7 @@ public class DriverSessioSGAssignada {
 	private static void checkConstructora() throws Exception {
 		System.out.println("Per la constructora necessitarem un Grup i una SessioGrup.");
 		PlaEstudis p = new PlaEstudis("fib");
-		Assignatura a = new Assignatura(p, "prop", 2, 2);
+		Assignatura a = new Assignatura(p, "prop");
 		Grup g = new Grup(a, 10);
 		SubGrup sg = new SubGrup(g, 11);
 		String t = "problemes";
@@ -47,8 +47,8 @@ public class DriverSessioSGAssignada {
 	private static void checkSetGet() throws Exception {
 		System.out.println("Per la constructora necessitarem un Grup i una SessioGrup.");
 		PlaEstudis p = new PlaEstudis("fib");
-		Assignatura a = new Assignatura(p, "prop", 2, 2);
-		Assignatura b = new Assignatura(p, "IES", 2, 2);
+		Assignatura a = new Assignatura(p, "prop");
+		Assignatura b = new Assignatura(p, "IES");
 		Grup g = new Grup(a, 10);
 		Grup g2 = new Grup(b, 20);
 		SubGrup sg = new SubGrup(g, 11);
