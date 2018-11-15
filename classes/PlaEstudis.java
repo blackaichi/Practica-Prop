@@ -172,8 +172,7 @@ public class PlaEstudis {
 	 * @param dia: Dia que volem demanar el rang.
 	 * @return rang de la matí del dia indicat.
 	 */
-	public int[] getRangMati(int dia) throws Exception {
-		if (dia < 0 || dia > 6) ExceptionManager.thrower(12);
+	public int[] getRangMati() {
 		int[] rangmati = new int[2];
 		rangmati[0] = this.rangDia[0];
 		rangmati[1] = this.rangDia[1];
@@ -185,8 +184,7 @@ public class PlaEstudis {
 	 * @param dia: Dia que volem demanar el rang.
 	 * @return rang de la tarda del dia indicat.
 	 */
-	public int[] getRangTarda(int dia) throws Exception {
-		if (dia < 0 || dia > 6) ExceptionManager.thrower(12);
+	public int[] getRangTarda() {
 		int[] rangmati = new int[2];
 		rangmati[0] = this.rangDia[2];
 		rangmati[1] = this.rangDia[3];
