@@ -1,8 +1,8 @@
 package restriccions;
-
 import java.util.*;
+
 import classes.*;
-import utils.*;
+import utils.ExceptionManager;
 
 /**
  * 
@@ -57,7 +57,7 @@ public class NoCiclesRequisits {
 	 * @param assig: Assignatura que volem comprovar.
 	 * @return Execpció en forma d'enter.
 	 */
-	int setAssig(Assignatura assig) {
+	public int setAssig(Assignatura assig) {
 		if (assig == null) return -1;
 		this.assignatura = assig;
 		return 0;
@@ -81,6 +81,14 @@ public class NoCiclesRequisits {
 		        }
 	    }
 	    return false;
+	}
+	
+	public int quantsRequisits() {
+		return this.requisits.size();
+	}
+	
+	public Assignatura getAssignatura() {
+		return this.assignatura;
 	}
 	
 }
