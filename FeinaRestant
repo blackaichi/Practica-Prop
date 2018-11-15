@@ -13,9 +13,9 @@ SessioXGAssignada: Res
 SubGrup: Driver JUNIT (Eric)
 Correquisit: Driver (Eric)
 EquipamentNecessari: Driver i relinkar horari? (Eric)
-HoresAptesGrupsSub: Driver (Aleix)
-HoresSenseClasseAssignatura: Driver (Aleix)
-NoCiclesRequisits: Driver (Aleix)
+HoresAptesGrupsSub: Res
+HoresSenseClasseAssignatura: Res
+NoCiclesRequisits: Res
 NoSolaparAssignatura: Drivers (Eric)
 SolapamentsGrupSubgrup: Drivers
 
