@@ -47,11 +47,6 @@ public class Assignatura {
 	private HoresSenseClasseAssignatura horesAptes;
 	
 	/**
-	 * Lincament a Correquisit
-	 */
-	private Correquisit corr;
-	
-	/**
 	 * Lincament a NoSolaparAssignatura
 	 */
 	private NoSolaparAssignatura solapament;
@@ -70,7 +65,7 @@ public class Assignatura {
 		this.sessionsG = new HashSet<SessioGrup>();
 		this.sessionsSG = new HashSet<SessioSubGrup>();
 		this.grups = new HashSet<Grup>();
-
+		solapament = new NoSolaparAssignatura();
 
 	}
 		
@@ -110,18 +105,7 @@ public class Assignatura {
 	 */	
 	public int setSolapament(Assignatura assig) throws Exception {
 		if (assig == null) return 40;
-		solapament.addNoSolapar(this, assig);
-		return 0;
-	}
-	
-	/**
-	 * Retorna cert si a es igual a l'assignatura actual.
-	 * @param a: Assignatura que volem comprobar si es igual.
-	 * @return Excepció codificada en forma d'enter.
-	 */
-	public int setCorrequisit(Assignatura assig) throws Exception {
-		if (assig == null) return 40;
-		corr.addNoSolapar(this, assig);
+		solapament.addNoSolapar(assig);
 		return 0;
 	}
 	
@@ -242,13 +226,6 @@ public class Assignatura {
 		return this.solapament;
 	}
 	
-	/**
-	 * Retorna l'instancia NoSolaparAssignatura de l'Assignatura.
-	 * @return NoSolaparAssignatura.
-	 */
-	public Correquisit getCorrequisit() {
-		return this.corr;
-	}
 	
 	/**
 	 * Retorna l'instancia HoresSenseClasseAssignatura de l'Assignatura.
@@ -356,28 +333,7 @@ public class Assignatura {
 		if(!this.noCicles.treuRequisit(assigs)) ExceptionManager.thrower(43);
 		return 0;
 	}
-	/**
-	 * Elimina un correquisit de l'assignatura actual.
-	 * @param a: Correquisit que volem eliminar.
-	 * @return Excepció codificada en forma d'enter.
-	 */	
-	public int delCorrequisit(Assignatura assig) throws Exception {
-		if (assig == null) return 40;
-		corr.delNoSolapar(this, assig);
-		return 0;
-	}
-	
-	/**
-	 * Elimina una instància de no-solapament de l'assignatura actual.
-	 * @param assig: assignatura que vull eliminar de no-solapar.
-	 * @return Excepció codificada en forma d'enter.
-	 */	
-	public int delSolapament(Assignatura assig) throws Exception {
-		if (assig == null) return 40;
-		corr.delNoSolapar(this, assig);
-		return 0;
-	}
-				
+			
 	/////////////////////////////////////////////////////////////
 	//////////////////////// Funcions  //////////////////////////
 		
