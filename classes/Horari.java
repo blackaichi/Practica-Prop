@@ -120,7 +120,7 @@ public class Horari {
 	private boolean checkAllRestriccionsAssignatura(Map<Integer, Map<Integer, HashSet<Segment>>> horari, int dia, int horaIni, Assignatura assignatura) {
 		if(assignatura.getHoresAptes().checkPotFerClasse(dia, horaIni) != 0) return false;
 		else for(Segment segment: horari.get(dia).get(horaIni))
-			if(assignatura.getSolapament().checkSolapar(segment.getSessio().first != null? segment.getSessio().first.getGrup().getAssignatura() : segment.getSessio().second.getSessioSubGrup().getAssignatura()) != 0)
+			if(assignatura.getSolapaments().checkSolapar(segment.getSessio().first != null? segment.getSessio().first.getGrup().getAssignatura() : segment.getSessio().second.getSessioSubGrup().getAssignatura()) != 0)
 				return false;
 		
 		return true;

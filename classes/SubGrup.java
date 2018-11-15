@@ -245,6 +245,22 @@ public class SubGrup {
 		return null;
 	}
 	
+	/**
+	 * Retorna la restriccio d'hores aptes.
+	 * @return Restriccions.
+	 */
+	public HoresAptesGrupSubGrup getRestriccioHoresAptes() {
+		return this.horesAptes;
+	}
+	
+	/**
+	 * Retorna la restricció de no solpament.
+	 * @return Restricció.
+	 */
+	public SolapamentsGrupSubGrup getSolapaments() {
+		return this.disjunts;
+	}
+	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  MODIFICADORES  /////////////////////////////////
 	/**
