@@ -5,6 +5,12 @@ import classes.*;
 
 
 public class DriverGrup {
+	/**
+	 * Funció main del driver DriverGrup, l'administrador introdueix un número 
+	 * enter i es comproven les funcions corresponents de la classe.
+	 * @param args
+	 * @throws Exception
+	 */
 		public static void main (String [] args) throws Exception {
 			System.out.print("Benvingut a l'eina de comprovació de la classe Grup");
 			System.out.print("1-CheckConstructora1, 2-CheckConstructora2, 3-CheckGetSetGrup,  4-CheckModificadoresSubgrup,"
@@ -22,7 +28,10 @@ public class DriverGrup {
 			}
 			reader.close();
 		}
-		
+		/**
+		 * Aquí es comprova la primera constructora.
+		 * @throws Exception
+		 */
 		public static void CheckConstructora1() throws Exception {
 			System.out.println("Per la primera contructora necessitem un objecte Assignatura i el numero de Grup");
 			PlaEstudis pe = new PlaEstudis("Pla");
@@ -30,7 +39,10 @@ public class DriverGrup {
 			Grup g = new Grup(a, 20);
 			System.out.println("Correcte");
 		}
-		
+		/**
+		 * Aquí es comprova la segona constructora.
+		 * @throws Exception
+		 */
 		public static void CheckConstructora2() throws Exception {
 			System.out.println("Per la segona contructora necessitem un objecte Assignatura, el numero de Grup, les places que té"
 					+ "i la franja horaria que ocupa");
@@ -42,30 +54,33 @@ public class DriverGrup {
 			Grup g = new Grup(a, numero, places, franja);
 			System.out.println("Correcte");
 		}
-		
+		/**
+		 * Comprova el getters i els setters de Grup.
+		 * @throws Exception
+		 */
 		public static void CheckGetSetGrup() throws Exception {
 			PlaEstudis pe = new PlaEstudis("Pla");
 			Assignatura a = new Assignatura(pe, "BD", 10, 10);
 			Scanner reader = new Scanner(System.in);
 			int numero = 0;
 			int places = 0;
-			String franja = "Mati";
+			String franja = "M";
 			Grup g = new Grup(a, numero, places, franja);
-			System.out.println("Introdueix el numero de grup");
+			System.out.println("Introdueix el numero de grup(Enter)");
 			numero = reader.nextInt();
 			g.setNumero(numero);
 			if (g.getNumero() == numero) System.out.println("Get/Set numero OK");
 			else System.out.println("Get/Set numero ERROR");
-			System.out.println("Introdueix el numero de places");
+			System.out.println("Introdueix el numero de places(Enter)");
 			places = reader.nextInt();
 			g.setPlaces(places);
 			if (g.getPlaces() == places) System.out.println("Get/Set places OK");
 			else System.out.println("Get/Set places ERROR");
-			System.out.println("Introdueix la franja horaria");
-			g.setFranja("Tarda");
+			System.out.println("Introdueix la franja horaria(M,T,MT,NAN)");
+			g.setFranja("T");
 			if (g.getFranja().equals("Tarda")) System.out.println("Get/Set franja OK");
 			else System.out.println("Get/Set franja ERROR");
-			System.out.println("Introdueix el nou nom de l'assignatura");
+			System.out.println("Introdueix el nou nom de l'assignatura(String)");
 			String nom = reader.next();
 			Assignatura a1 = new Assignatura(pe, nom, 10, 10);
 			g.setAssignatura(a1);
@@ -92,7 +107,10 @@ public class DriverGrup {
 			if (g.getSessions().size() == 2) System.out.println("Get Sessions OK");
 			else System.out.println("Get Sessions ERROR");
 		}
-		
+		/**
+		 * Comprova les funcions alta i baixa del Subgrup.
+		 * @throws Exception
+		 */
 		public static void CheckModificadoresSubgrup() throws Exception {
 			PlaEstudis pe = new PlaEstudis("Pla");
 			Assignatura a = new Assignatura(pe, "BD", 10, 10);
@@ -111,7 +129,10 @@ public class DriverGrup {
 			if (places1 == places2) System.out.println("Obrir/TancarPlaces OK");
 			else System.out.println("Obrir/TancarPlaces ERROR");
 		}
-		
+		/**
+		 * Comprova les funcions alta i baixa del Grup.
+		 * @throws Exception
+		 */
 		public static void CheckModificadoresSessio() throws Exception {
 			PlaEstudis pe = new PlaEstudis("Pla");
 			Assignatura a = new Assignatura(pe, "BD", 10, 10);
@@ -130,7 +151,10 @@ public class DriverGrup {
 			if (size3 == size1 && size1 - 1 == size2 && size2 == size4) System.out.println("AddDelSessio i quantesSessions OK");
 			else System.out.println("AddDelSessio i quantesSessions ERROR");
 		}
-		
+		/**
+		 * Comprova les consultores de Sessio.
+		 * @throws Exception
+		 */
 		public static void CheckConsultores() throws Exception {
 			PlaEstudis pe = new PlaEstudis("Pla");
 			Assignatura a = new Assignatura(pe, "BD", 10, 10);
