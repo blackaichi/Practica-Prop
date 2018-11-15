@@ -95,16 +95,6 @@ public class Grup {
 	}
 	
 	/**
-	 * Actualitza l'estat de les horesAptes segons la franja horaria
-	 * del grup que es preten assignar.
-	 * @param franja Indica si el grup ha de ser de matí, tarda, o qualsevol d'ambdós.
-	 * @return Excepció codificada en forma d'enter.
-	 */
-	private int actualitzaHoresAptes(String franja) {		
-		return 0;
-	}
-	
-	/**
 	 * Inicialitza adequadament les restriccions del Grup.
 	 * @throws Excepciño rebuda durant la donada d'alta de les restriccions.
 	 */
@@ -126,8 +116,8 @@ public class Grup {
 	 * @throws Exception
 	 */
 	public Grup(Assignatura assig, int numero) throws Exception {
-		ExceptionManager.thrower(this.setNumero(numero));
 		ExceptionManager.thrower(this.setAssignatura(assig));
+		ExceptionManager.thrower(this.setNumero(numero));
 		this.iniRestriccions();
 		
 		places = 0;
@@ -144,12 +134,10 @@ public class Grup {
 	 * @throws Exception
 	 */
 	public Grup(Assignatura assig, int numero, int places, String franja) throws Exception {
+		ExceptionManager.thrower(this.setAssignatura(assig));
 		ExceptionManager.thrower(this.setNumero(numero));
 		ExceptionManager.thrower(this.setPlaces(places));
 		ExceptionManager.thrower(this.setFranja(franja));
-		/* Arribats aquí, tots els parametres entrats son adequats,
-		 * per tant, es pot procedir a linkar la classe:*/
-		ExceptionManager.thrower(this.setAssignatura(assig));
 		this.iniRestriccions();
 		
 		subGrups = new HashSet<>();
@@ -165,8 +153,17 @@ public class Grup {
 	public int setNumero(int numero) {
 		if(numero <= 0) return 50;
 		else if(this.numero == numero) return 1; //En cas de fer un canvi inutil.
-		else if(this.getAssignatura() != null && assig.checkGrup(numero)) return 51;
+		else for(Assignatura assig: this.assig.getPlaEstudis().getAssignatures()) {
+			if(assig.checkGrup(numero)) return 51; //Alguna assignatura ja conté el numero com id de grup.
+			else for(Grup grup: assig.getGrups()) //Algun grup ja conté el numero com id d'un subGrup.
+				if(grup.checkSubGrup(numero)) return 51;
+		}
 
+		//En cas d'estar modificant el numero de grup, aquest s'ha d'actualitzar en les
+		//restriccions de solapament de tots els seus SubGrups:
+		if(this.subGrups != null) for(SubGrup subGrup: this.subGrups)
+			subGrup.getSolapaments().actualitza(this, null, numero);
+		
 		this.numero = numero;
 		return 0;
 	}
@@ -193,8 +190,8 @@ public class Grup {
 	public int setFranja(String franja) {
 		if(franja == null) return 54;
 		else if(!"MT".contains(franja.toUpperCase())) return 54;
+		else if(franja.toUpperCase().equals("TM")) franja = "MT";
 		
-		this.actualitzaHoresAptes(franja.toUpperCase());
 		this.franja = franja.toUpperCase();
 		return 0;
 	}
@@ -405,7 +402,8 @@ public class Grup {
 		}
 		
 		subGrups.add(new SubGrup(this, numero, places));
-		return 0;
+		//Un grup no es pot solapar amb els seus subGrups.
+		return this.setSolapament(null, this.getSubGrup(numero), false);
 	}
 	
 	/**
@@ -415,7 +413,9 @@ public class Grup {
 	 */
 	public int baixaSubGrup(int numero) {
 		subGrups.removeIf(item -> item.getNumero() == numero);
-		return 0;
+		return this.setSolapament(null, this.getSubGrup(numero), true);
+		//El subgrup eliminat s'ha d'alliberar dels prohibits de solapar.
+		//Mai es sap en quin altre grup se li pot assignar el seu id.
 	}
 	
 	/**
@@ -556,5 +556,21 @@ public class Grup {
 		return this.getNumero() == grup.getNumero() &&
 				this.getAssignatura().getNom().equals(grup.getAssignatura().getNom()) &&
 				this.getAssignatura().getPlaEstudis().getNom().equals(grup.getAssignatura().getPlaEstudis().getNom());
+	}
+
+	/**
+	 * Retorna true si, i només si, l'hora es troba dins de la franja horaria
+	 * de matí o tarda segons quina tingui assignat el grup; altrament retorna false.
+	 * @param hora indica l'hora a comparar.
+	 * @return un booleà.
+	 */
+	public boolean enRang(int hora) {
+		if(this.getFranja().equals("MT")) return true; //Assumim que sempre esta dins del rang.
+		
+		int[] rang = this.getFranja() == "M"? this.getAssignatura().getPlaEstudis().getRangMati() :
+											  this.getAssignatura().getPlaEstudis().getRangTarda();
+		
+		if(hora < rang[0] || rang[1] < hora ) return false;
+		else return true;
 	}
 }

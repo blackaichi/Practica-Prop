@@ -76,25 +76,6 @@ public class Horari {
 	}
 	
 	/**
-	 * Encapsula les comprovacions de restriccions intrinseques del grup.
-	 * @param horari Referencia sobre quin horari comrovar les restricicons.
-	 * @param dia Indica el dia.
-	 * @param horaIni Indica l'hora.
-	 * @param grup Referencia el grup el qual comprovar.
-	 * @return Un booleà.
-	 */
-	private boolean checkRestriccionsDeGrup(Map<Integer, Map<Integer, HashSet<Segment>>> horari, int dia, int horaIni, Grup grup) {
-		if((!grup.getFranja().equals("MT") && !this.enRang(grup.getFranja().equals("M"), horaIni)) ||
-		   (grup.getRestriccioHoresAptes().checkPotFerClasse(dia, horaIni) != 0)) return false;
-		
-		else for(Segment segment: horari.get(dia).get(horaIni))
-			if(grup.getSolapaments().checkPotSolapar(segment.getSessio().first.getGrup(), segment.getSessio().second.getSubGrup()) != 0)
-				return false;
-					
-		return true;		
-	}
-	
-	/**
 	 * Retorna true si, i només si, totes les restriccions de Grup es compleixen
 	 * per un grup en un dia i hora donats.
 	 * @param horari Referencia sobre quin horari comrovar les restricicons.
@@ -104,7 +85,14 @@ public class Horari {
 	 * @return Un booleà.
 	 */
 	private boolean checkAllRestriccionsDeGrup(Map<Integer, Map<Integer, HashSet<Segment>>> horari, int dia, int horaIni, SessioGAssignada sessio) {
-		return checkRestriccionsDeGrup(horari, dia, horaIni, sessio.getGrup());
+		if((!sessio.getGrup().enRang(horaIni)) ||
+		   (sessio.getGrup().getRestriccioHoresAptes().checkPotFerClasse(dia, horaIni) != 0)) return false;
+		
+		else for(Segment segment: horari.get(dia).get(horaIni))
+			if(sessio.getGrup().getSolapaments().checkPotSolapar(segment.getSessio().first.getGrup(), segment.getSessio().second.getSubGrup()) != 0)
+				return false;
+					
+		return true;	
 	}
 	
 	/**
@@ -116,9 +104,9 @@ public class Horari {
 	 * @return Un booleà.
 	 */
 	private boolean checkAllRestriccionsDeSubGrup(Map<Integer, Map<Integer, HashSet<Segment>>> horari, int dia, int horaIni, SessioSGAssignada sessio) {
-		//Un subGrup no pot fer classe fora de les hores aptes del seu grup:
-		if((sessio.getSubGrup().getRestriccioHoresAptes().checkPotFerClasse(dia, horaIni) != 0) ||
-		   this.checkRestriccionsDeGrup(horari, dia, horaIni, sessio.getSubGrup().getGrup())) return false;
+		//Si un Grup es de mati, per exemple, és logic que tots els seus subGrups també ho son.
+		if((!sessio.getSubGrup().enRang(horaIni)) ||
+		   (sessio.getSubGrup().getRestriccioHoresAptes().checkPotFerClasse(dia, horaIni) != 0)) return false;
 		
 		else for(Segment segment: horari.get(dia).get(horaIni))
 			if(sessio.getSubGrup().getSolapaments().checkPotSolapar(segment.getSessio().first.getGrup(), segment.getSessio().second.getSubGrup()) != 0)
@@ -161,6 +149,7 @@ public class Horari {
 		int tempsDeSessio = corrent.first != null? corrent.first.getSessioGrup().getHores() :
 												   corrent.second.getSessioSubGrup().getHores();
 		
+		//S'ha de comprovar les restriccions per TOTES les hores que dura la sessió:
 		for(int incr = 0; incr < tempsDeSessio; incr++) {
 			if((!corrent.fnull() && !checkAllRestriccionsDeGrup(horari, dia, horaIni+incr, corrent.first)) ||
 			   (!corrent.snull() && !checkAllRestriccionsDeSubGrup(horari, dia, horaIni+incr, corrent.second)) ||
@@ -190,7 +179,6 @@ public class Horari {
 	 * @throws Exception
 	 */
 	private void backTracking(Map<Integer, Map<Integer, HashSet<Segment>>> horari, int nHoraris) throws Exception {
-		System.out.println(">>> Ha entrat! <<<");
 		if(this.horarisGenerat.size() >= nHoraris) return; // Si ja tenim nhorari, no és continua.
 		Pair<SessioGAssignada, SessioSGAssignada> corrent = this.nextSessio();
 		
@@ -212,7 +200,9 @@ public class Horari {
 						else segment = new Segment(this, new Data(dia, hora), seleccionaAulaAdient(horari, corrent.second, dia, hora), corrent.first);
 						
 						//CONTROL DE REPETICIONS
-						horari.get(dia).get(hora).add(segment);
+						int horesTotals = segment.getSessio().first != null? segment.getSessio().first.getSessioGrup().getHores() :
+																			 segment.getSessio().second.getSessioSubGrup().getHores();
+						for(int incr = 0; incr < horesTotals; incr++) horari.get(dia).get(hora+incr).add(segment);
 						this.kill();
 						
 						//RECURSIVITAT!!! Kernel del backTracking:
@@ -400,24 +390,11 @@ public class Horari {
 		if(aula == null) return false;
 		for(int incr = 0; incr < durada; incr++) {
 			for(Segment segment: horari.get(dia).get(hora+incr)) {
-				if(segment.aula.getNom().equals(aula.getNom())) return true;
+				if(segment.getAula().getNom().equals(aula.getNom())) return true;
 			}
 		}
 		
 		return false;
-	}
-
-	/**
-	 * Retorna true si, i només si, l'hora es troba dins del rang indicat;
-	 * altrament retorna false.
-	 * @param rang Indica el rang.
-	 * @param hora Indica l'hora a comporvar.
-	 * @return Un booleà.
-	 */
-	private boolean enRang(boolean mati, int hora) {
-		int[] rang = mati? this.plaEstudis.getRangMati() : this.plaEstudis.getRangTarda(); 
-		if(hora < rang[0] || rang[1] < hora ) return false;
-		else return true;
 	}
 	
 	/**
@@ -432,7 +409,7 @@ public class Horari {
 			for(int hora: horari.get(dia).keySet()) {
 				System.out.println("	HORA: ".concat(String.valueOf(hora)));
 				for(Segment segment: horari.get(dia).get(hora)) {
-					System.out.println("		 AULA SESSIÓ: ".concat(segment.aula.getNom()));
+					System.out.println("		 AULA SESSIÓ: ".concat(segment.getAula().getNom()));
 				}
 			}
 		}

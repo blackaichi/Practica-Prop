@@ -84,6 +84,9 @@ public class SubGrup {
 		
 		this.horesAptes = horesApt;
 		this.disjunts = disjunts;
+		this.setSolapament(this.grup, null, false);
+		//Un subgrup no es pot solapar amb el seu grup.
+		//És logic, un grup, és el solapament de tots els seus subgrups.
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -121,8 +124,16 @@ public class SubGrup {
 	 */
 	public int setNumero(int numero) {
 		if(this.numero == numero) return 1; //En cas de fer un canvi inutil.
-		else if(numero < 0) return 50;
-		else if(grup.checkSubGrup(numero)) return 70;
+		else if(numero <= 0) return 50;
+		else for(Assignatura assig: this.grup.getAssignatura().getPlaEstudis().getAssignatures()) {
+			if(assig.checkGrup(numero)) return 70; //Alguna assignatura ja conté el numero com id d'un grup.
+			else for(Grup grup: assig.getGrups()) //Algun grup ja conté el numero com id d'un subGrup.
+				if(grup.checkSubGrup(numero)) return 70;
+		}
+		
+		//En cas d'estar modificant el numero de subGrup, aquest s'ha d'actualitzar en les
+		//restriccions de solapament del seu grups:
+		if(this.numero != 0) this.grup.getSolapaments().actualitza(null, this, numero);
 		
 		this.numero = numero;
 		return 0;
@@ -414,5 +425,16 @@ public class SubGrup {
 	public boolean equals(SubGrup subGrup) {
 		return this.getNumero() == subGrup.getNumero() &&
 				this.getGrup().equals(subGrup.getGrup());
+	}
+
+	/**
+	 * Retorna true si, i només si, l'hora es troba dins de la franja horaria
+	 * de matí o tarda segons quina tingui assignat el grup del subGrup;
+	 * altrament retorna false.
+	 * @param hora indica l'hora a comparar.
+	 * @return un booleà.
+	 */
+	public boolean enRang(int hora) {
+		return this.getGrup().enRang(hora);
 	}
 }
