@@ -1,7 +1,7 @@
 package restriccions;
 
 import classes.*;
-import utils.*;
+import utils.ExceptionManager;
 
 /**
  * 
@@ -129,6 +129,16 @@ public class HoresAptesGrupSubGrup {
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////  GETTERS  /////////////////////////////////////
+	/**
+	 * Retorna la mascara de la restricció.
+	 * @return una matriu de booleans.
+	 */
+	public boolean[][] getMascara(){
+		return this.mascara;
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  MODIFICADORES  /////////////////////////////////
 	/**
 	 * Actualitza hores disponibles del grup per tal de restringir
@@ -162,13 +172,6 @@ public class HoresAptesGrupSubGrup {
 	 */
 	public int restore() {
 		return setMascara();
-	}
-	/**
-	 * Retorna la matriu de booleans mascara
-	 * @return mascara
-	 */
-	public boolean[][] getMascara() {
-		return this.mascara;
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
