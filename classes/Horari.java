@@ -209,7 +209,7 @@ public class Horari {
 	 * @param campus Referencia el campus sobre el qual s'ha d'aplicar l'horari.
 	 * @throws Exception
 	 */
-	private HashSet<Map<Integer, Map<Integer, HashSet<Segment>>>>
+	public HashSet<Map<Integer, Map<Integer, HashSet<Segment>>>>
 	GENERADOR(PlaEstudis plaEstudis, Campus campus, int nHoraris) throws Exception{
 		ExceptionManager.thrower(this.setCampus(campus));
 		ExceptionManager.thrower(this.setPlaEstudis(plaEstudis));
