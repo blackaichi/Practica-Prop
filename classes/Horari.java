@@ -101,7 +101,9 @@ public class Horari {
 	 * @return Un booleà.
 	 */
 	private boolean checkAllRestriccionsDeSubGrup(Map<Integer, Map<Integer, HashSet<Segment>>> horari, int dia, int horaIni, SessioSGAssignada sessio) {
-		if(sessio.getSubGrup().getRestriccioHoresAptes().checkPotFerClasse(dia, horaIni) != 0) return false;
+		//Un subGrup no pot fer classe fora de les hores aptes del seu grup:
+		if(sessio.getSubGrup().getRestriccioHoresAptes().checkPotFerClasse(dia, horaIni) != 0 ||
+		   sessio.getSubGrup().getGrup().getRestriccioHoresAptes().checkPotFerClasse(dia, horaIni) != 0) return false;
 		else for(Segment segment: horari.get(dia).get(horaIni))
 			if(sessio.getSubGrup().getSolapaments().checkPotSolapar(segment.getSessio().first.getGrup(), segment.getSessio().second.getSubGrup()) != 0)
 				return false;
