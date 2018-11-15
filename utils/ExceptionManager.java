@@ -115,6 +115,7 @@ public class ExceptionManager {
 			titles[106] = "No podem afegir un material que ja es necessari per la sessió.";
 			titles[107] = "No podem eliminar un material que no existeix a la sessió.";
 			titles[108] = "Equip no pot ser null o buit.";
+			titles[109] = "El HashSet passat com a paràmetre no pot ser null.";
 			
 			//SESSIO ASSIGNADA 110:129 :
 			titles[110] = "El paràmetre grup no pot ser null.";
@@ -180,23 +181,10 @@ public class ExceptionManager {
 			//Data 220:229 :
 			titles[220] = "Dia ha de ser més gran o igual a 0 i més petit o igual a 7.";
 			titles[221] = "Hora ha de ser més gran o igual a 0 i més petit o igual a 23.";
-			
-			//Element 230:249 :
-			titles[230] = "El paràmetre data no pot ser nul.";
-			titles[231] = "El paràmetre sessioGAssignada no pot ser nul.";
-			titles[232] = "El paràmetre sessioSGAssignada no pot ser nul.";
-			titles[233] = "El paràmetre campus no pot ser nul.";
-			titles[234] = "El paràmetre horari no pot ser nul.";
-			titles[235] = ".";
-			titles[236] = ".";
-			titles[237] = ".";
-			titles[238] = ".";
-			titles[239] = ".";
-			titles[240] = ".";		
-			}
 		
 			//EquipamentNecessari 260:269 :
 			titles[260] = "El paràmetre element no pot ser nul.";
+		}
 	}
 	
 	/**
