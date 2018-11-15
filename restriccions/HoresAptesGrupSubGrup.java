@@ -1,5 +1,7 @@
 package restriccions;
 
+import java.util.Arrays;
+
 import classes.*;
 import utils.ExceptionManager;
 
@@ -52,8 +54,8 @@ public class HoresAptesGrupSubGrup {
 		if(this.grup == null) return 211;
 		
 		for(int dia = 0; dia < 7; dia++) {
-			if(this.grup != null) this.mascara[dia] = this.grup.getAssignatura().getPlaEstudis().getFranjaDia(dia);
-			else this.mascara[dia] = this.subGrup.getGrup().getAssignatura().getPlaEstudis().getFranjaDia(dia);
+			if(this.grup != null) this.mascara[dia] = Arrays.copyOf(this.grup.getAssignatura().getPlaEstudis().getFranjaDia(dia), this.grup.getAssignatura().getPlaEstudis().getFranjaDia(dia).length);
+			else this.mascara[dia] = Arrays.copyOf(this.subGrup.getGrup().getAssignatura().getPlaEstudis().getFranjaDia(dia), this.subGrup.getGrup().getAssignatura().getPlaEstudis().getFranjaDia(dia).length);
 		}
 		
 		this.horesDisponibles = clone(mascara); //inicialment son iguals;
@@ -105,13 +107,7 @@ public class HoresAptesGrupSubGrup {
 	 */
 	static public boolean[][] clone(boolean[][] toClone){
 		if(toClone == null) return null;
-		
-		boolean[][] cloned = new boolean[toClone.length][toClone[0].length];
-		for(int i = 0; i < toClone.length; i++)
-			for(int j = 0; j < toClone[0].length; j++)
-				cloned[i][j] = toClone[i][j];
-		
-		return cloned;
+		return Arrays.copyOf(toClone, toClone.length);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
