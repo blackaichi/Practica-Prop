@@ -11,7 +11,7 @@ public class PlaEstudis {
 	/////////////////////////////////////////////////////////////
 	////////////////////////Variables //////////////////////////
 		
-	private static HashSet<PlaEstudis> plansEstudis = new HashSet<PlaEstudis>();
+	private static HashSet<String> plansEstudis = new HashSet<String>();
 	
 	/**
 	 * Nom  del Pla d'estudis
@@ -42,8 +42,8 @@ public class PlaEstudis {
 	 * @return Cert si el Pla d'Estudis ja existeix o fals altrament.
 	 */
 	private boolean checkPlansEstudis(String nom) {
-		for(PlaEstudis p : plansEstudis) {
-			if (p.getNom().equals(nom)) return false;
+		for(String p : plansEstudis) {
+			if (p.equals(nom)) return false;
 		}
 		return true;
 	}
@@ -98,6 +98,7 @@ public class PlaEstudis {
 		if (nom == null || nom.isEmpty()) return 18;
 		else if(this.nom != null && this.nom.equals(nom)) return 1;
 		else if(!checkPlansEstudis(nom)) return 10;
+		plansEstudis.add(nom);
 		this.nom = nom;
 		return 0;
 	}
