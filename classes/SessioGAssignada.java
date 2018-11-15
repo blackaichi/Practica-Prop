@@ -1,5 +1,7 @@
 package classes;
 
+import utils.*;
+
 /**
  * 
  * @author eric.casanovas@est.fib.upc.edu

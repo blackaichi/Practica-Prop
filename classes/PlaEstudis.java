@@ -1,5 +1,6 @@
 package classes;
 import java.util.*;
+import utils.*;
 /**
  * 
  * @author adria.maneros@est.fib.upc.edu

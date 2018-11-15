@@ -1,6 +1,7 @@
 package classes;
 import java.util.*;
 import restriccions.*;
+import utils.*;
 /**
  * 
  * @author adria.manero@est.fib.upc.edu
@@ -65,7 +66,7 @@ public class Assignatura {
 		this.sessionsG = new HashSet<SessioGrup>();
 		this.sessionsSG = new HashSet<SessioSubGrup>();
 		this.grups = new HashSet<Grup>();
-		solapament = new NoSolaparAssignatura();
+		solapament = new NoSolaparAssignatura(this);
 
 	}
 		
