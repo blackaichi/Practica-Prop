@@ -6,7 +6,7 @@ import classes.*;
 
 /**
  * 
- * @author eric.casanovas@est.fib.upc.edu
+ * @author adria.manero@est.fib.upc.edu
  *
  */
 
