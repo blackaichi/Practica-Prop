@@ -1,0 +1,1 @@
+L'eina de comprovació de Horari comprova la Classe horari.
