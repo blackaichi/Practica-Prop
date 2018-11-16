@@ -1,10 +1,15 @@
 package JUNIT;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertThat;
 
 import org.junit.*;
 import classes.*;
+
+/**
+ * 
+ * @author eric.casanovas@est.fib.upc.edu
+ *
+ */
 
 public class JUNITPlaEstudis {
 	
