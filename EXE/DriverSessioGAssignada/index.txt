@@ -1,0 +1,5 @@
+L'eina de coprovació de SessioGAssignada comprova 2 aspectes de la classe SessioGAssignada.
+1.Constructora
+2.Setters/getters
+
+
