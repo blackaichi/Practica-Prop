@@ -1,10 +1,7 @@
 package utils;
 
-import classes.Aula;
-import classes.Data;
-import classes.Horari;
-import classes.SessioGAssignada;
-import classes.SessioSGAssignada;
+import java.util.*;
+import classes.*;
 import utils.*;
 
 /**
@@ -18,7 +15,7 @@ public class Segment {
 	/**
 	 * Referencia a l'horari del qual es segment.
 	 */
-	private Horari horari;
+	private Map<Integer, Map<Integer, HashSet<Segment>>> horari;
 	/**
 	 * Registra la data a la qual pertany dins l'horari.
 	 */
@@ -47,7 +44,7 @@ public class Segment {
 	 * @param aula Indica l'aula on s'aplica el segment.
 	 * @param sessio Indica la sessió que es dua terme en el segment.
 	 */
-	public Segment(Horari horari, Data data, Aula aula, SessioGAssignada sessio) {
+	public Segment(Map<Integer, Map<Integer, HashSet<Segment>>> horari, Data data, Aula aula, SessioGAssignada sessio) {
 		this.horari = horari;
 		this.data = data;
 		this.aula = aula;
@@ -63,7 +60,7 @@ public class Segment {
 	 * @param aula Indica l'aula on s'aplica el segment.
 	 * @param sessio Indica la sessió que es dua terme en el segment.
 	 */
-	public Segment(Horari horari, Data data, Aula aula, SessioSGAssignada sessio) {
+	public Segment(Map<Integer, Map<Integer, HashSet<Segment>>> horari, Data data, Aula aula, SessioSGAssignada sessio) {
 		this.horari = horari;
 		this.data = data;
 		this.aula = aula;
@@ -81,7 +78,7 @@ public class Segment {
 	 * Retorna l'horaria al qual pertany el segment.
 	 * @return Un horari.
 	 */
-	public Horari getHorari() {
+	public Map<Integer, Map<Integer, HashSet<Segment>>> getHorari() {
 		return this.horari;
 	}
 	
