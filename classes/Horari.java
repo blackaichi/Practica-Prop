@@ -76,6 +76,31 @@ public class Horari {
 	}
 	
 	/**
+	 * Comprova si en un dia concret ja existeix alguna sessió de qualsevol tipus
+	 * d'una assignatura per un grup o subgrup concret.
+	 * @param horari Referencia a l'horari en el qual s'ha de fer la cerca.
+	 * @param dia Indica el dia en el qual s'ha de fer la cerca.
+	 * @param assig Identifica l'assignatura.
+	 * @param numero Identifica al grup o subgrup.
+	 * @return Un booleà a true, si ja hi ha una sessio per grup i assignatura; false altrament.
+	 */
+	private boolean checkIfSessioColocada(Map<Integer, Map<Integer, HashSet<Segment>>> horari, int dia, Assignatura assig, int numero) {
+		for(int hora: horari.get(dia).keySet()) {
+			for(Segment segment: horari.get(dia).get(hora)) {
+				if(!segment.getSessio().fnull())
+					if(segment.getSessio().first.getSessioGrup().getAssignatura().getNom().equals(assig) &&
+					   segment.getSessio().first.getGrup().getNumero() == numero) return true;
+				
+				else if(!segment.getSessio().snull())
+					if(segment.getSessio().second.getSessioSubGrup().getAssignatura().getNom().equals(assig) &&
+					   segment.getSessio().second.getSubGrup().getNumero() == numero) return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
 	 * Retorna true si, i només si, totes les restriccions de Grup es compleixen
 	 * per un grup en un dia i hora donats.
 	 * @param horari Referencia sobre quin horari comrovar les restricicons.
@@ -161,6 +186,7 @@ public class Horari {
 	}
 	
 	/**
+	 * EXPERIMENTAL
 	 * Controla la quantitat de vegades que s'ha de fer una sessio.
 	 * @param sessio Referencia a la sessió a checkejar.
 	 * @param horari Referencia a l'horaria sobre el qual fer la comporvació.
@@ -376,6 +402,22 @@ public class Horari {
 													  (segment.getSessio().second != null && segment.getSessio().second == sessioSG));
 	}
 	
+	/**
+	 * EXPERIMENTAL
+	 * Intenta colocar el segment indicat, per al seu horari, al dia i hora d'inici indicats.
+	 * En cas de poder-ho fer, i per tant no violar cap restricció, és el commit qui
+	 * indica si fer la modificació definitiva, o bé simplement ignorar-la.
+	 * @param segment Referencia al segment a desplaçar.
+	 * @param dia Indica a quin dia de l'horari desplaçar.
+	 * @param horaIni Indica, sobre el dia, en quina hora fer el canvi.
+	 * @param commit Indica si el canvi s'ha de dur a terme, o si simplement es una comprovació.
+	 * @return Retorna 0 si la modificació es possible; altrament retorna el codi d'excepció
+	 * que indica quina restricció ha sigut violada.
+	 */
+	public int tryTo(Segment segment, int dia, int horaIni, boolean commit) {
+		return 0;
+	}
+	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  CONSULTORES  ///////////////////////////////////
 	/**
@@ -396,6 +438,7 @@ public class Horari {
 		
 		return false;
 	}
+
 	
 	/**
 	 * PER A TESTOS: Imprimeix per pantalla un horari concret.
