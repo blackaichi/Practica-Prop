@@ -122,4 +122,59 @@ public final class ControladorDomini {
 	}
 	
 
+	public String CrearSessioGrup(String plaEstudis, String assignatura, String tipus, int hores) {
+		try {
+			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).altaSessioG(tipus, hores);
+		}
+		catch(Exception e) {
+			return e.toString();
+		}
+		
+		return null;
+	}
+	
+	public String EliminaSessioGrup(String plaEstudis, String assignatura, String tipus, int hores) {
+		try {
+			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).baixaSessioG(tipus, hores);
+		}
+		catch(Exception e) {
+			return e.toString();
+		}
+		
+		return null;
+	}
+
+	public String CrearSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores) {
+		try {
+			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).altaSessioSG(tipus, hores);
+		}
+		catch(Exception e) {
+			return e.toString();
+		}
+		
+		return null;
+	}
+	
+	public String AssignaSessioGrup(String plaEstudis, String assignatura, String tipus, int hores, int grup) {
+		try {
+			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getSessioG(tipus, hores).assignaSessio(grup);
+		}
+		catch(Exception e) {
+			return e.toString();
+		}
+		
+		return null;
+	}
+
+	public String AssignaSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores, int grup, int subgrup) {
+		try {
+			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getSessioSG(tipus, hores).assignaSessio(grup, subgrup);
+		}
+		catch(Exception e) {
+			return e.toString();
+		}
+		
+		return null;
+	}
+	
 }
