@@ -1,0 +1,23 @@
+Totes les classes fetes per Eric Casanovas
+
+(Ordenat alfabeticament)
+
+- Data.java: classe que conte data i una hora
+- DriverData.java: controla el correcte funcionament de Data.java
+- DriverHorari.java: controla el correcte funcionament de Horari.java
+- DriverPair.java: controla el correcte funcionament de Pair.java
+- DriverNoSolaparAssignatura.java: controla el correcte funcionament de NoSolaparAssignatura.java
+- DriverSessioGAssignada.java: controla el correcte funcionament de SessioGAssignada.java
+- DriverSessioGrup.java: controla el correcte funcionament de SessioGrup.java
+- DriverSessioSGAssignada.java: controla el correcte funcionament de SessioSGAssignada.java
+- DriverSessioSubGrup.java: controla el correcte funcionament de SessioSubGrup.java
+- JUNITNoSolaparAssignatura.java: controla amb testos de JUNIT el funcionament de NoSolaparAssignatura.java
+- JUNITPlaEstudis.java: controla amb testos de JUNIT el funcionament de PlaEstudis.java
+- JUNITSubGrup.java: controla amb testos de JUNIT el funcionament de SubGrup.java
+- NoSolaparAssignatura.java: restriccio que evita el solapament entre assignatures
+- Sessio.java: Superclasse de SessioGrup i SessioSubGrup que representa una sessio
+- SessioAssignada.java: Superclasse de SessioGAssignada i SessioSGAssignada que representa una sessio ja assignada amb el seu grup/subgrup
+- SessioGAssignada: subclasse de SessioAssignada que representa una sessio assignada amb el seu grup
+- SessioGrup.java: subclasse de Sessio que representa una sessio d'un grup
+- SessioSGAssignada.java: subclasse de SessioAssignada que representa una sessio de grup assignada
+- SessioSubGrup.java: subclasse de Sessio que representa una sessio d'un subgrup

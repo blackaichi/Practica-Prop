@@ -1,0 +1,5 @@
+Treball entregat en paper en format pdf, odt
+
+- Imatge amb el casos d'us
+- Entrega1 PROP en odt i pdf 
+- pdf amb el UML de la practica
