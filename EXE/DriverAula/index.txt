@@ -1,0 +1,5 @@
+L'eina de comprovació de Aula comprova 3 aspectes diferents de la classe Aula.
+1. Comprovacio de la constructora
+2. Comprovació dels getters i els setters
+3. Comprovació de add i delete d'Equip
+
