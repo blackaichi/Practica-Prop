@@ -45,7 +45,9 @@ public class Horari {
 	 */
 	private HashSet<Aula> aulesDelCampus;
 	
-	//Controlador d'nSessions:
+	/**EXPERIMENTAL
+	 * Controlador d'nSessions:
+	 */
 	private Map<SessioGAssignada, Integer> ocurrencies_g;
 	private Map<SessioSGAssignada, Integer> ocurrencies_sg;
 	
@@ -220,20 +222,23 @@ public class Horari {
 				if(this.plaEstudis.getFranjaDia(dia)[hora]) {
 					if(this.checkAllRestriccionsPerHores(horari, dia, hora)) {
 					
-						//AGREGACIÓ:				
+						//OBTENCIÓ DEL SEGMENT:				
 						Segment segment;
-						if(!corrent.fnull()) segment = new Segment(this, new Data(dia, hora), seleccionaAulaAdient(horari, corrent.first, dia, hora), corrent.first);
-						else segment = new Segment(this, new Data(dia, hora), seleccionaAulaAdient(horari, corrent.second, dia, hora), corrent.first);
+						if(!corrent.fnull()) segment = new Segment(horari, new Data(dia, hora), seleccionaAulaAdient(horari, corrent.first, dia, hora), corrent.first);
+						else segment = new Segment(horari, new Data(dia, hora), seleccionaAulaAdient(horari, corrent.second, dia, hora), corrent.first);
 						
-						//CONTROL DE REPETICIONS
-						int horesTotals = segment.getSessio().first != null? segment.getSessio().first.getSessioGrup().getHores() :
-																			 segment.getSessio().second.getSessioSubGrup().getHores();
-						for(int incr = 0; incr < horesTotals; incr++) horari.get(dia).get(hora+incr).add(segment);
-						this.kill();
-						
-						//RECURSIVITAT!!! Kernel del backTracking:
-						backTracking(horari, nHoraris);
-						this.restore(horari, dia, hora, segment.getSessio().first, segment.getSessio().second);
+						if(segment.getAula() != null) { //En cas de que se li hagi pogut assignar una aula.
+							//AGREGACIÓ:
+							int horesTotals = segment.getSessio().first != null? segment.getSessio().first.getSessioGrup().getHores() :
+																				 segment.getSessio().second.getSessioSubGrup().getHores();
+							for(int incr = 0; incr < horesTotals; incr++) horari.get(dia).get(hora+incr).add(segment);
+							//CONTROL DE REPETICIONS
+							this.kill();
+							
+							//RECURSIVITAT!!! Kernel del backTracking:
+							backTracking(horari, nHoraris);
+							this.restore(horari, dia, hora, segment.getSessio().first, segment.getSessio().second);
+						}
 					}
 				}
 			}
@@ -341,8 +346,8 @@ public class Horari {
 		for(int match: aulesCandidates.keySet()) //Selecciona aquella Key que conté més coincidencies.
 			if(match > maximMatch) maximMatch = match;
 		
-		if(maximMatch == equip.size()) return getMinimaAulaAdient(aulesCandidates.get(maximMatch), equip.size());
-		return aulesCandidates.get(maximMatch).iterator().next();
+		if(aulesCandidates.isEmpty()) return null;
+		else return getMinimaAulaAdient(aulesCandidates.get(maximMatch), maximMatch);
 	}
 	
 	/**
@@ -415,6 +420,14 @@ public class Horari {
 	 * que indica quina restricció ha sigut violada.
 	 */
 	public int tryTo(Segment segment, int dia, int horaIni, boolean commit) {
+		//Carrega de l'horari al qual aplicar el canvi.
+		Map<Integer, Map<Integer, HashSet<Segment>>> horari = segment.getHorari();
+	
+		//Comprovació de restriccions d'Assignatura:
+		Assignatura assig = segment.getSessio().first != null? segment.getSessio().first.getSessioGrup().getAssignatura() : 
+															   segment.getSessio().second.getSessioSubGrup().getAssignatura();
+		
+		
 		return 0;
 	}
 	
