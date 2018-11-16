@@ -1,0 +1,25 @@
+[PROP] Projectes de programació.
+Projecte de generador d'horaris.
+
+Breu explicació del funcionament de l'algoritme generador d'horaris:
+Per a aquest projecte, el qual requereix d'un algoritme més o menys complexe que, donat un pla d'estudis i un campus concrets, ofereixi el conjunt de horaris més adient a les restriccions definidies per l'usuari: s'ha calgut dissenyar un BackTracking.
+
+Aquest algoritme de tipus BackTracking, inicialment treballa sobre un "esquelet" d'horari. Doncs aquest encara no te res assignat.
+Un cop definits el campus i el pla d'estudis, el més important és saber que s'ha de colocar al horari, per això, abans i tot d'iniciar l'algoritme, es carreguen totes les SessioGAssignada (sessions de grups assignades) i totes les SessioSGAssignada (sessions de subgrup assignades) als sets respectius que conté la classe Horari.
+Aquí es presenta el primer problema, doncs tenim dos sets sobre els que iterar. No obstant, al final, una funció anomenada nextSessio() itera ambdós sets com si fossin un de sol. Per fer-ho retorna sempre un Pair d'ambdos tipus, on sempre un dels dos és null, mentre l'altre restant no ho és. D'aquesta manera es sap si s'està treballant amb tipus grup o bé subgrup.
+
+Arribats aqui, ja es pot iniciar el backtracking.
+Per cadascuna de les sessions retornades per la funció nextSessio(), es recorre TOT l'horari (és a dir, cada dia per cada hora) comprovant en tots els casos les restriccions que la sessio assignada té definides. En el moment en que un dia i hora és un candidat possible, aquesta sessió es retirada del set de sessions gracies a la funció Kill(). I mitjançant recursivitat, es procedeix a la seguent sessió.
+Com clarament indica la definició de backtracking, quan es retorna de la recursivitat, la sessió anteriorment eliminada es restaura al set amb la funció Restore. Permeten així iterar sobre el total de possibles resultats.
+
+En quin moment acaba l'algoritme?
+Bé, la classe horari conté un set del que són "esquelets" d'horaris. La qual cosa permet enmagatzemanr-ne més d'un.
+Per fer-ho, a cada nova iteració, el backtracking comprova si hi ha sessions per afegir; quan no és així (nextSessio() retorna ambdos elements del Pair com null) significa que s'ha aconseguit un horari candidat! Doncs si no hi ha sessions per afegir, vol dir que totes les sessions han sigut correctament colocades sense violar en cap cas les seves múltiples restriccions d'integritat.
+
+A més a més, pel que fa a les aules, quan l'algoritme detecta que una sessio és compatible amb un dia i hora: en primer lloc cerca totes aquelles aules disponibles en aquell mateix dia i hora (i per totes les hores consecutives que duri la sessio) i en selecciona aquella que:
+	1 - Tingui capacitat suficient com per contenir al grup o subgrup de la sessio.
+	2 - Tingui el màxim materia possible que requereix la sessio.
+	3 - "Malgasti" el minim de material possible. És a dir, evita aquelles aules que, tot i tenir tot el material requerit per la sessio, tenen molt més material que no és podrà fer servir de ser ocupada.
+
+Finalment, quan una aula és assignada, es considera com apte i procedeix a les següents iteracions del backtracking.
+En cas que, retornat de totes les recursivitats, els set d'horaris sigui buit: significa que no existeix cap horari candidat per aquell campus i aquell pla d'estudis. La qual cosa podria significar que cal fer menys restrictives les restriccions configurades al pla d'estudis.
