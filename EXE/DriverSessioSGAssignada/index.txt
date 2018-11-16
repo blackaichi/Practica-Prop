@@ -1,0 +1,1 @@
+L'eina de comprovacio de sessio subgrup assignada permet comprovar el correcte funcionament de la classe SessioSubGAssignada i la seva constructora

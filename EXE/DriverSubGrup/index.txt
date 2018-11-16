@@ -1,0 +1,1 @@
+L'eina de comprovació de SubGrup permet comprovar el correcte funcionament de la classe SubGrup, la seva constructora i els seus getters i setters

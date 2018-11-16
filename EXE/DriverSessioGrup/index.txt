@@ -1,0 +1,1 @@
+L'eina de comprovacio de sessio grup permet comprovar el correcte funcionament de la classe SessioGrup, les seves constructores, els seus getters i setters i diverses funcions mes que te

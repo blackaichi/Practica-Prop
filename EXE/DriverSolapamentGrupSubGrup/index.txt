@@ -1,0 +1,1 @@
+L'eina de comprovació de solapament grup i subgrup permet comprovar el correcte funcionament de la classe SolapamentGrupSubGrup, la seva constructora i les seves consultores i modificadores

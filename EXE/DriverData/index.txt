@@ -1,0 +1,1 @@
+L'eina de comprovació d'hora permet comprovar el correcte funcionament de la classe Data, la seva constructora i els seus getters i setters
