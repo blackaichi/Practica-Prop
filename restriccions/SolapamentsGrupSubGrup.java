@@ -122,7 +122,7 @@ public class SolapamentsGrupSubGrup {
 		else if(grup != null && subGrup != null) return 250;
 		
 		String assignatura = grup != null? grup.getAssignatura().getNom() : subGrup.getGrup().getAssignatura().getNom();
-		this.disjuntesGlobals.get(assignatura).remove(grup != null? grup.getNumero() : subGrup.getNumero());
+		this.disjuntesGlobals.get(assignatura).removeIf(item -> item == (grup != null? grup.getNumero() : subGrup.getNumero()));
 		this.disjuntesGlobals.get(assignatura).add(newNumero);
 		return 0;
 	}
