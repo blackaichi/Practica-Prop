@@ -11,7 +11,7 @@ public class PlaEstudis {
 	/////////////////////////////////////////////////////////////
 	////////////////////////Variables //////////////////////////
 		
-	private static HashSet<String> plansEstudis = new HashSet<String>();
+	private static HashSet<PlaEstudis> plansEstudis = new HashSet<PlaEstudis>();
 	
 	/**
 	 * Nom  del Pla d'estudis
@@ -84,6 +84,7 @@ public class PlaEstudis {
 		this.rangDia = new int[4];
 		this.assignatures = new HashSet<Assignatura>();
 
+		plansEstudis.add(this);
 	}
 		
 	/////////////////////////////////////////////////////////////
@@ -98,11 +99,9 @@ public class PlaEstudis {
 		if (nom == null || nom.isEmpty()) return 18;
 		else if(this.nom == null) this.nom = nom;
 		else if(this.nom != null && this.nom.equals(nom)) return 1;
-		else if(plansEstudis.contains(nom)) return 10;
+		else if(this.nom == null && plansEstudis.contains(nom)) return 10;
 		
-		plansEstudis.removeIf(item -> item.equals(this.nom));
 		this.nom = nom;
-		plansEstudis.add(this.nom);
 		return 0;
 	}
 			
@@ -123,7 +122,7 @@ public class PlaEstudis {
 			}
 
 			for (int i = franja[0]; i < franja[1]; i++) {
-				if(valor[i] = false) {
+				if(!valor[i]) {
 					valor[i] = true;
 				}
 			}
@@ -250,6 +249,22 @@ public class PlaEstudis {
 		return sessionsSGA;
 	}
 			
+	public Assignatura getAssignatura(String nom) {
+		if(nom == null) return null;
+		for(Assignatura assig: this.assignatures)
+			if(assig.getNom().equals(nom)) return assig;
+		
+		return null;
+	}
+	
+	static public PlaEstudis getPlaEstudis(String nom) {
+		if(nom == null) return null;
+		for(PlaEstudis pla: plansEstudis)
+			if(pla.getNom().equals(nom)) return pla;
+		
+		return null;
+	}
+	
 	/////////////////////////////////////////////////////////////
 	//////////////////////// Modificadores /////////////////////
 			
@@ -317,5 +332,9 @@ public class PlaEstudis {
 	 */
 	public static int quantsPlansEstudis() {
 		return plansEstudis.size();
+	}
+
+	static public void eliminaPlaEstudis(String nom) {
+		plansEstudis.removeIf(item -> item.getNom().equals(nom));
 	}
 }
