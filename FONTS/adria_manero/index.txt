@@ -1,0 +1,8 @@
+Totes les Classes implementades per adria.manero@est.fib.upc.edu
+	
+Assignatura: Representa una Assignatura concreta d'un pla d'estudis.
+PlaEstudis: Representa un Pla d'Estudis el qual conté diverses Assignatures.
+DriverSubGrup: Testeja la classe SubGrup.
+DriverPlaEstudis: Testeja la classe PlaEstudis
+HoresSenseClasseAssignatura: Restriccio en la qual es comprova que una assignatura faigui classes a les hores que te assignades.
+NoCiclesRequisits: Restriccio en la qual es comprova que no hi hagin cicles entre els requisits de l'assignatura.
