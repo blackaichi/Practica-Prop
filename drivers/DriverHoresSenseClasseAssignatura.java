@@ -56,10 +56,16 @@ public class DriverHoresSenseClasseAssignatura {
 		hsca.permetHores(force, dia, hores);
 		if (hsca.checkPotFerClasse(5, 4) == 0) System.out.println("permetHores i checkPotFerClasse OK");
 		hsca.restore();
-		/*
+		boolean trobat = false;
+ 		boolean[][] horesaptes= hsca.getHoresAptes();
+		boolean[][] horesmasc = hsca.getMascara();
+		for (int i = 0; i < horesaptes.length; ++i) {
+			for (int j = 0; j < horesaptes.length; ++j) {
+				if (horesaptes[i][j] != horesmasc[i][j]) trobat = true;
+			}
+		}
 		if (trobat) System.out.println("Restore, getHoresAptes i getMascara ERROR");
 		else System.out.println("Restore, getHoresAptes i getMascara OK");
-		*/
 	}
 }
 
