@@ -1,0 +1,14 @@
+Totes les classes implementades per Hector Morales Carnice
+Correu FiB: hector.morales.carnice@est.fib.upc.edu
+
+Classes:
+	Aula.java				: Representa una Aula, per un campus concret, amb tots els components que la descriuen i equip que conte.
+	Campus.java				: Representa un Campus amb totes les funcionalitats pertinents.
+	ControladorDomini.java	: Ofereix totes les funcions de control del domini.
+	Grup.java				: Representa un Grup, per una Assignatura concreta d'un pla d'estudis especific, amb tots els components que el descriuen.
+	Horari.java				: Es el generador d'horaris, per un Campus i un pla d'estudis especifics, del projecte.
+	SubGrup.java			: Representa un Subgrup, per un grup d'una ssignatura d'un pla d'estudis concret, amb tots els compoents que el descriuen. 
+
+	Restriccions:
+		HoresAptesGrupSubGrup.java	: Controla la restriccio d'hores en les quals un grup o subgrup pot fer o no classe.
+		SolapamentsGrupSubGrup.java	: Controla la restriccio de solapament tant per grup com per subgrup.
