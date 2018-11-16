@@ -77,6 +77,10 @@ public class SolapamentsGrupSubGrup {
 		int checker;
 		if((checker = this.checkStatus(grup, subGrup)) != 0) return checker;
 		
+		//Si l'assignatura no existeix l'afegeix:
+		if(this.disjuntesGlobals.get(grup != null? grup.getAssignatura().getNom() : subGrup.getGrup().getAssignatura().getNom()) == null)
+			this.disjuntesGlobals.put(grup != null? grup.getAssignatura().getNom() : subGrup.getGrup().getAssignatura().getNom(), new HashSet<>());
+		
 		HashSet<Integer> disjuntesActuals = new HashSet<>();
 		if(grup != null) { //En cas d'haver entrat un GRUP:
 			//Afegir un element que ja conté es com no fer res; al igual que eliminar-ne un que no hi es:
@@ -121,9 +125,13 @@ public class SolapamentsGrupSubGrup {
 		if(grup == null && subGrup == null) return 253;
 		else if(grup != null && subGrup != null) return 250;
 		
-		String assignatura = grup != null? grup.getAssignatura().getNom() : subGrup.getGrup().getAssignatura().getNom();
-		this.disjuntesGlobals.get(assignatura).removeIf(item -> item == (grup != null? grup.getNumero() : subGrup.getNumero()));
-		this.disjuntesGlobals.get(assignatura).add(newNumero);
+		String assignatura = grup != null? grup.getAssignatura().getNom() :
+										   subGrup.getGrup().getAssignatura().getNom();
+		
+		if(this.disjuntesGlobals.get(assignatura) != null) {
+			this.disjuntesGlobals.get(assignatura).removeIf(item -> item == (grup != null? grup.getNumero() : subGrup.getNumero()));
+			this.disjuntesGlobals.get(assignatura).add(newNumero);
+		}
 		return 0;
 	}
 	
