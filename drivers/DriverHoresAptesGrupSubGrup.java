@@ -63,12 +63,10 @@ public class DriverHoresAptesGrupSubGrup {
 		hags.restore();
 		Map<Integer, boolean[]> horesaptes = hags.getHoresAptes();
 		Map<Integer, boolean[]> horesa = hags.getMascara();
-		boolean trobat = false;
-		for (Map.Entry<Integer, boolean[]> b : horesaptes) {
-			
-		}
-		if (trobat) System.out.println("Restore, getHoresAptes i getMascara ERROR");
-		else System.out.println("Restore, getHoresAptes i getMascara OK");
+		boolean iguals = horesa.equals(horesaptes);
+		
+		if (iguals) System.out.println("Restore, getHoresAptes i getMascara OK");
+		else System.out.println("Restore, getHoresAptes i getMascara ERROR");;
 	}
 
 }
