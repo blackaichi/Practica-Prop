@@ -26,12 +26,12 @@ public class ExceptionManager {
 	 */
 	static private void ExceptionManagerInitializer() {
 		if(titles == null) {
-			titles = new String[500]; //Mes val que en sobrin, que no que en faltin equisdé
+			titles = new String[300]; //Mes val que en sobrin, que no que en faltin equisdé
 			
 			//DECLARACIONS GENERALS 0:9 :
 			titles[0] = "NO_ERROR";
 			titles[1] = "MODIFICACIÓ_INUTIL";
-			//titles[2] = "INT_NEGATIU";
+			titles[2] = "EXCEPCIÓ_NO_DEFINIDA";
 					
 			//PLA ESTUDIS 10:29 :
 			titles[10] = "Ja existeix un Pla d'Estudis amb el mateix nom";
@@ -202,7 +202,10 @@ public class ExceptionManager {
 	 */
 	static public String getException(int index) {
 		ExceptionManagerInitializer();
-		return titles[index%titles.length]; // "%titles.length" és necessari per evitar cridar posicions fora de rang.
+		// "%titles.length" és necessari per evitar cridar posicions fora de rang.
+		if(titles[index%titles.length] == null ||
+		   titles[index%titles.length].isEmpty()) return titles[2];
+		else return titles[index%titles.length];
 	}
 	
 	/**
