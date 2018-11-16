@@ -1,0 +1,2 @@
+L'eina de coprovació de Pair comprova diferents aspectes de la classe Pair.
+
