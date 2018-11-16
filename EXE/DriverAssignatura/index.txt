@@ -1,0 +1,7 @@
+L'eina de comprovació de Assignatura comprova 5 aspectes diferents de la classe Assignatura.
+1. Comprovacio de la constructora 1 d'Assignatura que requereix d'un Pla d'Estudis i d'un Nom.
+2. Comprovació de la constructora 2 d'Assignatura
+3. Comprovació de les funcions de sets i checks i gets.
+4. comprovacio de les modificadores de SubGrup.
+5. comprovacio de les modificadoresGrupEnter
+
