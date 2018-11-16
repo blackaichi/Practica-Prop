@@ -1,7 +1,0 @@
-Per la nostra practica hem fet servir varies estructures de dades.
-
-Per començar, per tractar les multiplicitats al UML hem fet servir HasSets, on guardavem els objectes. Per exemple la classe PlaEstudis te un HashSet d'assignatures per saber quines assignatures pertanyen a aquest Pla d'Estudis, el mateix passa amb Assignatura-Grup o Grup-SubGrup entre d'altres.
-A mes a mes hem fet servir varis arrays per guardar conjunts de dades.
-A part dels HashSets i arrays tambe hem fet servir Vectors a la classe NoSolaparAssignatura perque pensem que era mes eficient i util que no pas fer servir un HashSet.
-A continuacio també hem fet servir HashMaps a classes com Horari, Assignatura o PlaEstudis per guardar dades com per exemple una franja horaria on la clau es el dia i com a contingut un array de booleans de 24 posicions (1 amb cada hora).
-Per ultim tambe hem creat unes estructures de dades que ens han semblat utils, que son Data, Pair i Segment, on Data hi guardem una hora i un dia, a Pair podem guardar 2 variables i a Segment ens serveix com a peces del nostre Horari.
