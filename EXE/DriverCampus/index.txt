@@ -1,0 +1,4 @@
+L'eina DriverCampus ens dona la possibilitat de comprovar:
+1- La constructora
+2- Tots els Getters i Setters
+3- Els Adds i Deletes corresponents.

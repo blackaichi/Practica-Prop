@@ -1,0 +1,3 @@
+L'eina de comprovacio DriverHoresAptesGRupSubGrup permet comprovar:
+1- La constructora.
+2- Totes les modificadores i consultores.

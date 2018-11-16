@@ -1,0 +1,3 @@
+L'eina de comprovacio DriverNoSolaparAssignatura permet comprovar:
+1- La constructora de la classe de la restriccio.
+2- Totes les modificadores i consultores.

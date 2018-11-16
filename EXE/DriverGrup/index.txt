@@ -1,0 +1,7 @@
+L'eina de comprovacio DriverGrup permet visualitzar i comporbar:
+1- La primera constructora de la classe Grup.
+2- La segona constructora de la classe Grup.
+3- Els setters de la classe.
+4- Les modificadores de subgrup.
+5- Les modificadores de Sessio.
+6- Les consultores.

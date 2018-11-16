@@ -1,0 +1,6 @@
+L'eina de comporvacio DriverPlaEstudis permet comprovar:
+1- La constructora de la classe PlaEstudis.
+2- La reaccio de la constructora davant d'un error.
+3- Tots els setters i getters
+4- El rang.
+5- Donada d'alta i baixa d'una ssignatura.
