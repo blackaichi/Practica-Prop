@@ -1,0 +1,1 @@
+Carpetes amb cada integrant del grup amb els seus respectius .java.
