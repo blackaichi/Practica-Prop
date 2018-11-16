@@ -1,23 +1,23 @@
 package JUNIT;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 import org.junit.*;
 import classes.*;
 
 public class JUNITPlaEstudis {
 	
-	private static PlaEstudis PE1;
-	private static PlaEstudis PE2;
-	private static PlaEstudis PE3;
+	private PlaEstudis PE1;
+	private PlaEstudis PE2;
+	private PlaEstudis PE3;
 	
 	
 	/**
 	 * Iniciem alguns plans d'estudis
 	 */
-	@BeforeClass
-	public static void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		PE1 = new PlaEstudis("UPC");
 		PE2 = new PlaEstudis("UAB");
 		PE3 = new PlaEstudis("UDA");
@@ -34,9 +34,13 @@ public class JUNITPlaEstudis {
 	/**
 	 * Comprovem que salti error en cas de no passar-li nom
 	 */
-	@Test (expected = Exception.class)
+	@Test
 	public void testErrorConstructora() throws Exception {
-		PlaEstudis PE = new PlaEstudis("");
+		try {
+			PlaEstudis PE = new PlaEstudis("");
+		}catch(Exception e) {
+			assertEquals(e.getMessage(), "Nom no pot ser null");
+		}
 	}
 	
 	/**
@@ -68,7 +72,7 @@ public class JUNITPlaEstudis {
 		try {
 			PE1.setNom("UDA");
 		}catch(Exception e) {
-			Assert.fail("Exception " + e);
+			assertEquals(e.getMessage(), "Ja existeix un Pla d'Estudis amb el mateix nom");
 		}
 	}	
 	
@@ -87,7 +91,18 @@ public class JUNITPlaEstudis {
 	}
 	
 	@Test
-	public void getFranja() {
-		
+	public void testFranja() throws Exception {
+		int[] i = new int[] {8,20};
+		boolean[] ii2 = new boolean[] {false, false, true, false, false, false, false, false,
+									   false, false, false, false, false, false, false, false,
+									   false, false, false, false, false, false, false, false};
+		boolean[] ii = new boolean[] {false, false, false, false, false, false, false, false, 
+									  true, true, true, true, true, true, true, true, 
+									  true, true, true, true, false, false, false, false};
+		assertEquals(PE1.setFranja(2, i), 0);
+		assertArrayEquals(PE1.getFranjaDia(2), ii);
+		assertEquals(PE1.setFranja(2, ii2), 0);
+		assertEquals(PE1.delFranja(2, i), 0);
+		assertArrayEquals(PE1.getFranjaDia(2), ii2);
 	}
 }
