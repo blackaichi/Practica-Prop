@@ -17,13 +17,14 @@ public class DriverSubGrup {
 	 * @throws Exception
 	 */
 		public static void main (String [] args) throws Exception {
-			System.out.print("Benvingut a l'eina de comprovació de la classe SubGrup");
-			System.out.print("1-CheckConstructora1, 2-CheckConstructora2, 3-CheckGetSetGrup,  4-CheckModificadoresSubgrup,"
-					+ " 5-CheckModificadoresSessio, 6-CheckConsultores");
-			System.out.print("Enter an integer: ");
-			Scanner reader = new Scanner(System.in);
-			int n = reader.nextInt();
+			System.out.println("Benvingut a l'eina de comprovació de la classe DriverSubGrup");		
+			int n = 1;
+			Scanner reader = null;
 			while(n == 1 || n == 2 || n == 3) {
+				System.out.println("1-Constructora1, 2-Constructora2, 3-GetSetGrup");
+				System.out.println("Enter an integer: ");
+				reader = new Scanner(System.in);
+				n = reader.nextInt();
 				if (n == 1) CheckConstructora1();
 				else if (n == 2) CheckConstructora2();
 				else if (n == 3) CheckGetSetGrup();
