@@ -1,0 +1,3 @@
+L'eina de coprovació de NoCiclesRequisits comprova 2 aspectes de la classe NoCiclesRequisits.
+1. constructora
+2.Modificadores i Constructores
