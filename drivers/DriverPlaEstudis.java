@@ -1,15 +1,12 @@
 package drivers;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-
 import java.util.Scanner;
 
 import classes.*;
 
 /**
  * 
- * @author eric.casanovas@est.fib.upc.edu
+ * @author adria.manero@est.fib.upc.edu
  *
  */
 
@@ -72,10 +69,11 @@ public class DriverPlaEstudis {
 	
 	private static void checkRang() throws Exception {
 		PlaEstudis pe = new PlaEstudis("fib");
+		boolean b = true;
 		int[] rang = new int[] {3,6,12,23};
 		pe.setRangDia(rang);
-		assertArrayEquals(new int[] {3,6}, pe.getRangMati());
-		assertArrayEquals(new int[] {12,23}, pe.getRangTarda());
+		if (new int[] {3,6}!= pe.getRangMati()) b = false;;
+		if (new int[] {12,23} != pe.getRangTarda()) b = false;
 		System.out.println("Correcte.");
 	}
 	
