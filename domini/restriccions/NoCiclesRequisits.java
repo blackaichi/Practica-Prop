@@ -1,8 +1,8 @@
-package restriccions;
+package domini.restriccions;
 import java.util.*;
 
-import classes.*;
-import utils.ExceptionManager;
+import domini.classes.*;
+import utils.*;
 
 /**
  * 
