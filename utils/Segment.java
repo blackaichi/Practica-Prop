@@ -1,7 +1,7 @@
 package utils;
 
 import java.util.*;
-import classes.*;
+import domini.classes.*;
 import utils.*;
 
 /**
@@ -13,11 +13,8 @@ import utils.*;
  */
 public class Segment {
 	/**
-	 * Referencia a l'horari del qual es segment.
-	 */
-	private Map<Integer, Map<Integer, HashSet<Segment>>> horari;
-	/**
-	 * Registra la data a la qual pertany dins l'horari.
+	 * Registra la data en la qual comença la sessió a la qual
+	 * pertany el segment.
 	 */
 	private Data data;
 	/**
@@ -31,9 +28,11 @@ public class Segment {
 	 */
 	private SessioGAssignada sessioG;
 	private SessioSGAssignada sessioSG;
-
-	////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////  PRIVADES  /////////////////////////////////////
+	
+	/**
+	 * Referencia a l'estructura d'horari a la qual pertany aquest segment.
+	 */
+	private Estructura struct;
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
@@ -44,13 +43,10 @@ public class Segment {
 	 * @param aula Indica l'aula on s'aplica el segment.
 	 * @param sessio Indica la sessió que es dua terme en el segment.
 	 */
-	public Segment(Map<Integer, Map<Integer, HashSet<Segment>>> horari, Data data, Aula aula, SessioGAssignada sessio) {
-		this.horari = horari;
-		this.data = data;
-		this.aula = aula;
-		
-		this.sessioG = sessio;
-		this.sessioSG = null;
+	public Segment(Data data, Aula aula, SessioGAssignada sessio) throws Exception {
+		ExceptionManager.thrower(this.setSessio(sessio, null));
+		ExceptionManager.thrower(this.setAula(aula));
+		ExceptionManager.thrower(this.setData(data));
 	}
 	
 	/**
@@ -60,28 +56,70 @@ public class Segment {
 	 * @param aula Indica l'aula on s'aplica el segment.
 	 * @param sessio Indica la sessió que es dua terme en el segment.
 	 */
-	public Segment(Map<Integer, Map<Integer, HashSet<Segment>>> horari, Data data, Aula aula, SessioSGAssignada sessio) {
-		this.horari = horari;
-		this.data = data;
-		this.aula = aula;
-		
-		this.sessioG = null;
-		this.sessioSG = sessio;
+	public Segment(Data data, Aula aula, SessioSGAssignada sessio) throws Exception {
+		ExceptionManager.thrower(this.setSessio(null, sessio));
+		ExceptionManager.thrower(this.setAula(aula));
+		ExceptionManager.thrower(this.setData(data));
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////  SETTERS  /////////////////////////////////////
-	
-	////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////  GETTERS  /////////////////////////////////////
 	/**
-	 * Retorna l'horaria al qual pertany el segment.
-	 * @return Un horari.
+	 * Assigna un valor a data.
+	 * @param data Referencia la data que cal assginar.
+	 * @return Excepció codificada en forma d'enter.
 	 */
-	public Map<Integer, Map<Integer, HashSet<Segment>>> getHorari() {
-		return this.horari;
+	private int setData(Data data) {
+		if(data == null) return -1; //TODO: la data no pot ser null;
+		
+		this.data = data;
+		return 0;
 	}
 	
+	/**
+	 * Assigna una aula al segment
+	 * @param aula Referencia a l'aula que cal assignar.
+	 * @return Excepció codificada en forma d'enter.
+	 */
+	private int setAula(Aula aula) {
+		if(aula == null) return -1; //TODO: l'aula no pot ser null;
+		
+		this.aula = aula;
+		return 0;
+	}
+	
+	/**
+	 * Assigna una sessió al segment.
+	 * @param sessioG Referencia a la sessio a assginar, o bé es null.
+	 * @param sessioSG Referencia a la sessio a assignar, o bé es null.
+	 * @return Excepció codificada en forma d'enter.
+	 */
+	private  int setSessio(SessioGAssignada sessioG, SessioSGAssignada sessioSG) {
+		if(sessioG == null && sessioSG == null) return -1; //TODO: Els dos no poden ser null;
+		else if(sessioG != null && sessioSG != null) return -1; //TODO: Els dos no poden ser diferent de null;
+		
+		this.sessioG = sessioG;
+		this.sessioSG = sessioSG;
+		return 0;
+	}
+	
+	/**
+	 * Assigna una estructura al segment.
+	 * @param struct Referencia a l'estructura a assignar.
+	 * @return Excepció codificada en forma d'enter.
+	 */
+	public int setEstructura(Estructura struct) {
+		if(struct == null) return -1; //TODO: l'estructura no pot ser null.
+		else if(struct.getPlaEstudis().getNom().equals(sessioG != null? sessioG.getGrup().getAssignatura().getPlaEstudis().getNom() :
+																		sessioSG.getSubGrup().getGrup().getAssignatura().getPlaEstudis().getNom()))
+			return -1; //L'Estructura es d'un pla d'estudis diferent al del segment.
+		
+		this.struct = struct;
+		return 0;
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////  GETTERS  /////////////////////////////////////	
 	/**
 	 * Retorna la data en la que es du a terme la sessió del segment.
 	 * @return Una data.
@@ -106,9 +144,53 @@ public class Segment {
 		return new Pair<>(this.sessioG, this.sessioSG);
 	}
 	
+	/**
+	 * Retorna l'estructura de l'horari al qual pertany el segment.
+	 * @return Una instancia d'Estructura igual o diferent de null.
+	 */
+	public Estructura getHorari() {
+		return this.struct;
+	}
+	
+	/**
+	 * Genera una copia totalment independent del segment entrat.
+	 * @param toCopy Segment que es preten copiar.
+	 * @return Un segment identic al segment entrat.
+	 */
+	public Segment getCopy() {
+		Segment copy = null;
+		try {
+			if(sessioG != null) copy = new Segment(data, aula, sessioG);
+			else if(sessioSG != null) copy = new Segment(data, aula, sessioSG);
+		}
+		catch(Exception e) {
+			//TODO: alguna cosa;
+		}
+		
+		return copy;
+	}
+	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  MODIFICADORES  /////////////////////////////////
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  CONSULTORES  ///////////////////////////////////
+	/**
+	 * Retorna true si, i només si, el segment entrat és, a efectes practics,
+	 * igual al segment corresponent. 
+	 * @param segment Referencia al segment a comparar.
+	 * @return True o False segons si son iguals o no.
+	 */
+	public boolean equals(Segment segment) {
+		if(segment == null) return false;
+		
+		if(this.data.getDia() == segment.getData().getDia() &&
+		   this.data.getHora() == segment.getData().getHora() &&
+		   this.aula.getNom().equals(segment.getAula().getNom()) &&
+		   this.aula.getCampus().getNom().equals(segment.getAula().getCampus().getNom()) &&
+		   this.sessioG == segment.sessioG && this.sessioSG == segment.sessioSG)
+			return true;
+		
+		return false;
+	}
 }

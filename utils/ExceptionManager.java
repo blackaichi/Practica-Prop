@@ -63,7 +63,7 @@ public class ExceptionManager {
 			
 			//GRUP 50: 69:
 			titles[50] = "Identificació negativa o igual a 0.";
-			titles[51] = "El número de Grup ja existeix en aquest pla d'estudis.";
+			titles[51] = "El número de Grup ja existeix en aquesta assignatura.";
 			titles[52] = "Grup amb capacitat negativa o igual a 0.";
 			titles[53] = "Grup amb menys places que places sumen els seus SubGrups.";
 			titles[54] = "Franja incorrecte.";
@@ -84,7 +84,7 @@ public class ExceptionManager {
 			titles[69] = "La sessió no és de la mateixa assignatura que el grup.";
 			
 			//SUBGRUP 70:89 :
-			titles[70] = "El número de subGrup ja existeix al pla d'estudis.";
+			titles[70] = "El número de subGrup ja existeix a l'assignatura.";
 			titles[71] = "Nombre negatiu o igual a 0 de places.";
 			titles[72] = "Subgrup amb més places que el Grup.";
 			titles[73] = "El subGrup ha de formar part d'un Grup";
@@ -215,6 +215,7 @@ public class ExceptionManager {
 	 */
 	static public void thrower(int index) throws Exception {
 		ExceptionManagerInitializer();
-		if(index != 0) throw new Exception(getException(index));
+		if(index < 0) index *= -1;
+		if(index != 0 && index != 1) throw new Exception(getException(index));
 	}
 }
