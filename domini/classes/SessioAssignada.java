@@ -1,4 +1,4 @@
-package classes;
+package domini.classes;
 
 /**
  * 

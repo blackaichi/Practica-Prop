@@ -1,4 +1,4 @@
-package classes;
+package domini.classes;
 
 import java.util.*;
 import utils.*;
@@ -69,7 +69,7 @@ public class Campus {
 	 * @return Un String amb valor no null.
 	 */
 	public String getNom() {
-		return this.getNom();
+		return this.nom;
 	}
 	
 	/**
@@ -143,6 +143,16 @@ public class Campus {
 		if(nom == null) return 132;
 		else this.aules.removeIf(item -> item.getNom().equals(nom));
 		
+		return 0;
+	}
+	
+	/**
+	 * Elimina el campus amb el nom definit.
+	 * @param nom Nom del campus a esborrar.
+	 * @return Excepció codificada en forma d'enter.
+	 */
+	static public int eliminarCampus(String nom) {
+		campusCreats.removeIf(item -> item.getNom().equals(nom));
 		return 0;
 	}
 	

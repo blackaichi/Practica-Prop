@@ -1,7 +1,7 @@
-package classes;
+package domini.classes;
 
 import java.util.*;
-import restriccions.*;
+import domini.restriccions.*;
 import utils.*;
 
 /**
@@ -41,12 +41,12 @@ public class Grup {
 	/**
 	 * Linca el grup amb la seva restricció d'hores aptes.
 	 */
-	private HoresAptesGrupSubGrup horesAptes;
+	private HoresAptes horesAptes;
 	/**
 	 * Linca el grup amb la seva restricció de grups amb
 	 * els quals no es pot solapar.
 	 */
-	private SolapamentsGrupSubGrup disjunts;
+	private Solapaments disjunts;
 	
 	////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////  PRIVADES  /////////////////////////////////////
@@ -56,7 +56,8 @@ public class Grup {
 	 */
 	private int calculaCapacitatTotal() {
 		int calcPlaces = 0;
-		for(SubGrup subg: subGrups) calcPlaces += subg.getPlaces();
+		if(this.subGrups != null) for(SubGrup subg: subGrups)
+			calcPlaces += subg.getPlaces();
 		
 		return calcPlaces;
 	}
@@ -99,11 +100,8 @@ public class Grup {
 	 * @throws Excepciño rebuda durant la donada d'alta de les restriccions.
 	 */
 	private void iniRestriccions() throws Exception {
-		HoresAptesGrupSubGrup horesApt = new HoresAptesGrupSubGrup(this, null);
-		SolapamentsGrupSubGrup disjunts = new SolapamentsGrupSubGrup(this, null);
-		
-		this.horesAptes = horesApt;
-		this.disjunts = disjunts;
+		this.horesAptes = new HoresAptes(this);
+		this.disjunts = new Solapaments(this);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -124,6 +122,7 @@ public class Grup {
 		franja = new String("MT");
 		
 		subGrups = new HashSet<>();
+		sessions = new HashSet<>();
 	}
 	
 	/** 
@@ -141,6 +140,7 @@ public class Grup {
 		this.iniRestriccions();
 		
 		subGrups = new HashSet<>();
+		sessions = new HashSet<>();
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -153,16 +153,14 @@ public class Grup {
 	public int setNumero(int numero) {
 		if(numero <= 0) return 50;
 		else if(this.numero == numero) return 1; //En cas de fer un canvi inutil.
-		else for(Assignatura assig: this.assig.getPlaEstudis().getAssignatures()) {
-			if(assig.checkGrup(numero)) return 51; //Alguna assignatura ja conté el numero com id de grup.
-			else for(Grup grup: assig.getGrups()) //Algun grup ja conté el numero com id d'un subGrup.
-				if(grup.checkSubGrup(numero)) return 51;
-		}
+		else if(this.assig.checkGrup(numero)) return 51;
+		else for(Grup grup: assig.getGrups())
+			if(grup.checkSubGrup(numero)) return 51;
 
 		//En cas d'estar modificant el numero de grup, aquest s'ha d'actualitzar en les
-		//restriccions de solapament de tots els seus SubGrups:
-		if(this.subGrups != null) for(SubGrup subGrup: this.subGrups)
-			subGrup.getSolapaments().actualitza(this, null, numero);
+		//restriccions de solapament:
+		if(this.numero != 0)
+			this.getSolapaments().actualitzaNumero(this.assig.getNom(), this.numero, numero);
 		
 		this.numero = numero;
 		return 0;
@@ -176,7 +174,7 @@ public class Grup {
 	public int setPlaces(int places){
 		if(places <= 0) return 52;
 		else if(this.getPlaces() == places) return 1; //En cas d'un canvi inutil.
-		else if(places < this.getPlacesAssignades()) return 53;
+		else if(places < this.getPlacesAssignades()) return 53; 
 		
 		this.places = places;
 		return 0;
@@ -243,11 +241,8 @@ public class Grup {
 	 * @param subGrup Referencia el subGrup a restringir.
 	 * @return Excepció codificada en forma d'enter.
 	 */
-	public int setSolapament(Grup grup, SubGrup subGrup, boolean permet) {
-		if(grup == null || subGrup == null) return 250; // no poden ser els dos nulls.
-		else if(grup != null && this.equals(grup)) return 251; //Un grup no pot ser disjunt amb si mateix.
-		
-		return this.disjunts.setSolapament(grup, subGrup, permet);
+	public int setSolapament(String assig, int numero, boolean permet) {
+		return this.disjunts.setSolapament(assig, numero, permet);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -341,7 +336,7 @@ public class Grup {
 	 * Retorna la restriccio d'hores aptes.
 	 * @return Restriccions.
 	 */
-	public HoresAptesGrupSubGrup getRestriccioHoresAptes() {
+	public HoresAptes getRestriccioHoresAptes() {
 		return this.horesAptes;
 	}
 	
@@ -349,7 +344,7 @@ public class Grup {
 	 * Retorna la restricció de no solpament.
 	 * @return Restricció.
 	 */
-	public SolapamentsGrupSubGrup getSolapaments() {
+	public Solapaments getSolapaments() {
 		return this.disjunts;
 	}
 	
@@ -403,7 +398,7 @@ public class Grup {
 		
 		subGrups.add(new SubGrup(this, numero, places));
 		//Un grup no es pot solapar amb els seus subGrups.
-		return this.setSolapament(null, this.getSubGrup(numero), false);
+		return this.disjunts.setSolapament(assig.getNom(), numero, false);
 	}
 	
 	/**
@@ -413,7 +408,7 @@ public class Grup {
 	 */
 	public int baixaSubGrup(int numero) {
 		subGrups.removeIf(item -> item.getNumero() == numero);
-		return this.setSolapament(null, this.getSubGrup(numero), true);
+		return Solapaments.kill(assig.getPlaEstudis().getNom(), assig.getNom(), numero);
 		//El subgrup eliminat s'ha d'alliberar dels prohibits de solapar.
 		//Mai es sap en quin altre grup se li pot assignar el seu id.
 	}

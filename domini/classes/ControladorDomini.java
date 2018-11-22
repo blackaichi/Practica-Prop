@@ -1,6 +1,6 @@
-package classes;
+package domini.classes;
 
-import classes.*;
+import domini.classes.*;
 import java.util.*;
 import utils.*;
 

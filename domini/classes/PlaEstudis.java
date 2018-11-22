@@ -1,5 +1,7 @@
-package classes;
+package domini.classes;
 import java.util.*;
+
+import domini.restriccions.*;
 import utils.*;
 /**
  * 
@@ -291,7 +293,8 @@ public class PlaEstudis {
 	public int baixaAssignatura(String nom) throws Exception {
 		if (checkAssignatura(nom)) assignatures.removeIf(item -> item.getNom().equals(nom));
 		else return 14;
-		return 0;
+		
+		return Solapaments.kill(this.nom, nom, 0);
 	}
 		
 	/**

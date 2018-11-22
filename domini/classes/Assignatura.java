@@ -1,6 +1,7 @@
-package classes;
+package domini.classes;
+
+import domini.restriccions.*;
 import java.util.*;
-import restriccions.*;
 import utils.*;
 /**
  * 
@@ -45,12 +46,12 @@ public class Assignatura {
 	/**
 	 * Lincament a HoresSenseClasseAssignatura
 	 */
-	private HoresSenseClasseAssignatura horesAptes;
+	private HoresAptes horesAptes;
 	
 	/**
 	 * Lincament a NoSolaparAssignatura
 	 */
-	private NoSolaparAssignatura solapament;
+	private Solapaments solapament;
 	
 	/////////////////////////////////////////////////////////////
 	//////////////////////  Constructora  ///////////////////////
@@ -66,8 +67,9 @@ public class Assignatura {
 		this.sessionsG = new HashSet<SessioGrup>();
 		this.sessionsSG = new HashSet<SessioSubGrup>();
 		this.grups = new HashSet<Grup>();
-		solapament = new NoSolaparAssignatura(this);
-
+		
+		this.horesAptes = new HoresAptes(this);
+		this.solapament = new Solapaments(this);
 	}
 		
 	/////////////////////////////////////////////////////////////
@@ -100,15 +102,16 @@ public class Assignatura {
 	}
 	
 	/**
-	 * Indica amb quina assignatura no es pot solapar l'assignatura actual.
-	 * @param assig: assignatura que no es pot solapar.
+	 * Indica amb quina assignatura es pot o no solapar l'assignatura actual.
+	 * @param assig Referencia a l'assignatura a concretar.
+	 * @param permet Indica si s'ha de permetr
 	 * @return Excepció codificada en forma d'enter.
 	 */	
-	public int setSolapament(Assignatura assig) throws Exception {
+	public int setSolapament(Assignatura assig, boolean permet) throws Exception {
 		if (assig == null) return 40;
-		solapament.addNoSolapar(assig);
-		return 0;
+		return solapament.setSolapament(assig.getNom(), 0, permet);
 	}
+	
 	
 	/**
 	 * Assigna la restricció d'hores aptes per aquest grup.
@@ -120,12 +123,7 @@ public class Assignatura {
 	 * part les hores lectives del pla d'estudis.
 	 * @return Excepció codificada en forma d'enter.
 	 */
-	public int setHoresAptes(Map<Integer, int[]> franja, boolean apte, boolean force) throws Exception {
-		if(this.horesAptes == null) {
-			HoresSenseClasseAssignatura hores = new HoresSenseClasseAssignatura(this);
-			this.horesAptes = hores;
-		}
-		
+	public int setHoresAptes(Map<Integer, int[]> franja, boolean apte, boolean force) throws Exception {		
 		if(franja == null) return 0;
 		else for(Map.Entry<Integer, int[]> iter: franja.entrySet()) {
 			int checker = 0;
@@ -223,16 +221,15 @@ public class Assignatura {
 	 * Retorna l'instancia NoSolaparAssignatura de l'Assignatura.
 	 * @return NoSolaparAssignatura.
 	 */
-	public NoSolaparAssignatura getSolapaments() {
+	public Solapaments getSolapaments() {
 		return this.solapament;
 	}
-	
 	
 	/**
 	 * Retorna l'instancia HoresSenseClasseAssignatura de l'Assignatura.
 	 * @return HoresSenseClasseAssignatura.
 	 */
-	public HoresSenseClasseAssignatura getHoresAptes() {
+	public HoresAptes getHoresAptes() {
 		return this.horesAptes;
 	}
 	
@@ -269,7 +266,7 @@ public class Assignatura {
 	public int baixaGrup(int numero) {
 		if (checkGrup(numero)) {
 			grups.removeIf(item -> item.getNumero() == numero);
-			return 0;
+			return Solapaments.kill(plaEstudis.getNom(), nom, numero);
 		}
 		else return 36;
 	}
@@ -436,6 +433,4 @@ public class Assignatura {
 	public int quantsGrups() {
 		return this.grups.size();
 	}
-
-	 
 }

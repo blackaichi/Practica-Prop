@@ -1,6 +1,7 @@
-package classes;
+package domini.classes;
 
-import classes.*;
+import domini.classes.*;
+import domini.restriccions.*;
 import utils.*;
 import java.util.*;
 
@@ -10,96 +11,49 @@ import java.util.*;
  *
  */
 public class Horari {
+	////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////  STATIC  /////////////////////////////////////
 	/**
-	 * Enmagatzema TOTS els horaris generats per un pla d'estudis
-	 * únic en un campus concret.
-	 * El primer Map és un horari, del qual:
-	 * 	El primer Integer senyala:	Dia de la setmana;
-	 * 	El segón Integer senyala:	Hora del dia;
-	 * 	El Set d'Elements indica:	Totes les sessions per aquell dia, a aquella hora.
+	 * Enmagatzema TOTS els horaris candidats donats el nom d'un pla
+	 * d'estudis i el d'un campus concrets.
 	 */
-	private HashSet<Map<Integer, Map<Integer, HashSet<Segment>>>> horarisGenerat;
-
-	/**
-	 * Referencia al pla d'estudis del qual se'n vol
-	 * generar l'horari.
-	 */
-	private PlaEstudis plaEstudis;
-	/**
-	 * Referencia el campus al qual es vol aplicar l'horari.
-	 */
-	private Campus campus;
-
-	/**
-	 * Enmagatzema totes les Sessions de Grup que s'han de colocar
-	 * al horari.
-	 */
-	private HashSet<SessioGAssignada> sessionsDeGrup;
-	/**
-	 * Enmagatzema totes les Sessions de SubGrup que s'han de colocar
-	 * a l'horari.
-	 */
-	private HashSet<SessioSGAssignada> sessionsDeSubGrup;
-	/**
-	 * Enmagatzema totes les aules del campus.
-	 */
-	private HashSet<Aula> aulesDelCampus;
+	static private Map<String, Map<String, HashSet<Estructura>>> HorarisCandidats;
 	
-	/**EXPERIMENTAL
-	 * Controlador d'nSessions:
+	/**
+	 * Referencien a l'ultim pla d'estudis i campus pels quals
+	 * s'ha generat algun horari.
 	 */
-	private Map<SessioGAssignada, Integer> ocurrencies_g;
-	private Map<SessioSGAssignada, Integer> ocurrencies_sg;
+	static private PlaEstudis plaEstudis;
+	static private Campus campus;
 	
 	////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////  PRIVADES  /////////////////////////////////////
 	/**
-	 * Selecciona, si hi és, una aula que compleixi tots els requisits de la sessio
-	 * indicada. Altrament, retorna qualsevol aula que estigui lliure.
-	 * @param sessio Referencia a la sessió a la qual se'n vol assignar una aula.
-	 * @param dia Referencia al dia al qual s'ha d'assignar.
-	 * @param hora Referenca a l'hora, a la qual s'ha d'assignar.
-	 * @return Una Aula que pot o no complir amb tots els requisits.
+	 * Genera una copia totalment independent del set indicat.
+	 * @param toCopy Referencia al set a copiar.
+	 * @return Una copia identica.
 	 */
-	private Aula seleccionaAulaAdient(Map<Integer, Map<Integer, HashSet<Segment>>> horari, SessioGAssignada sessio, int dia, int hora) {
-		return this.getMaximaAulaAdient(horari, sessio.getSessioGrup().getMaterial(), sessio.getGrup().getPlaces(), dia, hora, sessio.getSessioGrup().getHores());
-	}
-	
-	/**
-	 * Selecciona, si hi és, una aula que compleixi tots els requisits de la sessio
-	 * indicada. Altrament, retorna qualsevol aula que estigui lliure.
-	 * @param sessio Referencia a la sessió a la qual se'n vol assignar una aula.
-	 * @param dia Referencia al dia al qual s'ha d'assignar.
-	 * @param hora Referenca a l'hora, a la qual s'ha d'assignar.
-	 * @return Una Aula que pot o no complir amb tots els requisits.
-	 */
-	private Aula seleccionaAulaAdient(Map<Integer, Map<Integer, HashSet<Segment>>> horari, SessioSGAssignada sessio, int dia, int hora) {
-		return this.getMaximaAulaAdient(horari, sessio.getSessioSubGrup().getMaterial(), sessio.getSubGrup().getPlaces(), dia, hora, sessio.getSessioSubGrup().getHores());
-	}
-	
-	/**
-	 * Comprova si en un dia concret ja existeix alguna sessió de qualsevol tipus
-	 * d'una assignatura per un grup o subgrup concret.
-	 * @param horari Referencia a l'horari en el qual s'ha de fer la cerca.
-	 * @param dia Indica el dia en el qual s'ha de fer la cerca.
-	 * @param assig Identifica l'assignatura.
-	 * @param numero Identifica al grup o subgrup.
-	 * @return Un booleà a true, si ja hi ha una sessio per grup i assignatura; false altrament.
-	 */
-	private boolean checkIfSessioColocada(Map<Integer, Map<Integer, HashSet<Segment>>> horari, int dia, Assignatura assig, int numero) {
-		for(int hora: horari.get(dia).keySet()) {
-			for(Segment segment: horari.get(dia).get(hora)) {
-				if(!segment.getSessio().fnull())
-					if(segment.getSessio().first.getSessioGrup().getAssignatura().getNom().equals(assig) &&
-					   segment.getSessio().first.getGrup().getNumero() == numero) return true;
-				
-				else if(!segment.getSessio().snull())
-					if(segment.getSessio().second.getSessioSubGrup().getAssignatura().getNom().equals(assig) &&
-					   segment.getSessio().second.getSubGrup().getNumero() == numero) return true;
-			}
-		}
+	static private HashSet<SessioGAssignada> copySGA(HashSet<SessioGAssignada> toCopy){
+		if(toCopy == null) return null;
 		
-		return false;
+		HashSet<SessioGAssignada> cloned = new HashSet<>();
+		for(SessioGAssignada sessio: toCopy) cloned.add(sessio);
+		
+		return cloned;
+	}
+	
+	/**
+	 * Genera una copia totalment independent del set indicat.
+	 * @param toCopy Referencia al set a copiar.
+	 * @return Una copia identica.
+	 */
+	static private HashSet<SessioSGAssignada> copySSGA(HashSet<SessioSGAssignada> toCopy){
+		if(toCopy == null) return null;
+		
+		HashSet<SessioSGAssignada> cloned = new HashSet<>();
+		for(SessioSGAssignada sessio: toCopy) cloned.add(sessio);
+		
+		return cloned;
 	}
 	
 	/**
@@ -111,13 +65,17 @@ public class Horari {
 	 * @param sessio Referencia al grup.
 	 * @return Un booleà.
 	 */
-	private boolean checkAllRestriccionsDeGrup(Map<Integer, Map<Integer, HashSet<Segment>>> horari, int dia, int horaIni, SessioGAssignada sessio) {
+	static private boolean checkAllRestriccionsDeGrup(Estructura horari, int dia, int horaIni, SessioGAssignada sessio) {
 		if((!sessio.getGrup().enRang(horaIni)) ||
 		   (sessio.getGrup().getRestriccioHoresAptes().checkPotFerClasse(dia, horaIni) != 0)) return false;
 		
-		else for(Segment segment: horari.get(dia).get(horaIni))
-			if(sessio.getGrup().getSolapaments().checkPotSolapar(segment.getSessio().first.getGrup(), segment.getSessio().second.getSubGrup()) != 0)
+		for(Segment segment: horari.getAllSegments(dia, horaIni)) {
+			if((!segment.getSessio().fnull() &&
+				sessio.getGrup().getSolapaments().checkPotSolapar(segment.getSessio().first.getGrup().getAssignatura().getNom(), segment.getSessio().first.getGrup().getNumero()) != 0) ||
+				(!segment.getSessio().snull() &&
+				sessio.getGrup().getSolapaments().checkPotSolapar(segment.getSessio().second.getSubGrup().getGrup().getAssignatura().getNom(), segment.getSessio().second.getSubGrup().getNumero()) != 0))
 				return false;
+		}
 					
 		return true;	
 	}
@@ -130,13 +88,17 @@ public class Horari {
 	 * @param sessio Referencia al grup.
 	 * @return Un booleà.
 	 */
-	private boolean checkAllRestriccionsDeSubGrup(Map<Integer, Map<Integer, HashSet<Segment>>> horari, int dia, int horaIni, SessioSGAssignada sessio) {
+	static private boolean checkAllRestriccionsDeSubGrup(Estructura horari, int dia, int horaIni, SessioSGAssignada sessio) {		
 		//Si un Grup es de mati, per exemple, és logic que tots els seus subGrups també ho son.
 		if((!sessio.getSubGrup().enRang(horaIni)) ||
-		   (sessio.getSubGrup().getRestriccioHoresAptes().checkPotFerClasse(dia, horaIni) != 0)) return false;
+		   (sessio.getSubGrup().getRestriccioHoresAptes().checkPotFerClasse(dia, horaIni) != 0))
+			return false;
 		
-		else for(Segment segment: horari.get(dia).get(horaIni))
-			if(sessio.getSubGrup().getSolapaments().checkPotSolapar(segment.getSessio().first.getGrup(), segment.getSessio().second.getSubGrup()) != 0)
+		for(Segment segment: horari.getAllSegments(dia, horaIni))
+			if((!segment.getSessio().fnull() &&
+				sessio.getSubGrup().getSolapaments().checkPotSolapar(segment.getSessio().first.getGrup().getAssignatura().getNom(), segment.getSessio().first.getGrup().getNumero()) != 0) ||
+				(!segment.getSessio().snull() &&
+				sessio.getSubGrup().getSolapaments().checkPotSolapar(segment.getSessio().second.getSubGrup().getGrup().getAssignatura().getNom(), segment.getSessio().second.getSubGrup().getNumero()) != 0))
 				return false;
 		
 		return true;
@@ -150,10 +112,13 @@ public class Horari {
 	 * @param assignatura Referencia a l'assignatura a comprovar.
 	 * @return un booleà.
 	 */
-	private boolean checkAllRestriccionsAssignatura(Map<Integer, Map<Integer, HashSet<Segment>>> horari, int dia, int horaIni, Assignatura assignatura) {
+	static private boolean checkAllRestriccionsAssignatura(Estructura horari, int dia, int horaIni, Assignatura assignatura) {
 		if(assignatura.getHoresAptes().checkPotFerClasse(dia, horaIni) != 0) return false;
-		else for(Segment segment: horari.get(dia).get(horaIni))
-			if(assignatura.getSolapaments().checkSolapar(segment.getSessio().first != null? segment.getSessio().first.getGrup().getAssignatura() : segment.getSessio().second.getSessioSubGrup().getAssignatura()) != 0)
+		else for(Segment segment: horari.getAllSegments(dia, horaIni))
+			if((!segment.getSessio().fnull() &&
+				assignatura.getSolapaments().checkPotSolapar(segment.getSessio().first.getGrup().getAssignatura().getNom(), segment.getSessio().first.getGrup().getNumero()) != 0) ||
+				(!segment.getSessio().snull() &&
+				assignatura.getSolapaments().checkPotSolapar(segment.getSessio().second.getSubGrup().getGrup().getAssignatura().getNom(), segment.getSessio().second.getSubGrup().getNumero()) != 0))
 				return false;
 		
 		return true;
@@ -167,8 +132,7 @@ public class Horari {
 	 * @param index Senyala en el set quina sessió és.
 	 * @return True, si i només si, les restriccions es compleixen per totes les hores.
 	 */
-	private boolean checkAllRestriccionsPerHores(Map<Integer, Map<Integer, HashSet<Segment>>> horari, int dia, int horaIni) {
-		Pair<SessioGAssignada, SessioSGAssignada> corrent = this.nextSessio();
+	static private boolean checkAllRestriccionsPerHores(Estructura horari, Pair<SessioGAssignada, SessioSGAssignada> corrent, int dia, int horaIni) {
 		if(corrent == null || corrent.isNull()) return false;
 		
 		Assignatura assig = corrent.first != null? corrent.first.getGrup().getAssignatura() :
@@ -180,25 +144,15 @@ public class Horari {
 		for(int incr = 0; incr < tempsDeSessio; incr++) {
 			if((!corrent.fnull() && !checkAllRestriccionsDeGrup(horari, dia, horaIni+incr, corrent.first)) ||
 			   (!corrent.snull() && !checkAllRestriccionsDeSubGrup(horari, dia, horaIni+incr, corrent.second)) ||
-			    !checkAllRestriccionsAssignatura(horari, dia, horaIni, assig))
+			   (!checkAllRestriccionsAssignatura(horari, dia, horaIni, assig)))
 				return false;
 		}
 		
 		return true;
 	}
 	
-	/**
-	 * EXPERIMENTAL
-	 * Controla la quantitat de vegades que s'ha de fer una sessio.
-	 * @param sessio Referencia a la sessió a checkejar.
-	 * @param horari Referencia a l'horaria sobre el qual fer la comporvació.
-	 * @param dia Dia en qual s'esta checkejant.
-	 * @return Un booleà.
-	 */
-	private boolean checkNSessions(Sessio sessio, Map<Integer, Map<Integer, HashSet<Segment>>> horari, int dia) {
-		return true;
-	}
-	
+	////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////  GENERADOR  ////////////////////////////////////
 	/**
 	 * Funció recursiva que, en definitiva, genera l'horari adient.
 	 * @param index Controla la sessio a processar.
@@ -206,38 +160,44 @@ public class Horari {
 	 * @param SGOcup Controla les sessions de SubGrup ocupades.
 	 * @throws Exception
 	 */
-	private void backTracking(Map<Integer, Map<Integer, HashSet<Segment>>> horari, int nHoraris) throws Exception {
-		if(this.horarisGenerat.size() >= nHoraris) return; // Si ja tenim nhorari, no és continua.
-		Pair<SessioGAssignada, SessioSGAssignada> corrent = this.nextSessio();
+	static private void backTracking(Estructura horari, HashSet<SessioGAssignada> sessionsG, HashSet<SessioSGAssignada> sessionsSG,  int nHoraris) throws Exception {
+		//Cas base: tants horaris generats com nHoraris senyala: si ja tenim nhorari, no és continua.
+		if(HorarisCandidats.get(plaEstudis.getNom()).get(campus.getNom()).size() >= nHoraris) return;
 		
-		if(corrent.isNull()) { //si s'ha lograt afegir TOTES les sessions vol dir que tenim un HORARI CANDIDAT!
-			this.horarisGenerat.add(new HashMap<Integer, Map<Integer, HashSet<Segment>>>(horari)); //Guardem l'horari obtingut;
-			return; //S'hi s'ha arribat al final s'acaba.
-		}
-		
-		for(int dia = 0; dia < 7; dia++) {
-			//Si el dia es lectiu.
-			if(this.plaEstudis.checkDiaFranja(dia)) for(int hora = 0; hora < 24; hora++) {
-				//Si la hora entrada pel dia entrat es lectiu al pla d'Estudis.
-				if(this.plaEstudis.getFranjaDia(dia)[hora]) {
-					if(this.checkAllRestriccionsPerHores(horari, dia, hora)) {
-					
-						//OBTENCIÓ DEL SEGMENT:				
-						Segment segment;
-						if(!corrent.fnull()) segment = new Segment(horari, new Data(dia, hora), seleccionaAulaAdient(horari, corrent.first, dia, hora), corrent.first);
-						else segment = new Segment(horari, new Data(dia, hora), seleccionaAulaAdient(horari, corrent.second, dia, hora), corrent.first);
+		//Obtenció de la sessió que toca colocar:
+		Pair<SessioGAssignada, SessioSGAssignada> corrent = nextSessio(sessionsG, sessionsSG);
+		//Cas base: totes les sessions han sigut assignades, l'horari esta complert:  tenim un HORARI CANDIDAT!
+		if(corrent.isNull()) HorarisCandidats.get(plaEstudis.getNom()).get(campus.getNom()).add(horari);
+		 //Altrament s'ha de trobar una posició adequada per a la sessio:
+		else for(int dia = 0; dia < 7; dia++) {
+			if(plaEstudis.checkDiaFranja(dia)) for(int hora = 0; hora < 24; hora++) { //Si el dia es lectiu:
+				//TODO: comprovar la franja lectiva per tantes hores com duri la sessio
+				if(plaEstudis.getFranjaDia(dia)[hora]) { //Si la hora entrada pel dia entrat es lectiu al pla d'Estudis.
+					if(checkAllRestriccionsPerHores(horari, corrent, dia, hora)) {
+						
+						Segment segment; //Creació del segment corresponent:
+						if(!corrent.fnull()) segment = new Segment(new Data(dia, hora), AulaAdient.seleccionaAulaAdient(horari, campus.getAllAules(), corrent.first, dia, hora), corrent.first);
+						else segment = new Segment(new Data(dia, hora), AulaAdient.seleccionaAulaAdient(horari,  campus.getAllAules(), corrent.second, dia, hora), corrent.second);
 						
 						if(segment.getAula() != null) { //En cas de que se li hagi pogut assignar una aula.
-							//AGREGACIÓ:
-							int horesTotals = segment.getSessio().first != null? segment.getSessio().first.getSessioGrup().getHores() :
-																				 segment.getSessio().second.getSessioSubGrup().getHores();
-							for(int incr = 0; incr < horesTotals; incr++) horari.get(dia).get(hora+incr).add(segment);
-							//CONTROL DE REPETICIONS
-							this.kill();
+							/*Treballant sobre copies, s'evita la necessitat de reinsertar o treure els elements dels
+							 * sets i maps, simplement es modifica la copia i s'itera sobre aquesta. Al retornar, es
+							 * treballa novament sobre el set original que no s'ha modificat.
+							*/
+							Estructura updatedHorari = horari.getCopy();
+							HashSet<SessioGAssignada> updatedSessionsG = copySGA(sessionsG);
+							HashSet<SessioSGAssignada> updatedSessionsSG = copySSGA(sessionsSG);
+							kill(updatedSessionsG, updatedSessionsSG); //S'elimina la sessió just assignada.
+							
+							//Obtenció del total d'hores que ha de durar la sessio:
+							int horesTotals = !segment.getSessio().fnull()? segment.getSessio().first.getSessioGrup().getHores() :
+																			segment.getSessio().second.getSessioSubGrup().getHores();
+							//S'afegeix el segment a tantes hores com dura la sessio.
+							for(int incr = 0; incr < horesTotals; incr++) 
+								updatedHorari.setSegment(segment, dia, hora+incr);
 							
 							//RECURSIVITAT!!! Kernel del backTracking:
-							backTracking(horari, nHoraris);
-							this.restore(horari, dia, hora, segment.getSessio().first, segment.getSessio().second);
+							backTracking(updatedHorari, updatedSessionsG, updatedSessionsSG, nHoraris);
 						}
 					}
 				}
@@ -245,132 +205,65 @@ public class Horari {
 		}
 	}
 	
-	////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////  GENERADOR  ////////////////////////////////////
 	/**
 	 * Donat un campus, i un pla d'estudis, genera l'horari corresponent.
 	 * @param plaEstudis Referencia al pla d'estudis del qual se n'ha de fer l'horari.
 	 * @param campus Referencia el campus sobre el qual s'ha d'aplicar l'horari.
 	 * @throws Exception
 	 */
-	public HashSet<Map<Integer, Map<Integer, HashSet<Segment>>>>
-	GENERADOR(PlaEstudis plaEstudis, Campus campus, int nHoraris) throws Exception{
-		ExceptionManager.thrower(this.setCampus(campus));
-		ExceptionManager.thrower(this.setPlaEstudis(plaEstudis));
+	static public int GENERADOR(PlaEstudis plaEstudis, Campus campus, HashSet<String> flags, int nHoraris, boolean purge) throws Exception{
+		int checker;
+		if((checker = inicialitzaEntorn(plaEstudis, campus, purge)) != 0) return checker;
 		
-		Map<Integer, Map<Integer, HashSet<Segment>>> horariCandidat =  new HashMap<>();
-		this.backTracking(horariCandidat, nHoraris);
-		return this.horarisGenerat;
+		HashSet<SessioGAssignada> sessionsDeGrup = new HashSet<>(plaEstudis.getSessionsGrupA());
+		HashSet<SessioSGAssignada> sessionsDeSubGrup = new HashSet<>(plaEstudis.getSessionsSubGrupA());
+		Estructura esquelet =  new Estructura(plaEstudis, campus);
+		esquelet.setFlags(flags);
+		
+		int totalHoraris = nHoraris + getHoraris(plaEstudis.getNom(), campus.getNom()).size();
+		backTracking(esquelet, sessionsDeGrup, sessionsDeSubGrup, totalHoraris);
+		return 0;
 	}
-	
-	////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////  CREADORA  /////////////////////////////////////
-	/**
-	 * Constrcutora de la classe Horari.
-	 * Degut al seu funcionament no cal assignar-li res.
-	 */
-	public Horari() {
-		this.horarisGenerat = new HashSet<>();
-		this.ocurrencies_g = new HashMap<>();
-		this.ocurrencies_sg = new HashMap<>();
-	}
-	
+		
 	////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////  SETTERS  /////////////////////////////////////
 	/**
-	 * Assigna un pla d'estudis a horari.
-	 * @param plaEstudis Referencia al pla d'estudis.
-	 * @return Excepció codificada en forma d'enter.
-	 */
-	private int setPlaEstudis(PlaEstudis plaEstudis) throws Exception {
-		if(plaEstudis == null) return -1; //TODO: El pla d'estudis no pot ser null;
-		
-		this.plaEstudis = plaEstudis;
-		this.sessionsDeGrup = new HashSet<>(this.plaEstudis.getSessionsGrupA());
-		this.sessionsDeSubGrup = new HashSet<>(this.plaEstudis.getSessionsSubGrupA());
-		return 0;
-	}
-	
-	/**
-	 * Assigna un campus a l'horari.
+	 * Inicialitza, si no hi és ja, l'espai al Map d'horari candidats per als
+	 * possibles horaris generats.
+	 * @param plaEstudis Referencia al pla d'estudis de l'horari.
 	 * @param campus Referencia al campus de l'horari.
-	 * @return Excepció codificada en forma d'enter.
 	 */
-	private int setCampus(Campus campus) {
-		if(campus == null) return -1; //TODO: El campus no pot ser null;
+	static private int inicialitzaEntorn(PlaEstudis plaEstudis, Campus campus, boolean purge) {
+		if(plaEstudis == null) return -1; //TODO: El pla d'estudis no pot ser null;
+		else if(campus == null) return -1; //TODO: El campus no pot ser null;
 		
-		this.campus = campus;
-		this.aulesDelCampus = new HashSet<>(this.campus.getAllAules());
+		if(HorarisCandidats == null) HorarisCandidats = new HashMap<>();
+		if(!HorarisCandidats.containsKey(plaEstudis.getNom())) HorarisCandidats.put(plaEstudis.getNom(), new HashMap<>());
+		if(!HorarisCandidats.get(plaEstudis.getNom()).containsKey(campus.getNom()))
+			HorarisCandidats.get(plaEstudis.getNom()).put(campus.getNom(), new HashSet<Estructura>());
+		
+		if(purge) HorarisCandidats.get(plaEstudis.getNom()).get(campus.getNom()).clear();
+		Horari.plaEstudis = plaEstudis;
+		Horari.campus = campus;
+		
 		return 0;
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////  GETTERS  /////////////////////////////////////
+	////////////////////////////////  GETTERS  /////////////////////////////////////			
 	/**
-	 * Retorna la sessio situada a la posició index.
-	 * Basicament permet treballar amb ambdos HashSets com
-	 * si fossin un de sol.
-	 * @param index Posicio que es vol cercar.
-	 * @return La sessió corresponent.
+	 * Retorna, si hi és, aquell horari que correspon al pla d'estudis entrat,
+	 * i al campus indicat.
+	 * @param plaEstudis Es el nom del pla d'Estudis al qual pertany l'horari.
+	 * @param campus Es el nom del campus al qual s'aplica l'horari.
+	 * @return Un horari que conté tots els horaris generats per aquest
+	 * pla d'estudis i campus indicats.
 	 */
-	private Pair<SessioGAssignada, SessioSGAssignada> nextSessio() {
-		Pair<SessioGAssignada, SessioSGAssignada> element = new Pair<>();
-		if(!sessionsDeGrup.isEmpty()) //En cas d'estar accedint a les Sessions de Grup
-			element.first = sessionsDeGrup.iterator().next();
-		else if(!sessionsDeSubGrup.isEmpty()) //En cas d'accedir a les sessions de SubGrup
-			element.second = sessionsDeSubGrup.iterator().next();
+	static public HashSet<Estructura> getHoraris(String plaEstudis, String campus) {
+		if(plaEstudis == null || campus == null) return null;
 		
-		return element;
-	}
-	
-	/**
-	 * Retorna l'aula que més s'adapta a l'equip indicat. Altrament n'escull una
-	 * a l'atzar.
-	 * @param equip Set amb tots els equips necesaris.
-	 * @param dia Dia en el qual es vol reservar l'aula.
-	 * @param hora Hora en la qual es vol reservar l'aula.
-	 * @param durada Indica per quantes hores consecutives cal reservar aquella aula.
-	 * @return L'aula mes adient.
-	 */
-	private Aula getMaximaAulaAdient(Map<Integer, Map<Integer, HashSet<Segment>>> horari, HashSet<String> equip, int places, int dia, int hora, int durada) {
-		Map<Integer, HashSet<Aula>> aulesCandidates = new HashMap<>();
-		for(Aula aula: this.aulesDelCampus)
-			if(!this.checkAula(horari, aula, dia, hora, durada) || aula.getCapacitat() < places) { //Si l'aula esta ocupada, es descarta.
-				if(aulesCandidates.get(aula.matchEquip(equip)) == null)
-					aulesCandidates.put(aula.matchEquip(equip), new HashSet<>());
-				
-				aulesCandidates.get(aula.matchEquip(equip)).add(aula);
-			}
-		
-		int maximMatch = 0;
-		for(int match: aulesCandidates.keySet()) //Selecciona aquella Key que conté més coincidencies.
-			if(match > maximMatch) maximMatch = match;
-		
-		if(aulesCandidates.isEmpty()) return null;
-		else return getMinimaAulaAdient(aulesCandidates.get(maximMatch), maximMatch);
-	}
-	
-	/**
-	 * Retorna aquella aula pertanyent a aules que, a part de contenir TOT l'equip
-	 * indicat, "malgasta" el minim possible d'equip.
-	 * @param aules Conjunt d'aules candidades.
-	 * @param nEquip Quantitat d'equip necessari.
-	 * @return L'aula més adient.
-	 */
-	private Aula getMinimaAulaAdient(HashSet<Aula> aules, int nEquip) {
-		Map<Integer, HashSet<Aula>> aulesCandidates = new HashMap<>();
-		for(Aula aula: aules) { //Genera un map registrant, per cada aula, quant material no s'esta usant.
-			if(aulesCandidates.get(aula.getEquip().size() - nEquip) == null)
-				aulesCandidates.put(aula.getEquip().size() - nEquip, new HashSet<>());
-			
-			aulesCandidates.get(aula.getEquip().size() - nEquip).add(aula);
-		}
-		
-		int minimMatch = aulesCandidates.keySet().iterator().next(); //Agafem el primer element, sense saber quin es.
-		for(int match: aulesCandidates.keySet()) //Selecciona aquella Key que té menys materials sense usar.
-			if(match < minimMatch) minimMatch = match;
-		
-		return aulesCandidates.get(minimMatch).iterator().next();
+		if(HorarisCandidats.get(plaEstudis) == null) return null;
+		else return HorarisCandidats.get(plaEstudis).get(campus);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -379,36 +272,18 @@ public class Horari {
 	 * Elimina l'element dels hashset situal a la posició index.
 	 * @param index indica la posicio de l'element a eliminar.
 	 */
-	private void kill() {
+	static private void kill(HashSet<SessioGAssignada> sessionsDeGrup, HashSet<SessioSGAssignada> sessionsDeSubGrup) {
 		if(!sessionsDeGrup.isEmpty()) {
-			SessioGAssignada sessio = this.sessionsDeGrup.iterator().next();
-			this.sessionsDeGrup.remove(sessio);
+			SessioGAssignada sessio = sessionsDeGrup.iterator().next();
+			sessionsDeGrup.remove(sessio);
 		}
-		else if(!sessionsDeGrup.isEmpty()) {
-			SessioSGAssignada sessio = this.sessionsDeSubGrup.iterator().next();
-			this.sessionsDeSubGrup.remove(sessio);
+		else if(!sessionsDeSubGrup.isEmpty()) {
+			SessioSGAssignada sessio = sessionsDeSubGrup.iterator().next();
+			sessionsDeSubGrup.remove(sessio);
 		}
 	}
-	
-	/**
-	 * Afegeix les sessions al set corresponent. I per tant, degut a que això
-	 * significa que no està assignada, la treu del dia i hora en el qual s'ha afegit.
-	 * @param horari Referencia a l'horari el qual s'ha de restaurar.
-	 * @param dia Indica el dia en el qual s'ha de restaurar.
-	 * @param hora Indica l'hora en el dia en la qual s'ha de fer la restauració.
-	 * @param sessioG Referencia a una sessioA de tipus grup.
-	 * @param sessioSG Referencia a una sessioA de tipus SubGrup
-	 */
-	private void restore(Map<Integer, Map<Integer, HashSet<Segment>>> horari, int dia, int hora, SessioGAssignada sessioG, SessioSGAssignada sessioSG) {
-		if(sessioG != null) this.sessionsDeGrup.add(sessioG);
-		if(sessioSG != null) this.sessionsDeSubGrup.add(sessioSG);
 		
-		horari.get(dia).get(hora).removeIf(segment -> (segment.getSessio().first != null && segment.getSessio().first == sessioG) ||
-													  (segment.getSessio().second != null && segment.getSessio().second == sessioSG));
-	}
-	
 	/**
-	 * EXPERIMENTAL
 	 * Intenta colocar el segment indicat, per al seu horari, al dia i hora d'inici indicats.
 	 * En cas de poder-ho fer, i per tant no violar cap restricció, és el commit qui
 	 * indica si fer la modificació definitiva, o bé simplement ignorar-la.
@@ -419,55 +294,27 @@ public class Horari {
 	 * @return Retorna 0 si la modificació es possible; altrament retorna el codi d'excepció
 	 * que indica quina restricció ha sigut violada.
 	 */
-	public int tryTo(Segment segment, int dia, int horaIni, boolean commit) {
-		//Carrega de l'horari al qual aplicar el canvi.
-		Map<Integer, Map<Integer, HashSet<Segment>>> horari = segment.getHorari();
-	
-		//Comprovació de restriccions d'Assignatura:
-		Assignatura assig = segment.getSessio().first != null? segment.getSessio().first.getSessioGrup().getAssignatura() : 
-															   segment.getSessio().second.getSessioSubGrup().getAssignatura();
-		
-		
+	static public int tryToCommit(Estructura horari, Segment segment, int dia, int horaIni, boolean commit) {
 		return 0;
 	}
-	
+
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  CONSULTORES  ///////////////////////////////////
 	/**
-	 * Retorna true si, i només si, donat un dia i una hora, l'aula indicada
-	 * està ocupada.
-	 * @param aula Referencia l'aula a comprovar.
-	 * @param dia Indica el dia en el qual se'n vol fer la comprovació.
-	 * @param hora Indica l'hora en la qual se'n vol fer la comprovació.
-	 * @return Un booleà.
+	 * Retorna la sessio situada a la posició relativa index.
+	 * Basicament permet treballar amb ambdos HashSets com
+	 * si fossin un de sol.
+	 * @param index Posicio que es vol cercar.
+	 * @return La sessió corresponent.
 	 */
-	private boolean checkAula(Map<Integer, Map<Integer, HashSet<Segment>>> horari, Aula aula, int dia, int hora, int durada) {
-		if(aula == null) return false;
-		for(int incr = 0; incr < durada; incr++) {
-			for(Segment segment: horari.get(dia).get(hora+incr)) {
-				if(segment.getAula().getNom().equals(aula.getNom())) return true;
-			}
-		}
+	static private Pair<SessioGAssignada, SessioSGAssignada>
+	nextSessio(HashSet<SessioGAssignada> sessionsDeGrup, HashSet<SessioSGAssignada> sessionsDeSubGrup) {
+		Pair<SessioGAssignada, SessioSGAssignada> element = new Pair<>();
+		if(!sessionsDeGrup.isEmpty()) //En cas d'estar accedint a les Sessions de Grup
+			element.first = sessionsDeGrup.iterator().next();
+		else if(!sessionsDeSubGrup.isEmpty()) //En cas d'accedir a les sessions de SubGrup
+			element.second = sessionsDeSubGrup.iterator().next();
 		
-		return false;
-	}
-
-	
-	/**
-	 * PER A TESTOS: Imprimeix per pantalla un horari concret.
-	 * @param horari Referencia l'horari a imprimir.
-	 */
-	static public void printHorari(Map<Integer, Map<Integer, HashSet<Segment>>> horari) {
-		if(horari == null) System.out.println("Ep! L'horari es NULL! :( ");
-		else if(horari.isEmpty()) System.out.println("Ep! L'horari es buit! :( ");
-		else for(int dia: horari.keySet()) {
-			System.out.println("DIA: ".concat(String.valueOf(dia)));
-			for(int hora: horari.get(dia).keySet()) {
-				System.out.println("	HORA: ".concat(String.valueOf(hora)));
-				for(Segment segment: horari.get(dia).get(hora)) {
-					System.out.println("		 AULA SESSIÓ: ".concat(segment.getAula().getNom()));
-				}
-			}
-		}
+		return element;
 	}
 }
