@@ -12,13 +12,19 @@ public class PlaEstudis {
 			
 	/////////////////////////////////////////////////////////////
 	////////////////////////Variables //////////////////////////
-		
+	/**
+	 * Enregistra TOTS els plans d'estudis creats.
+	 */
 	private static HashSet<PlaEstudis> plansEstudis = new HashSet<PlaEstudis>();
 	
 	/**
 	 * Nom  del Pla d'estudis
 	 */
 	private String nom;
+	/**
+	 * Enregistra el nom de l'autor d'aquest pla d'estudis
+	 */
+	private String autor;
 		
 	/**
 	 * Horari lectiu per dia del Pla d'Estudis
@@ -85,6 +91,7 @@ public class PlaEstudis {
 		this.franja = new HashMap<Integer,boolean[] >();
 		this.rangDia = new int[4];
 		this.assignatures = new HashSet<Assignatura>();
+		this.autor = new String("Desconegut");
 
 		plansEstudis.add(this);
 	}
@@ -106,7 +113,20 @@ public class PlaEstudis {
 		this.nom = nom;
 		return 0;
 	}
-			
+		
+	/**
+	 * Assigna un autor al pla d'estudis.
+	 * @param autor Indica quin es l'autor del pla d'estudis.
+	 * @return Excepció codificada en forma d'enter.
+	 */
+	public int setAutor(String autor) {
+		if(autor == null || autor.isEmpty()) return 18;
+		else if(autor.equals(this.autor)) return 1;
+		
+		this.autor = autor;
+		return 0;
+	}
+	
 	/**
 	 * Assigna la franja [iniciFranjaM,finalFranjaM,iniciFranjaT,finalFranjaT] al Pla d'Estudis.
 	 * @param dia: dia de la franja que entra l'usuari.
@@ -167,7 +187,15 @@ public class PlaEstudis {
 	public String getNom() {
 		return this.nom;
 	}
-			
+		
+	/**
+	 * Retorna l'autor d'aquest pla d'estudis.
+	 * @return String mai buit.
+	 */
+	public String getAutor() {
+		return this.autor;
+	}
+	
 	/**
 	 * Retorna la franja del dia indicat del Pla d'Estudis.
 	 * @return Franja del dia en cas que el dia tingui una franja associada. Altrament retorna null.

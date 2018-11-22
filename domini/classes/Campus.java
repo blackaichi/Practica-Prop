@@ -21,6 +21,10 @@ public class Campus {
 	 * Identifica al campus.
 	 */
 	private String nom;
+	/**
+	 * Enregistra el nom de l'autor d'aquest campus
+	 */
+	private String autor;
 	
 	/**
 	 * Registra totes les aules presents al campus.
@@ -70,6 +74,27 @@ public class Campus {
 	 */
 	public String getNom() {
 		return this.nom;
+	}
+	
+	/**
+	 * Retorna l'autor d'aquest pla d'estudis.
+	 * @return String mai buit.
+	 */
+	public String getAutor() {
+		return this.autor;
+	}
+	
+	/**
+	 * Assigna un autor al pla d'estudis.
+	 * @param autor Indica quin es l'autor del pla d'estudis.
+	 * @return Excepció codificada en forma d'enter.
+	 */
+	public int setAutor(String autor) {
+		if(autor == null || autor.isEmpty()) return 18;
+		else if(autor.equals(this.autor)) return 1;
+		
+		this.autor = autor;
+		return 0;
 	}
 	
 	/**
