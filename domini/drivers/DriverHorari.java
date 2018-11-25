@@ -1,7 +1,7 @@
-package drivers;
+package domini.drivers;
 
 import java.util.*;
-import classes.*;
+import domini.classes.*;
 import utils.*;
 
 public class DriverHorari {
@@ -12,21 +12,36 @@ public class DriverHorari {
 	 */
 	public static void main (String [ ] args) throws Exception {
 		System.out.println("Benvingut a l'eina de comprovació de la classe Horari, agarrense que vienen curvas");
-		Horari h = new Horari();
-		PlaEstudis pe = new PlaEstudis("fib");
-		Assignatura a = new Assignatura(pe, "prop");
-		SessioGrup sG = new SessioGrup(a, "teoria");
-		SessioSubGrup sSG= new SessioSubGrup(a, "laboratori");
-		Grup g = new Grup(a, 10);
-		g.setPlaces(20);
-		SubGrup sg = new SubGrup(g, 11);
-		sg.setPlaces(20, false);
-		SessioGAssignada sGA = new SessioGAssignada(g, sG);
-		SessioSGAssignada sSGA = new SessioSGAssignada(sg, sSG);
-		Campus c = new Campus("campus nord");
-		Aula aula = new Aula(c, "A5001", 20);
-		HashSet<Map<Integer, Map<Integer, HashSet<Segment>>>> horari = new HashSet<Map<Integer, Map<Integer, HashSet<Segment>>>>();
-		horari = h.GENERADOR(pe, c, 2);
+		
+		PlaEstudis.newPlaEstudis("fib");
+		PlaEstudis pe = PlaEstudis.getPlaEstudis("fib");
+		boolean[] franja = new boolean[24];
+		for(int i = 0; i < 24; i++) franja[i] = true;
+		pe.setFranja(0, franja);
+		
+		pe.altaAssignatura("prop"); 
+		pe.getAssignatura("prop").altaSessioG("teo", 2);
+		pe.getAssignatura("prop").altaSessioSG("lab", 2);
+		
+		pe.getAssignatura("prop").altaGrup(20, 30, "MT");
+		pe.getAssignatura("prop").altaGrup(10, 25, "MT");
+		pe.getAssignatura("prop").getGrup(10).altaSubGrup(11, 5, false);
+		
+		pe.getAssignatura("prop").getSessioG("teo", 2).assignaSessio(10);
+		pe.getAssignatura("prop").getSessioSG("lab", 2).assignaSessio(10, 11);
+		pe.getAssignatura("prop").getSessioG("teo", 2).assignaSessio(20);
+
+		Campus.newCampus("campus nord");
+		Campus c = Campus.getCampus("campus nord");
+		c.altaAula("A1E01", 50);
+		c.altaAula("A5001", 100);
+		
+		HashSet<String> f = new HashSet<>();
+		
+		int n =  2;
+		Horari.GENERADOR(pe, c, f, n, true);
+		for(Estructura struct : Horari.getHoraris(pe.getNom(), c.getNom()))
+			Estructura.printHorari(struct);
 		
 		System.out.println("Madre mia willy compañero ha funcionat");
 	}
