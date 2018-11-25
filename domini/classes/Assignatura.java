@@ -61,13 +61,14 @@ public class Assignatura {
 	 * @param nom: nom de l'assignatura.
 	 */
 	public Assignatura(PlaEstudis plaEst, String nom) throws Exception {
-		 this.noCicles = new NoCiclesRequisits(this);
-		ExceptionManager.thrower(this.setNom(plaEst,nom));
 		ExceptionManager.thrower(this.setPlaEstudis(plaEst));
+		ExceptionManager.thrower(this.setNom(nom));
+		
 		this.sessionsG = new HashSet<SessioGrup>();
 		this.sessionsSG = new HashSet<SessioSubGrup>();
 		this.grups = new HashSet<Grup>();
 		
+		this.noCicles = new NoCiclesRequisits(this);
 		this.horesAptes = new HoresAptes(this);
 		this.solapament = new Solapaments(this);
 	}
@@ -80,11 +81,10 @@ public class Assignatura {
 	 * @param nom: nom de l'Assignatura que entra l'usuari.
 	 * @throws Exception si nom no cambia o nom ja existeix en el Pla d'Estudis.
 	 */
-	public int setNom(PlaEstudis plaEst, String nom) throws Exception {
+	public int setNom(String nom) {
 		if (nom == null) return 30;
 		else if(this.nom != null && this.nom.equals(nom)) return 1;
-		else if (plaEst == null) return 31;
-		else if(plaEst.checkAssignatura(nom)) return 32;
+		else if(this.plaEstudis.checkAssignatura(nom)) return 32;
 		this.nom = nom;
 		return 0;
 	}
@@ -107,7 +107,7 @@ public class Assignatura {
 	 * @param permet Indica si s'ha de permetr
 	 * @return Excepció codificada en forma d'enter.
 	 */	
-	public int setSolapament(Assignatura assig, boolean permet) throws Exception {
+	public int setSolapament(Assignatura assig, boolean permet) {
 		if (assig == null) return 40;
 		return solapament.setSolapament(assig.getNom(), 0, permet);
 	}
@@ -122,7 +122,7 @@ public class Assignatura {
 	 * part les hores lectives del pla d'estudis.
 	 * @return Excepció codificada en forma d'enter.
 	 */
-	public int setHoresAptes(Map<Integer, int[]> franja, boolean apte, boolean force) throws Exception {		
+	public int setHoresAptes(Map<Integer, int[]> franja, boolean apte, boolean force) {		
 		if(franja == null) return 0;
 		else for(Map.Entry<Integer, int[]> iter: franja.entrySet()) {
 			int checker = 0;
