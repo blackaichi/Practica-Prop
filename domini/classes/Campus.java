@@ -41,14 +41,22 @@ public class Campus {
 	 * @param nom Identifica el campus que es pretén crear.
 	 * @throws Exception
 	 */
-	public Campus(String nom) throws Exception{
-		if(campusCreats == null) campusCreats = new HashSet<>();
-		
+	private Campus(String nom) throws Exception{
 		ExceptionManager.thrower(this.setNom(nom));
 		this.aules = new HashSet<>();
-		
-		campusCreats.add(this);
 	}	
+	
+	/**
+	 * Dona d'alta un nou campus.
+	 * @param nom Identifica al campus.
+	 * @throws Exception
+	 */
+	public static void newCampus(String nom) throws Exception {
+		if(campusCreats == null) campusCreats = new HashSet<>();
+		
+		Campus toAdd = new Campus(nom);
+		campusCreats.add(toAdd);
+	}
 	
 	////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////  SETTERS  /////////////////////////////////////

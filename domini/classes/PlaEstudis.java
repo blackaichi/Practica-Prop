@@ -15,7 +15,7 @@ public class PlaEstudis {
 	/**
 	 * Enregistra TOTS els plans d'estudis creats.
 	 */
-	private static HashSet<PlaEstudis> plansEstudis = new HashSet<PlaEstudis>();
+	private static HashSet<PlaEstudis> plansEstudis;
 	
 	/**
 	 * Nom  del Pla d'estudis
@@ -86,14 +86,24 @@ public class PlaEstudis {
 	 * Creadora de Pla d'Estudis amb parametres.
 	 * @param nom: nom del Pla d'Estudis. 
 	 */
-	public PlaEstudis(String nom) throws Exception {
+	private PlaEstudis(String nom) throws Exception {
 		ExceptionManager.thrower(this.setNom(nom));
 		this.franja = new HashMap<Integer,boolean[] >();
 		this.rangDia = new int[4];
 		this.assignatures = new HashSet<Assignatura>();
 		this.autor = new String("Desconegut");
-
-		plansEstudis.add(this);
+	}
+	
+	/**
+	 * Dona d'alta un pla d'estudis.
+	 * @param nom Identifica el pla d'estudis.
+	 * @throws Exception
+	 */
+	public static void newPlaEstudis(String nom) throws Exception {
+		if(plansEstudis == null) plansEstudis = new HashSet<>();
+		
+		PlaEstudis toAdd = new PlaEstudis(nom);
+		plansEstudis.add(toAdd);
 	}
 		
 	/////////////////////////////////////////////////////////////

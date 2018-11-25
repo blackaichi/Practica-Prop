@@ -112,7 +112,6 @@ public class Assignatura {
 		return solapament.setSolapament(assig.getNom(), 0, permet);
 	}
 	
-	
 	/**
 	 * Assigna la restricció d'hores aptes per aquest grup.
 	 * @param franja indica per cada dia quines hores poden o no ser assignades.
