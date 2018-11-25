@@ -32,6 +32,18 @@ public final class ControladorDomini {
 		return null;
 	}
 	
+	public String ModificarCampus(String campus, String nom, String autor) {
+		Campus toUpdate = Campus.getCampus(campus);
+		
+		int checker = 0;
+		if((nom != null && (checker = toUpdate.setNom(nom)) != 0) ||
+		   (autor != null && (checker = toUpdate.setAutor(autor)) != 0))
+			return ExceptionManager.getException(checker);
+		
+		return null;
+		
+	}
+	
 	public String CrearAula(String campus, String aula, int capacitat) {
 		try {			
 			Campus.getCampus(campus).altaAula(aula, capacitat);
@@ -49,6 +61,18 @@ public final class ControladorDomini {
 		return null;
 	}
 	
+	public String ModificarAula(String campus, String aula, String nom, int capacitat) {
+		Aula toUpdate = Campus.getCampus(campus).getAula(aula);
+		
+		int checker = 0;
+		if((nom != null && (checker = toUpdate.setNom(nom)) != 0) ||
+		   (capacitat > 0 && (checker = toUpdate.setCapacitat(capacitat)) != 0))
+			return ExceptionManager.getException(checker);
+		
+		return null;
+		
+	}
+	
 	public String CrearPlaEstudis(String plaEstudis) {
 		try {
 			PlaEstudis.newPlaEstudis(plaEstudis);
@@ -63,6 +87,18 @@ public final class ControladorDomini {
 	public String EliminaPlaEstudis(String plaEstudis) {
 		PlaEstudis.eliminaPlaEstudis(plaEstudis);
 		return null;
+	}
+	
+	public String ModificarPlaEstudis(String plaEstudis, String nom, String autor) {
+		PlaEstudis toUpdate = PlaEstudis.getPlaEstudis(plaEstudis);
+		
+		int checker = 0;
+		if((nom != null && (checker = toUpdate.setNom(nom)) != 0) ||
+		   (autor != null && (checker = toUpdate.setAutor(autor)) != 0))
+			return ExceptionManager.getException(checker);
+		
+		return null;
+		
 	}
 	
 	public String CrearAssignatura(String plaEstudis, String assignatura) {
@@ -87,6 +123,17 @@ public final class ControladorDomini {
 		return null;
 	}
 
+	public String ModificarAssginatura(String plaEstudis, String assignatura, String nom) {
+		Assignatura toUpdate = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura);
+		
+		int checker = 0;
+		if((nom != null && (checker = toUpdate.setNom(nom)) != 0))
+			return ExceptionManager.getException(checker);
+		
+		return null;
+		
+	}
+	
 	public String CrearGrup(String plaEstudis, String assignatura, int grup, int capacitat) {
 		try {
 			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).altaGrup(grup, capacitat, "MT");
@@ -103,6 +150,19 @@ public final class ControladorDomini {
 		return null;
 	}
 	
+	public String ModificarGrup(String plaEstudis, String assignatura, int grup, int numero, int places, String franja) {
+		Grup toUpdate = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup);
+		
+		int checker = 0;
+		if((numero > 0 && (checker = toUpdate.setNumero(numero)) != 0) ||
+		   (places > 0 && (checker = toUpdate.setPlaces(places)) != 0) ||
+		   (franja != null && (checker = toUpdate.setFranja(franja)) != 0))
+			return ExceptionManager.getException(checker);
+		
+		return null;
+		
+	}
+	
 	public String CrearSubGrup(String plaEstudis, String assignatura, int grup, int subGrup, int places, boolean force) {
 		try {
 			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).altaSubGrup(subGrup, places, force);
@@ -117,6 +177,18 @@ public final class ControladorDomini {
 	public String EliminaSubGrup(String plaEstudis, String assignatura, int grup, int subGrup) {
 		PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).baixaSubGrup(subGrup);
 		return null;
+	}
+	
+	public String ModificarSubGrup(String plaEstudis, String assignatura, int grup, int subgrup, int numero, int places, boolean incr) {
+		SubGrup toUpdate = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).getSubGrup(subgrup);
+		
+		int checker = 0;
+		if((numero > 0 && (checker = toUpdate.setNumero(numero)) != 0) ||
+		   (places > 0 && (checker = toUpdate.setPlaces(places, incr)) != 0))
+			return ExceptionManager.getException(checker);
+		
+		return null;
+		
 	}
 	
 	public String CrearSessioGrup(String plaEstudis, String assignatura, String tipus, int hores) {
@@ -141,6 +213,8 @@ public final class ControladorDomini {
 		return null;
 	}
 
+	//TODO: modificar sessioG
+	
 	public String CrearSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores) {
 		try {
 			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).altaSessioSG(tipus, hores);
@@ -162,6 +236,8 @@ public final class ControladorDomini {
 		
 		return null;
 	}
+	
+	//TODO: modificar sessioSG
 	
 	public String AssignaSessioGrup(String plaEstudis, String assignatura, String tipus, int hores, int grup) {
 		try {
