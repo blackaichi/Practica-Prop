@@ -252,7 +252,7 @@ public class HoresAptes {
 												sessioSG.getSessioSubGrup().getAssignatura().getHoresAptes();
 		
 		for(int incr = 0; incr < durada; incr++) {
-			if(!lectiu[hora+incr]) return -1; //TODO: El pla d'estudis no contempla aquesta hora com lectiva.
+			if(lectiu == null || (hora+incr < lectiu.length && !lectiu[hora+incr])) return -1; //TODO: El pla d'estudis no contempla aquesta hora com lectiva.
 			else if(sessioG != null && !sessioG.getGrup().enRang(hora+incr)) return -1; //TODO: La franja horaria del grup no admet aquesta hora.
 			else if(sessioSG != null && !sessioSG.getSubGrup().enRang(hora+incr)) return -1; //TODO: La franja horaria del subgrup no admet aquesta hora.
 			

@@ -19,20 +19,17 @@ public class AulaAdient {
 	 * @param hora Referenca a l'hora, a la qual s'ha d'assignar.
 	 * @return Una Aula que pot o no complir amb tots els requisits.
 	 */
-	static public Aula seleccionaAulaAdient(Estructura horari, HashSet<Aula> aules, SessioGAssignada sessio, int dia, int hora) {
-		return getMaximaAulaAdient(horari, aules, sessio.getSessioGrup().getMaterial(), sessio.getGrup().getPlaces(), dia, hora, sessio.getSessioGrup().getHores());
-	}
-	
-	/**
-	 * Selecciona, si hi és, una aula que compleixi tots els requisits de la sessio
-	 * indicada. Altrament, retorna qualsevol aula que estigui lliure.
-	 * @param sessio Referencia a la sessió a la qual se'n vol assignar una aula.
-	 * @param dia Referencia al dia al qual s'ha d'assignar.
-	 * @param hora Referenca a l'hora, a la qual s'ha d'assignar.
-	 * @return Una Aula que pot o no complir amb tots els requisits.
-	 */
-	static public Aula seleccionaAulaAdient(Estructura horari, HashSet<Aula> aules, SessioSGAssignada sessio, int dia, int hora) {
-		return getMaximaAulaAdient(horari, aules, sessio.getSessioSubGrup().getMaterial(), sessio.getSubGrup().getPlaces(), dia, hora, sessio.getSessioSubGrup().getHores());
+	static public Aula seleccionaAulaAdient(Estructura horari, HashSet<Aula> aules, SessioGAssignada sessioG, SessioSGAssignada sessioSG, int dia, int hora) {	
+		int places = sessioG != null? sessioG.getGrup().getPlaces() :
+									  sessioSG.getSubGrup().getPlaces();
+		
+		int durada = sessioG != null? sessioG.getSessioGrup().getHores() : 
+									  sessioSG.getSessioSubGrup().getHores();
+		
+		HashSet<String> material = sessioG != null? sessioG.getSessioGrup().getMaterial() : 
+													sessioSG.getSessioSubGrup().getMaterial();
+		
+		return getMaximaAulaAdient(horari, aules, material, places, dia, hora, durada);
 	}
 	
 	/**
@@ -79,7 +76,7 @@ public class AulaAdient {
 			aulesCandidates.get(aula.getEquip().size() - nEquip).add(aula);
 		}
 		
-		int minimMatch = aulesCandidates.keySet().iterator().next(); //Agafem el primer element, sense saber quin es.
+		int minimMatch = aulesCandidates.keySet().iterator().next().intValue(); //Agafem el primer element, sense saber quin es.
 		for(int match: aulesCandidates.keySet()) //Selecciona aquella Key que té menys materials sense usar.
 			if(match < minimMatch) minimMatch = match;
 		
