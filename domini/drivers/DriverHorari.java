@@ -35,8 +35,12 @@ public class DriverHorari {
 		Campus c = Campus.getCampus("campus nord");
 		c.altaAula("A1E01", 50);
 		c.altaAula("A5001", 100);
+		c.altaAula("A4201", 60);
 		
 		HashSet<String> f = new HashSet<>();
+		//f.add("ALINEAMENT");
+		f.add("HORES_APTES");
+		f.add("SOLAPAMENTS");
 		
 		int n =  2;
 		Horari.GENERADOR(pe, c, f, n, true);
