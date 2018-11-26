@@ -56,101 +56,6 @@ public class Horari {
 		return cloned;
 	}
 	
-	/**
-	 * Retorna true si, i només si, totes les restriccions de Grup es compleixen
-	 * per un grup en un dia i hora donats.
-	 * @param horari Referencia sobre quin horari comrovar les restricicons.
-	 * @param dia Indica el dia.
-	 * @param horaIni Indica l'hora.
-	 * @param sessio Referencia al grup.
-	 * @return Un booleà.
-	 */
-	static private boolean checkAllRestriccionsDeGrup(Estructura horari, int dia, int horaIni, SessioGAssignada sessio) {
-		if((!sessio.getGrup().enRang(horaIni)) ||
-		   (sessio.getGrup().getRestriccioHoresAptes().checkPotFerClasse(dia, horaIni) != 0)) return false;
-		
-		for(Segment segment: horari.getAllSegments(dia, horaIni)) {
-			if((!segment.getSessio().fnull() &&
-				sessio.getGrup().getSolapaments().checkPotSolapar(segment.getSessio().first.getGrup().getAssignatura().getNom(), segment.getSessio().first.getGrup().getNumero()) != 0) ||
-				(!segment.getSessio().snull() &&
-				sessio.getGrup().getSolapaments().checkPotSolapar(segment.getSessio().second.getSubGrup().getGrup().getAssignatura().getNom(), segment.getSessio().second.getSubGrup().getNumero()) != 0))
-				return false;
-		}
-					
-		return true;	
-	}
-	
-	/**
-	 * Retorna true si, i només si, totes les restriccions de SubGrups es compleixe
-	 * per un subgrup en un dia i hora donats.
-	 * @param dia Indica el dia.
-	 * @param horaIni Indica l'hora.
-	 * @param sessio Referencia al grup.
-	 * @return Un booleà.
-	 */
-	static private boolean checkAllRestriccionsDeSubGrup(Estructura horari, int dia, int horaIni, SessioSGAssignada sessio) {		
-		//Si un Grup es de mati, per exemple, és logic que tots els seus subGrups també ho son.
-		if((!sessio.getSubGrup().enRang(horaIni)) ||
-		   (sessio.getSubGrup().getRestriccioHoresAptes().checkPotFerClasse(dia, horaIni) != 0))
-			return false;
-		
-		for(Segment segment: horari.getAllSegments(dia, horaIni))
-			if((!segment.getSessio().fnull() &&
-				sessio.getSubGrup().getSolapaments().checkPotSolapar(segment.getSessio().first.getGrup().getAssignatura().getNom(), segment.getSessio().first.getGrup().getNumero()) != 0) ||
-				(!segment.getSessio().snull() &&
-				sessio.getSubGrup().getSolapaments().checkPotSolapar(segment.getSessio().second.getSubGrup().getGrup().getAssignatura().getNom(), segment.getSessio().second.getSubGrup().getNumero()) != 0))
-				return false;
-		
-		return true;
-	}
-	
-	/**
-	 * Retorna true si, i només si, totes les restriccions d'assignatura es compleixen;
-	 * altrament retorna false;
-	 * @param dia Indica el dia.
-	 * @param horaIni Indica l'hora.
-	 * @param assignatura Referencia a l'assignatura a comprovar.
-	 * @return un booleà.
-	 */
-	static private boolean checkAllRestriccionsAssignatura(Estructura horari, int dia, int horaIni, Assignatura assignatura) {
-		if(assignatura.getHoresAptes().checkPotFerClasse(dia, horaIni) != 0) return false;
-		else for(Segment segment: horari.getAllSegments(dia, horaIni))
-			if((!segment.getSessio().fnull() &&
-				assignatura.getSolapaments().checkPotSolapar(segment.getSessio().first.getGrup().getAssignatura().getNom(), segment.getSessio().first.getGrup().getNumero()) != 0) ||
-				(!segment.getSessio().snull() &&
-				assignatura.getSolapaments().checkPotSolapar(segment.getSessio().second.getSubGrup().getGrup().getAssignatura().getNom(), segment.getSessio().second.getSubGrup().getNumero()) != 0))
-				return false;
-		
-		return true;
-	}
-	
-	/**
-	 * Comprova que, donada una hora d'inici, les restriccions es compleixin per totes
-	 * les hores que dura la sessió.
-	 * @param dia identifica el dia en el que es preten afegir la sessio.
-	 * @param horaIni precisa la hora d'inici de la sessio.
-	 * @param index Senyala en el set quina sessió és.
-	 * @return True, si i només si, les restriccions es compleixen per totes les hores.
-	 */
-	static private boolean checkAllRestriccionsPerHores(Estructura horari, Pair<SessioGAssignada, SessioSGAssignada> corrent, int dia, int horaIni) {
-		if(corrent == null || corrent.isNull()) return false;
-		
-		Assignatura assig = corrent.first != null? corrent.first.getGrup().getAssignatura() :
-												   corrent.second.getSubGrup().getGrup().getAssignatura();
-		int tempsDeSessio = corrent.first != null? corrent.first.getSessioGrup().getHores() :
-												   corrent.second.getSessioSubGrup().getHores();
-		
-		//S'ha de comprovar les restriccions per TOTES les hores que dura la sessió:
-		for(int incr = 0; incr < tempsDeSessio; incr++) {
-			if((!corrent.fnull() && !checkAllRestriccionsDeGrup(horari, dia, horaIni+incr, corrent.first)) ||
-			   (!corrent.snull() && !checkAllRestriccionsDeSubGrup(horari, dia, horaIni+incr, corrent.second)) ||
-			   (!checkAllRestriccionsAssignatura(horari, dia, horaIni, assig)))
-				return false;
-		}
-		
-		return true;
-	}
-	
 	////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////  GENERADOR  ////////////////////////////////////
 	/**
@@ -166,40 +71,24 @@ public class Horari {
 		
 		//Obtenció de la sessió que toca colocar:
 		Pair<SessioGAssignada, SessioSGAssignada> corrent = nextSessio(sessionsG, sessionsSG);
+		
 		//Cas base: totes les sessions han sigut assignades, l'horari esta complert:  tenim un HORARI CANDIDAT!
 		if(corrent.isNull()) HorarisCandidats.get(plaEstudis.getNom()).get(campus.getNom()).add(horari);
+		
 		 //Altrament s'ha de trobar una posició adequada per a la sessio:
-		else for(int dia = 0; dia < 7; dia++) {
-			if(plaEstudis.checkDiaFranja(dia)) for(int hora = 0; hora < 24; hora++) { //Si el dia es lectiu:
-				//TODO: comprovar la franja lectiva per tantes hores com duri la sessio
-				if(plaEstudis.getFranjaDia(dia)[hora]) { //Si la hora entrada pel dia entrat es lectiu al pla d'Estudis.
-					if(checkAllRestriccionsPerHores(horari, corrent, dia, hora)) {
-						
-						Segment segment; //Creació del segment corresponent:
-						if(!corrent.fnull()) segment = new Segment(new Data(dia, hora), AulaAdient.seleccionaAulaAdient(horari, campus.getAllAules(), corrent.first, dia, hora), corrent.first);
-						else segment = new Segment(new Data(dia, hora), AulaAdient.seleccionaAulaAdient(horari,  campus.getAllAules(), corrent.second, dia, hora), corrent.second);
-						
-						if(segment.getAula() != null) { //En cas de que se li hagi pogut assignar una aula.
-							/*Treballant sobre copies, s'evita la necessitat de reinsertar o treure els elements dels
-							 * sets i maps, simplement es modifica la copia i s'itera sobre aquesta. Al retornar, es
-							 * treballa novament sobre el set original que no s'ha modificat.
-							*/
-							Estructura updatedHorari = horari.getCopy();
-							HashSet<SessioGAssignada> updatedSessionsG = copySGA(sessionsG);
-							HashSet<SessioSGAssignada> updatedSessionsSG = copySSGA(sessionsSG);
-							kill(updatedSessionsG, updatedSessionsSG); //S'elimina la sessió just assignada.
-							
-							//Obtenció del total d'hores que ha de durar la sessio:
-							int horesTotals = !segment.getSessio().fnull()? segment.getSessio().first.getSessioGrup().getHores() :
-																			segment.getSessio().second.getSessioSubGrup().getHores();
-							//S'afegeix el segment a tantes hores com dura la sessio.
-							for(int incr = 0; incr < horesTotals; incr++) 
-								updatedHorari.setSegment(segment, dia, hora+incr);
-							
-							//RECURSIVITAT!!! Kernel del backTracking:
-							backTracking(updatedHorari, updatedSessionsG, updatedSessionsSG, nHoraris);
-						}
-					}
+		else for(int dia = 0; dia < 7; dia++) { //Per cada dia de la setmana:
+			for(int hora = 0; hora < 24; hora++){ //Per cada hora del dia:
+				Segment segment = new Segment(corrent.first, corrent.second);
+				Estructura updatedHorari = horari.getCopy(); //Copia de l'horari SENSE modificar.
+				
+				if(Horari.tryToCommit(updatedHorari, segment, dia, hora, true, false) == 0) {
+					//Si s'ha lograt colocar sense violar cap restricció:
+					HashSet<SessioGAssignada> updatedSessionsG = copySGA(sessionsG);
+					HashSet<SessioSGAssignada> updatedSessionsSG = copySSGA(sessionsSG);
+					
+					//RECURSIVITAT!!! Kernel del backTracking:
+					kill(updatedSessionsG, updatedSessionsSG); //S'elimina la sessió just assignada.
+					backTracking(updatedHorari, updatedSessionsG, updatedSessionsSG, nHoraris);
 				}
 			}
 		}
@@ -294,7 +183,36 @@ public class Horari {
 	 * @return Retorna 0 si la modificació es possible; altrament retorna el codi d'excepció
 	 * que indica quina restricció ha sigut violada.
 	 */
-	static public int tryToCommit(Estructura horari, Segment segment, int dia, int horaIni, boolean commit) {
+	static public int tryToCommit(Estructura horari, Segment segment, int dia, int horaIni, boolean commit, boolean force) throws Exception {
+		int checker = 0;
+		
+		if(horari.getFlagState("ALINEAMENT") && //Si el flag d'alineament està activat:
+		  (checker = Alineament.checkAlineament(segment.getSessio().first, segment.getSessio().second, horaIni)) != 0)
+			if(!force) return checker;
+
+		if(horari.getFlagState("HORES_APTES") && //Si el flag d'hores aptes està activat:
+		  (checker = HoresAptes.checkHoresAptes(segment.getSessio().first, segment.getSessio().second, dia, horaIni)) != 0)
+			if(!force) return checker;
+
+		if(horari.getFlagState("SOLAPAMENTS") && //Si el flag de solapaments està activat:
+		  (checker = Solapaments.checkSolapament(horari, segment.getSessio().first, segment.getSessio().second, dia, horaIni)) != 0)
+			if(!force) return checker;
+		
+		//RESTRICCIÓ D'AULA ADIENT: és sempre obligatoria
+		Aula seleccionada = AulaAdient.seleccionaAulaAdient(horari, campus.getAllAules(), segment.getSessio().first, segment.getSessio().second, dia, horaIni);
+		if(seleccionada == null) return -1; //TODO: no hi ha cap aula disponible durant la franja requerida.
+		
+		if(commit) { //En cas de voler porcedir a assignar la sessio:
+			segment.setData(new Data(dia, horaIni));
+			segment.setAula(seleccionada);
+			segment.setEstructura(horari);
+			
+			int durada = segment.getSessio().snull()? segment.getSessio().first.getSessioGrup().getHores() : 
+													  segment.getSessio().second.getSessioSubGrup().getHores();
+			
+			for(int incr = 0; incr < durada; incr++) horari.setSegment(segment, dia, horaIni+incr);
+		}
+		
 		return 0;
 	}
 
