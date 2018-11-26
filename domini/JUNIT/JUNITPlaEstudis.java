@@ -1,9 +1,9 @@
-package JUNIT;
+package domini.JUNIT;
 
 import static org.junit.Assert.*;
 
 import org.junit.*;
-import classes.*;
+import domini.classes.*;
 
 /**
  * 

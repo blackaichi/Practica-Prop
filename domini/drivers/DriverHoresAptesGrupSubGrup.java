@@ -1,8 +1,9 @@
-package drivers;
+package domini.drivers;
 
 import java.util.*;
-import classes.*;
-import restriccions.*;
+import domini.classes.*;
+import utils.*;
+
 /**
  * 
  * @author Aleix LLuch Serra

@@ -1,9 +1,10 @@
-package JUNIT;
+
+package domini.JUNIT;
 
 import static org.junit.Assert.*;
 
 import org.junit.*;
-import classes.*;
+import domini.classes.*;
 
 /**
  * 
@@ -38,7 +39,11 @@ public class JUNITSubGrup {
 	
 	@Test
 	public void errorConstructora() throws Exception {
-		SubGrup sg1 = new SubGrup(g, 14, 300);
+		try {
+			SubGrup sg1 = new SubGrup(g, 14, 1000);
+		}catch(Exception e) {
+			assertEquals(e.getMessage(), "Subgrup amb més places que el Grup.");
+		}
 	}
 	
 	@Test
