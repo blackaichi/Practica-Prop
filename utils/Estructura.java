@@ -211,7 +211,7 @@ public class Estructura {
 			for(int dia : horari.keySet())
 				for(int hora : horari.get(dia).keySet())
 					for(Segment segment : horari.get(dia).get(hora))
-						cloned.setSegment(segment, dia, hora);
+						cloned.setSegment(segment.getCopy(cloned), dia, hora);
 			
 			return cloned;
 		}

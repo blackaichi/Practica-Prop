@@ -37,16 +37,15 @@ public class Segment {
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
 	/**
-	 * Contructora de la classe.
-	 * @param horari Referencia a l'horari al qual pertany el segment.
-	 * @param data Indica la data al qual pertany el segment.
-	 * @param aula Indica l'aula on s'aplica el segment.
-	 * @param sessio Indica la sessió que es dua terme en el segment.
+	 * Constructora senzilla de la classe.
+	 * @param sessioG Referencia a la sessio de grup a la qual pertany el segment.
+	 * @param sessioSG Referencia a la sessio de subGrup a la qual pertany el segment.
+	 * @throws Exception
 	 */
-	public Segment(Data data, Aula aula, SessioGAssignada sessio) throws Exception {
-		ExceptionManager.thrower(this.setSessio(sessio, null));
-		ExceptionManager.thrower(this.setAula(aula));
-		ExceptionManager.thrower(this.setData(data));
+	public Segment(SessioGAssignada sessioG, SessioSGAssignada sessioSG) throws Exception {
+		ExceptionManager.thrower(this.setSessio(sessioG, sessioSG));
+		this.data = null;
+		this.aula = null;
 	}
 	
 	/**
@@ -56,8 +55,8 @@ public class Segment {
 	 * @param aula Indica l'aula on s'aplica el segment.
 	 * @param sessio Indica la sessió que es dua terme en el segment.
 	 */
-	public Segment(Data data, Aula aula, SessioSGAssignada sessio) throws Exception {
-		ExceptionManager.thrower(this.setSessio(null, sessio));
+	private Segment(Data data, Aula aula, SessioGAssignada sessioG, SessioSGAssignada sessioSG) throws Exception {
+		ExceptionManager.thrower(this.setSessio(sessioG, sessioSG));
 		ExceptionManager.thrower(this.setAula(aula));
 		ExceptionManager.thrower(this.setData(data));
 	}
@@ -69,7 +68,7 @@ public class Segment {
 	 * @param data Referencia la data que cal assginar.
 	 * @return Excepció codificada en forma d'enter.
 	 */
-	private int setData(Data data) {
+	public int setData(Data data) {
 		if(data == null) return -1; //TODO: la data no pot ser null;
 		
 		this.data = data;
@@ -81,7 +80,7 @@ public class Segment {
 	 * @param aula Referencia a l'aula que cal assignar.
 	 * @return Excepció codificada en forma d'enter.
 	 */
-	private int setAula(Aula aula) {
+	public int setAula(Aula aula) {
 		if(aula == null) return -1; //TODO: l'aula no pot ser null;
 		
 		this.aula = aula;
@@ -157,17 +156,17 @@ public class Segment {
 	 * @param toCopy Segment que es preten copiar.
 	 * @return Un segment identic al segment entrat.
 	 */
-	public Segment getCopy() {
-		Segment copy = null;
+	public Segment getCopy(Estructura horari) {
+		Segment clonedSegment = null;
 		try {
-			if(sessioG != null) copy = new Segment(data, aula, sessioG);
-			else if(sessioSG != null) copy = new Segment(data, aula, sessioSG);
+			clonedSegment = new Segment(data, aula, sessioG, sessioSG);
+			clonedSegment.setEstructura(horari);
 		}
 		catch(Exception e) {
 			//TODO: alguna cosa;
 		}
 		
-		return copy;
+		return clonedSegment;
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
