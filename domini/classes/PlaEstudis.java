@@ -90,6 +90,7 @@ public class PlaEstudis {
 		ExceptionManager.thrower(this.setNom(nom));
 		this.lectiu = new HashMap<Integer,boolean[] >();
 		this.rangDia = new int[4];
+		Arrays.fill(this.rangDia, -1);
 		this.assignatures = new HashSet<Assignatura>();
 		this.autor = new String("Desconegut");
 	}
