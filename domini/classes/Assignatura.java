@@ -39,11 +39,6 @@ public class Assignatura {
 	HashSet<Grup> grups;
 	
 	/**
-	 * Lincament a NoCiclesRequisits
-	 */
-	private NoCiclesRequisits noCicles;
-	
-	/**
 	 * Lincament a HoresSenseClasseAssignatura
 	 */
 	private HoresAptes horesAptes;
@@ -68,7 +63,6 @@ public class Assignatura {
 		this.sessionsSG = new HashSet<SessioSubGrup>();
 		this.grups = new HashSet<Grup>();
 		
-		this.noCicles = new NoCiclesRequisits(this);
 		this.horesAptes = new HoresAptes(this);
 		this.solapament = new Solapaments(this);
 	}
@@ -132,22 +126,6 @@ public class Assignatura {
 		}
 		
 		return 0;
-	}
-	
-	/**
-	 * Assigna un requisit a l'assignatura.
-	 * @param assigs: Assignatura requisit.
-	 * @return Excepció codificada en forma d'enter.
-	 */
-	public int setRequisit(Assignatura assigs) throws Exception {
-		if (assigs == null) ExceptionManager.thrower(40);
-		else {
-			this.noCicles.afegeixRequisits(assigs);
-			if (noCicles.isReachable(this,this)) {
-			 	ExceptionManager.thrower(42); //TODO: numero excepcio
-			}
-		}
-		 return 0;
 	}
 	
 	/////////////////////////////////////////////////////////////
@@ -325,17 +303,6 @@ public class Assignatura {
 		if (tipus == null) return 38;
 		if (checkSessioSG(tipus,hores)) sessionsSG.removeIf(item -> item.getHores() == hores && item.getTipus().equals(tipus));
 		else return 41;
-		return 0;
-	}
-	
-	/**
-	 * Elimina un requisit a l'assignatura.
-	 * @param assigs: Requisit a eliminar.
-	 * @return Excepció codificada en forma d'enter.
-	 */
-	public int delRequisit(Assignatura assigs) throws Exception {  //TODO:
-		if (assigs == null) ExceptionManager.thrower(40);
-		if(!this.noCicles.treuRequisit(assigs)) ExceptionManager.thrower(43);
 		return 0;
 	}
 			
