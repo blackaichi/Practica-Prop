@@ -43,6 +43,7 @@ public class Campus {
 	 */
 	private Campus(String nom) throws Exception{
 		ExceptionManager.thrower(this.setNom(nom));
+		this.autor = new String("Desconegut");
 		this.aules = new HashSet<>();
 	}	
 	
