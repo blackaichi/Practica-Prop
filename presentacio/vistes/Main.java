@@ -19,10 +19,9 @@ import javafx.fxml.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class Main extends Application {
-	
-	private Stage Window;
 	
 	private GridPane horari_container;
 	private ListView<String> plansEstudis, campus;
@@ -30,26 +29,27 @@ public class Main extends Application {
 	private TextField searcher_pl, searcher_c, nhoraris;
 	private Label selected_pl, selected_c;
 	
-	private CheckBox purge,
-					 D_LECTIU, H_LECTIU,
-					 ASSIG_SOLAP, ASSIG_HAPTES,
-					 G_SOLAP, G_HAPTES, G_FRANJA,
-					 S_ALIGN, S_NSESSIONS;
+	private CheckBox purge, D_LECTIU, H_LECTIU, ASSIG_SOLAP, ASSIG_HAPTES, G_SOLAP, G_HAPTES, G_FRANJA, S_ALIGN, S_NSESSIONS;
 	
 	public static void main(String[] args) {
 		launch(args);
 	}
 	
 	@Override
-	public void start(Stage primaryStage) throws Exception {
-		Window = primaryStage;
-		Parent root = FXMLLoader.load(getClass().getResource("Activity_main.fxml"));
+	public void start(Stage primaryStage) throws Exception {	
+		Parent root = FXMLLoader.load(getClass().getResource("Main_view.fxml"));
 		
 		primaryStage.setTitle("Generador d'horaris");
 		primaryStage.setScene(new Scene(root, 1080, 720));
 		primaryStage.show();
 		
 		this.iniAllObjects(root);
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(WindowEvent arg0) {
+				//TODO: tancar totes les finestres obertes
+			}
+		});
 	}
 	
 	private void iniAllObjects(Parent root) {
@@ -78,12 +78,35 @@ public class Main extends Application {
 		
 		this.updateListViews();
 	}
+		
+	private FXMLLoader newWindows(String fxml, String title, int x, int y) {
+		try {
+			Stage stage = new Stage();
+			FXMLLoader loader = new FXMLLoader();
+			Parent root = loader.load(getClass().getResource(fxml));
+			
+			stage.setTitle(title);
+			stage.setScene(new Scene(root, x, y));
+			stage.show();
+			
+			return loader;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 	
-	////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////// ACTIONS ///////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////  FXML ///////////////////////////////////////
 	
 	public void updateListViews() {
 		//Carrega tots els noms del campus i els plans d'estudis al listview corresponent
+	}
+	
+	public void showWarning(String title, String message) {
+		FXMLLoader loader = this.newWindows("Warning_view.fxml", title, 600, 200);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////
@@ -91,7 +114,7 @@ public class Main extends Application {
 	
 	@FXML
 	public void onCreateCampus() {
-		System.out.println("onCrateCampus");
+		this.newWindows("Campus_view.fxml", "Campus", 400, 720);
 	}
 	
 	@FXML
@@ -112,6 +135,7 @@ public class Main extends Application {
 	@FXML
 	public void onGenerarHorari(){
 		System.out.println("onGenerarHorari");
+		this.showWarning("En construcció", "Per desgracia la funcionalitat encara no està disponnible. Hauras d'esperar a que els nostres programadors facin alguna cosa decent. :-) ");
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////

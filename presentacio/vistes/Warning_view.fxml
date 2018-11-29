@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentacio.vistes.WarningManager">
+   <children>
+      <Button id="ok_button" layoutX="517.0" layoutY="161.0" mnemonicParsing="false" onAction="#ok_pressed" text="D'acord" />
+      <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="14.0" prefHeight="50.0" prefWidth="573.0" text="Aqui apareixera el missatge corresponent quan un classe qualsevol sol·liciti l'obertura d'una finestra d'error." wrapText="true" />
+   </children>
+</Pane>
