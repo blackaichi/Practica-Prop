@@ -29,7 +29,7 @@ public class PlaEstudis {
 	/**
 	 * Horari lectiu per dia del Pla d'Estudis
 	 */
-	Map<Integer, boolean[] > franja;
+	Map<Integer, boolean[] > lectiu;
 		
 	/**
 	 * Assignatures que pertanyen al Pla d'Estudis
@@ -75,8 +75,8 @@ public class PlaEstudis {
 	 * @param dia: Dia que volem comprobar.
 	 * @return Cert si el dia ja existeix o fals altrament.
 	 */
-	public boolean checkDiaFranja(int dia) {
-		return this.franja.containsKey(dia);
+	public boolean checkDiaLectiu(int dia) {
+		return this.lectiu.containsKey(dia);
 	}
 		
 	/////////////////////////////////////////////////////////////
@@ -88,8 +88,9 @@ public class PlaEstudis {
 	 */
 	private PlaEstudis(String nom) throws Exception {
 		ExceptionManager.thrower(this.setNom(nom));
-		this.franja = new HashMap<Integer,boolean[] >();
+		this.lectiu = new HashMap<Integer,boolean[] >();
 		this.rangDia = new int[4];
+		Arrays.fill(this.rangDia, -1);
 		this.assignatures = new HashSet<Assignatura>();
 		this.autor = new String("Desconegut");
 	}
@@ -142,13 +143,13 @@ public class PlaEstudis {
 	 * @param dia: dia de la franja que entra l'usuari.
 	 * @param franja: Franja que entra l'usuari.
 	 */
-	public int setFranja(int dia, int[] franja) throws Exception {
+	public int setLectiu(int dia, int[] franja) throws Exception {
 		if (dia < 0 || dia > 6) return 11;
 		else if (franja == null) return 12;
 		else if (franja[0] > franja[1]) return 12;
 		else if (franja.length != 2) return -1; //TODO
 		else {
-			boolean[] valor = this.franja.get(dia);
+			boolean[] valor = this.lectiu.get(dia);
 			if (valor == null) {
 				valor = new boolean[24];
 			}
@@ -158,7 +159,7 @@ public class PlaEstudis {
 					valor[i] = true;
 				}
 			}
-			this.franja.put(dia,valor);
+			this.lectiu.put(dia,valor);
 		}
 		return 0;
 	}
@@ -168,10 +169,10 @@ public class PlaEstudis {
 	 * @param dia: dia de la franja que entra l'usuari.
 	 * @param franja: Franja que entra l'usuari.
 	 */
-	public int setFranja(int dia, boolean[] franja) throws Exception {
+	public int setLectiu(int dia, boolean[] franja) throws Exception {
 		if (dia < 0 || dia > 6) return 11;
 		else if (franja == null) return 12;
-		else this.franja.put(dia,franja);
+		else this.lectiu.put(dia,franja);
 		return 0;
 	}
 	
@@ -210,8 +211,8 @@ public class PlaEstudis {
 	 * Retorna la franja del dia indicat del Pla d'Estudis.
 	 * @return Franja del dia en cas que el dia tingui una franja associada. Altrament retorna null.
 	 */
-	public boolean[] getFranjaDia(int dia) {
-		if(checkDiaFranja(dia))	return this.franja.get(dia);
+	public boolean[] getLectiuDia(int dia) {
+		if(checkDiaLectiu(dia))	return this.lectiu.get(dia);
 		else return null;
 	}
 		
@@ -219,8 +220,8 @@ public class PlaEstudis {
 	 * Retorna la franja la setmana del Pla d'Estudis.
 	 * @return Franja de la setmana.
 	 */
-	public Map<Integer, boolean[]> getFranjaSetmana() {
-		return this.franja;
+	public Map<Integer, boolean[]> getLectiuSetmana() {
+		return this.lectiu;
 	}
 	
 	/**
@@ -342,19 +343,19 @@ public class PlaEstudis {
 	 * @param finalFranja: Hora final de la franja a eliminar.
 	 * @return Excepció codificada en forma d'enter.
 	 */
-	public int delFranja(int dia, int[] franja) throws Exception {
+	public int delLectiu(int dia, int[] franja) throws Exception {
 		if (dia < 0 || dia > 6) return 11;
 		else if (franja == null) return 12;
 		else if (franja[0] > franja[1]) return 12;
 		else {
-			boolean[] valor = this.franja.get(dia);
+			boolean[] valor = this.lectiu.get(dia);
 			if (valor == null) return 17;
 			for (int i = franja[0]; i < franja[1]; i++) {
 				if(valor[i] = true) {
 					valor[i] = false;
 				}
 			}
-			this.franja.put(dia,valor);
+			this.lectiu.put(dia,valor);
 		}
 		return 0;
 	}
@@ -378,7 +379,7 @@ public class PlaEstudis {
 	static public void eliminaPlaEstudis(String nom) {
 		plansEstudis.removeIf(item -> item.getNom().equals(nom));
 	}
-
+	
 	static public HashSet<String> getKeys(){
 		HashSet<String> keys = new HashSet<>();
 		if(PlaEstudis.plansEstudis != null)

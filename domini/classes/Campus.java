@@ -43,6 +43,7 @@ public class Campus {
 	 */
 	private Campus(String nom) throws Exception{
 		ExceptionManager.thrower(this.setNom(nom));
+		this.autor = new String("Desconegut");
 		this.aules = new HashSet<>();
 	}	
 	
@@ -74,19 +75,6 @@ public class Campus {
 		return 0;
 	}
 	
-	/**
-	 * Assigna un autor al pla d'estudis.
-	 * @param autor Indica quin es l'autor del pla d'estudis.
-	 * @return Excepció codificada en forma d'enter.
-	 */
-	public int setAutor(String autor) {
-		if(autor == null || autor.isEmpty()) return 18;
-		else if(autor.equals(this.autor)) return 1;
-		
-		this.autor = autor;
-		return 0;
-	}
-	
 	////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////  GETTERS  /////////////////////////////////////
 	/**
@@ -104,7 +92,20 @@ public class Campus {
 	public String getAutor() {
 		return this.autor;
 	}
-
+	
+	/**
+	 * Assigna un autor al pla d'estudis.
+	 * @param autor Indica quin es l'autor del pla d'estudis.
+	 * @return Excepció codificada en forma d'enter.
+	 */
+	public int setAutor(String autor) {
+		if(autor == null || autor.isEmpty()) return 18;
+		else if(autor.equals(this.autor)) return 1;
+		
+		this.autor = autor;
+		return 0;
+	}
+	
 	/**
 	 * Retorna un set amb totes las aules del campus.
 	 * @return Un set buit, o amb molts elements.
@@ -226,7 +227,7 @@ public class Campus {
 	static public int quantsCampus() {
 		return campusCreats.size();
 	}
-
+	
 	static public HashSet<String> getKeys(){
 		HashSet<String> keys = new HashSet<>();
 		if(Campus.campusCreats != null)
