@@ -109,6 +109,16 @@ public class SessioGrup extends Sessio{
 	}
 	
 	/**
+	 * Retorna la sessió de grup assignada del grup identificat per numero
+	 * @return la sessió assignada o null en cas de no existir
+	 */
+	public SessioGAssignada getSessioGA(int numero) {
+		for(SessioGAssignada sessio: sessionsGA)
+			if(sessio.getGrup().getNumero() == numero) return sessio;
+		return null;
+	}
+	
+	/**
 	 * Retorna la quantitat de sessions que tenim assignades
 	 * @return quantitat de sessions assignades
 	 */

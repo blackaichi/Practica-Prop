@@ -109,6 +109,16 @@ public class SessioSubGrup extends Sessio{
 	}
 	
 	/**
+	 * Retorna la sessió de subgrup assignada del subgrup identificat per numero
+	 * @return la sessió assignada o null en cas de no existir
+	 */
+	public SessioSGAssignada getSessioSGA(int numero) {
+		for(SessioSGAssignada sessio: sessionsSGA)
+			if(sessio.getSubGrup().getNumero() == numero) return sessio;
+		return null;
+	}
+	
+	/**
 	 * Retorna la quantitat de sessions tenim assignades
 	 * @return quantitat de sessions assignades
 	 */
