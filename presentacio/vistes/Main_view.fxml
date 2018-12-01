@@ -61,7 +61,7 @@
                         <Label layoutX="544.0" layoutY="13.0" text="horari 0 de 0" />
                         <Button id="previoushorari" layoutX="505.0" layoutY="8.0" mnemonicParsing="false" onAction="#showPreviousHorari" text="&lt;" />
                         <Button id="nexthorari" layoutX="638.0" layoutY="8.0" mnemonicParsing="false" onAction="#showNextHorari" text="&gt;" />
-                        <Label id="selected_plaEstudis" layoutX="14.0" layoutY="13.0" text="Pla d'estudis:" />
+                        <Label id="selected_plaEstudis" fx:id="selected_plaEstudis" layoutX="14.0" layoutY="13.0" text="Pla d'estudis:" />
                         <Label id="selected_campus" layoutX="14.0" layoutY="33.0" text="Campus:" />
                      </children></AnchorPane>
                </content>

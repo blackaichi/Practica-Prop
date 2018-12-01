@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="211.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane layoutY="29.0" prefHeight="41.0" prefWidth="500.0">
+         <children>
+            <Label id="io_title" layoutX="13.0" layoutY="11.0" prefHeight="15.0" prefWidth="374.0" text="Importar/Exportar element">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutY="70.0" prefHeight="85.0" prefWidth="500.0">
+         <children>
+            <TextField id="path_io" layoutX="66.0" layoutY="14.0" prefHeight="25.0" prefWidth="420.0" promptText="direcció del fitxer" />
+            <Label layoutX="14.0" layoutY="19.0" text="Path:" />
+            <Separator layoutY="-1.0" prefHeight="5.0" prefWidth="500.0" />
+            <CheckBox layoutX="259.0" layoutY="53.0" mnemonicParsing="false" text="Substitueix en cas de duplicats" />
+         </children>
+      </Pane>
+      <Button id="cancelar_aula" layoutX="376.0" layoutY="169.0" mnemonicParsing="false" onAction="#apply" prefHeight="29.0" prefWidth="110.0" text="Cancel·lar" />
+      <Button id="aplicar_aula" layoutX="250.0" layoutY="169.0" mnemonicParsing="false" onAction="#apply" prefHeight="29.0" prefWidth="110.0" text="Aplicar" />
+      <MenuBar id="status_bar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="500.0">
+         <menus>
+            <Menu mnemonicParsing="false" text="Arxiu">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Importar..." />
+                  <MenuItem mnemonicParsing="false" text="Exportar..." />
+                  <MenuItem mnemonicParsing="false" text="tancar" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Editar">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Modificar" />
+                  <MenuItem mnemonicParsing="false" text="Esborrar" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Ajuda">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Sobre..." />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+   </children>
+</Pane>
