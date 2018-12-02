@@ -76,8 +76,8 @@ public class Horari {
 		if(corrent.isNull()) HorarisCandidats.get(plaEstudis.getNom()).get(campus.getNom()).add(horari);
 		
 		 //Altrament s'ha de trobar una posició adequada per a la sessio:
-		else for(int dia = 0; dia < 7; dia++) if(!horari.getFlagState("D_LECTIU") || plaEstudis.checkDiaFranja(dia)){
-			for(int hora = 0; hora < 24; hora++) if(!horari.getFlagState("H_LECTIU") || plaEstudis.getFranjaDia(dia)[hora]){
+		else for(int dia = 0; dia < 7; dia++) if(!horari.getFlagState("D_LECTIU") || plaEstudis.checkDiaLectiu(dia)){
+			for(int hora = 0; hora < 24; hora++) if(!horari.getFlagState("H_LECTIU") || plaEstudis.getLectiuDia(dia)[hora]){
 				Segment segment = new Segment(corrent.first, corrent.second);
 				Estructura updatedHorari = horari.getCopy(); //Copia de l'horari SENSE modificar.
 				
@@ -123,8 +123,8 @@ public class Horari {
 	 * @param campus Referencia al campus de l'horari.
 	 */
 	static private int inicialitzaEntorn(PlaEstudis plaEstudis, Campus campus, boolean purge) {
-		if(plaEstudis == null) return -1; //TODO: El pla d'estudis no pot ser null;
-		else if(campus == null) return -1; //TODO: El campus no pot ser null;
+		if(plaEstudis == null) return 170;
+		else if(campus == null) return 171;
 		
 		if(HorarisCandidats == null) HorarisCandidats = new HashMap<>();
 		if(!HorarisCandidats.containsKey(plaEstudis.getNom())) HorarisCandidats.put(plaEstudis.getNom(), new HashMap<>());
@@ -186,18 +186,15 @@ public class Horari {
 	static public HashSet<Integer> tryToCommit(Estructura horari, Segment segment, int dia, int horaIni, boolean commit, boolean force) throws Exception {
 		HashSet<Integer> history = new HashSet<>();
 		
-		if(horari.getFlagState("ALINEAMENT")) //Si el flag d'alineament està activat:
-		  history.add(Alineament.checkAlineament(segment.getSessio().first, segment.getSessio().second, horaIni));
+		history.add(Alineament.checkAlineament(segment.getSessio().first, segment.getSessio().second, horaIni, horari.getFlags()));
 
-		if(horari.getFlagState("HORES_APTES")) //Si el flag d'hores aptes està activat:
-		  history.add(HoresAptes.checkHoresAptes(segment.getSessio().first, segment.getSessio().second, dia, horaIni));
+		history.add(HoresAptes.checkHoresAptes(segment.getSessio().first, segment.getSessio().second, dia, horaIni, horari.getFlags()));
 
-		if(horari.getFlagState("SOLAPAMENTS")) //Si el flag de solapaments està activat:
-		  history.add(Solapaments.checkSolapament(horari, segment.getSessio().first, segment.getSessio().second, dia, horaIni));
+		history.add(Solapaments.checkSolapament(horari, segment.getSessio().first, segment.getSessio().second, dia, horaIni));
 		
 		//RESTRICCIÓ D'AULA ADIENT: és sempre obligatoria
 		Aula seleccionada = AulaAdient.seleccionaAulaAdient(horari, campus.getAllAules(), segment.getSessio().first, segment.getSessio().second, dia, horaIni);
-		if(seleccionada == null) history.add(-1); //TODO: no hi ha cap aula disponible durant la franja requerida.
+		if(seleccionada == null) history.add(261);
 		
 		history.removeIf(item -> item.intValue() == 0); //Cas base: si tot va bé, unicament conté el 0.
 		if(commit && (force || history.isEmpty())) { //En cas de voler porcedir a assignar la sessio:
