@@ -61,7 +61,7 @@ public class Estructura {
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	private int setPlaEstudis(PlaEstudis plaEstudis) {
-		if(plaEstudis == null) return -1; //TODO: El pla d'estudis no pot ser null;
+		if(plaEstudis == null) return 172;
 		
 		this.plaEstudis = plaEstudis;
 		return 0;
@@ -73,7 +73,7 @@ public class Estructura {
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	private int setCampus(Campus campus) {
-		if(campus == null) return -1; //TODO: El campus no pot ser null;
+		if(campus == null) return 173;
 		
 		this.campus = campus;
 		return 0;
@@ -87,9 +87,9 @@ public class Estructura {
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	public int setSegment(Segment segment, int dia, int hora) {
-		if(segment == null) return -1; //TODO: segment no pot ser null.
-		else if(dia < 0 || dia > 6) return -1; //TODO: el dia no pot ser inferior a 0 ni superior a 6
-		else if(hora < 0 || hora > 23) return -1; //TODO: l'hora ha de ser superior de 0 i inferior de 23.
+		if(segment == null) return 174;
+		else if(dia < 0 || dia > 6) return 175;
+		else if(hora < 0 || hora > 23) return 176;
 		
 		this.inicialitzaData(dia, hora);
 		horari.get(dia).get(hora).add(segment);
@@ -104,7 +104,7 @@ public class Estructura {
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	public int setFlag(String flag, boolean activar) {
-		if(flag == null || flag.isEmpty()) return -1; //TODO: el flag no pot ser null, ni buit.
+		if(flag == null || flag.isEmpty()) return 177;
 		
 		if(activar) flags.add(flag.toUpperCase());
 		else flags.removeIf(item -> item.equals(flag.toUpperCase()));
@@ -117,7 +117,7 @@ public class Estructura {
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	public int setFlags(HashSet<String> flags) {
-		if(flags == null) return -1; //TODO: el set de flags no pot ser null.
+		if(flags == null) return 178;
 		
 		this.flags.clear();
 		for(String flag : flags) this.flags.add(flag);
@@ -157,6 +157,14 @@ public class Estructura {
 			segments.add(segment);
 		
 		return segments;
+	}
+	
+	/**
+	 * Retorna el set de flags actius per aquest horari.
+	 * @return Un HashSet buit, o amb molts elements.
+	 */
+	public HashSet<String> getFlags(){
+		return this.flags;
 	}
 	
 	/**

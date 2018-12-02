@@ -69,7 +69,7 @@ public class Segment {
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	public int setData(Data data) {
-		if(data == null) return -1; //TODO: la data no pot ser null;
+		if(data == null) return 222;
 		
 		this.data = data;
 		return 0;
@@ -81,7 +81,7 @@ public class Segment {
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	public int setAula(Aula aula) {
-		if(aula == null) return -1; //TODO: l'aula no pot ser null;
+		if(aula == null) return 262;
 		
 		this.aula = aula;
 		return 0;
@@ -94,8 +94,8 @@ public class Segment {
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	private  int setSessio(SessioGAssignada sessioG, SessioSGAssignada sessioSG) {
-		if(sessioG == null && sessioSG == null) return -1; //TODO: Els dos no poden ser null;
-		else if(sessioG != null && sessioSG != null) return -1; //TODO: Els dos no poden ser diferent de null;
+		if(sessioG == null && sessioSG == null) return 180;
+		else if(sessioG != null && sessioSG != null) return 181;
 		
 		this.sessioG = sessioG;
 		this.sessioSG = sessioSG;
@@ -108,10 +108,10 @@ public class Segment {
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	public int setEstructura(Estructura struct) {
-		if(struct == null) return -1; //TODO: l'estructura no pot ser null.
+		if(struct == null) return 182;
 		else if(struct.getPlaEstudis().getNom().equals(sessioG != null? sessioG.getGrup().getAssignatura().getPlaEstudis().getNom() :
 																		sessioSG.getSubGrup().getGrup().getAssignatura().getPlaEstudis().getNom()))
-			return -1; //L'Estructura es d'un pla d'estudis diferent al del segment.
+			return 183;
 		
 		this.struct = struct;
 		return 0;
