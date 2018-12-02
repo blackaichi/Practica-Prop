@@ -12,15 +12,31 @@ import domini.classes.*;
 
 public class ExportaSessioGrup extends Exporta {
 	
+	/**
+	 * Instancia de la propia classe seguint el patró de disseny singleton
+	 */
 	private static ExportaSessioGrup instancia = new ExportaSessioGrup();
 	
+	/**
+	 * Creadora buida
+	 */
 	private ExportaSessioGrup() {};
 	
+	/**
+	 * Retorna l'única instancia de la classe
+	 * @return una instancia de la classe 
+	 */
 	public static ExportaSessioGrup getInstancia() {
 		return instancia;
 	}
 	
-	public String exportaSessioGrup(SessioGrup sg, boolean crea) throws Exception {
+	/**
+	 * Exporta una SessioGrup
+	 * @param sg sessió de grup que volem exportar
+	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
+	 * @return la codificació de la SessioGrup
+	 */
+	public String exportaSessioGrup(SessioGrup sg, boolean crea) {
 		String endl = "\n";
 		String str = "SessioGrup".concat(endl);
 		HashSet<String> equip = sg.getMaterial();

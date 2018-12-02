@@ -11,15 +11,31 @@ import domini.classes.*;
 
 public class ExportaAssignatura extends Exporta {
 	
+	/**
+	 * Instancia de la propia classe seguint el patró de disseny singleton
+	 */
 	private static ExportaAssignatura instancia = new ExportaAssignatura();
 	
+	/**
+	 * Creadora buida
+	 */
 	private ExportaAssignatura() {};
 	
+	/**
+	 * Retorna l'única instancia de la classe
+	 * @return una instancia de la classe 
+	 */
 	public static ExportaAssignatura getInstancia() {
 		return instancia;
 	}
 	
-	public String exportaAssignatura(Assignatura a, boolean crea) throws Exception {
+	/**
+	 * Exporta una Assignatura
+	 * @param a assignatura que volem exportar
+	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
+	 * @return la codificació de l'Assignatura
+	 */
+	public String exportaAssignatura(Assignatura a, boolean crea) {
 		String endl = "\n";
 		String str = "Assignatura".concat(endl);
 		ExportaSessioGrup esg = ExportaSessioGrup.getInstancia();

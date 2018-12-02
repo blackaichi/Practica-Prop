@@ -13,13 +13,21 @@ import domini.classes.*;
  */
 
 public class ImportaAssignatura extends Importa {
+	
+	private static ImportaAssignatura instancia = new ImportaAssignatura();
+	
+	private ImportaAssignatura() {};
+	
+	public static ImportaAssignatura getInstancia() {
+		return instancia;
+	}
 
-	public static String importaAssignatura(String path, PlaEstudis pe) {
+	public String importaAssignatura(String path, PlaEstudis pe) {
 		
 		return null;
 	}
 	
-	public static HashSet<Assignatura> importaAssignatura(String path, int nassig) {
+	public HashSet<Assignatura> importaAssignatura(String path, int nassig) {
 		try {
 			File file = new File(path); 
 			BufferedReader br = new BufferedReader(new FileReader(file)); 

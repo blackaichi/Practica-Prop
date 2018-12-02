@@ -13,6 +13,9 @@ import utils.*;
 
 public class DriverProvadorExports {
 	
+	/**
+	 * Totes les instancies dels exports
+	 */
 	private static ExportaPlaEstudis plaEstudis = ExportaPlaEstudis.getInstancia();
 	private static ExportaCampus campus = ExportaCampus.getInstancia();
 	private static ExportaAula aula = ExportaAula.getInstancia();
@@ -28,6 +31,11 @@ public class DriverProvadorExports {
 	private static ExportaSolapaments solapaments = ExportaSolapaments.getInstancia();
 	private static ExportaSubGrup subGrup = ExportaSubGrup.getInstancia();
 	
+	/**
+	 * Comprova l'Export que es descomenti
+	 * @param args no entra res
+	 * @throws Exception
+	 */
 	public static void main (String [] args) throws Exception {
 		//provaPlaEstudis();
 		//provaCampus();
@@ -45,6 +53,10 @@ public class DriverProvadorExports {
 		//provaSubGrup(); 
 	}
 	
+	/**
+	 * Comprova l'Export de SubGrup
+	 * @throws Exception
+	 */
 	private static void provaSubGrup() throws Exception {
 		PlaEstudis.newPlaEstudis("fib");
 		PlaEstudis p = PlaEstudis.getPlaEstudis("fib");	
@@ -66,6 +78,10 @@ public class DriverProvadorExports {
 		subGrup.exportaSubGrup(sg, true);
 	}
 
+	/**
+	 * Comprova l'Export de Solapaments
+	 * @throws Exception
+	 */
 	private static void provaSolapaments() throws Exception {
 		PlaEstudis.newPlaEstudis("fib");
 		PlaEstudis p = PlaEstudis.getPlaEstudis("fib");	
@@ -78,6 +94,10 @@ public class DriverProvadorExports {
 		solapaments.exportaSolapaments(s, true);
 	}
 
+	/**
+	 * Comprova l'Export de SessioSubGrup
+	 * @throws Exception
+	 */
 	private static void provaSessioSubGrup() throws Exception {
 		PlaEstudis.newPlaEstudis("fib");
 		PlaEstudis p = PlaEstudis.getPlaEstudis("fib");	
@@ -92,6 +112,10 @@ public class DriverProvadorExports {
 		sessioSubGrup.exportaSessioSubGrup(ssg, true);
 	}
 
+	/**
+	 * Comprova l'Export de SessioSGAssignada
+	 * @throws Exception
+	 */
 	private static void provaSessioSGAssignada() throws Exception {
 		PlaEstudis.newPlaEstudis("fib");
 		PlaEstudis p = PlaEstudis.getPlaEstudis("fib");	
@@ -108,6 +132,10 @@ public class DriverProvadorExports {
 		sessioSGAssignada.exportaSessioSGAssignada(ssga, true);
 	}
 
+	/**
+	 * Comprova l'Export de SessioGrup
+	 * @throws Exception
+	 */
 	private static void provaSessioGrup() throws Exception {
 		PlaEstudis.newPlaEstudis("fib");
 		PlaEstudis p = PlaEstudis.getPlaEstudis("fib");	
@@ -122,6 +150,10 @@ public class DriverProvadorExports {
 		sessioGrup.exportaSessioGrup(sg, true);
 	}
 
+	/**
+	 * Comprova l'Export de SessioGAssignada
+	 * @throws Exception
+	 */
 	private static void provaSessioGAssignada() throws Exception {
 		PlaEstudis.newPlaEstudis("fib");
 		PlaEstudis p = PlaEstudis.getPlaEstudis("fib");	
@@ -136,6 +168,10 @@ public class DriverProvadorExports {
 		sessioGAssignada.exportaSessioGAssignada(sga, true);
 	}
 
+	/**
+	 * Comprova l'Export d'HoresAptes
+	 * @throws Exception
+	 */
 	private static void provaHoresAptes() throws Exception{
 		PlaEstudis.newPlaEstudis("fib");
 		PlaEstudis p = PlaEstudis.getPlaEstudis("fib");	
@@ -163,23 +199,11 @@ public class DriverProvadorExports {
 		horesAptes.exportaHoresAptes(ha, true);
 	}
 	
+	/**
+	 * Comprova l'Export d'Horari
+	 * @throws Exception
+	 */
 	private static void provaHorari() throws Exception {
-		/*PlaEstudis.newPlaEstudis("fib");
-		PlaEstudis p = PlaEstudis.getPlaEstudis("fib");
-		p.altaAssignatura("PROP");
-		Assignatura a = p.getAssignatura("PROP");
-		a.altaSessioG("teoria", 2);
-		a.altaSessioSG("practica", 2);
-		a.altaGrup(10, 20, "M");
-		Grup g = a.getGrup(10);
-		g.altaSubGrup(11, 20, false);
-		SubGrup sg = g.getSubGrup(11);
-		g.assignaSessio("teoria", 2);
-		sg.assignaSessio("practica", 2);
-		Campus.newCampus("campus nord");
-		Campus c = Campus.getCampus("campus nord");
-		c.altaAula("A5102", 20);
-		c.altaAula("A6102", 20);*/
 		PlaEstudis.newPlaEstudis("fib");
 		PlaEstudis pe = PlaEstudis.getPlaEstudis("fib");
 		boolean[] franja = new boolean[24];
@@ -205,12 +229,17 @@ public class DriverProvadorExports {
 		HashSet<String> f = new HashSet<>();
 		f.add("HORES_APTES");
 		f.add("SOLAPAMENTS");
-		Horari.GENERADOR(pe, c, f, 2, true);
+		Horari h = Horari.getInstance();
+		h.GENERADOR(pe, c, f, 2, true);
 		HashSet<Estructura> horaris;
-		horaris = Horari.getHoraris(pe.getNom(), c.getNom());
+		horaris = h.getHoraris(pe.getNom(), c.getNom());
 		horari.exportaHoraris(horaris, true);
 	}
 
+	/**
+	 * Comprova l'Export de Grup
+	 * @throws Exception
+	 */
 	private static void provaGrup() throws Exception {
 		PlaEstudis.newPlaEstudis("fib");
 		PlaEstudis p = PlaEstudis.getPlaEstudis("fib");
@@ -231,6 +260,10 @@ public class DriverProvadorExports {
 		grup.exportaGrup(g, true);
 	}
 
+	/**
+	 * Comprova l'Export de Data
+	 * @throws Exception
+	 */
 	private static void provaData() throws Exception {
 		Data d = new Data(0, 0);
 		d.setDia(3);
@@ -238,6 +271,10 @@ public class DriverProvadorExports {
 		data.exportaData(d, true);
 	}
 	
+	/**
+	 * Comprova l'Export d'Assignatura
+	 * @throws Exception
+	 */
 	private static void provaAssignatura() throws Exception {
 		PlaEstudis.newPlaEstudis("fib");
 		PlaEstudis p = PlaEstudis.getPlaEstudis("fib");
@@ -256,6 +293,10 @@ public class DriverProvadorExports {
 		assignatura.exportaAssignatura(a, true);
 	}
 	
+	/**
+	 * Comprova l'Export d'Aula
+	 * @throws Exception
+	 */
 	private static void provaAula() throws Exception {
 		Campus.newCampus("campus nord");
 		Campus c = Campus.getCampus("campus nord");
@@ -269,6 +310,10 @@ public class DriverProvadorExports {
 		aula.exportaAula(a, true);
 	}
 	
+	/**
+	 * Comprova l'Export de Campus
+	 * @throws Exception
+	 */
 	private static void provaCampus() throws Exception {
 		Campus.newCampus("campus nord");
 		Campus c = Campus.getCampus("campus nord");
@@ -278,6 +323,10 @@ public class DriverProvadorExports {
 		campus.exportaCampus(c, true);
 	}
 	
+	/**
+	 * Comprova l'Export de PlaEstudis
+	 * @throws Exception
+	 */
 	private static void provaPlaEstudis() throws Exception {
 		PlaEstudis.newPlaEstudis("fib");
 		PlaEstudis p = PlaEstudis.getPlaEstudis("fib");

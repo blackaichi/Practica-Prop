@@ -10,8 +10,16 @@ import domini.classes.PlaEstudis;
  */
 
 public class ImportaHorari extends Importa {
+	
+	private static ImportaHorari instancia = new ImportaHorari();
+	
+	private ImportaHorari() {};
+	
+	public static ImportaHorari getInstancia() {
+		return instancia;
+	}
 
-	public static String importaHoraris(String path, PlaEstudis pe, Campus c) {
+	public String importaHoraris(String path, PlaEstudis pe, Campus c) {
 		
 		return null;
 	}

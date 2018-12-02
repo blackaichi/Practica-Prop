@@ -156,7 +156,8 @@ public class ImportaPlaEstudis extends Importa {
 				return "Sintaxi incorrecta a rangDia";
 			}
 			int nassig = Integer.valueOf(br.readLine());
-			assignatures = ImportaAssignatura.importaAssignatura(path, nassig);
+			ImportaAssignatura ia = ImportaAssignatura.getInstancia();
+			assignatures = ia.importaAssignatura(path, nassig);
 			if (assignatures == null) {
 				br.close();
 				return "error important les assignatures del pla";

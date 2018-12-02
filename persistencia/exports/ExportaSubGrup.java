@@ -1,7 +1,5 @@
 package persistencia.exports;
 
-import java.util.HashSet;
-
 import domini.classes.*;
 
 /**
@@ -12,18 +10,33 @@ import domini.classes.*;
 
 public class ExportaSubGrup extends Exporta {
 	
+	/**
+	 * Instancia de la propia classe seguint el patró de disseny singleton
+	 */
 	private static ExportaSubGrup instancia = new ExportaSubGrup();
 	
+	/**
+	 * Creadora buida
+	 */
 	private ExportaSubGrup() {};
 	
+	/**
+	 * Retorna l'única instancia de la classe
+	 * @return una instancia de la classe 
+	 */
 	public static ExportaSubGrup getInstancia() {
 		return instancia;
 	}
 	
-	public String exportaSubGrup(SubGrup sg, boolean crea) throws Exception {
+	/**
+	 * Exporta un sub grup
+	 * @param sg SubGrup que volem exportar
+	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
+	 * @return la codificació del subgrup
+	 */
+	public String exportaSubGrup(SubGrup sg, boolean crea) {
 		String endl = "\n";
 		String str = "SubGrup".concat(endl);
-		ExportaSubGrup esg = ExportaSubGrup.getInstancia();
 		ExportaHoresAptes eha = ExportaHoresAptes.getInstancia();
 		ExportaSolapaments es = ExportaSolapaments.getInstancia();
 		str = str.concat(String.valueOf(sg.getNumero())).concat(endl);

@@ -9,8 +9,16 @@ import domini.classes.*;
  */
 
 public class ImportaSubGrup extends Importa {
+	
+	private static ImportaSubGrup instancia = new ImportaSubGrup();
+	
+	private ImportaSubGrup() {};
+	
+	public static ImportaSubGrup getInstancia() {
+		return instancia;
+	}
 
-	public static String importaSubGrup(String path, PlaEstudis pe, Assignatura a, Grup g) {
+	public String importaSubGrup(String path, PlaEstudis pe, Assignatura a, Grup g) {
 
 		return null;
 	}

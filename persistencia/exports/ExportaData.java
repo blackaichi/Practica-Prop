@@ -10,15 +10,31 @@ import domini.classes.*;
 
 public class ExportaData extends Exporta {
 	
+	/**
+	 * Instancia de la propia classe seguint el patró de disseny singleton
+	 */
 	private static ExportaData instancia = new ExportaData();
 	
+	/**
+	 * Creadora buida
+	 */
 	private ExportaData() {};
 	
+	/**
+	 * Retorna l'única instancia de la classe
+	 * @return una instancia de la classe 
+	 */
 	public static ExportaData getInstancia() {
 		return instancia;
 	}
 	
-	public String exportaData(Data d, boolean crea) throws Exception {
+	/**
+	 * Exporta una Data
+	 * @param d data que volem exportar
+	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
+	 * @return la codificació de la Data
+	 */
+	public String exportaData(Data d, boolean crea) {
 		String endl = "\n";
 		String str = "Data".concat(endl);
 		str = str.concat(String.valueOf(d.getDia())).concat(endl);

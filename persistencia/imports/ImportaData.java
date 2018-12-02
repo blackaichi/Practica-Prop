@@ -11,7 +11,16 @@ import utils.*;
  */
 
 public class ImportaData extends Importa {
-	public static Pair<String, Data> importaData(String path) {
+	
+	private static ImportaData instancia = new ImportaData();
+	
+	private ImportaData() {};
+	
+	public static ImportaData getInstancia() {
+		return instancia;
+	}
+	
+	public String importaData(String path) {
 		try {
 			int dia, hora;
 			File file = new File(path); 
@@ -20,7 +29,7 @@ public class ImportaData extends Importa {
 			s = br.readLine();
 			if (!s.equals("Data")) {
 				br.close();
-				return new Pair<String, Data>("No es un fitxer amb una data", null);
+				return "No es un fitxer amb una data";
 			}
 			s = br.readLine();
 			dia = Integer.valueOf(s);

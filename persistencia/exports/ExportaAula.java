@@ -1,6 +1,5 @@
 package persistencia.exports;
 
-import java.io.*;
 import java.util.*;
 import domini.classes.*;
 
@@ -12,15 +11,31 @@ import domini.classes.*;
 
 public class ExportaAula extends Exporta {
 	
+	/**
+	 * Instancia de la propia classe seguint el patró de disseny singleton
+	 */
 	private static ExportaAula instancia = new ExportaAula();
 	
+	/**
+	 * Creadora buida
+	 */
 	private ExportaAula() {};
 	
+	/**
+	 * Retorna l'única instancia de la classe
+	 * @return una instancia de la classe 
+	 */
 	public static ExportaAula getInstancia() {
 		return instancia;
 	}
 	
-	public String exportaAula(Aula a, boolean crea) throws IOException {
+	/**
+	 * Exporta un Aula
+	 * @param a aula que volem exportar
+	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
+	 * @return la codificació de l'aula
+	 */
+	public String exportaAula(Aula a, boolean crea) {
 		String endl = "\n";
 		String str = "Aula".concat(endl);
 		str = str.concat(a.getNom().concat(endl));

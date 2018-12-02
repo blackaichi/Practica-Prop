@@ -7,8 +7,16 @@ package persistencia.imports;
  */
 
 public class ImportaCampus extends Importa {
+	
+	private static ImportaCampus instancia = new ImportaCampus();
+	
+	private ImportaCampus() {};
+	
+	public static ImportaCampus getInstancia() {
+		return instancia;
+	}
 
-	public static String importaCampus(String path) {
+	public String importaCampus(String path) {
 		
 		return null;
 	}

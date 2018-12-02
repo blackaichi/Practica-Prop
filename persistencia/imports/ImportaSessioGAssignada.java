@@ -9,8 +9,16 @@ import domini.classes.*;
  */
 
 public class ImportaSessioGAssignada extends Importa {
+	
+	private static ImportaSessioGAssignada instancia = new ImportaSessioGAssignada();
+	
+	private ImportaSessioGAssignada() {};
+	
+	public static ImportaSessioGAssignada getInstancia() {
+		return instancia;
+	}
 
-	public static String importaSessioGAssignada(String path, PlaEstudis pe, Assignatura a, Grup g) {
+	public String importaSessioGAssignada(String path, PlaEstudis pe, Assignatura a, Grup g) {
 
 		return null;
 	}

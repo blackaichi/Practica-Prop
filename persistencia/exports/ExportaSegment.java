@@ -6,15 +6,31 @@ import utils.*;
 
 public class ExportaSegment extends Exporta {
 	
+	/**
+	 * Instancia de la propia classe seguint el patró de disseny singleton
+	 */
 	private static ExportaSegment instancia = new ExportaSegment();
 	
+	/**
+	 * Creadora buida
+	 */
 	private ExportaSegment() {};
 	
+	/**
+	 * Retorna l'única instancia de la classe
+	 * @return una instancia de la classe 
+	 */
 	public static ExportaSegment getInstancia() {
 		return instancia;
 	}
 	
-	public String exportaSegment(Segment s, boolean crea) throws Exception {
+	/**
+	 * Exporta un Segment
+	 * @param s segment que volem exportar
+	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
+	 * @return la codificació del Segment
+	 */
+	public String exportaSegment(Segment s, boolean crea) {
 		String endl = "\n";
 		String str = "Segment".concat(endl);
 		ExportaData ed = ExportaData.getInstancia();

@@ -11,15 +11,31 @@ import domini.restriccions.*;
 
 public class ExportaHoresAptes extends Exporta {
 	
+	/**
+	 * Instancia de la propia classe seguint el patró de disseny singleton
+	 */
 	private static ExportaHoresAptes instancia = new ExportaHoresAptes();
 	
+	/**
+	 * Creadora buida
+	 */
 	private ExportaHoresAptes() {};
 	
+	/**
+	 * Retorna l'única instancia de la classe
+	 * @return una instancia de la classe 
+	 */
 	public static ExportaHoresAptes getInstancia() {
 		return instancia;
 	}
 	
-	public String exportaHoresAptes(HoresAptes ha, boolean crea) throws Exception {
+	/**
+	 * Exporta unes HoresAptes
+	 * @param ha hores aptes que volem exportar
+	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
+	 * @return la codificació de les HoresAptes
+	 */
+	public String exportaHoresAptes(HoresAptes ha, boolean crea) {
 		String endl = "\n";
 		String str = "HoresAptes".concat(endl);
 		Map<Integer, boolean[]> franja = ha.getHoresAptes();

@@ -9,8 +9,16 @@ import domini.classes.*;
  */
 
 public class ImportaHoresAptes extends Importa {
+	
+	private static ImportaHoresAptes instancia = new ImportaHoresAptes();
+	
+	private ImportaHoresAptes() {};
+	
+	public static ImportaHoresAptes getInstancia() {
+		return instancia;
+	}
 
-	public static String importaHoresAptes(String path, PlaEstudis pe) {
+	public String importaHoresAptes(String path, PlaEstudis pe) {
 		
 		return null;
 	}

@@ -11,14 +11,30 @@ import domini.classes.*;
 
 public class ExportaPlaEstudis extends Exporta {
 	
+	/**
+	 * Instancia de la propia classe seguint el patró de disseny singleton
+	 */
 	private static ExportaPlaEstudis instancia = new ExportaPlaEstudis();
 	
+	/**
+	 * Creadora buida
+	 */
 	private ExportaPlaEstudis() {};
 	
+	/**
+	 * Retorna l'única instancia de la classe
+	 * @return una instancia de la classe 
+	 */
 	public static ExportaPlaEstudis getInstancia() {
 		return instancia;
 	}
 	
+	/**
+	 * Exporta un PlaEstudis
+	 * @param PE pla d'estudis que volem exportar
+	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
+	 * @return la codificació del PlaEstudis
+	 */
 	public String exportaPlaEstudis(PlaEstudis PE, boolean crea) throws Exception {
 		String endl = "\n";
 		String str = "PlaEstudis".concat(endl);

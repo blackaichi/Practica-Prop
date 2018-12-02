@@ -5,15 +5,32 @@ import utils.*;
 
 public class ExportaEstructura extends Exporta {
 	
+	/**
+	 * Instancia de la propia classe seguint el patró de disseny singleton
+	 */
 	private static ExportaEstructura instancia = new ExportaEstructura();
 	
+	/**
+	 * Creadora buida
+	 */
 	private ExportaEstructura() {};
 	
+	/**
+	 * Retorna l'única instancia de la classe
+	 * @return una instancia de la classe 
+	 */
 	public static ExportaEstructura getInstancia() {
 		return instancia;
 	}
 	
-	static String exportaEstructura(Estructura e, int n, boolean crea) throws Exception {
+	/**
+	 * Exporta una Estructura
+	 * @param e estructura que volem exportar
+	 * @param n número d'horari que estem exportant
+	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
+	 * @return la codificació de l'Estructura
+	 */
+	static String exportaEstructura(Estructura e, int n, boolean crea) {
 		String endl = "\n";
 		String str = "Horari ".concat(String.valueOf(n)).concat(endl);
 		ExportaSegment es = ExportaSegment.getInstancia();

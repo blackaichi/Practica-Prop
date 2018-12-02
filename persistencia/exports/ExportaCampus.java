@@ -1,8 +1,6 @@
 package persistencia.exports;
 
-import java.io.*;
-import java.util.HashSet;
-
+import java.util.*;
 import domini.classes.*;
 
 /**
@@ -13,15 +11,31 @@ import domini.classes.*;
 
 public class ExportaCampus extends Exporta {
 	
+	/**
+	 * Instancia de la propia classe seguint el patró de disseny singleton
+	 */
 	private static ExportaCampus instancia = new ExportaCampus();
 	
+	/**
+	 * Creadora buida
+	 */
 	private ExportaCampus() {};
 	
+	/**
+	 * Retorna l'única instancia de la classe
+	 * @return una instancia de la classe 
+	 */
 	public static ExportaCampus getInstancia() {
 		return instancia;
 	}
 	
-	public String exportaCampus(Campus c, boolean crea) throws IOException {
+	/**
+	 * Exporta un Campus
+	 * @param c campus que volem exportar
+	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
+	 * @return la codificació del Campus
+	 */
+	public String exportaCampus(Campus c, boolean crea) {
 		String endl = "\n";
 		String str = "Campus".concat(endl);
 		ExportaAula ea = ExportaAula.getInstancia();

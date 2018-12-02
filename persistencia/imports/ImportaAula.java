@@ -9,8 +9,16 @@ import domini.classes.*;
  */
 
 public class ImportaAula extends Importa {
+	
+	private static ImportaAula instancia = new ImportaAula();
+	
+	private ImportaAula() {};
+	
+	public static ImportaAula getInstancia() {
+		return instancia;
+	}
 
-	public static String importaAula(String path, Campus c) {
+	public String importaAula(String path, Campus c) {
 		
 		return null;
 	}
