@@ -138,6 +138,10 @@ public class PlaEstudis {
 		return 0;
 	}
 	
+	public void setLectiu(Map<Integer, boolean[]> lectiu) {
+		this.lectiu = lectiu;
+	}
+	
 	/**
 	 * Assigna la franja [iniciFranjaM,finalFranjaM,iniciFranjaT,finalFranjaT] al Pla d'Estudis.
 	 * @param dia: dia de la franja que entra l'usuari.
