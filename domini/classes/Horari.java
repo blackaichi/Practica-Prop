@@ -13,18 +13,23 @@ import java.util.*;
 public class Horari {
 	////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////  STATIC  /////////////////////////////////////
+	private static Horari current;
+	
+	////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////  ATRIBUTS  /////////////////////////////////////
+	
 	/**
 	 * Enmagatzema TOTS els horaris candidats donats el nom d'un pla
 	 * d'estudis i el d'un campus concrets.
 	 */
-	static private Map<String, Map<String, HashSet<Estructura>>> HorarisCandidats;
+	private Map<String, Map<String, HashSet<Estructura>>> HorarisCandidats;
 	
 	/**
 	 * Referencien a l'ultim pla d'estudis i campus pels quals
 	 * s'ha generat algun horari.
 	 */
-	static private PlaEstudis plaEstudis;
-	static private Campus campus;
+	private PlaEstudis plaEstudis;
+	private Campus campus;
 	
 	////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////  PRIVADES  /////////////////////////////////////
@@ -33,7 +38,7 @@ public class Horari {
 	 * @param toCopy Referencia al set a copiar.
 	 * @return Una copia identica.
 	 */
-	static private HashSet<SessioGAssignada> copySGA(HashSet<SessioGAssignada> toCopy){
+	private HashSet<SessioGAssignada> copySGA(HashSet<SessioGAssignada> toCopy){
 		if(toCopy == null) return null;
 		
 		HashSet<SessioGAssignada> cloned = new HashSet<>();
@@ -47,13 +52,24 @@ public class Horari {
 	 * @param toCopy Referencia al set a copiar.
 	 * @return Una copia identica.
 	 */
-	static private HashSet<SessioSGAssignada> copySSGA(HashSet<SessioSGAssignada> toCopy){
+	private HashSet<SessioSGAssignada> copySSGA(HashSet<SessioSGAssignada> toCopy){
 		if(toCopy == null) return null;
 		
 		HashSet<SessioSGAssignada> cloned = new HashSet<>();
 		for(SessioSGAssignada sessio: toCopy) cloned.add(sessio);
 		
 		return cloned;
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////  INSTANCIADORA  //////////////////////////////////
+	/**
+	 * Controla que només hi hagia una instancia concurrantment.
+	 * @return La instancia d'horari.
+	 */
+	static public Horari getInstance() {
+		if(current == null) current = new Horari();
+		return Horari.current;
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -65,7 +81,7 @@ public class Horari {
 	 * @param SGOcup Controla les sessions de SubGrup ocupades.
 	 * @throws Exception
 	 */
-	static private void backTracking(Estructura horari, HashSet<SessioGAssignada> sessionsG, HashSet<SessioSGAssignada> sessionsSG,  int nHoraris) throws Exception {
+	private void backTracking(Estructura horari, HashSet<SessioGAssignada> sessionsG, HashSet<SessioSGAssignada> sessionsSG,  int nHoraris) throws Exception {
 		//Cas base: tants horaris generats com nHoraris senyala: si ja tenim nhorari, no és continua.
 		if(HorarisCandidats.get(plaEstudis.getNom()).get(campus.getNom()).size() >= nHoraris) return;
 		
@@ -81,7 +97,7 @@ public class Horari {
 				Segment segment = new Segment(corrent.first, corrent.second);
 				Estructura updatedHorari = horari.getCopy(); //Copia de l'horari SENSE modificar.
 				
-				if(Horari.tryToCommit(updatedHorari, segment, dia, hora, true, false).isEmpty()) {
+				if(tryToCommit(updatedHorari, segment, dia, hora, true, false).isEmpty()) {
 					//Si s'ha lograt colocar sense violar cap restricció:
 					HashSet<SessioGAssignada> updatedSessionsG = copySGA(sessionsG);
 					HashSet<SessioSGAssignada> updatedSessionsSG = copySSGA(sessionsSG);
@@ -100,7 +116,7 @@ public class Horari {
 	 * @param campus Referencia el campus sobre el qual s'ha d'aplicar l'horari.
 	 * @throws Exception
 	 */
-	static public int GENERADOR(PlaEstudis plaEstudis, Campus campus, HashSet<String> flags, int nHoraris, boolean purge) throws Exception{
+	public int GENERADOR(PlaEstudis plaEstudis, Campus campus, HashSet<String> flags, int nHoraris, boolean purge) throws Exception{
 		int checker;
 		if((checker = inicialitzaEntorn(plaEstudis, campus, purge)) != 0) return checker;
 		
@@ -122,7 +138,7 @@ public class Horari {
 	 * @param plaEstudis Referencia al pla d'estudis de l'horari.
 	 * @param campus Referencia al campus de l'horari.
 	 */
-	static private int inicialitzaEntorn(PlaEstudis plaEstudis, Campus campus, boolean purge) {
+	private int inicialitzaEntorn(PlaEstudis plaEstudis, Campus campus, boolean purge) {
 		if(plaEstudis == null) return 170;
 		else if(campus == null) return 171;
 		
@@ -132,8 +148,8 @@ public class Horari {
 			HorarisCandidats.get(plaEstudis.getNom()).put(campus.getNom(), new HashSet<Estructura>());
 		
 		if(purge) HorarisCandidats.get(plaEstudis.getNom()).get(campus.getNom()).clear();
-		Horari.plaEstudis = plaEstudis;
-		Horari.campus = campus;
+		this.plaEstudis = plaEstudis;
+		this.campus = campus;
 		
 		return 0;
 	}
@@ -148,7 +164,7 @@ public class Horari {
 	 * @return Un horari que conté tots els horaris generats per aquest
 	 * pla d'estudis i campus indicats.
 	 */
-	static public HashSet<Estructura> getHoraris(String plaEstudis, String campus) {
+	public HashSet<Estructura> getHoraris(String plaEstudis, String campus) {
 		if(plaEstudis == null || campus == null) return null;
 		
 		if(HorarisCandidats.get(plaEstudis) == null) return null;
@@ -161,7 +177,7 @@ public class Horari {
 	 * Elimina l'element dels hashset situal a la posició index.
 	 * @param index indica la posicio de l'element a eliminar.
 	 */
-	static private void kill(HashSet<SessioGAssignada> sessionsDeGrup, HashSet<SessioSGAssignada> sessionsDeSubGrup) {
+	private void kill(HashSet<SessioGAssignada> sessionsDeGrup, HashSet<SessioSGAssignada> sessionsDeSubGrup) {
 		if(!sessionsDeGrup.isEmpty()) {
 			SessioGAssignada sessio = sessionsDeGrup.iterator().next();
 			sessionsDeGrup.remove(sessio);
@@ -183,7 +199,7 @@ public class Horari {
 	 * @return Retorna 0 si la modificació es possible; altrament retorna el codi d'excepció
 	 * que indica quina restricció ha sigut violada.
 	 */
-	static public HashSet<Integer> tryToCommit(Estructura horari, Segment segment, int dia, int horaIni, boolean commit, boolean force) throws Exception {
+	public HashSet<Integer> tryToCommit(Estructura horari, Segment segment, int dia, int horaIni, boolean commit, boolean force) throws Exception {
 		HashSet<Integer> history = new HashSet<>();
 		
 		history.add(Alineament.checkAlineament(segment.getSessio().first, segment.getSessio().second, horaIni, horari.getFlags()));
