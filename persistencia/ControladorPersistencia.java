@@ -1,6 +1,8 @@
 package persistencia;
 
 import java.util.*;
+
+import domini.*;
 import domini.classes.*;
 import domini.restriccions.*;
 import persistencia.exports.*;
@@ -11,16 +13,21 @@ public final class ControladorPersistencia {
 	
 	ControladorPersistencia cp = new ControladorPersistencia();
 	
+	ControladorDomini cd = ControladorDomini.getInstancia();
+	
 	public ControladorPersistencia getInstancia() {
 		return cp;
 	}
+	
+	private String error;
 	
 	////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////  EXPORTS  //////////////////////////////////////
 	
 	public String exportaAssignatura(Assignatura a) {
 		try {
-			ExportaAssignatura.exportaAssignatura(a, true);
+			ExportaAssignatura assignatura = ExportaAssignatura.getInstancia();
+			assignatura.exportaAssignatura(a, true);
 			return null;
 		}
 		catch (Exception e) {
@@ -30,7 +37,8 @@ public final class ControladorPersistencia {
 	
 	public String exportaAula(Aula a) {
 		try {
-			ExportaAula.exportaAula(a, true);
+			ExportaAula aula = ExportaAula.getInstancia();
+			aula.exportaAula(a, true);
 			return null;
 		}
 		catch (Exception e) {
@@ -40,7 +48,8 @@ public final class ControladorPersistencia {
 	
 	public String exportaCampus(Campus c) {
 		try {
-			ExportaCampus.exportaCampus(c, true);
+			ExportaCampus campus = ExportaCampus.getInstancia();
+			campus.exportaCampus(c, true);
 			return null;
 		}
 		catch (Exception e) {
@@ -50,7 +59,8 @@ public final class ControladorPersistencia {
 	
 	public String exportaData(Data d) {
 		try {
-			ExportaData.exportaData(d, true);
+			ExportaData data = ExportaData.getInstancia();
+			data.exportaData(d, true);
 			return null;
 		}
 		catch (Exception e) {
@@ -60,7 +70,8 @@ public final class ControladorPersistencia {
 	
 	public String exportaGrup(Grup g) {
 		try {
-			ExportaGrup.exportaGrup(g, true);
+			ExportaGrup grup = ExportaGrup.getInstancia();
+			grup.exportaGrup(g, true);
 			return null;
 		}
 		catch (Exception e) {
@@ -70,7 +81,8 @@ public final class ControladorPersistencia {
 	
 	public String exportaHorari(HashSet<Estructura> e) {
 		try {
-			ExportaHorari.exportaHoraris(e, true);
+			ExportaHorari horari = ExportaHorari.getInstancia();
+			horari.exportaHoraris(e, true);
 			return null;
 		}
 		catch (Exception ex) {
@@ -80,7 +92,8 @@ public final class ControladorPersistencia {
 	
 	public String exportaHoresAptes(HoresAptes ha) {
 		try {
-			ExportaHoresAptes.exportaHoresAptes(ha, true);
+			ExportaHoresAptes horesAptes = ExportaHoresAptes.getInstancia();
+			horesAptes.exportaHoresAptes(ha, true);
 			return null;
 		}
 		catch (Exception e) {
@@ -90,7 +103,8 @@ public final class ControladorPersistencia {
 	
 	public String exportaPlaEstudis(PlaEstudis pe) {
 		try {
-			ExportaPlaEstudis.exportaPlaEstudis(pe, true);
+			ExportaPlaEstudis plaEstudis = ExportaPlaEstudis.getInstancia();
+			plaEstudis.exportaPlaEstudis(pe, true);
 			return null;
 		}
 		catch (Exception e) {
@@ -100,7 +114,8 @@ public final class ControladorPersistencia {
 	
 	public String exportaSessioGAssignada(SessioGAssignada sga) {
 		try {
-			ExportaSessioGAssignada.exportaSessioGAssignada(sga, true);
+			ExportaSessioGAssignada sessioGAssignada = ExportaSessioGAssignada.getInstancia();
+			sessioGAssignada.exportaSessioGAssignada(sga, true);
 			return null;
 		}
 		catch (Exception e) {
@@ -110,7 +125,8 @@ public final class ControladorPersistencia {
 	
 	public String exportaSessioGrup(SessioGrup sg) {
 		try {
-			ExportaSessioGrup.exportaSessioGrup(sg, true);
+			ExportaSessioGrup sessioGrup = ExportaSessioGrup.getInstancia();
+			sessioGrup.exportaSessioGrup(sg, true);
 			return null;
 		}
 		catch (Exception e) {
@@ -120,7 +136,8 @@ public final class ControladorPersistencia {
 	
 	public String exportaSessioSGAssignada(SessioSGAssignada ssga) {
 		try {
-			ExportaSessioSGAssignada.exportaSessioSGAssignada(ssga, true);
+			ExportaSessioSGAssignada sessioSGAssignada = ExportaSessioSGAssignada.getInstancia();
+			sessioSGAssignada.exportaSessioSGAssignada(ssga, true);
 			return null;
 		}
 		catch (Exception e) {
@@ -130,7 +147,8 @@ public final class ControladorPersistencia {
 	
 	public String exportaSessioSubGrup(SessioSubGrup ssg) {
 		try {
-			ExportaSessioSubGrup.exportaSessioSubGrup(ssg, true);
+			ExportaSessioSubGrup sessioSubGrup = ExportaSessioSubGrup.getInstancia();
+			sessioSubGrup.exportaSessioSubGrup(ssg, true);
 			return null;
 		}
 		catch (Exception e) {
@@ -140,7 +158,8 @@ public final class ControladorPersistencia {
 	
 	public String exportaSessioSubGrup(SubGrup sg) {
 		try {
-			ExportaSubGrup.exportaSubGrup(sg, true);
+			ExportaSubGrup subGrup = ExportaSubGrup.getInstancia();
+			subGrup.exportaSubGrup(sg, true);
 			return null;
 		}
 		catch (Exception e) {
@@ -150,7 +169,8 @@ public final class ControladorPersistencia {
 	
 	public String exportaSolapaments(Solapaments s) {
 		try {
-			ExportaSolapaments.exportaSolapaments(s, true);
+			ExportaSolapaments solapaments = ExportaSolapaments.getInstancia();
+			solapaments.exportaSolapaments(s, true);
 			return null;
 		}
 		catch (Exception e) {
@@ -190,7 +210,15 @@ public final class ControladorPersistencia {
 	}
 	
 	public String importaPlaEstudis(String path) {
-		return ImportaPlaEstudis.importaPlaEstudis(path);
+		ImportaPlaEstudis ipe = ImportaPlaEstudis.getInstancia();
+		if ((error = ipe.importaPlaEstudis(path)) != null) return error;
+		if ((error = cd.CrearCampus(ipe.getNom())) != null) return error;
+		if ((error = cd.ModificarPlaEstudis(ipe.getNom(), null, ipe.getAutor(), ipe.getLectiu(), ipe.getRangDia())) != null) return error;
+		for (Assignatura a : ipe.getAssignatures()) {
+			if ((error = cd.CrearAssignatura(ipe.getNom(), a.getNom())) != null) return error;
+			if ((error = cd.ModificarAssignatura(ipe.getNom(), a.getNom(), null)) != null) return error;
+		}
+		return null;
 	}
 	
 	public String importaSessioGAssignada(String path, PlaEstudis pe, Assignatura a, Grup g) {

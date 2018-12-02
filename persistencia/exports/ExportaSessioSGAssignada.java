@@ -9,11 +9,22 @@ import domini.classes.*;
  */
 
 public class ExportaSessioSGAssignada extends Exporta {
-	public static String exportaSessioSGAssignada(SessioSGAssignada ssga, boolean crea) throws Exception {
+	
+	private static ExportaSessioSGAssignada instancia = new ExportaSessioSGAssignada();
+	
+	private ExportaSessioSGAssignada() {};
+	
+	public static ExportaSessioSGAssignada getInstancia() {
+		return instancia;
+	}
+	
+	public String exportaSessioSGAssignada(SessioSGAssignada ssga, boolean crea) throws Exception {
 		String endl = "\n";
 		String str = "SessioSGAssignada".concat(endl);
-		str = str.concat(ExportaSubGrup.exportaSubGrup(ssga.getSubGrup(), false)).concat(endl);
-		str = str.concat(ExportaSessioSubGrup.exportaSessioSubGrup(ssga.getSessioSubGrup(), false)).concat(endl);
+		ExportaSubGrup esg = ExportaSubGrup.getInstancia();
+		ExportaSessioSubGrup essg = ExportaSessioSubGrup.getInstancia();
+		str = str.concat(esg.exportaSubGrup(ssga.getSubGrup(), false)).concat(endl);
+		str = str.concat(essg.exportaSessioSubGrup(ssga.getSessioSubGrup(), false)).concat(endl);
 		str = str.concat("END");
 		if (crea) Exporta.exporta(str);
 		return str;

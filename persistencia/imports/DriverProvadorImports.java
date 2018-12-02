@@ -16,6 +16,8 @@ public class DriverProvadorImports {
 	
 	private static String path = "/home/blackaichi/Desktop/codificar_classes/export";
 	
+	private static String error;
+	
 	public static void main (String [] args) throws Exception {
 		//provaPlaEstudis(); // TODO
 		//provaCampus(); // TODO

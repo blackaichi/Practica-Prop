@@ -9,7 +9,16 @@ import domini.classes.*;
  */
 
 public class ExportaData extends Exporta {
-	public static String exportaData(Data d, boolean crea) throws Exception {
+	
+	private static ExportaData instancia = new ExportaData();
+	
+	private ExportaData() {};
+	
+	public static ExportaData getInstancia() {
+		return instancia;
+	}
+	
+	public String exportaData(Data d, boolean crea) throws Exception {
 		String endl = "\n";
 		String str = "Data".concat(endl);
 		str = str.concat(String.valueOf(d.getDia())).concat(endl);

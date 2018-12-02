@@ -10,7 +10,16 @@ import utils.*;
  */
 
 public class ExportaHorari extends Exporta {
-	public static String exportaHoraris(HashSet<Estructura> e, boolean crea) throws Exception {
+	
+	private static ExportaHorari instancia = new ExportaHorari();
+	
+	private ExportaHorari() {};
+	
+	public static ExportaHorari getInstancia() {
+		return instancia;
+	}
+	
+	public String exportaHoraris(HashSet<Estructura> e, boolean crea) throws Exception {
 		String endl = "\n";
 		String str = "Horaris".concat(endl);
 		str = str.concat(String.valueOf(e.size()).concat(endl).concat("{").concat(endl));

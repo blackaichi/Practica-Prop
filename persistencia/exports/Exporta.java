@@ -14,5 +14,6 @@ public class Exporta {
 		BufferedWriter writer = new BufferedWriter(new FileWriter("/home/blackaichi/Desktop/codificar_classes/export")); //canviar per path i ja esta
 		writer.write(s);
 		writer.close();
+		System.out.print("Fet!");
 	}
 }

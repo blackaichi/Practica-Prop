@@ -11,7 +11,16 @@ import domini.classes.*;
  */
 
 public class ExportaSessioGrup extends Exporta {
-	public static String exportaSessioGrup(SessioGrup sg, boolean crea) throws Exception {
+	
+	private static ExportaSessioGrup instancia = new ExportaSessioGrup();
+	
+	private ExportaSessioGrup() {};
+	
+	public static ExportaSessioGrup getInstancia() {
+		return instancia;
+	}
+	
+	public String exportaSessioGrup(SessioGrup sg, boolean crea) throws Exception {
 		String endl = "\n";
 		String str = "SessioGrup".concat(endl);
 		HashSet<String> equip = sg.getMaterial();

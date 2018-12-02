@@ -3,10 +3,20 @@ package persistencia.exports;
 import java.util.*;
 import utils.*;
 
-public class ExportaEstructura {
+public class ExportaEstructura extends Exporta {
+	
+	private static ExportaEstructura instancia = new ExportaEstructura();
+	
+	private ExportaEstructura() {};
+	
+	public static ExportaEstructura getInstancia() {
+		return instancia;
+	}
+	
 	static String exportaEstructura(Estructura e, int n, boolean crea) throws Exception {
 		String endl = "\n";
 		String str = "Horari ".concat(String.valueOf(n)).concat(endl);
+		ExportaSegment es = ExportaSegment.getInstancia();
 		HashSet<Segment> s;
 		for (int dia = 0; dia < 7; ++dia) {
 			str = str.concat(String.valueOf(dia)).concat(endl);
@@ -17,7 +27,7 @@ public class ExportaEstructura {
 				s = e.getAllSegments(dia, hora);
 				if (s.isEmpty()) str = str.concat("buit").concat(endl);
 				else {
-					for (Segment se : s) str = str.concat(ExportaSegment.exportaSegment(se, false));
+					for (Segment se : s) str = str.concat(es.exportaSegment(se, false));
 				}
 				str = str.concat("}").concat(endl);
 			}

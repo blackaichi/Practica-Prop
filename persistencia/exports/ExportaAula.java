@@ -11,7 +11,16 @@ import domini.classes.*;
  */
 
 public class ExportaAula extends Exporta {
-	public static String exportaAula(Aula a, boolean crea) throws IOException {
+	
+	private static ExportaAula instancia = new ExportaAula();
+	
+	private ExportaAula() {};
+	
+	public static ExportaAula getInstancia() {
+		return instancia;
+	}
+	
+	public String exportaAula(Aula a, boolean crea) throws IOException {
 		String endl = "\n";
 		String str = "Aula".concat(endl);
 		str = str.concat(a.getNom().concat(endl));

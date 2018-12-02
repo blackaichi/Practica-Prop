@@ -10,33 +10,37 @@ import domini.classes.*;
  */
 
 public class ExportaPlaEstudis extends Exporta {
-	public static String exportaPlaEstudis(PlaEstudis PE, boolean crea) throws Exception {
+	
+	private static ExportaPlaEstudis instancia = new ExportaPlaEstudis();
+	
+	private ExportaPlaEstudis() {};
+	
+	public static ExportaPlaEstudis getInstancia() {
+		return instancia;
+	}
+	
+	public String exportaPlaEstudis(PlaEstudis PE, boolean crea) throws Exception {
 		String endl = "\n";
 		String str = "PlaEstudis".concat(endl);
+		ExportaAssignatura ea = ExportaAssignatura.getInstancia();
 		str = str.concat(PE.getNom()).concat(endl);
 		str = str.concat(PE.getAutor()).concat(endl);
 		Map<Integer, boolean[]> franja = PE.getLectiuSetmana();
 		boolean[] b;
 		for (int i = 0; i < 7; ++i) {
 			b = franja.get(i);
-			str = str.concat(String.valueOf(i)).concat("(");
-			if (b == null) str = str.concat("null");
+			if (b == null) str = str.concat("n");
 			else {
 				for (boolean p : b) {
 					if (p) str = str.concat("t");
 					else str = str.concat("f");
 				}
 			}
-			str = str.concat(")");
 		}
 		str = str.concat(endl);
-		HashSet<Assignatura> assigs = PE.getAssignatures();
-		str = str.concat(String.valueOf(assigs.size()).concat(endl).concat("{").concat(endl));
-		for (Assignatura a : assigs) str = str.concat(ExportaAssignatura.exportaAssignatura(a, false)).concat(endl);
-		str = str.concat("}").concat(endl);
 		int[] rang = PE.getRangMati();
 		str = str.concat("mati: ");
-		if (rang[0] == -1 || rang[1] == -1) str = str.concat("null  ");
+		if (rang[0] == -1 || rang[1] == -1) str = str.concat("null ");
 		else {
 			str = str.concat(String.valueOf(rang[0]).concat(" "));
 			str = str.concat(String.valueOf(rang[1]).concat(" "));
@@ -48,6 +52,10 @@ public class ExportaPlaEstudis extends Exporta {
 			str = str.concat(String.valueOf(rang[0]).concat(" "));
 			str = str.concat(String.valueOf(rang[1]).concat(endl));
 		}
+		HashSet<Assignatura> assigs = PE.getAssignatures();
+		str = str.concat(String.valueOf(assigs.size()).concat(endl).concat("{").concat(endl));
+		for (Assignatura a : assigs) str = str.concat(ea.exportaAssignatura(a, false)).concat(endl);
+		str = str.concat("}").concat(endl);
 		str = str.concat("END");
 		if (crea) Exporta.exporta(str);
 		return str;

@@ -10,7 +10,16 @@ import domini.restriccions.*;
  */
 
 public class ExportaHoresAptes extends Exporta {
-	public static String exportaHoresAptes(HoresAptes ha, boolean crea) throws Exception {
+	
+	private static ExportaHoresAptes instancia = new ExportaHoresAptes();
+	
+	private ExportaHoresAptes() {};
+	
+	public static ExportaHoresAptes getInstancia() {
+		return instancia;
+	}
+	
+	public String exportaHoresAptes(HoresAptes ha, boolean crea) throws Exception {
 		String endl = "\n";
 		String str = "HoresAptes".concat(endl);
 		Map<Integer, boolean[]> franja = ha.getHoresAptes();

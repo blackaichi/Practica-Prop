@@ -9,7 +9,15 @@ import domini.restriccions.*;
  */
 
 public class ExportaSolapaments extends Exporta {
-	public static String exportaSolapaments(Solapaments s, boolean crea) throws Exception {
+	
+	private static ExportaSolapaments instancia = new ExportaSolapaments();
+	
+	private ExportaSolapaments() {};
+	
+	public static ExportaSolapaments getInstancia() {
+		return instancia;
+	}
+	public String exportaSolapaments(Solapaments s, boolean crea) throws Exception {
 		String endl = "\n";
 		String str = "Solapaments".concat(endl);
 		

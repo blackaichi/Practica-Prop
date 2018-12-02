@@ -1,5 +1,9 @@
 package persistencia.imports;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.*;
 import domini.classes.*;
 
 /**
@@ -13,6 +17,29 @@ public class ImportaAssignatura extends Importa {
 	public static String importaAssignatura(String path, PlaEstudis pe) {
 		
 		return null;
+	}
+	
+	public static HashSet<Assignatura> importaAssignatura(String path, int nassig) {
+		try {
+			File file = new File(path); 
+			BufferedReader br = new BufferedReader(new FileReader(file)); 
+			HashSet<Assignatura> assignatures = new HashSet<Assignatura>();
+			String s;
+			br.readLine();
+			String nompla = br.readLine();
+			while (br.readLine() != "Assignatura");
+			for (int i = 0; i < nassig; ++i) {
+				
+				
+				
+			}
+			Assignatura a;
+			
+			return assignatures;
+		}
+		catch (Exception e) {
+			return null;
+		}
 	}
 
 }

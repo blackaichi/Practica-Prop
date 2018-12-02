@@ -12,6 +12,22 @@ import utils.*;
  */
 
 public class DriverProvadorExports {
+	
+	private static ExportaPlaEstudis plaEstudis = ExportaPlaEstudis.getInstancia();
+	private static ExportaCampus campus = ExportaCampus.getInstancia();
+	private static ExportaAula aula = ExportaAula.getInstancia();
+	private static ExportaAssignatura assignatura = ExportaAssignatura.getInstancia();
+	private static ExportaData data = ExportaData.getInstancia();
+	private static ExportaGrup grup = ExportaGrup.getInstancia();
+	private static ExportaHorari horari = ExportaHorari.getInstancia();
+	private static ExportaHoresAptes horesAptes = ExportaHoresAptes.getInstancia();
+	private static ExportaSessioGAssignada sessioGAssignada = ExportaSessioGAssignada.getInstancia();
+	private static ExportaSessioGrup sessioGrup = ExportaSessioGrup.getInstancia();
+	private static ExportaSessioSGAssignada sessioSGAssignada = ExportaSessioSGAssignada.getInstancia();
+	private static ExportaSessioSubGrup sessioSubGrup = ExportaSessioSubGrup.getInstancia();
+	private static ExportaSolapaments solapaments = ExportaSolapaments.getInstancia();
+	private static ExportaSubGrup subGrup = ExportaSubGrup.getInstancia();
+	
 	public static void main (String [] args) throws Exception {
 		//provaPlaEstudis();
 		//provaCampus();
@@ -24,21 +40,56 @@ public class DriverProvadorExports {
 		//provaSessioGAssignada();
 		//provaSessioGrup(); 
 		//provaSessioSGAssignada();
-		//provaSessioSubGrup(); // TODO
+		//provaSessioSubGrup(); 
 		//provaSolapaments(); // TODO
-		//provaSubGrup(); // TODO
+		//provaSubGrup(); 
 	}
 	
 	private static void provaSubGrup() throws Exception {
+		PlaEstudis.newPlaEstudis("fib");
+		PlaEstudis p = PlaEstudis.getPlaEstudis("fib");	
+		p.altaAssignatura("PROP");
+		p.altaAssignatura("IES");
+		Assignatura a = p.getAssignatura("PROP");
+		Assignatura b = p.getAssignatura("IES");
+		a.altaGrup(10, 20, "M");		
+		Grup g = a.getGrup(10);
+		g.altaSubGrup(11, 20, false);
 		
+		SubGrup sg = g.getSubGrup(11);
+		sg.setNumero(12);
+		sg.setPlaces(10, false);
+		Map<Integer, int[]> franja = new HashMap<Integer, int[]>();
+		franja.put(0, null);
+		a.setHoresAptes(franja, true, false);
+		a.setSolapament(b, true);
+		subGrup.exportaSubGrup(sg, true);
 	}
 
 	private static void provaSolapaments() throws Exception {
-		
+		PlaEstudis.newPlaEstudis("fib");
+		PlaEstudis p = PlaEstudis.getPlaEstudis("fib");	
+		p.altaAssignatura("PROP");
+		p.altaAssignatura("IES");
+		Assignatura a = p.getAssignatura("PROP");
+		Assignatura b = p.getAssignatura("IES");
+		a.setSolapament(b, true);
+		Solapaments s = a.getSolapaments();
+		solapaments.exportaSolapaments(s, true);
 	}
 
 	private static void provaSessioSubGrup() throws Exception {
-		
+		PlaEstudis.newPlaEstudis("fib");
+		PlaEstudis p = PlaEstudis.getPlaEstudis("fib");	
+		p.altaAssignatura("prop"); 
+		Assignatura a = p.getAssignatura("prop");
+		a.altaSessioSG("lab", 2);
+		SessioSubGrup ssg = a.getSessioSG("lab", 2);
+		ssg.setHores(2);
+		ssg.addMaterial("PCs");
+		ssg.setTipus("practica");
+		ssg.setnsessions(2);
+		sessioSubGrup.exportaSessioSubGrup(ssg, true);
 	}
 
 	private static void provaSessioSGAssignada() throws Exception {
@@ -54,7 +105,7 @@ public class DriverProvadorExports {
 		ssg.assignaSessio(10, 11);
 		
 		SessioSGAssignada ssga = ssg.getSessioSGA(11);
-		ExportaSessioSGAssignada.exportaSessioSGAssignada(ssga, true);
+		sessioSGAssignada.exportaSessioSGAssignada(ssga, true);
 	}
 
 	private static void provaSessioGrup() throws Exception {
@@ -68,7 +119,7 @@ public class DriverProvadorExports {
 		sg.addMaterial("PCs");
 		sg.setTipus("practica");
 		sg.setnsessions(2);
-		ExportaSessioGrup.exportaSessioGrup(sg, true);
+		sessioGrup.exportaSessioGrup(sg, true);
 	}
 
 	private static void provaSessioGAssignada() throws Exception {
@@ -82,7 +133,7 @@ public class DriverProvadorExports {
 		sg.assignaSessio(10);
 		
 		SessioGAssignada sga = sg.getSessioGA(10);
-		ExportaSessioGAssignada.exportaSessioGAssignada(sga, true);
+		sessioGAssignada.exportaSessioGAssignada(sga, true);
 	}
 
 	private static void provaHoresAptes() throws Exception{
@@ -109,7 +160,7 @@ public class DriverProvadorExports {
 		a.setHoresAptes(franja, true, true);
 		
 		HoresAptes ha = new HoresAptes(a);
-		ExportaHoresAptes.exportaHoresAptes(ha, true);
+		horesAptes.exportaHoresAptes(ha, true);
 	}
 	
 	private static void provaHorari() throws Exception {
@@ -157,7 +208,7 @@ public class DriverProvadorExports {
 		Horari.GENERADOR(pe, c, f, 2, true);
 		HashSet<Estructura> horaris;
 		horaris = Horari.getHoraris(pe.getNom(), c.getNom());
-		ExportaHorari.exportaHoraris(horaris, true);
+		horari.exportaHoraris(horaris, true);
 	}
 
 	private static void provaGrup() throws Exception {
@@ -177,14 +228,14 @@ public class DriverProvadorExports {
 		franja.put(0, null);
 		a.setHoresAptes(franja, true, false);
 		a.setSolapament(b, true);
-		ExportaGrup.exportaGrup(g, true);
+		grup.exportaGrup(g, true);
 	}
 
 	private static void provaData() throws Exception {
 		Data d = new Data(0, 0);
 		d.setDia(3);
 		d.setHora(8);
-		ExportaData.exportaData(d, true);
+		data.exportaData(d, true);
 	}
 	
 	private static void provaAssignatura() throws Exception {
@@ -202,7 +253,7 @@ public class DriverProvadorExports {
 		franja.put(0, null);
 		a.setHoresAptes(franja, true, false);
 		a.setSolapament(b, true);
-		ExportaAssignatura.exportaAssignatura(a, true);
+		assignatura.exportaAssignatura(a, true);
 	}
 	
 	private static void provaAula() throws Exception {
@@ -215,7 +266,7 @@ public class DriverProvadorExports {
 		a.setNom("A5103");
 		a.afegirEquip("pcs");
 		a.afegirEquip("projector");
-		ExportaAula.exportaAula(a, true);
+		aula.exportaAula(a, true);
 	}
 	
 	private static void provaCampus() throws Exception {
@@ -224,7 +275,7 @@ public class DriverProvadorExports {
 		c.setNom("campus sud");
 		c.setAutor("El Meu Penis");
 		c.altaAula("A6103", 20);
-		ExportaCampus.exportaCampus(c, true);
+		campus.exportaCampus(c, true);
 	}
 	
 	private static void provaPlaEstudis() throws Exception {
@@ -236,6 +287,6 @@ public class DriverProvadorExports {
 		p.setAutor("El Meu Penis");
 		p.setLectiu(0, new int[] {5, 16});
 		p.setRangDia(new int[] {5, 10, 13, 16});
-		ExportaPlaEstudis.exportaPlaEstudis(p, true);
+		plaEstudis.exportaPlaEstudis(p, true);
 	}
 }
