@@ -64,6 +64,13 @@ public class Horari {
 	////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////  INSTANCIADORA  //////////////////////////////////
 	/**
+	 * Constructora de la classe Horari.
+	 */
+	private Horari() {
+		this.HorarisCandidats = new HashMap<>();
+	}
+	
+	/**
 	 * Controla que només hi hagia una instancia concurrantment.
 	 * @return La instancia d'horari.
 	 */
@@ -142,7 +149,6 @@ public class Horari {
 		if(plaEstudis == null) return 170;
 		else if(campus == null) return 171;
 		
-		if(HorarisCandidats == null) HorarisCandidats = new HashMap<>();
 		if(!HorarisCandidats.containsKey(plaEstudis.getNom())) HorarisCandidats.put(plaEstudis.getNom(), new HashMap<>());
 		if(!HorarisCandidats.get(plaEstudis.getNom()).containsKey(campus.getNom()))
 			HorarisCandidats.get(plaEstudis.getNom()).put(campus.getNom(), new HashSet<Estructura>());
