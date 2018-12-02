@@ -44,8 +44,8 @@ public class DriverHorari {
 		f.add("S_ALIGN"); //Alinear sessions
 		
 		int n =  2;
-		Horari.GENERADOR(pe, c, f, n, true);
-		for(Estructura struct : Horari.getHoraris(pe.getNom(), c.getNom()))
+		Horari.getInstance().GENERADOR(pe, c, f, n, true);
+		for(Estructura struct : Horari.getInstance().getHoraris(pe.getNom(), c.getNom()))
 			Estructura.printHorari(struct);
 		
 		System.out.println("Madre mia willy compañero ha funcionat");
