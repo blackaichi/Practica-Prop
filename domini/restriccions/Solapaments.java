@@ -180,6 +180,15 @@ public class Solapaments {
 	}
 	
 	/**
+	 * Esborra el registre de solapaments restringits en aquesta instancia.
+	 * Donant lloc a que cap restricció anterior a la seva crida estigui ja 
+	 * restringida.
+	 */
+	public void reset() {
+		this.disjuntes.clear();
+	}
+	
+	/**
 	 * Esborra TOTES les restriccions referents al grup/subgrup identificats per
 	 * numero dins de l'assignatura identificada per assig.
 	 * @param assig
