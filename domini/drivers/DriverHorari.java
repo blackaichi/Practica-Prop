@@ -38,11 +38,10 @@ public class DriverHorari {
 		c.altaAula("A4201", 60);
 		
 		HashSet<String> f = new HashSet<>();
-		f.add("ALINEAMENT");
-		f.add("HORES_APTES");
-		f.add("SOLAPAMENTS");
-		f.add("H_LECTIU");
-		f.add("D_LECTIU");
+		f.add("D_LECTIU"); f.add("H_LECTIU"); //respectar horari lectiu del pla d'estudis
+		f.add("G_HAPTES"); f.add("ASSIG_HAPTES"); //respectar hores aptes
+		f.add("G_SOLAP"); f.add("ASSIG_SOLAP"); //respecta solapaments
+		f.add("S_ALIGN"); //Alinear sessions
 		
 		int n =  2;
 		Horari.GENERADOR(pe, c, f, n, true);
