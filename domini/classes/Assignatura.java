@@ -143,7 +143,7 @@ public class Assignatura {
 	 * Retorna la sessioG = Tipus + Hores de l'Assignatura.
 	 * @return SessioG de l'Assignatura.
 	 */
-	public SessioGrup getSessioG(String tipus, int hores) throws Exception {
+	public SessioGrup getSessioG(String tipus, int hores) {
 		for(SessioGrup s: sessionsG)
 			if (s.getHores() == hores && s.getTipus().equals(tipus) && s.getAssignatura().getNom().equals(this.nom) && s.getAssignatura().getPlaEstudis().getNom().equals(this.getPlaEstudis().getNom())) return s;
 		return null;
@@ -153,7 +153,7 @@ public class Assignatura {
 	 * Retorna totes les sessionsG de l'assignatura.
 	 * @return SessioG de l'Assignatura.
 	 */
-	public HashSet<SessioGrup> getSessionsG() throws Exception {
+	public HashSet<SessioGrup> getSessionsG() {
 		return this.sessionsG;
 	}
 	
@@ -161,7 +161,7 @@ public class Assignatura {
 	 * Retorna totes les sessionsSG de l'assignatura.
 	 * @return SessioSG de l'Assignatura.
 	 */
-	public HashSet<SessioSubGrup> getSessionsSG() throws Exception {
+	public HashSet<SessioSubGrup> getSessionsSG() {
 		return this.sessionsSG;
 	}
 	

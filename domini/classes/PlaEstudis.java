@@ -138,8 +138,10 @@ public class PlaEstudis {
 		return 0;
 	}
 	
-	public void setLectiu(Map<Integer, boolean[]> lectiu) {
+	public int setLectiu(Map<Integer, boolean[]> lectiu) {
+		if(lectiu == null) return -1; // TODO
 		this.lectiu = lectiu;
+		return 0;
 	}
 	
 	/**
@@ -186,7 +188,7 @@ public class PlaEstudis {
 	 * @param rang: rang que volem assignar.
 	 * @return Excepció codificada en forma d'enter.
 	 */
-	public int setRangDia(int[] rang) throws Exception {
+	public int setRangDia(int[] rang) {
 		if(rang == null || rang.length != 4) return 16;
 		this.rangDia = rang;
 		return 0;
