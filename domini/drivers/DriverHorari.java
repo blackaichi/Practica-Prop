@@ -17,7 +17,7 @@ public class DriverHorari {
 		PlaEstudis pe = PlaEstudis.getPlaEstudis("fib");
 		boolean[] franja = new boolean[24];
 		for(int i = 0; i < 24; i++) franja[i] = true;
-		pe.setFranja(0, franja);
+		pe.setLectiu(0, franja);
 		
 		pe.altaAssignatura("prop"); 
 		pe.getAssignatura("prop").altaSessioG("teo", 2);
@@ -38,9 +38,11 @@ public class DriverHorari {
 		c.altaAula("A4201", 60);
 		
 		HashSet<String> f = new HashSet<>();
-		//f.add("ALINEAMENT");
+		f.add("ALINEAMENT");
 		f.add("HORES_APTES");
 		f.add("SOLAPAMENTS");
+		f.add("H_LECTIU");
+		f.add("D_LECTIU");
 		
 		int n =  2;
 		Horari.GENERADOR(pe, c, f, n, true);
