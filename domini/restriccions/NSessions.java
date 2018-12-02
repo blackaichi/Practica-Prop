@@ -23,10 +23,14 @@ public class NSessions {
 	 * @param dia Indica el dia en el qual s'ha de fer la cerca.
 	 * @param assig Identifica l'assignatura.
 	 * @param numero Identifica al grup o subgrup.
-	 * @return Un booleà a true, si ja hi ha una sessio per grup i assignatura; false altrament.
+	 * @return Un enter != 0, si ja hi ha una sessio per grup i assignatura; 0 altrament.
 	 */
-	static private boolean checkIfSessioColocada(Estructura horari, int dia, Assignatura assig, int numero) {
-		return horari.containsSessio(assig.getNom(), numero, dia);
+	static private int checkIfSessioColocada(Estructura horari, int dia, Assignatura assig, int numero) {
+		if(horari == null) return 230;
+		else if(assig == null) return 231;
+		
+		if(horari.containsSessio(assig.getNom(), numero, dia)) return 233;
+		else return 0;
 	}
 	
 	/**
@@ -34,9 +38,13 @@ public class NSessions {
 	 * @param sessio Referencia a la sessió a checkejar.
 	 * @param horari Referencia a l'horaria sobre el qual fer la comporvació.
 	 * @param dia Dia en qual s'esta checkejant.
-	 * @return Un booleà.
+	 * @return Excepció codificada en forma d'enter.
 	 */
-	static private boolean checkNSessions(Estructura horari, Sessio sessio, int dia) {
-		return true;
+	static private int checkNSessions(Estructura horari, Sessio sessio, int dia) {
+		if(!horari.getFlagState("S_NSESSIONS")) return 0;
+		
+		if(horari == null) return 230;
+		else if(sessio == null) return 232;
+		else return 0;
 	}
 }

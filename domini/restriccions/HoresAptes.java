@@ -35,8 +35,8 @@ public class HoresAptes {
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	private int linker(Assignatura assig, Grup grup, SubGrup subGrup) {
-		if(assig == null && grup == null && subGrup == null) return -1; //TODO: S'ha d'assignar a un grup o subgup.
-		else if(assig != null && grup != null && subGrup != null) return -1; //TODO: Només es pot assignar un d'ambdos.
+		if(assig == null && grup == null && subGrup == null) return 216;
+		else if(assig != null && grup != null && subGrup != null) return 217;
 		else if(assig != null) this.plaEstudis = assig.getPlaEstudis();
 		else if(grup != null) this.plaEstudis = grup.getAssignatura().getPlaEstudis();
 		else this.plaEstudis = subGrup.getGrup().getAssignatura().getPlaEstudis();
@@ -127,7 +127,7 @@ public class HoresAptes {
 		if(this.plaEstudis == null) return 211;
 		
 		for(int dia = 0; dia < 7; dia++)
-			this.mascara = clone(this.plaEstudis.getFranjaSetmana());
+			this.mascara = clone(this.plaEstudis.getLectiuSetmana());
 		
 		if(cascade) this.horesDisponibles = clone(mascara); //inicialment son iguals;
 		return 0;
@@ -235,15 +235,15 @@ public class HoresAptes {
 	 * @param horaIni Indica l'hora.
 	 * @return Excepció codificada en forma d'enter.
 	 */
-	static public int checkHoresAptes(SessioGAssignada sessioG, SessioSGAssignada sessioSG, int dia, int hora) {
-		if(sessioG == null && sessioSG == null) return -1; //TODO: no s'ha assignat cap sessio per comprovar.
+	static public int checkHoresAptes(SessioGAssignada sessioG, SessioSGAssignada sessioSG, int dia, int hora, HashSet<String> flags) {
+		if(sessioG == null && sessioSG == null) return 218;
 		
 		//Obtenció de la durada de la sessió:
 		int durada = sessioG != null? sessioG.getSessioGrup().getHores() :
 									  sessioSG.getSessioSubGrup().getHores();
 		//Obtenció de les hores lectives del pla d'estudis per al dia indicat:
-		boolean[] lectiu = sessioG != null? sessioG.getGrup().getAssignatura().getPlaEstudis().getFranjaDia(dia) :
-											sessioSG.getSessioSubGrup().getAssignatura().getPlaEstudis().getFranjaDia(dia);
+		boolean[] lectiu = sessioG != null? sessioG.getGrup().getAssignatura().getPlaEstudis().getLectiuDia(dia) :
+											sessioSG.getSessioSubGrup().getAssignatura().getPlaEstudis().getLectiuDia(dia);
 		//Obtenció de les restriccions d'hores aptes del grup/subgrup de la sessio:
 		HoresAptes fromSessio = sessioG != null? sessioG.getGrup().getRestriccioHoresAptes() :
 												 sessioSG.getSubGrup().getRestriccioHoresAptes();
@@ -252,12 +252,14 @@ public class HoresAptes {
 												sessioSG.getSessioSubGrup().getAssignatura().getHoresAptes();
 		
 		for(int incr = 0; incr < durada; incr++) {
-			if(lectiu == null || (hora+incr < lectiu.length && !lectiu[hora+incr])) return -1; //TODO: El pla d'estudis no contempla aquesta hora com lectiva.
-			else if(sessioG != null && !sessioG.getGrup().enRang(hora+incr)) return -1; //TODO: La franja horaria del grup no admet aquesta hora.
-			else if(sessioSG != null && !sessioSG.getSubGrup().enRang(hora+incr)) return -1; //TODO: La franja horaria del subgrup no admet aquesta hora.
-			
-			if(fromSessio.checkPotFerClasse(dia, hora+incr) != 0) return -1; //TODO: El grup o subgrup de la sessio té denegada aquesta hora.
-			else if(fromAssig.checkPotFerClasse(dia, hora+incr) != 0) return -1; //TODO: L'assignatura de la sessio té denegada aquesta hora.
+			if(lectiu == null || (hora+incr < lectiu.length && !lectiu[hora+incr])) return 219;
+			else if(flags.contains("G_FRANJA")) {
+				if(sessioG != null && !sessioG.getGrup().enRang(hora+incr)) return 280;
+				else if(sessioSG != null && !sessioSG.getSubGrup().enRang(hora+incr)) return 281;
+			}
+				
+			if(flags.contains("G_HAPTES") && fromSessio.checkPotFerClasse(dia, hora+incr) != 0) return 282;
+			else if(flags.contains("ASSIG_HAPTES") && fromAssig.checkPotFerClasse(dia, hora+incr) != 0) return 283;
 		}
 		
 		return 0;

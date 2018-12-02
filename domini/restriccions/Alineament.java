@@ -17,13 +17,14 @@ public class Alineament {
 	 * @param hora Indica l'hora que es vol comprovar.
 	 * @return Excepció codificada en forma d'enter.
 	 */
-	static public int checkAlineament(SessioGAssignada sessioG, SessioSGAssignada sessioSG, int hora) {
-		if(sessioG == null && sessioSG == null) return -1; //TODO: no s'ha assignat cap sessio per comprovar.
+	static public int checkAlineament(SessioGAssignada sessioG, SessioSGAssignada sessioSG, int hora, HashSet<String> flags) {
+		if(!flags.contains("S_ALIGN")) return 0; //Si el flag d'alineament no està activat s'obvia.
+		else if(sessioG == null && sessioSG == null) return 270;
 		
 		//Obtenció de la durada en hores de la sessió:
 		int durada = sessioG != null? sessioG.getSessioGrup().getHores() : 
 									  sessioSG.getSessioSubGrup().getHores();
 		
-		return hora%durada == 0? 0 : -1; //TODO: L'hora no respecta l'alineament de la sessio.
+		return hora%durada == 0? 0 : 271;
 	}
 }

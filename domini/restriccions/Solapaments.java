@@ -78,8 +78,8 @@ public class Solapaments {
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	private int linker(Assignatura assig, Grup grup, SubGrup subGrup) {
-		if(assig == null && grup == null && subGrup == null) return -1; //TODO: S'ha d'assignar a un grup o subgup.
-		else if(assig != null && grup != null && subGrup != null) return -1; //TODO: Només es pot assignar un d'ambdos.
+		if(assig == null && grup == null && subGrup == null) return 194;
+		else if(assig != null && grup != null && subGrup != null) return 195;
 		else if(assig != null) {
 			this.plaEstudis = assig.getPlaEstudis();
 			this.assignatura = assig.getNom();
@@ -109,9 +109,9 @@ public class Solapaments {
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	public int setSolapament(String assig, int numero, boolean permet) {
-		if(assig == null) return -1; //En nom de l'assignatura no pot ser null.
+		if(assig == null) return 196;
 		
-		if(!this.plaEstudis.checkAssignatura(assig)) return -1; //TODO: l'assignatura no existeix.
+		if(!this.plaEstudis.checkAssignatura(assig)) return 197;
 		else if(!this.disjuntes.containsKey(assig)) this.disjuntes.put(assig, new HashSet<Integer>()); //Si l'assignatura no existeix al map, se l'afegeix:
 		//numero == 0 representa TOTS els grups de l'assignatura; basicament impedeix el solapament amb l'assignatura.
 		else if(numero != 0 && !this.plaEstudis.getAssignatura(assig).checkGrup(numero)) { //si numero no es id d'un grup de l'assignatura:
@@ -119,7 +119,7 @@ public class Solapaments {
 			for(Grup grup : this.plaEstudis.getAssignatura(assig).getGrups())
 				checker = checker || grup.checkSubGrup(numero);
 			//si numero no es id de cap subGrup d'entre tots els grups de l'assignatura:
-			if(!checker) return -1; //TODO: el numero de grup/subgrup no existeix a l'assignatura.
+			if(!checker) return 198;
 		}
 		
 		//Afegir un element que ja conté es com no fer res; al igual que eliminar-ne un que no hi es:
@@ -145,7 +145,7 @@ public class Solapaments {
 	public int actualitzaAssigatura(String oldAssig, String newAssig) {
 		for(Solapaments solapament : Solapaments.get(this.plaEstudis.getNom())) {
 			if(!solapament.disjuntes.keySet().contains(oldAssig)) return 0;
-			else if(solapament.disjuntes.keySet().contains(newAssig)) return -1; //El nou nom per l'assignatura ja existeix.
+			else if(solapament.disjuntes.keySet().contains(newAssig)) return 199;
 			
 			HashSet<Integer> contenidor = new HashSet<>(); //AddAll:
 			for(int numero : solapament.disjuntes.get(oldAssig)) contenidor.add(numero);
@@ -170,7 +170,7 @@ public class Solapaments {
 		for(Solapaments solapament : Solapaments.get(this.plaEstudis.getNom())) {
 			if(!solapament.disjuntes.keySet().contains(assig)) return 0;
 			else if(!solapament.disjuntes.get(assig).contains(oldNumero)) return 0;
-			else if(solapament.disjuntes.get(assig).contains(newNumero)) return -1; //El nou numero ja existeix a l'assignatura.
+			else if(solapament.disjuntes.get(assig).contains(newNumero)) return 204;
 			
 			solapament.disjuntes.get(assig).removeIf(item -> item.intValue() == oldNumero);
 			solapament.disjuntes.get(assig).add(newNumero);
@@ -222,8 +222,8 @@ public class Solapaments {
 	 * @return Excepció codificada en forma d'enter.
 	 */
 	static public int checkSolapament(Estructura horari, SessioGAssignada sessioG, SessioSGAssignada sessioSG, int dia, int hora) {
-		if(horari == null) return -1; //TODO: l'horari no pot ser null;
-		else if(sessioG == null && sessioSG == null) return -1; //TODO: no s'ha assignat cap sessio per comprovar.
+		if(horari == null) return 205;
+		else if(sessioG == null && sessioSG == null) return 206;
 		
 		//Obtencio de les restriccions de solapament del grup/subgrup pertinent a la sessio:
 		Solapaments fromSessio = sessioG != null? sessioG.getGrup().getSolapaments() : 
@@ -240,8 +240,8 @@ public class Solapaments {
 			String assignatura = !segment.getSessio().fnull()? segment.getSessio().first.getGrup().getAssignatura().getNom() :
 															   segment.getSessio().second.getSubGrup().getGrup().getAssignatura().getNom();
 			//Comprovació dels solapaments:
-			if(fromSessio.checkPotSolapar(assignatura, numero) != 0) return -1;  //TODO: La sessió té denegat el solapament amb algun dels grups i/o subgrups vigents en aquesta data i hora.
-			else if(fromAssig.checkPotSolapar(assignatura, 0) != 0) return -1;  //TODO: La sessió té denegat el solapament amb alguna de les assignatures vigents en aquesta data i hora.
+			if(horari.getFlagState("G_SOLAP") && fromSessio.checkPotSolapar(assignatura, numero) != 0) return 207;
+			else if(horari.getFlagState("ASSIG_SOLAP") && fromAssig.checkPotSolapar(assignatura, 0) != 0) return 208;
 		}
 		
 		return 0;
