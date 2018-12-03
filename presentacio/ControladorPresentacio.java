@@ -1,6 +1,7 @@
 package presentacio;
 
 import java.util.HashSet;
+
 import java.util.Map;
 
 import domini.ControladorDomini;
@@ -8,11 +9,8 @@ import domini.classes.*;
 import domini.restriccions.HoresAptes;
 import domini.restriccions.Solapaments;
 import persistencia.ControladorPersistencia;
-import persistencia.exports.*;
-import persistencia.imports.*;
 import utils.Estructura;
-import utils.ExceptionManager;
-import vistes.Main;
+import presentacio.vistes.*;
 
 /**
  * 
@@ -229,7 +227,7 @@ public class ControladorPresentacio {
 	}
 	
 	public void exportaSessioSGAssignada(SessioSGAssignada ssga) {
-		String s = ControladorPersistencia.getInstance().exportaSGAssignada(ssga);
+		String s = ControladorPersistencia.getInstance().exportaSessioSGAssignada(ssga);
 		if(s != null) Main.showWarning("Error exportar SessioSGAssignada",s);
 	}
 	
@@ -238,13 +236,13 @@ public class ControladorPresentacio {
 		if(s != null) Main.showWarning("Error exportar SessioSubGrup",s);
 	}
 	
-	public void exportaSessioSubGrup(SubGrup sg) {
-		String s = ControladorPersistencia.getInstance().exportaSessioSubGrup(sg);
+	public void exportaSubGrup(SubGrup sg) {
+		String s = ControladorPersistencia.getInstance().exportaSubGrup(sg);
 		if(s != null) Main.showWarning("Error exportar SessioSubGrup",s);
 	}
 	
-	public void exportaSolapaments(Solapaments s) {
-		String s = ControladorPersistencia.getInstance().exportaSolapaments(s);
+	public void exportaSolapaments(Solapaments sol) {
+		String s = ControladorPersistencia.getInstance().exportaSolapaments(sol);
 		if(s != null) Main.showWarning("Error exportar Solapaments",s);
 	}
 	
@@ -256,67 +254,67 @@ public class ControladorPresentacio {
 		if(s != null) Main.showWarning("Error importar Assignatura",s);
 	}
 	
-	public String importaAula(String path, Campus c) {
+	public void importaAula(String path, Campus c) {
 		String s = ControladorPersistencia.getInstance().importaAula(path,c);
 		if(s != null) Main.showWarning("Error importar Aula",s);
 	}
 	
-	public String importaCampus(String path) {
+	public void importaCampus(String path) {
 		String s = ControladorPersistencia.getInstance().importaCampus(path);
 		if(s != null) Main.showWarning("Error importar Campus",s);	
 	}
 	
-	public String importaData(String path) {
+	public void importaData(String path) {
 		String s = ControladorPersistencia.getInstance().importaData(path);
 		if(s != null) Main.showWarning("Error importar Data",s);
 	}
 	
-	public String importaGrup(String path, PlaEstudis pe, Assignatura a) {
+	public void importaGrup(String path, PlaEstudis pe, Assignatura a) {
 		String s = ControladorPersistencia.getInstance().importaGrup(path,pe,a);
 		if(s != null) Main.showWarning("Error importar Grup",s);
 	}
 	
-	public String importaHorari(String path, PlaEstudis pe, Campus c) {
+	public void importaHorari(String path, PlaEstudis pe, Campus c) {
 		String s = ControladorPersistencia.getInstance().importaHorari(path,pe,c);
 		if(s != null) Main.showWarning("Error importar Horari",s);
 	}
 	
-	public String importaHoresAptes(String path, PlaEstudis pe) {
+	public void importaHoresAptes(String path, PlaEstudis pe) {
 		String s = ControladorPersistencia.getInstance().importaHoresAptes(path,pe);
 		if(s != null) Main.showWarning("Error importar HoresAptes",s);
 	}
 	
-	public String importaPlaEstudis(String path) {
+	public void importaPlaEstudis(String path) {
 		String s = ControladorPersistencia.getInstance().importaPlaEstudis(path);
 		if(s != null) Main.showWarning("Error importar PlaEstudis",s);
 	}
 	
-	public String importaSessioGAssignada(String path, PlaEstudis pe, Assignatura a, Grup g) {
+	public void importaSessioGAssignada(String path, PlaEstudis pe, Assignatura a, Grup g) {
 		String s = ControladorPersistencia.getInstance().importaSessioGAssignada(path,pe,a,g);
 		if(s != null) Main.showWarning("Error importar SessioGAssignada",s);
 	}
 	
-	public String importaSessioGrup(String path, PlaEstudis pe, Assignatura a) {
+	public void importaSessioGrup(String path, PlaEstudis pe, Assignatura a) {
 		String s = ControladorPersistencia.getInstance().importaSessioGrup(path,pe,a);
 		if(s != null) Main.showWarning("Error importar SessioGrup",s);
 	}
 	
-	public String importaSessioSGAssignada(String path, PlaEstudis pe, Assignatura a, Grup g, SubGrup sg) {
+	public void importaSessioSGAssignada(String path, PlaEstudis pe, Assignatura a, Grup g, SubGrup sg) {
 		String s = ControladorPersistencia.getInstance().importaSessioSGAssignada(path,pe,a,g,sg);
 		if(s != null) Main.showWarning("Error importar SessioSGAssignada",s);
 	}
 	
-	public String importaSessioSubGrup(String path, PlaEstudis pe, Assignatura a) {
+	public void importaSessioSubGrup(String path, PlaEstudis pe, Assignatura a) {
 		String s = ControladorPersistencia.getInstance().importaSessioSubGrup(path,pe,a);
 		if(s != null) Main.showWarning("Error importar SessioSubGrup",s);
 	}
 	
-	public String importaSubGrup(String path, PlaEstudis pe, Assignatura a, Grup g) {
+	public void importaSubGrup(String path, PlaEstudis pe, Assignatura a, Grup g) {
 		String s = ControladorPersistencia.getInstance().importaSubGrup(path,pe,a,g);
 		if(s != null) Main.showWarning("Error importar SubGrup",s);
 	}
 	
-	public String importaSolapaments(String path, PlaEstudis pe, Assignatura a, Grup g, SubGrup sg) {
+	public void importaSolapaments(String path, PlaEstudis pe, Assignatura a, Grup g, SubGrup sg) {
 		String s = ControladorPersistencia.getInstance().importaSolapaments(path,pe,a,g,sg);
 		if(s != null) Main.showWarning("Error importar Solapaments",s);
 	}
