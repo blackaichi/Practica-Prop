@@ -9,6 +9,12 @@ import persistencia.exports.*;
 import persistencia.imports.*;
 import utils.*;
 
+/**
+ * 
+ * @author eric.casanovas@est.fib.upc.edu
+ *
+ */
+
 public final class ControladorPersistencia {
 	
 	/**
@@ -19,7 +25,7 @@ public final class ControladorPersistencia {
 	/**
 	 * Instància del controlador del domini
 	 */
-	private ControladorDomini cd = ControladorDomini.getInstancia();
+	private ControladorDomini cd = ControladorDomini.getInstance();
 	
 	/**
 	 * Retorna l'única instancia de la classe
