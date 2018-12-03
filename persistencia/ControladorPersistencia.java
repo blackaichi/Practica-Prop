@@ -1,8 +1,6 @@
 package persistencia;
 
 import java.util.*;
-
-import domini.*;
 import domini.classes.*;
 import domini.restriccions.*;
 import persistencia.exports.*;
@@ -11,27 +9,12 @@ import utils.*;
 
 public final class ControladorPersistencia {
 	
-	/**
-	 * Instancia de la propia classe seguint el patró de disseny singleton
-	 */
-	ControladorPersistencia cp = new ControladorPersistencia();
+	private static ControladorPersistencia cp = new ControladorPersistencia();
 	
-	/**
-	 * Creadora buida
-	 */
-	ControladorDomini cd = ControladorDomini.getInstancia();
-	
-	/**
-	 * Retorna l'única instancia de la classe
-	 * @return una instancia de la classe 
-	 */
-	public ControladorPersistencia getInstancia() {
+	public static ControladorPersistencia getInstance() {
 		return cp;
 	}
 	
-	/**
-	 * String que conté l'error en cas d'haver
-	 */
 	private String error;
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -434,5 +417,5 @@ public final class ControladorPersistencia {
 	public String importaSolapaments(String path, PlaEstudis pe, Assignatura a, Grup g, SubGrup sg) {
 		ImportaSolapaments is = ImportaSolapaments.getInstancia();
 		return is.importaSolapaments(path, pe, a, g, sg);
-	}
+}
 }
