@@ -11,7 +11,13 @@ import utils.*;
  *
  */
 public final class ControladorDomini {
-
+	
+	private static ControladorDomini cd = new ControladorDomini();
+	private ControladorDomini() {}
+	public static ControladorDomini getInstance() {
+		return cd;
+	}
+	
 	static public HashSet<String> campusPresents(){
 		return Campus.getKeys();
 	}
@@ -399,5 +405,5 @@ public final class ControladorDomini {
 		}
 		
 		return null;
-	}
+}
 }
