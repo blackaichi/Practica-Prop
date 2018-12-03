@@ -12,21 +12,28 @@ import utils.*;
  */
 public final class ControladorDomini {
 	
-	private static ControladorDomini cd = new ControladorDomini();
-	private ControladorDomini() {}
+	////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////  INSTANCIA  /////////////////////////////////////
+	
+	private static ControladorDomini current;
+	
 	public static ControladorDomini getInstance() {
-		return cd;
+		if(current != null) current = new ControladorDomini();
+		return current;
 	}
 	
-	static public HashSet<String> campusPresents(){
+	////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////  ACCIONS  /////////////////////////////////////
+	
+	public HashSet<String> campusPresents(){
 		return Campus.getKeys();
 	}
 	
-	static public HashSet<String> plansEstudisPresents(){
+	public HashSet<String> plansEstudisPresents(){
 		return PlaEstudis.getKeys();
 	}
 	
-	static public String CrearCampus(String campus) {
+	public String CrearCampus(String campus) {
 		try {
 			Campus.newCampus(campus);
 			
@@ -37,12 +44,12 @@ public final class ControladorDomini {
 		return null;
 	}
 	
-	static public String EliminarCampus(String campus) {
+	public String EliminarCampus(String campus) {
 		Campus.eliminarCampus(campus);
 		return null;
 	}
 	
-	static public String ModificarCampus(String campus, String nom, String autor) {
+	public String ModificarCampus(String campus, String nom, String autor) {
 		try {
 			Campus toUpdate = Campus.getCampus(campus);
 			
@@ -59,7 +66,7 @@ public final class ControladorDomini {
 		
 	}
 	
-	static public String CrearAula(String campus, String aula, int capacitat) {
+	public String CrearAula(String campus, String aula, int capacitat) {
 		try {			
 			Campus.getCampus(campus).altaAula(aula, capacitat);
 		}
@@ -70,13 +77,13 @@ public final class ControladorDomini {
 		return null;
 	}
 	
-	static public String EliminarAula(String campus, String aula) {
+	public String EliminarAula(String campus, String aula) {
 		if(Campus.getCampus(campus) == null) return "El campus no existeix";
 		Campus.getCampus(campus).baixaAula(aula);
 		return null;
 	}
 	
-	static public String ModificarAula(String campus, String aula, String nom, int capacitat) {
+	public String ModificarAula(String campus, String aula, String nom, int capacitat) {
 		try {
 			Aula toUpdate = Campus.getCampus(campus).getAula(aula);
 			
@@ -93,7 +100,7 @@ public final class ControladorDomini {
 		
 	}
 	
-	static public String CrearPlaEstudis(String plaEstudis) {
+	public String CrearPlaEstudis(String plaEstudis) {
 		try {
 			PlaEstudis.newPlaEstudis(plaEstudis);
 			
@@ -104,12 +111,12 @@ public final class ControladorDomini {
 		return null;
 	}
 	
-	static public String EliminaPlaEstudis(String plaEstudis) {
+	public String EliminaPlaEstudis(String plaEstudis) {
 		PlaEstudis.eliminaPlaEstudis(plaEstudis);
 		return null;
 	}
 	
-	static public String ModificarPlaEstudis(String plaEstudis, String nom, String autor) {
+	public String ModificarPlaEstudis(String plaEstudis, String nom, String autor) {
 		try {
 			PlaEstudis toUpdate = PlaEstudis.getPlaEstudis(plaEstudis);
 			
@@ -126,7 +133,7 @@ public final class ControladorDomini {
 		
 	}
 	
-	static public String CrearAssignatura(String plaEstudis, String assignatura) {
+	public String CrearAssignatura(String plaEstudis, String assignatura) {
 		try {
 			PlaEstudis.getPlaEstudis(plaEstudis).altaAssignatura(assignatura);
 		}
@@ -137,7 +144,7 @@ public final class ControladorDomini {
 		return null;
 	}
 
-	static public String EliminarAssignatura(String plaEstudis, String assignatura) {
+	public String EliminarAssignatura(String plaEstudis, String assignatura) {
 		try {
 			PlaEstudis.getPlaEstudis(plaEstudis).baixaAssignatura(assignatura);
 		}
@@ -148,7 +155,7 @@ public final class ControladorDomini {
 		return null;
 	}
 
-	static public String ModificarAssginatura(String plaEstudis, String assignatura, String nom) {
+	public String ModificarAssginatura(String plaEstudis, String assignatura, String nom) {
 		try {
 			Assignatura toUpdate = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura);
 			
@@ -164,7 +171,7 @@ public final class ControladorDomini {
 		
 	}
 	
-	static public String CrearGrup(String plaEstudis, String assignatura, int grup, int capacitat) {
+	public String CrearGrup(String plaEstudis, String assignatura, int grup, int capacitat) {
 		try {
 			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).altaGrup(grup, capacitat, "MT");
 		}
@@ -175,12 +182,12 @@ public final class ControladorDomini {
 		return null;
 	}
 	
-	static public String EliminarGrup(String plaEstudis, String assignatura, int grup) {
+	public String EliminarGrup(String plaEstudis, String assignatura, int grup) {
 		PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).baixaGrup(grup);
 		return null;
 	}
 	
-	static public String ModificarGrup(String plaEstudis, String assignatura, int grup, int numero, int places, String franja) {
+	public String ModificarGrup(String plaEstudis, String assignatura, int grup, int numero, int places, String franja) {
 		try {
 			Grup toUpdate = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup);
 			
@@ -198,7 +205,7 @@ public final class ControladorDomini {
 		
 	}
 	
-	static public String CrearSubGrup(String plaEstudis, String assignatura, int grup, int subGrup, int places, boolean force) {
+	public String CrearSubGrup(String plaEstudis, String assignatura, int grup, int subGrup, int places, boolean force) {
 		try {
 			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).altaSubGrup(subGrup, places, force);
 		}
@@ -209,12 +216,12 @@ public final class ControladorDomini {
 		return null;
 	}
 	
-	static public String EliminaSubGrup(String plaEstudis, String assignatura, int grup, int subGrup) {
+	public String EliminaSubGrup(String plaEstudis, String assignatura, int grup, int subGrup) {
 		PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).baixaSubGrup(subGrup);
 		return null;
 	}
 	
-	static public String ModificarSubGrup(String plaEstudis, String assignatura, int grup, int subgrup, int numero, int places, boolean incr) {
+	public String ModificarSubGrup(String plaEstudis, String assignatura, int grup, int subgrup, int numero, int places, boolean incr) {
 		try {
 			SubGrup toUpdate = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).getSubGrup(subgrup);
 			
@@ -231,7 +238,7 @@ public final class ControladorDomini {
 		
 	}
 	
-	static public String CrearSessioGrup(String plaEstudis, String assignatura, String tipus, int hores) {
+	public String CrearSessioGrup(String plaEstudis, String assignatura, String tipus, int hores) {
 		try {
 			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).altaSessioG(tipus, hores);
 		}
@@ -242,7 +249,7 @@ public final class ControladorDomini {
 		return null;
 	}
 	
-	static public String EliminaSessioGrup(String plaEstudis, String assignatura, String tipus, int hores) {
+	public String EliminaSessioGrup(String plaEstudis, String assignatura, String tipus, int hores) {
 		try {
 			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).baixaSessioG(tipus, hores);
 		}
@@ -253,7 +260,7 @@ public final class ControladorDomini {
 		return null;
 	}
 
-	static public String ModificarSessioGrup(String plaEstudis, String assignatura, String tipus, int hores, String newTipus, int newHores, int nsessions, HashSet<String> material) {
+	public String ModificarSessioGrup(String plaEstudis, String assignatura, String tipus, int hores, String newTipus, int newHores, int nsessions, HashSet<String> material) {
 		try {
 			SessioGrup toUpdate = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getSessioG(tipus, hores);
 			
@@ -271,7 +278,7 @@ public final class ControladorDomini {
 		return null;
 	}
 	
-	static public String CrearSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores) {
+	public String CrearSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores) {
 		try {
 			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).altaSessioSG(tipus, hores);
 		}
@@ -282,7 +289,7 @@ public final class ControladorDomini {
 		return null;
 	}
 	
-	static public String EliminaSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores) {
+	public String EliminaSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores) {
 		try {
 			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).baixaSessioSG(tipus, hores);
 		}
@@ -293,7 +300,7 @@ public final class ControladorDomini {
 		return null;
 	}
 	
-	static public String ModificarSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores, String newTipus, int newHores, int nsessions, HashSet<String> material) {
+	public String ModificarSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores, String newTipus, int newHores, int nsessions, HashSet<String> material) {
 		try {
 			SessioSubGrup toUpdate = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getSessioSG(tipus, hores);
 			
@@ -311,7 +318,7 @@ public final class ControladorDomini {
 		return null;
 	}
 	
-	static public String AssignaSessioGrup(String plaEstudis, String assignatura, String tipus, int hores, int grup) {
+	public String AssignaSessioGrup(String plaEstudis, String assignatura, String tipus, int hores, int grup) {
 		try {
 			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getSessioG(tipus, hores).assignaSessio(grup);
 		}
@@ -322,7 +329,7 @@ public final class ControladorDomini {
 		return null;
 	}
 
-	static public String DesassignaSessioGrup(String plaEstudis, String assignatura, String tipus, int hores, int grup) {
+	public String DesassignaSessioGrup(String plaEstudis, String assignatura, String tipus, int hores, int grup) {
 		try {
 			SessioGAssignada sessio = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).getSessio(tipus, hores);
 			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getSessioG(tipus, hores).desassignaSessio(sessio);
@@ -334,7 +341,7 @@ public final class ControladorDomini {
 		return null;
 	}
 	
-	static public String AssignaSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores, int grup, int subgrup) {
+	public String AssignaSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores, int grup, int subgrup) {
 		try {
 			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getSessioSG(tipus, hores).assignaSessio(grup, subgrup);
 		}
@@ -345,7 +352,7 @@ public final class ControladorDomini {
 		return null;
 	}
 	
-	static public String DesassignaSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores, int grup, int subgrup) {
+	public String DesassignaSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores, int grup, int subgrup) {
 		try {
 			SessioSGAssignada sessio = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).getSubGrup(subgrup).getSessio(tipus, hores);
 			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getSessioSG(tipus, hores).desassignaSessio(sessio);
@@ -357,7 +364,7 @@ public final class ControladorDomini {
 		return null;
 	}
 	
-	static public String HoresAptes(String plaEstudis, String assignatura, int grup, int subgrup, Map<Integer, int[]> franja, boolean apte, boolean force) {
+	public String HoresAptes(String plaEstudis, String assignatura, int grup, int subgrup, Map<Integer, int[]> franja, boolean apte, boolean force) {
 		try {
 			if(grup == 0 && subgrup == 0)
 				PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).setHoresAptes(franja, apte, force);
@@ -373,7 +380,7 @@ public final class ControladorDomini {
 		return null;
 	}
 
-	static public String SetSolapamentAssig(String plaEstudis, String assignatura, String assigToRegister, boolean permet) {
+	public String SetSolapamentAssig(String plaEstudis, String assignatura, String assigToRegister, boolean permet) {
 		try {
 			Assignatura assig = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assigToRegister);
 			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).setSolapament(assig, permet);
@@ -385,7 +392,7 @@ public final class ControladorDomini {
 		return null;
 	}
 	
-	static public String SetSolapamentGrup(String plaEstudis, String assignatura, int grup, String assigToRegister, int numToRegister, boolean permet) {
+	public String SetSolapamentGrup(String plaEstudis, String assignatura, int grup, String assigToRegister, int numToRegister, boolean permet) {
 		try {
 			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).setSolapament(assigToRegister, numToRegister, permet);
 		}
@@ -396,7 +403,7 @@ public final class ControladorDomini {
 		return null;
 	}
 	
-	static public String SetSolapamentSubGrup(String plaEstudis, String assignatura, int grup, int subgrup, String assigToRegister, int numToRegister, boolean permet) {
+	public String SetSolapamentSubGrup(String plaEstudis, String assignatura, int grup, int subgrup, String assigToRegister, int numToRegister, boolean permet) {
 		try {
 			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).getSubGrup(subgrup).setSolapament(assigToRegister, numToRegister, permet);
 		}
