@@ -116,21 +116,22 @@ public final class ControladorDomini {
 		return null;
 	}
 	
-	public String ModificarPlaEstudis(String plaEstudis, String nom, String autor) {
+	public String ModificarPlaEstudis(String plaEstudis, String nom, String autor, 
+			Map<Integer, boolean[]> lectiu, int[] rangDia) {
 		try {
 			PlaEstudis toUpdate = PlaEstudis.getPlaEstudis(plaEstudis);
 			
 			int checker = 0;
 			if((nom != null && (checker = toUpdate.setNom(nom)) != 0) ||
-			   (autor != null && (checker = toUpdate.setAutor(autor)) != 0))
+			   (autor != null && (checker = toUpdate.setAutor(autor)) != 0) ||
+			   (lectiu != null && (checker = toUpdate.setLectiu(lectiu)) != 0) ||
+			   (rangDia != null && (checker = toUpdate.setRangDia(rangDia)) != 0))
 				return ExceptionManager.getException(checker);
 		}
 		catch(Exception e) {
 			return e.toString();
 		}
-		
 		return null;
-		
 	}
 	
 	public String CrearAssignatura(String plaEstudis, String assignatura) {
@@ -155,7 +156,7 @@ public final class ControladorDomini {
 		return null;
 	}
 
-	public String ModificarAssginatura(String plaEstudis, String assignatura, String nom) {
+	public String ModificarAssignatura(String plaEstudis, String assignatura, String nom) {
 		try {
 			Assignatura toUpdate = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura);
 			
