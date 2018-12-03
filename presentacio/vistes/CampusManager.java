@@ -30,12 +30,10 @@ public class CampusManager {
 	@FXML
 	private void handleButton1Action(ActionEvent event) {
 
-	    if (nom_id.getText() == null || nom_id.getText().trim().isEmpty()) Main.showWarning("Error nou_Campus", "El nom del nou Campus no pot ser null");
-	    if (autor_id.getText() == null || autor_id.getText().trim().isEmpty()) Main.showWarning("Error nou_Campus", "El nom del autor no pot ser null");
+	    if (nom_id.getText() == null || nom_id.getText().trim().isEmpty()) Main.getInstance().showWarning("Error nou_Campus", "El nom del nou Campus no pot ser null");
+	    if (autor_id.getText() == null || autor_id.getText().trim().isEmpty()) Main.getInstance().showWarning("Error nou_Campus", "El nom del autor no pot ser null");
 		System.out.println(nom_id.getText());
 		System.out.println(autor_id.getText());
-
-
 	}
 	
 	/*@FXML
