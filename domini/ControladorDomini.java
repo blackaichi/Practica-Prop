@@ -29,8 +29,26 @@ public final class ControladorDomini {
 		return Campus.getKeys();
 	}
 	
+	public HashSet<String> aulesPresents(String campus){
+		HashSet<Aula> aules = Campus.getCampus(campus).getAllAules();
+		
+		HashSet<String> allAules = new HashSet<>();
+		for(Aula aula: aules) allAules.add(aula.getNom());
+		
+		return allAules;
+	}
+	
 	public HashSet<String> plansEstudisPresents(){
 		return PlaEstudis.getKeys();
+	}
+		
+	public HashSet<String> assignaturesPresents(String plaEstudis){
+		HashSet<Assignatura> assig = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatures();
+		
+		HashSet<String> allAssig = new HashSet<>();
+		for(Assignatura assign: assig) allAssig.add(assign.getNom());
+		
+		return allAssig;
 	}
 	
 	public String CrearCampus(String campus) {
@@ -55,7 +73,7 @@ public final class ControladorDomini {
 			
 			int checker = 0;
 			if((nom != null && (checker = toUpdate.setNom(nom)) != 0) ||
-			   (autor != null && (checker = toUpdate.setAutor(autor)) != 0))
+			   (autor != null && !autor.isEmpty() && (checker = toUpdate.setAutor(autor)) != 0))
 				return ExceptionManager.getException(checker);
 		}
 		catch(Exception e) {
@@ -83,13 +101,14 @@ public final class ControladorDomini {
 		return null;
 	}
 	
-	public String ModificarAula(String campus, String aula, String nom, int capacitat) {
+	public String ModificarAula(String campus, String aula, String nom, int capacitat, HashSet<String> equip) {
 		try {
 			Aula toUpdate = Campus.getCampus(campus).getAula(aula);
 			
 			int checker = 0;
 			if((nom != null && (checker = toUpdate.setNom(nom)) != 0) ||
-			   (capacitat > 0 && (checker = toUpdate.setCapacitat(capacitat)) != 0))
+			   (capacitat > 0 && (checker = toUpdate.setCapacitat(capacitat)) != 0) ||
+			   (equip != null && (checker = toUpdate.setEquip(equip)) != 0))
 				return ExceptionManager.getException(checker);
 		}
 		catch(Exception e) {
@@ -116,14 +135,13 @@ public final class ControladorDomini {
 		return null;
 	}
 	
-	public String ModificarPlaEstudis(String plaEstudis, String nom, String autor, 
-			Map<Integer, boolean[]> lectiu, int[] rangDia) {
+	public String ModificarPlaEstudis(String plaEstudis, String nom, String autor, Map<Integer, boolean[]> lectiu, int[] rangDia) {
 		try {
 			PlaEstudis toUpdate = PlaEstudis.getPlaEstudis(plaEstudis);
 			
 			int checker = 0;
 			if((nom != null && (checker = toUpdate.setNom(nom)) != 0) ||
-			   (autor != null && (checker = toUpdate.setAutor(autor)) != 0) ||
+			   (autor != null && !autor.isEmpty() && (checker = toUpdate.setAutor(autor)) != 0) ||
 			   (lectiu != null && (checker = toUpdate.setLectiu(lectiu)) != 0) ||
 			   (rangDia != null && (checker = toUpdate.setRangDia(rangDia)) != 0))
 				return ExceptionManager.getException(checker);
