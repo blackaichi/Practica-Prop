@@ -47,7 +47,6 @@ public class SessioSGAssignada extends SessioAssignada{
 	 */
 	public int setSubGrup(SubGrup subGrup) {
 		if (subGrup == null) return 112;
-		if (this.subGrup == subGrup) return 1;
 		this.subGrup = subGrup;
 		return 0;
 	}
@@ -59,7 +58,6 @@ public class SessioSGAssignada extends SessioAssignada{
 	 */
 	public int setSessioSubGrup(SessioSubGrup sessioSG) {
 		if (sessioSG == null) return 113;
-		if (sessioSubGrup == sessioSG) return 1;
 		sessioSubGrup = sessioSG;
 		return 0;
 	}

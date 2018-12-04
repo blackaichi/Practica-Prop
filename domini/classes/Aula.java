@@ -56,8 +56,7 @@ public class Aula {
 	public int setCampus(Campus campus) {
 		if(campus == null) return 150; //Campus no pot ser null
 		else if(this.campus != null) { //En cas d'una modificació:
-			if(campus.getNom() == this.campus.getNom()) return 1;
-			else if(campus.checkAula(this.getNom())) return 151; //El campus ja conté una aula amb la mateixa identificació
+			if(campus.checkAula(this.getNom())) return 151; //El campus ja conté una aula amb la mateixa identificació
 		}
 		
 		this.campus = campus;
@@ -72,8 +71,7 @@ public class Aula {
 	public int setNom(String nom) {
 		if(nom == null) return 152; //El nom no pot ser null
 		else if(this.nom != null) { //En cas d'una modificació:
-			if(this.nom.equals(nom)) return 1;
-			else if(this.campus != null && this.campus.checkAula(nom)) return 151; //El campus ja conté una aula amb la mateixa identificació
+			if(this.campus != null && this.campus.checkAula(nom)) return 151; //El campus ja conté una aula amb la mateixa identificació
 		}
 		
 		this.nom = nom;
@@ -87,7 +85,6 @@ public class Aula {
 	 */
 	public int setCapacitat(int capacitat) {
 		if(capacitat <= 0) return 153; //No pot haver capacitat <= 0;
-		else if(this.capacitat == capacitat) return 1;
 		
 		this.capacitat = capacitat;
 		return 0;

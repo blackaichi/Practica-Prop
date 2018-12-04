@@ -118,7 +118,6 @@ public class PlaEstudis {
 	public int setNom(String nom) {
 		if (nom == null || nom.isEmpty()) return 18;
 		else if(this.nom == null) this.nom = nom;
-		else if(this.nom != null && this.nom.equals(nom)) return 1;
 		else if(this.nom == null && plansEstudis.contains(nom)) return 10;
 		
 		this.nom = nom;
@@ -132,7 +131,6 @@ public class PlaEstudis {
 	 */
 	public int setAutor(String autor) {
 		if(autor == null || autor.isEmpty()) return 18;
-		else if(autor.equals(this.autor)) return 1;
 		
 		this.autor = autor;
 		return 0;

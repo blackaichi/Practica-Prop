@@ -122,7 +122,6 @@ public class SubGrup {
 	 */
 	public int setNumero(int numero) {
 		if(numero <= 0) return 50;
-		else if(this.numero == numero) return 1; //En cas de fer un canvi inutil.
 		else if(this.grup.getAssignatura().checkGrup(numero)) return 70;
 		else for(Grup grup: this.grup.getAssignatura().getGrups())
 			if(grup.checkSubGrup(numero)) return 70;
@@ -146,8 +145,7 @@ public class SubGrup {
 	 * @throws Excepció codificada en forma d'enter.
 	 */
 	public int setPlaces(int places, boolean incr){
-		if(this.places == places) return 1; //En cas de fer un canvi inutil.
-		else if(places < 0) return 71;
+		if(places < 0) return 71;
 		else if(grup.getPlaces() - grup.getPlacesAssignades() < places - this.places) {
 			if(incr) this.grup.setPlaces(places - this.places + grup.getPlacesAssignades());
 			else return 72;

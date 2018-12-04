@@ -68,10 +68,21 @@ public class Campus {
 	 */
 	public int setNom(String nom) {
 		if(nom == null) return 130; //El nom del campus no pot ser null.
-		else if(this.nom != null && this.nom.equals(nom)) return 1;
 		else if(checkCampus(nom)) return 131; //Ja existeix un campus amb aquest nom.
 		
 		this.nom = nom;
+		return 0;
+	}
+	
+	/**
+	 * Assigna un autor al pla d'estudis.
+	 * @param autor Indica quin es l'autor del pla d'estudis.
+	 * @return Excepció codificada en forma d'enter.
+	 */
+	public int setAutor(String autor) {
+		if(autor == null || autor.isEmpty()) return 18;
+		
+		this.autor = autor;
 		return 0;
 	}
 	
@@ -91,19 +102,6 @@ public class Campus {
 	 */
 	public String getAutor() {
 		return this.autor;
-	}
-	
-	/**
-	 * Assigna un autor al pla d'estudis.
-	 * @param autor Indica quin es l'autor del pla d'estudis.
-	 * @return Excepció codificada en forma d'enter.
-	 */
-	public int setAutor(String autor) {
-		if(autor == null || autor.isEmpty()) return 18;
-		else if(autor.equals(this.autor)) return 1;
-		
-		this.autor = autor;
-		return 0;
 	}
 	
 	/**

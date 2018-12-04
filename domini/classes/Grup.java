@@ -152,7 +152,6 @@ public class Grup {
 	 */
 	public int setNumero(int numero) {
 		if(numero <= 0) return 50;
-		else if(this.numero == numero) return 1; //En cas de fer un canvi inutil.
 		else if(this.assig.checkGrup(numero)) return 51;
 		else for(Grup grup: assig.getGrups())
 			if(grup.checkSubGrup(numero)) return 51;
@@ -173,7 +172,6 @@ public class Grup {
 	 */
 	public int setPlaces(int places){
 		if(places <= 0) return 52;
-		else if(this.getPlaces() == places) return 1; //En cas d'un canvi inutil.
 		else if(places < this.getPlacesAssignades()) return 53; 
 		
 		this.places = places;
@@ -202,8 +200,7 @@ public class Grup {
 	public int setAssignatura(Assignatura assig) {
 		if(assig == null) return 55;
 		else if(this.getAssignatura() != null) { //En cas d'una modificació:
-			if(this.assig.getNom().equals(assig.getNom())) return 1;
-			else if(assig.checkGrup(this.getNumero())) return 51;
+			if(assig.checkGrup(this.getNumero())) return 51;
 		}
 		
 		this.assig = assig;

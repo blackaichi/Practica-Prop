@@ -47,7 +47,6 @@ public class SessioGAssignada extends SessioAssignada{
 	 */
 	public int setGrup(Grup grup) {
 		if (grup == null) return 110;
-		if (grup == this.grup) return 1;
 		this.grup = grup;
 		return 0;
 	}
@@ -59,7 +58,6 @@ public class SessioGAssignada extends SessioAssignada{
 	 */
 	public int setSessioGrup(SessioGrup sessioG) {
 		if (sessioG == null) return 111;
-		if (sessioGrup == sessioG) return 1;
 		sessioGrup = sessioG;
 		return 0;
 	}
