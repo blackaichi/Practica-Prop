@@ -19,7 +19,7 @@
       </Pane>
       <Pane layoutY="27.0" prefHeight="41.0" prefWidth="400.0">
          <children>
-            <Label id="campus_title" layoutX="13.0" layoutY="11.0" prefHeight="15.0" prefWidth="374.0" text="CAMPUS: nou_campus">
+            <Label id="campus_title" fx:id="title" layoutX="13.0" layoutY="11.0" prefHeight="15.0" prefWidth="374.0" text="CAMPUS: nou_campus">
                <font>
                   <Font size="15.0" />
                </font>
@@ -34,7 +34,7 @@
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <Button id="aula_creador" layoutY="454.0" mnemonicParsing="false" onAction="#onCreateAula" prefHeight="25.0" prefWidth="400.0" text="+ Crear aula" />
-                        <ListView id="list_aules" fx:id="aules" prefHeight="455.0" prefWidth="400.0" />
+                        <ListView id="list_aules" fx:id="aules" onMouseClicked="#update" prefHeight="455.0" prefWidth="400.0" />
                      </children>
                   </AnchorPane>
             </content>

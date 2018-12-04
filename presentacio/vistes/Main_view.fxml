@@ -101,7 +101,7 @@
                      <children>
                         <Button id="campus_creador" layoutY="561.0" mnemonicParsing="false" onAction="#onCreateCampus" prefHeight="25.0" prefWidth="200.0" text="+ Crear campus" />
                         <TextField id="campus_cercador" fx:id="searcher_c" layoutX="6.0" layoutY="8.0" onAction="#onSearchCampus" prefHeight="25.0" prefWidth="189.0" promptText="Cercar per nom o autor" />
-                        <ListView id="list_campus" fx:id="campus" layoutY="38.0" prefHeight="523.0" prefWidth="200.0" />
+                        <ListView id="list_campus" fx:id="campus" layoutY="38.0" onMouseClicked="#update" prefHeight="523.0" prefWidth="200.0" />
                      </children>
                   </AnchorPane>
             </content>
@@ -116,7 +116,7 @@
                      <children>
                         <Button id="plaestudis_creador" layoutY="561.0" mnemonicParsing="false" onAction="#onCreatePlaEstudis" prefHeight="25.0" prefWidth="200.0" text="+ Crear pla d'estudis" />
                         <TextField id="plaestudis_cercador" fx:id="searcher_pl" layoutX="5.0" layoutY="8.0" onAction="#onSearchPlaEstudis" prefHeight="25.0" prefWidth="189.0" promptText="Cercar per nom o autor" />
-                        <ListView id="list_planEstudis" fx:id="plansEstudis" layoutY="38.0" prefHeight="523.0" prefWidth="200.0" />
+                        <ListView id="list_planEstudis" fx:id="plansEstudis" layoutY="38.0" onMouseClicked="#update" prefHeight="523.0" prefWidth="200.0" />
                      </children>
                   </AnchorPane>
                </content>

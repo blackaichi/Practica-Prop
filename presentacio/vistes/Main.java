@@ -15,6 +15,7 @@ import javafx.scene.Parent;
 
 import java.awt.Event;
 import javafx.fxml.*;
+import javafx.util.*;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -25,7 +26,6 @@ import javafx.stage.WindowEvent;
 public class Main extends Application {
 	
 	static private Main current;
-	private String path;
 	
 	@FXML private GridPane horari_container;
 	@FXML private ListView<String> plansEstudis, campus;
@@ -39,21 +39,17 @@ public class Main extends Application {
 		launch(args);
 	}
 	
+	public static Main getInstance() {
+		return Main.current;
+	}
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		current = this;
 		Parent root = FXMLLoader.load(getClass().getResource("Main_view.fxml"));
 		
 		primaryStage.setTitle("Generador d'horaris");
 		primaryStage.setScene(new Scene(root, 1080, 720));
 		primaryStage.show();
-		
-		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-			@Override
-			public void handle(WindowEvent arg0) {
-				//TODO: tancar totes les finestres obertes
-			}
-		});
 	}
 		
 	public void newWindows(String fxml, String title, int x, int y) {
@@ -70,27 +66,34 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
-	
-	private void updateListViews() {		
-		this.campus.getItems().clear();; //Neteja per a no afegir-ne repetits
-		this.campus.getItems().addAll(ControladorPresentacio.getInstance().getAllCampus());
 		
-		this.plansEstudis.getItems().clear(); //Neteja per a no afegir-ne repetits
-		this.plansEstudis.getItems().addAll(ControladorPresentacio.getInstance().getAllPlaEstudis());
-	}
+	////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////  PRIVADES /////////////////////////////////////
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
 	
-	public String getPath() {
-		return this.path;
+	public Main() {
+		Main.current = this;
 	}
-	
+		
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////  FXML ///////////////////////////////////////
 	
 	public void update() {
-		this.updateListViews();
+		this.campus.getItems().clear();
+		this.campus.getItems().addAll(ControladorPresentacio.getInstance().getAllCampus());
+		
+		this.plansEstudis.getItems().clear();
+		this.plansEstudis.getItems().addAll(ControladorPresentacio.getInstance().getAllPlaEstudis());
+	}
+	
+	public void onCampusSelected() {
+		System.out.println(String.valueOf(campus.getSelectionModel().getSelectedItem()));
+	}
+	
+	public void onPlaEstudisSelected() {
+		System.out.println(String.valueOf(plansEstudis.getSelectionModel().getSelectedItem()));
 	}
 	
 	public void showWarning(String title, String message) {
@@ -101,19 +104,6 @@ public class Main extends Application {
 		
 		alert.show();
 	}
-	
-	////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////// INSTANCIADORA /////////////////////////////////////
-	/**
-	 * Retorna la instancia corrent de la classe main.
-	 * @return Un objecte de tipus Main, null o no.
-	 */
-	static public Main getInstance() {
-		return Main.current;
-	}
-	
-	////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////// ON CLICK ACTIONS ////////////////////////////////////
 	
 	@FXML
 	public void onCreateCampus() {
@@ -137,8 +127,7 @@ public class Main extends Application {
 	
 	@FXML
 	public void onGenerarHorari(){
-		this.plansEstudis.getItems().add("PenisEnVinagre");
-		this.showWarning("En construcció", "Per desgracia la funcionalitat encara no està disponnible. Hauras d'esperar a que els nostres programadors facin alguna cosa decent. :-) ");
+		this.update();
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////

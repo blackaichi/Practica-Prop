@@ -30,11 +30,6 @@
       </Pane>
       <Button id="cancelar_aula" layoutX="359.0" layoutY="198.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="110.0" text="Cancel·lar" />
       <Button id="aplicar_aula" layoutX="232.0" layoutY="198.0" mnemonicParsing="false" onAction="#apply" prefHeight="29.0" prefWidth="110.0" text="Aplicar" />
-      <Label id="campus_aula" fx:id="path" layoutX="14.0" layoutY="203.0" prefHeight="19.0" prefWidth="204.0" text="Campus: nom_campus">
-         <font>
-            <Font size="12.0" />
-         </font>
-      </Label>
       <MenuBar id="status_bar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="500.0">
          <menus>
             <Menu mnemonicParsing="false" text="Arxiu">

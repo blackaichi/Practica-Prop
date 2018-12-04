@@ -21,25 +21,63 @@ import javafx.stage.Stage;
 
 public class CampusManager {
 	
+	private static CampusManager current;
+	private static String path;
+	
 	@FXML private TextField nom_id, autor_id;
 	@FXML private ListView<String> aules;
-	////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////  FXML ///////////////////////////////////////
-	
-	@FXML
-	public void onCreateAula() {
-		Main.getInstance().newWindows("Aula_view.fxml", "Aula", 500, 240);
-	}
-	
-	@FXML
-	public void apply() {
-		this.update();
-	}
+	@FXML private Label title;
 	
 	////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////  PRIVADES /////////////////////////////////////
 	
-	private void update() {
-		ControladorPresentacio.getInstance().CrearCampus(nom_id.getText());
+	private static boolean isNew() {
+		return path == null || path.isEmpty();
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
+	
+	public CampusManager() {
+		path = null;
+		CampusManager.current = this;
+	}
+	
+	public static CampusManager getInstance() {
+		return CampusManager.current;
+	}
+	
+	public static void setPath(String path) {
+		CampusManager.path = path;
+	}
+	
+	public static String getPath() {
+		return path;
+	}
+	
+	public void update() {
+		path = nom_id.getText();
+		title.setText("Campus: ".concat(nom_id.getText()));
+		
+		this.aules.getItems().clear();
+		this.aules.getItems().addAll(ControladorPresentacio.getInstance().getAllAules(path));
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////  FXML ///////////////////////////////////////
+	
+	@FXML
+	public void apply() {
+		 //En cas de ser un nou campus:
+		if(isNew()) ControladorPresentacio.getInstance().CrearCampus(nom_id.getText());
+
+		ControladorPresentacio.getInstance().ModificarCampus(isNew()? nom_id.getText() : path, isNew()? null : nom_id.getText(), autor_id.getText());
+		this.update();
+	}
+
+	@FXML
+	public void onCreateAula() {
+		if(isNew()) this.apply();
+		Main.getInstance().newWindows("Aula_view.fxml", "Aula", 500, 240);
 	}
 }
