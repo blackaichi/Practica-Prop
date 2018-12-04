@@ -4,9 +4,8 @@ import java.util.*;
 
 import domini.ControladorDomini;
 import persistencia.ControladorPersistencia;
-
-import utils.Estructura;
 import presentacio.vistes.*;
+import utils.Estructura;
 
 /**
  * 
@@ -32,8 +31,16 @@ public class ControladorPresentacio {
 		return ControladorDomini.getInstance().campusPresents();
 	}
 	
+	public HashSet<String> getAllAules(String campus) {
+		return ControladorDomini.getInstance().aulesPresents(campus);
+	}
+	
 	public HashSet<String> getAllPlaEstudis() {
 		return ControladorDomini.getInstance().plansEstudisPresents();
+	}
+	
+	public HashSet<String> getAllAssignatures(String plaEstudis) {
+		return ControladorDomini.getInstance().assignaturesPresents(plaEstudis);
 	}
 	
 	public void CrearCampus(String campus) {
@@ -60,8 +67,8 @@ public class ControladorPresentacio {
 		if(s != null) Main.getInstance().showWarning("Error eliminar Aula",s);
 	}
 	
-	public void ModificarAula(String campus, String aula, String nom, int capacitat) {
-		String s = ControladorDomini.getInstance().ModificarAula(campus,aula,nom,capacitat);
+	public void ModificarAula(String campus, String aula, String nom, int capacitat, HashSet<String> equip) {
+		String s = ControladorDomini.getInstance().ModificarAula(campus,aula,nom,capacitat, equip);
 		if(s != null) Main.getInstance().showWarning("Error modificar Aula",s);
 	}
 	
