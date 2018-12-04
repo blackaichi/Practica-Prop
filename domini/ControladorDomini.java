@@ -18,7 +18,7 @@ public final class ControladorDomini {
 	private static ControladorDomini current;
 	
 	public static ControladorDomini getInstance() {
-		if(current != null) current = new ControladorDomini();
+		if(current == null) current = new ControladorDomini();
 		return current;
 	}
 	
