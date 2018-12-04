@@ -1,14 +1,10 @@
 package presentacio;
 
-import java.util.HashSet;
-
-import java.util.Map;
+import java.util.*;
 
 import domini.ControladorDomini;
-import domini.classes.*;
-import domini.restriccions.HoresAptes;
-import domini.restriccions.Solapaments;
 import persistencia.ControladorPersistencia;
+
 import utils.Estructura;
 import presentacio.vistes.*;
 
@@ -25,12 +21,20 @@ public class ControladorPresentacio {
 	private static ControladorPresentacio current;
 	
 	public static ControladorPresentacio getInstance() {
-		if(current != null) current = new ControladorPresentacio();
+		if(current == null) current = new ControladorPresentacio();
 		return current;
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////  ACCIONS  ////////////////////////////////////
+	
+	public HashSet<String> getAllCampus() {
+		return ControladorDomini.getInstance().campusPresents();
+	}
+	
+	public HashSet<String> getAllPlaEstudis() {
+		return ControladorDomini.getInstance().plansEstudisPresents();
+	}
 	
 	public void CrearCampus(String campus) {
 		String s = ControladorDomini.getInstance().CrearCampus(campus);

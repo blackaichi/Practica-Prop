@@ -1,7 +1,6 @@
 package presentacio.vistes;
 
-import domini.ControladorDomini;
-	
+import presentacio.ControladorPresentacio;	
 import java.util.*;
 
 import javafx.application.Application;
@@ -26,6 +25,7 @@ import javafx.stage.WindowEvent;
 public class Main extends Application {
 	
 	static private Main current;
+	private String path;
 	
 	@FXML private GridPane horari_container;
 	@FXML private ListView<String> plansEstudis, campus;
@@ -71,11 +71,26 @@ public class Main extends Application {
 		}
 	}
 	
+	private void updateListViews() {		
+		this.campus.getItems().clear();; //Neteja per a no afegir-ne repetits
+		this.campus.getItems().addAll(ControladorPresentacio.getInstance().getAllCampus());
+		
+		this.plansEstudis.getItems().clear(); //Neteja per a no afegir-ne repetits
+		this.plansEstudis.getItems().addAll(ControladorPresentacio.getInstance().getAllPlaEstudis());
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
+	
+	public String getPath() {
+		return this.path;
+	}
+	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////  FXML ///////////////////////////////////////
 	
-	public void updateListViews() {
-		//Carrega tots els noms del campus i els plans d'estudis al listview corresponent
+	public void update() {
+		this.updateListViews();
 	}
 	
 	public void showWarning(String title, String message) {

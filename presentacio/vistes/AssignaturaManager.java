@@ -1,6 +1,6 @@
 package presentacio.vistes;
 
-import domini.ControladorDomini;
+import presentacio.ControladorPresentacio;	
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
