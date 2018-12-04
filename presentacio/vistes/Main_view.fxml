@@ -34,7 +34,7 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="182.0" prefWidth="200.0">
                      <children>
-                        <GridPane id="horari_container" layoutY="67.0" prefHeight="578.0" prefWidth="681.0">
+                        <GridPane id="horari_container" fx:id="horari_container" layoutY="67.0" prefHeight="578.0" prefWidth="681.0">
                           <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -58,11 +58,11 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                         </GridPane>
-                        <Label layoutX="544.0" layoutY="13.0" text="horari 0 de 0" />
+                        <Label fx:id="quants_horaris" layoutX="544.0" layoutY="13.0" text="horari 0 de 0" />
                         <Button id="previoushorari" layoutX="505.0" layoutY="8.0" mnemonicParsing="false" onAction="#showPreviousHorari" text="&lt;" />
                         <Button id="nexthorari" layoutX="638.0" layoutY="8.0" mnemonicParsing="false" onAction="#showNextHorari" text="&gt;" />
-                        <Label id="selected_plaEstudis" fx:id="selected_plaEstudis" layoutX="14.0" layoutY="13.0" text="Pla d'estudis:" />
-                        <Label id="selected_campus" layoutX="14.0" layoutY="33.0" text="Campus:" />
+                        <Label id="selected_plaEstudis" fx:id="selected_pl" layoutX="14.0" layoutY="13.0" text="Pla d'estudis:" />
+                        <Label id="selected_campus" fx:id="selected_c" layoutX="14.0" layoutY="33.0" text="Campus:" />
                      </children></AnchorPane>
                </content>
             </Tab>
@@ -71,19 +71,19 @@
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="14.0" prefHeight="50.0" prefWidth="654.0" text="Aqui es poden configurar els flags d'aquelles restriccions que es vulguin tenir en compte durant la generació dels horaris. Ep! Selecciona només aquelles restriccions que vols processar." wrapText="true" />
-                        <CheckBox id="D_LECTIU" layoutX="14.0" layoutY="82.0" mnemonicParsing="false" selected="true" text="Dies lectius: nomes pot haver classes en els dies lectius del pla d'estudis" />
-                        <CheckBox id="H_LECTIU" layoutX="14.0" layoutY="107.0" mnemonicParsing="false" selected="true" text="Hores lectives: nomes pot haver classe en les hores lectives del pla d'estudis." />
+                        <CheckBox id="D_LECTIU" fx:id="D_LECTIU" layoutX="14.0" layoutY="82.0" mnemonicParsing="false" selected="true" text="Dies lectius: nomes pot haver classes en els dies lectius del pla d'estudis" />
+                        <CheckBox id="H_LECTIU" fx:id="H_LECTIU" layoutX="14.0" layoutY="107.0" mnemonicParsing="false" selected="true" text="Hores lectives: nomes pot haver classe en les hores lectives del pla d'estudis." />
                         <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="64.0" prefHeight="18.0" prefWidth="654.0" text="Restriccions referents al pla d'estudis:" wrapText="true" />
                         <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="147.0" prefHeight="18.0" prefWidth="654.0" text="Restriccions referents a les assignatures:" wrapText="true" />
-                        <CheckBox id="ASSIG_H_APTES" layoutX="14.0" layoutY="190.0" mnemonicParsing="false" selected="true" text="Hores aptes: controla les hores en les quals pot haver classe de l'assignatura." />
-                        <CheckBox id="ASSIG_SOLAP" layoutX="14.0" layoutY="165.0" mnemonicParsing="false" selected="true" text="Solapaments: evitar solapaments entre assignatures." />
-                        <CheckBox id="G_SOLAP" layoutX="14.0" layoutY="249.0" mnemonicParsing="false" selected="true" text="Solapaments: evita solapaments entre grups i subgrups." />
-                        <CheckBox id="G_H_APTES" layoutX="14.0" layoutY="274.0" mnemonicParsing="false" selected="true" text="Hores aptes: controla les hores en les quals pot fer classe un grup o subgrup." />
+                        <CheckBox id="ASSIG_H_APTES" fx:id="ASSIG_HAPTES" layoutX="14.0" layoutY="190.0" mnemonicParsing="false" selected="true" text="Hores aptes: controla les hores en les quals pot haver classe de l'assignatura." />
+                        <CheckBox id="ASSIG_SOLAP" fx:id="ASSIG_SOLAP" layoutX="14.0" layoutY="165.0" mnemonicParsing="false" selected="true" text="Solapaments: evitar solapaments entre assignatures." />
+                        <CheckBox id="G_SOLAP" fx:id="G_SOLAP" layoutX="14.0" layoutY="249.0" mnemonicParsing="false" selected="true" text="Solapaments: evita solapaments entre grups i subgrups." />
+                        <CheckBox id="G_H_APTES" fx:id="G_HAPTES" layoutX="14.0" layoutY="274.0" mnemonicParsing="false" selected="true" text="Hores aptes: controla les hores en les quals pot fer classe un grup o subgrup." />
                         <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="231.0" prefHeight="18.0" prefWidth="654.0" text="Restriccions referents als grup i subgrups:" wrapText="true" />
                         <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="340.0" prefHeight="18.0" prefWidth="654.0" text="Restriccions referents a les sessions:" wrapText="true" />
-                        <CheckBox id="S_NSESSIONS" layoutX="14.0" layoutY="383.0" mnemonicParsing="false" selected="true" text="NSessions: dues sessions identiques no poden coincidir en un mateix dia." />
-                        <CheckBox id="S_ALING" layoutX="14.0" layoutY="358.0" mnemonicParsing="false" selected="true" text="Alineament: una sessio nomes pot començar en hores multiples a la seva durada." />
-                        <CheckBox id="G_FRANJA" layoutX="14.0" layoutY="299.0" mnemonicParsing="false" selected="true" text="Franja: controla si el grup pot fer classe nomes de mati, tarda, o qualsevol." />
+                        <CheckBox id="S_NSESSIONS" fx:id="S_NSESSIONS" layoutX="14.0" layoutY="383.0" mnemonicParsing="false" selected="true" text="NSessions: dues sessions identiques no poden coincidir en un mateix dia." />
+                        <CheckBox id="S_ALING" fx:id="S_ALIGN" layoutX="14.0" layoutY="358.0" mnemonicParsing="false" selected="true" text="Alineament: una sessio nomes pot començar en hores multiples a la seva durada." />
+                        <CheckBox id="G_FRANJA" fx:id="G_FRANJA" layoutX="14.0" layoutY="299.0" mnemonicParsing="false" selected="true" text="Franja: controla si el grup pot fer classe nomes de mati, tarda, o qualsevol." />
                         <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="594.0" prefHeight="50.0" prefWidth="654.0" text="[!] Tingues en compte que cap canvi en els flags no s'aplicara als horaris ja generats." wrapText="true" />
                      </children></AnchorPane>
               </content>
@@ -91,8 +91,8 @@
          </tabs>
       </TabPane>
       <Label layoutX="758.0" layoutY="662.0" text="Horaris a crear" />
-      <CheckBox id="purge_checker" layoutX="692.0" layoutY="689.0" mnemonicParsing="false" selected="true" text="Esborra horaris antics" />
-      <TextField id="nhoraris" alignment="CENTER" layoutX="692.0" layoutY="657.0" onAction="#onNHoraris" prefHeight="25.0" prefWidth="52.0" text="1" />
+      <CheckBox id="purge_checker" fx:id="purge" layoutX="692.0" layoutY="689.0" mnemonicParsing="false" selected="true" text="Esborra horaris antics" />
+      <TextField id="nhoraris" fx:id="nhoraris" alignment="CENTER" layoutX="692.0" layoutY="657.0" onAction="#onNHoraris" prefHeight="25.0" prefWidth="52.0" text="1" />
       <TabPane layoutX="880.0" layoutY="29.0" prefHeight="620.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Campus">
@@ -100,8 +100,8 @@
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="182.0" prefWidth="200.0">
                      <children>
                         <Button id="campus_creador" layoutY="561.0" mnemonicParsing="false" onAction="#onCreateCampus" prefHeight="25.0" prefWidth="200.0" text="+ Crear campus" />
-                        <TextField id="campus_cercador" layoutX="6.0" layoutY="8.0" onAction="#onSearchCampus" prefHeight="25.0" prefWidth="189.0" promptText="Cercar per nom o autor" />
-                        <ListView id="list_campus" layoutY="38.0" prefHeight="523.0" prefWidth="200.0" />
+                        <TextField id="campus_cercador" fx:id="searcher_c" layoutX="6.0" layoutY="8.0" onAction="#onSearchCampus" prefHeight="25.0" prefWidth="189.0" promptText="Cercar per nom o autor" />
+                        <ListView id="list_campus" fx:id="campus" layoutY="38.0" prefHeight="523.0" prefWidth="200.0" />
                      </children>
                   </AnchorPane>
             </content>
@@ -115,8 +115,8 @@
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="182.0" prefWidth="200.0">
                      <children>
                         <Button id="plaestudis_creador" layoutY="561.0" mnemonicParsing="false" onAction="#onCreatePlaEstudis" prefHeight="25.0" prefWidth="200.0" text="+ Crear pla d'estudis" />
-                        <TextField id="plaestudis_cercador" layoutX="5.0" layoutY="8.0" onAction="#onSearchPlaEstudis" prefHeight="25.0" prefWidth="189.0" promptText="Cercar per nom o autor" />
-                        <ListView id="list_planEstudis" layoutY="38.0" prefHeight="523.0" prefWidth="200.0" />
+                        <TextField id="plaestudis_cercador" fx:id="searcher_pl" layoutX="5.0" layoutY="8.0" onAction="#onSearchPlaEstudis" prefHeight="25.0" prefWidth="189.0" promptText="Cercar per nom o autor" />
+                        <ListView id="list_planEstudis" fx:id="plansEstudis" layoutY="38.0" prefHeight="523.0" prefWidth="200.0" />
                      </children>
                   </AnchorPane>
                </content>

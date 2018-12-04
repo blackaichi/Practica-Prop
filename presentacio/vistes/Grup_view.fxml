@@ -6,17 +6,17 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="719.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="719.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentacio.vistes.GrupManager">
    <children>
       <Pane layoutY="29.0" prefHeight="41.0" prefWidth="500.0">
          <children>
-            <Label id="grup_title" layoutX="14.0" layoutY="11.0" prefHeight="15.0" prefWidth="374.0" text="Grup: nou_grup">
+            <Label id="grup_title" fx:id="title" layoutX="14.0" layoutY="11.0" prefHeight="15.0" prefWidth="374.0" text="Grup: nou_grup">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
-            <Button id="aplicar_grup" layoutX="385.0" layoutY="6.0" mnemonicParsing="false" onAction="#apply" prefHeight="29.0" prefWidth="110.0" text="Aplicar" />
-            <Label id="assignatura_grup" layoutX="167.0" layoutY="11.0" prefHeight="19.0" prefWidth="204.0" text="Assignatura: nom_assignatura">
+            <Button id="aplicar_sessio" layoutX="405.0" layoutY="6.0" mnemonicParsing="false" onAction="#apply" prefHeight="29.0" prefWidth="88.0" text="Aplicar" />
+            <Label id="assignatura_grup" fx:id="path" layoutX="167.0" layoutY="11.0" prefHeight="19.0" prefWidth="204.0" text="Assignatura: nom_assignatura">
                <font>
                   <Font size="12.0" />
                </font>
@@ -25,20 +25,20 @@
       </Pane>
       <Pane layoutY="70.0" prefHeight="130.0" prefWidth="500.0">
          <children>
-            <TextField id="numero_grup" layoutX="95.0" layoutY="14.0" prefHeight="25.0" prefWidth="374.0" promptText="numero de grup" />
-            <TextField id="places_grup" layoutX="95.0" layoutY="49.0" prefHeight="25.0" prefWidth="374.0" promptText="capacitat del grup" />
+            <TextField id="numero_grup" fx:id="nom" layoutX="95.0" layoutY="14.0" prefHeight="25.0" prefWidth="374.0" promptText="numero de grup" />
+            <TextField id="places_grup" fx:id="places" layoutX="95.0" layoutY="49.0" prefHeight="25.0" prefWidth="374.0" promptText="capacitat del grup" />
             <Label layoutX="14.0" layoutY="19.0" text="Numero" />
             <Label layoutX="14.0" layoutY="54.0" text="Places:" />
             <Separator layoutY="-1.0" prefHeight="5.0" prefWidth="500.0" />
             <Label layoutX="14.0" layoutY="88.0" text="Franja:" />
-            <MenuButton id="franja_opcions" layoutX="380.0" layoutY="83.0" mnemonicParsing="false" text="Opcions">
+            <MenuButton id="franja_opcions" fx:id="menu" layoutX="380.0" layoutY="83.0" mnemonicParsing="false" text="Opcions">
               <items>
                 <MenuItem mnemonicParsing="false" text="Mati" />
                 <MenuItem mnemonicParsing="false" text="Tarda" />
                   <MenuItem mnemonicParsing="false" text="Qualsevol" />
               </items>
             </MenuButton>
-            <Label id="franja_title" layoutX="95.0" layoutY="88.0" prefHeight="15.0" prefWidth="277.0" text="Qualsevol" />
+            <Label id="franja_title" fx:id="franja" layoutX="95.0" layoutY="88.0" prefHeight="15.0" prefWidth="277.0" text="Qualsevol" />
          </children>
       </Pane>
       <MenuBar id="status_bar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="500.0">
@@ -69,8 +69,8 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button layoutX="4.0" layoutY="458.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="493.0" text="+ Crear subgrup" />
-                        <ListView id="subgrups_list" prefHeight="454.0" prefWidth="500.0" />
+                        <Button layoutX="4.0" layoutY="458.0" mnemonicParsing="false" onAction="#onCreateSubGrup" prefHeight="25.0" prefWidth="493.0" text="+ Crear subgrup" />
+                        <ListView id="subgrups_list" fx:id="subgrups" prefHeight="454.0" prefWidth="500.0" />
                      </children>
                   </AnchorPane>
             </content>
@@ -80,7 +80,7 @@
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <Label ellipsisString="" layoutX="13.0" layoutY="14.0" prefHeight="41.0" prefWidth="475.0" text="Selecciona tots aquelles grups/subgrups amb els quals no es pot solapar aquest grup." wrapText="true" />
-                        <GridPane id="solapaments_container" layoutX="14.0" layoutY="55.0" prefHeight="421.0" prefWidth="473.0">
+                        <GridPane id="solapaments_container" fx:id="solap_container" layoutX="14.0" layoutY="55.0" prefHeight="421.0" prefWidth="473.0">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -100,7 +100,7 @@
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <Label ellipsisString="" layoutX="13.0" layoutY="14.0" prefHeight="41.0" prefWidth="475.0" text="Selecciona aquelles hores en les quals el grup pot fer classe." wrapText="true" />
-                        <GridPane id="hores_aptes_container" layoutX="14.0" layoutY="55.0" prefHeight="421.0" prefWidth="474.0">
+                        <GridPane id="hores_aptes_container" fx:id="aptes_container" layoutX="14.0" layoutY="55.0" prefHeight="421.0" prefWidth="474.0">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

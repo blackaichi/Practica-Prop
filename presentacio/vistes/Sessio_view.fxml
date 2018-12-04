@@ -5,17 +5,17 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="719.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="719.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentacio.vistes.SessioManager">
    <children>
       <Pane layoutY="29.0" prefHeight="41.0" prefWidth="500.0">
          <children>
-            <Label id="sessio_title" layoutX="14.0" layoutY="11.0" prefHeight="19.0" prefWidth="350.0" text="Sessio: nova_sessio">
+            <Label id="sessio_title" fx:id="title" layoutX="14.0" layoutY="11.0" prefHeight="19.0" prefWidth="350.0" text="Sessio: nova_sessio">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
-            <Button id="aplicar_sessio" layoutX="385.0" layoutY="6.0" mnemonicParsing="false" onAction="#apply" prefHeight="29.0" prefWidth="110.0" text="Aplicar" />
-            <Label id="assignatura_sessio" layoutX="181.0" layoutY="11.0" prefHeight="19.0" prefWidth="204.0" text="Assignatura: nom_assignatura">
+            <Button id="aplicar_sessio" layoutX="407.0" layoutY="6.0" mnemonicParsing="false" onAction="#apply" prefHeight="29.0" prefWidth="88.0" text="Aplicar" />
+            <Label id="assignatura_sessio" fx:id="path" layoutX="181.0" layoutY="11.0" prefHeight="19.0" prefWidth="204.0" text="Assignatura: nom_assignatura">
                <font>
                   <Font size="12.0" />
                </font>
@@ -24,17 +24,17 @@
       </Pane>
       <Pane layoutY="70.0" prefHeight="155.0" prefWidth="500.0">
          <children>
-            <TextField id="tipus_sessio" layoutX="95.0" layoutY="14.0" prefHeight="25.0" prefWidth="374.0" promptText="tipus de sessio" />
-            <TextField id="places_grup" layoutX="95.0" layoutY="49.0" prefHeight="25.0" prefWidth="125.0" promptText="durada en hores" />
+            <TextField id="tipus_sessio" fx:id="tipus" layoutX="95.0" layoutY="14.0" prefHeight="25.0" prefWidth="374.0" promptText="tipus de sessio" />
+            <TextField id="places_grup" fx:id="durada" layoutX="95.0" layoutY="49.0" prefHeight="25.0" prefWidth="125.0" promptText="durada en hores" />
             <Label layoutX="14.0" layoutY="19.0" text="Tipus" />
             <Label layoutX="14.0" layoutY="54.0" text="Durada:" />
             <Separator layoutY="-1.0" prefHeight="5.0" prefWidth="500.0" />
             <Label layoutX="14.0" layoutY="88.0" text="Equip:" />
             <Label layoutX="234.0" layoutY="54.0" text="Sessions:" />
-            <TextField id="places_grup" layoutX="305.0" layoutY="49.0" prefHeight="25.0" prefWidth="163.0" promptText="Sessions per setmana" />
-            <TextField id="equip_sessio" layoutX="95.0" layoutY="83.0" prefHeight="25.0" prefWidth="374.0" promptText="Equipament necessari (separat per &quot;;&quot;)" />
-            <Label id="sessio_de_title" layoutX="95.0" layoutY="121.0" prefHeight="15.0" prefWidth="277.0" text="Grup" />
-            <MenuButton id="sessio_de_opcions" layoutX="380.0" layoutY="116.0" mnemonicParsing="false" text="Opcions">
+            <TextField id="places_grup" fx:id="nsessions" layoutX="305.0" layoutY="49.0" prefHeight="25.0" prefWidth="163.0" promptText="Sessions per setmana" />
+            <TextField id="equip_sessio" fx:id="equip" layoutX="95.0" layoutY="83.0" prefHeight="25.0" prefWidth="374.0" promptText="Equipament necessari (separat per &quot;;&quot;)" />
+            <Label id="sessio_de_title" fx:id="franja" layoutX="95.0" layoutY="121.0" prefHeight="15.0" prefWidth="277.0" text="Grup" />
+            <MenuButton id="sessio_de_opcions" fx:id="menu" layoutX="380.0" layoutY="116.0" mnemonicParsing="false" text="Opcions">
                <items>
                   <MenuItem mnemonicParsing="false" text="Grup" />
                   <MenuItem mnemonicParsing="false" text="Subgrup" />
@@ -72,7 +72,7 @@
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <Label ellipsisString="" layoutX="13.0" layoutY="14.0" prefHeight="41.0" prefWidth="475.0" text="Selecciona nomes aquells grups o subgrups que hagin de dur a terme aquesta sessio:" wrapText="true" />
-                        <GridPane id="assignats_container" layoutX="15.0" layoutY="55.0" prefHeight="398.0" prefWidth="471.0">
+                        <GridPane id="assignats_container" fx:id="assignats" layoutX="15.0" layoutY="55.0" prefHeight="398.0" prefWidth="471.0">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -92,7 +92,7 @@
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <Label ellipsisString="" layoutX="13.0" layoutY="14.0" prefHeight="41.0" prefWidth="475.0" text="Selecciona tots aquelles grups/subgrups amb els quals no es pot solapar aquest grup." wrapText="true" />
-                        <GridPane id="solapaments_container" layoutX="14.0" layoutY="55.0" prefHeight="421.0" prefWidth="473.0">
+                        <GridPane id="solapaments_container" fx:id="solap_container" layoutX="14.0" layoutY="55.0" prefHeight="421.0" prefWidth="473.0">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -112,7 +112,7 @@
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <Label ellipsisString="" layoutX="13.0" layoutY="14.0" prefHeight="41.0" prefWidth="475.0" text="Selecciona aquelles hores en les quals el grup pot fer classe." wrapText="true" />
-                        <GridPane id="hores_aptes_container" layoutX="14.0" layoutY="55.0" prefHeight="421.0" prefWidth="474.0">
+                        <GridPane id="hores_aptes_container" fx:id="aptes_container" layoutX="14.0" layoutY="55.0" prefHeight="421.0" prefWidth="474.0">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

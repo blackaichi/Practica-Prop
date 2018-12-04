@@ -22,23 +22,27 @@ import javafx.stage.Stage;
 
 public class CampusManager {
 	
-	@FXML private TextField nom_id;
-	@FXML private TextField autor_id;
+	@FXML private TextField nom_id, autor_id;
+	@FXML private ListView<String> aules;
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////  FXML ///////////////////////////////////////
 	
 	@FXML
 	private void handleButton1Action(ActionEvent event) {
-
 	    if (nom_id.getText() == null || nom_id.getText().trim().isEmpty()) Main.getInstance().showWarning("Error nou_Campus", "El nom del nou Campus no pot ser null");
 	    if (autor_id.getText() == null || autor_id.getText().trim().isEmpty()) Main.getInstance().showWarning("Error nou_Campus", "El nom del autor no pot ser null");
 		System.out.println(nom_id.getText());
 		System.out.println(autor_id.getText());
 	}
 	
-	/*@FXML
+	@FXML
+	public void onCreateAula() {
+		Main.getInstance().newWindows("Aula_view.fxml", "Aula", 500, 240);
+	}
+	
+	@FXML
 	public void apply() {
-		System.out.println("Apply button pressed!");
-	}*/
+		Main.getInstance().showWarning("Welcome to Carthage", "Penis");
+	}
 	
 }

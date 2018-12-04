@@ -10,8 +10,8 @@
    <children>
       <Pane layoutY="68.0" prefHeight="140.0" prefWidth="400.0">
          <children>
-            <TextField id="nom_campus" layoutX="85.0" layoutY="40.0" prefHeight="25.0" prefWidth="280.0" promptText="nom del campus" />
-            <TextField id="autor_campus" layoutX="85.0" layoutY="75.0" prefHeight="25.0" prefWidth="280.0" promptText="autor/s del campus" />
+            <TextField id="nom_campus" fx:id="nom_id" layoutX="85.0" layoutY="40.0" prefHeight="25.0" prefWidth="280.0" promptText="nom del campus" />
+            <TextField id="autor_campus" fx:id="autor_id" layoutX="85.0" layoutY="75.0" prefHeight="25.0" prefWidth="280.0" promptText="autor/s del campus" />
             <Label layoutX="14.0" layoutY="45.0" text="Nom:" />
             <Label layoutX="14.0" layoutY="80.0" text="Autor:" />
             <Separator layoutY="-1.0" prefHeight="0.0" prefWidth="400.0" />
@@ -24,7 +24,7 @@
                   <Font size="15.0" />
                </font>
             </Label>
-            <Button id="aplicar_campus" layoutX="324.0" layoutY="1.0" mnemonicParsing="false" onAction="#apply" prefHeight="40.0" prefWidth="76.0" text="Aplicar" />
+            <Button id="aplicar_sessio" layoutX="305.0" layoutY="6.0" mnemonicParsing="false" onAction="#apply" prefHeight="29.0" prefWidth="88.0" text="Aplicar" />
          </children>
       </Pane>
       <TabPane layoutY="208.0" prefHeight="513.0" prefWidth="400.0" tabClosingPolicy="UNAVAILABLE">
@@ -33,8 +33,8 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button id="aula_creador" layoutY="429.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="400.0" text="+ Crear aula" />
-                        <ListView id="list_aules" prefHeight="429.0" prefWidth="400.0" />
+                        <Button id="aula_creador" layoutY="454.0" mnemonicParsing="false" onAction="#onCreateAula" prefHeight="25.0" prefWidth="400.0" text="+ Crear aula" />
+                        <ListView id="list_aules" fx:id="aules" prefHeight="455.0" prefWidth="400.0" />
                      </children>
                   </AnchorPane>
             </content>
