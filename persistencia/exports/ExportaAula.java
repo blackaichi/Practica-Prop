@@ -34,7 +34,7 @@ public class ExportaAula extends Exporta {
 	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
 	 * @return la codificació de l'aula
 	 */
-	public String exportaAula(String path, String nomAula, String autor, int capacitat, HashSet<String> equip, boolean crea) {
+	public String exportaAula(String path, String nomAula, int capacitat, HashSet<String> equip, boolean crea) {
 		String endl = "\n";
 		String str = "Aula".concat(endl);
 		str = str.concat(nomAula.concat(endl));

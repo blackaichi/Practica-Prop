@@ -1,5 +1,7 @@
 package persistencia.exports;
 
+import java.util.*;
+
 /**
  * 
  * @author eric.casanovas@est.fib.upc.edu
@@ -32,7 +34,7 @@ public class ExportaCampus extends Exporta {
 	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
 	 * @return la codificació del Campus
 	 */
-	public String exportaCampus(String path, String nom, String autor, String[] aules, boolean crea) {
+	public String exportaCampus(String path, String nom, String autor, HashSet<String> aules, boolean crea) {
 		String endl = "\n";
 		String str = "Campus".concat(endl);
 		str = str.concat(nom.concat(endl));

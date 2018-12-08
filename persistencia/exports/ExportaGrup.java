@@ -1,5 +1,7 @@
 package persistencia.exports;
 
+import java.util.*;
+
 /**
  * 
  * @author eric.casanovas@est.fib.upc.edu
@@ -33,17 +35,20 @@ public class ExportaGrup extends Exporta {
 	 * @return la codificació del Grup
 	 */
 	public String exportaGrup(String path, String nomPE, String nomAssig, int numero, int places, 
-			String franja, int[] numsg, boolean crea) {
+			String franja, HashSet<Integer> numsg, Map<Integer, boolean[]> horesAptes,
+			HashMap<String, HashSet<Integer>> solapaments, boolean crea) {
 		String endl = "\n";
 		String str = "Grup".concat(endl);
+		ExportaHoresAptes eha = ExportaHoresAptes.getInstancia();
+		ExportaSolapaments es = ExportaSolapaments.getInstancia();
 		str = str.concat(String.valueOf(numero)).concat(endl);
 		str = str.concat(String.valueOf(places)).concat(endl);
 		str = str.concat(franja).concat(endl);
 		for (int sg : numsg) {
 			str = str.concat(cp.getSubGrup(path, nomPE, nomAssig, numero, sg)).concat(endl);
 		}
-		str = str.concat(cp.getHoresAptes(path, nomPE, nomAssig, numero)).concat(endl);
-		str = str.concat(cp.getSolapaments(path, nomPE, nomAssig, numero)).concat(endl);
+		str = str.concat(eha.exportaHoresAptes(path, horesAptes, false)).concat(endl);
+		str = str.concat(es.exportaSolapaments(solapaments, false)).concat(endl);
 		str = str.concat("END");
 		if (crea) Exporta.exporta(path, str);
 		return str;

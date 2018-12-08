@@ -49,55 +49,57 @@ public final class ControladorPersistencia {
 	 * Exporta una Assignatura
 	 * @param a assignatura a exportar
 	 * @return null en cas de cap error, l'error com a String altrament
-	 *//*
-	public String exportaAssignatura(String nom, String autor) {
+	 */
+	public String exportaAssignatura(String path, String nomPE, String nomAssig, HashSet<Pair<String,Integer>> sessionsg,
+			HashSet<Pair<String,Integer>> sessionssg, HashSet<Integer> grups, Map<Integer, boolean[]> horesAptes,
+			HashMap<String, HashSet<Integer>> solapaments) {
 		try {
 			ExportaAssignatura assignatura = ExportaAssignatura.getInstancia();
-			assignatura.exportaAssignatura(a, true);
+			assignatura.exportaAssignatura(path, nomPE, nomAssig, sessionsg, sessionssg, grups, horesAptes, solapaments, true);
 			return null;
 		}
 		catch (Exception e) {
 			return e.getMessage();
 		}
 	}
-	*/
+	
 	/**
 	 * Exporta un Aula
 	 * @param a aula a exportar
 	 * @return null en cas de cap error, l'error com a String altrament
-	 *//*
-	public String exportaAula(String nom, int capacitat, HashSet<String> equip) {
+	 */
+	public String exportaAula(String path, String nom, int capacitat, HashSet<String> equip) {
 		try {
 			ExportaAula aula = ExportaAula.getInstancia();
-			aula.exportaAula(nom, capacitat, equip, true);
+			aula.exportaAula(path, nom, capacitat, equip, true);
 			return null;
 		}
 		catch (Exception e) {
 			return e.getMessage();
 		}
-	}*/
+	}
 	
 	/**
 	 * Exporta un Campus
 	 * @param c campus a exportar
 	 * @return null en cas de cap error, l'error com a String altrament
-	 *//*
-	public String exportaCampus(String nom, String autor, String[] aules) {
+	 */
+	public String exportaCampus(String path, String nom, String autor, HashSet<String> aules) {
 		try {
 			ExportaCampus campus = ExportaCampus.getInstancia();
-			campus.exportaCampus(nom, autor, aules, true);
+			campus.exportaCampus(path, nom, autor, aules, true);
 			return null;
 		}
 		catch (Exception e) {
 			return e.getMessage();
 		}
-	}*/
+	}
 	
 	/**
 	 * Exporta una Data
 	 * @param d data a exportar
 	 * @return null en cas de cap error, l'error com a String altrament
-	 *//*
+	 */
 	public String exportaData(int dia, int hora) {
 		try {
 			ExportaData data = ExportaData.getInstancia();
@@ -113,11 +115,12 @@ public final class ControladorPersistencia {
 	 * Exporta un Grup
 	 * @param g grup a exportar
 	 * @return null en cas de cap error, l'error com a String altrament
-	 *//*
-	public String exportaGrup(int numero, int places, String franja, ) {
+	 */
+	public String exportaGrup(String path, String nomPE, String nomAssig, int numero, int places, String franja, 
+			HashSet<Integer> numsg, Map<Integer, boolean[]> horesAptes,	HashMap<String, HashSet<Integer>> solapaments) {
 		try {
 			ExportaGrup grup = ExportaGrup.getInstancia();
-			grup.exportaGrup(g, true);
+			grup.exportaGrup(path, nomPE, nomAssig, numero, places, franja, numsg, horesAptes, solapaments, true);
 			return null;
 		}
 		catch (Exception e) {

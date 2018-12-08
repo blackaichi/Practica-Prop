@@ -36,9 +36,12 @@ public class ExportaAssignatura extends Exporta {
 	 * @return la codificació de l'Assignatura
 	 */
 	public String exportaAssignatura(String path, String nomPE, String nomAssig, HashSet<Pair<String,Integer>> sessionsg,
-			HashSet<Pair<String,Integer>> sessionssg, int[] grups, boolean crea) {
+			HashSet<Pair<String,Integer>> sessionssg, HashSet<Integer> grups, Map<Integer, boolean[]> horesAptes,
+			HashMap<String, HashSet<Integer>> solapaments, boolean crea) {
 		String endl = "\n";
 		String str = "Assignatura".concat(endl);
+		ExportaHoresAptes eha = ExportaHoresAptes.getInstancia();
+		ExportaSolapaments es = ExportaSolapaments.getInstancia();
 		str = str.concat(nomAssig.concat(endl));
 		for (Pair<String,Integer> s : sessionsg) {
 			str = str.concat(cp.getSessionsG(path, nomPE, nomAssig, s.first, s.second)).concat(endl);
@@ -49,8 +52,8 @@ public class ExportaAssignatura extends Exporta {
 		for (int g : grups) {
 			str = str.concat(cp.getGrups(path, nomPE, nomAssig, g)).concat(endl);
 		}
-		str = str.concat(cp.getHoresAptes(path, nomPE, nomAssig)).concat(endl);
-		str = str.concat(cp.getSolapaments(path, nomPE, nomAssig)).concat(endl);
+		str = str.concat(eha.exportaHoresAptes(path, horesAptes, false)).concat(endl);
+		str = str.concat(es.exportaSolapaments(solapaments, false)).concat(endl);
 		str = str.concat("END");
 		if (crea) Exporta.exporta(path, str);
 		return str;
