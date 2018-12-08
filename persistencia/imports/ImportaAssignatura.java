@@ -27,26 +27,17 @@ public class ImportaAssignatura extends Importa {
 		return null;
 	}
 	
-	public HashSet<Assignatura> importaAssignatura(String path, int nassig) {
+	public String importaAssignatura(String path, String nomPE, String assig) {
 		try {
 			File file = new File(path); 
 			BufferedReader br = new BufferedReader(new FileReader(file)); 
-			HashSet<Assignatura> assignatures = new HashSet<Assignatura>();
 			String s;
 			br.readLine();
-			String nompla = br.readLine();
 			while (br.readLine() != "Assignatura");
-			for (int i = 0; i < nassig; ++i) {
-				
-				
-				
-			}
-			Assignatura a;
-			
-			return assignatures;
+			return null;
 		}
 		catch (Exception e) {
-			return null;
+			return e.getMessage();
 		}
 	}
 

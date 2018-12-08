@@ -3,6 +3,7 @@ package persistencia.imports;
 import java.io.*;
 import java.util.*;
 import domini.classes.*;
+import persistencia.ControladorPersistencia;
 
 /**
  * 
@@ -12,7 +13,11 @@ import domini.classes.*;
 
 public class ImportaPlaEstudis extends Importa {
 	
+	/**
+	 * Nom del pla d'estudis
+	 */
 	private String nom;
+	
 	/**
 	 * Enregistra el nom de l'autor d'aquest pla d'estudis
 	 */
@@ -24,9 +29,9 @@ public class ImportaPlaEstudis extends Importa {
 	private Map<Integer, boolean[] > lectiu;
 		
 	/**
-	 * Assignatures que pertanyen al Pla d'Estudis
+	 * Importar les assignatures del pla
 	 */
-	private HashSet<Assignatura> assignatures;
+	private ImportaAssignatura ia = ImportaAssignatura.getInstancia();
 	
 	/**
 	 * Rang del Pla d'estudis
@@ -56,8 +61,8 @@ public class ImportaPlaEstudis extends Importa {
 		return rangDia;
 	}
 	
-	public HashSet<Assignatura> getAssignatures() {
-		return assignatures;
+	public ImportaAssignatura getAssignatures() {
+		return ia;
 	}
 	
 	public String importaPlaEstudis(String path) {
@@ -66,10 +71,9 @@ public class ImportaPlaEstudis extends Importa {
 			BufferedReader br = new BufferedReader(new FileReader(file)); 
 			String s; 
 			Map<Integer, boolean[]> lectiu = new HashMap<Integer, boolean[]>();
-			HashSet<Assignatura> assignatures = new HashSet<Assignatura>();
 			int[] rangDia = new int[24];
 			s = br.readLine();
-			if (!s.equals("Data")) {
+			if (!s.equals("PlaEstudis")) {
 				br.close();
 				return "No es un fitxer amb un PlaEstudis";
 			}
@@ -156,12 +160,17 @@ public class ImportaPlaEstudis extends Importa {
 				return "Sintaxi incorrecta a rangDia";
 			}
 			int nassig = Integer.valueOf(br.readLine());
-			ImportaAssignatura ia = ImportaAssignatura.getInstancia();
-			assignatures = ia.importaAssignatura(path, nassig);
-			if (assignatures == null) {
+			if (br.readLine() != "{") {
 				br.close();
-				return "error important les assignatures del pla";
+				return "Sintaxi incorrecta";
 			}
+			ImportaAssignatura ia = ImportaAssignatura.getInstancia();
+			if (br.readLine() != "}") {
+				br.close();
+				return "Sintaxi incorrecta";
+			}
+			ControladorPersistencia cp = ControladorPersistencia.getInstancia();
+			cp.creaPlaEstudisImportat(nom, autor, lectiu, rangDia);
 			br.close();
 			return null;
 		}
@@ -169,5 +178,4 @@ public class ImportaPlaEstudis extends Importa {
 			return e.getMessage();
 		}
 	}
-
 }

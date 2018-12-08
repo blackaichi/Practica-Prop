@@ -1,7 +1,6 @@
 package persistencia.exports;
 
 import java.util.*;
-import domini.classes.*;
 
 /**
  * 
@@ -35,13 +34,12 @@ public class ExportaPlaEstudis extends Exporta {
 	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
 	 * @return la codificació del PlaEstudis
 	 */
-	public String exportaPlaEstudis(PlaEstudis PE, boolean crea) throws Exception {
+	public String exportaPlaEstudis(String path, String nom, String autor, Map<Integer, boolean[]> franja,
+			int[] rang, String[] nomassig, boolean crea) throws Exception {
 		String endl = "\n";
 		String str = "PlaEstudis".concat(endl);
-		ExportaAssignatura ea = ExportaAssignatura.getInstancia();
-		str = str.concat(PE.getNom()).concat(endl);
-		str = str.concat(PE.getAutor()).concat(endl);
-		Map<Integer, boolean[]> franja = PE.getLectiuSetmana();
+		str = str.concat(nom).concat(endl);
+		str = str.concat(autor).concat(endl);
 		boolean[] b;
 		for (int i = 0; i < 7; ++i) {
 			b = franja.get(i);
@@ -54,26 +52,24 @@ public class ExportaPlaEstudis extends Exporta {
 			}
 		}
 		str = str.concat(endl);
-		int[] rang = PE.getRangMati();
 		str = str.concat("mati: ");
 		if (rang[0] == -1 || rang[1] == -1) str = str.concat("null ");
 		else {
 			str = str.concat(String.valueOf(rang[0]).concat(" "));
 			str = str.concat(String.valueOf(rang[1]).concat(" "));
 		}
-		rang = PE.getRangTarda();
 		str = str.concat("tarda: ");
-		if (rang[0] == -1 || rang[1] == -1) str = str.concat("null").concat(endl);
+		if (rang[2] == -1 || rang[3] == -1) str = str.concat("null").concat(endl);
 		else {
 			str = str.concat(String.valueOf(rang[0]).concat(" "));
 			str = str.concat(String.valueOf(rang[1]).concat(endl));
 		}
-		HashSet<Assignatura> assigs = PE.getAssignatures();
-		str = str.concat(String.valueOf(assigs.size()).concat(endl).concat("{").concat(endl));
-		for (Assignatura a : assigs) str = str.concat(ea.exportaAssignatura(a, false)).concat(endl);
-		str = str.concat("}").concat(endl);
+		str = str.concat(String.valueOf(nomassig.length).concat(endl));
+		for (String s : nomassig) {
+			str = str.concat(cp.getAssignatura(path, nom, s)).concat(endl);
+		}
 		str = str.concat("END");
-		if (crea) Exporta.exporta(str);
+		if (crea) Exporta.exporta(path, str);
 		return str;
 	}
 }

@@ -1,7 +1,5 @@
 package persistencia.exports;
 
-import domini.classes.*;
-
 /**
  * 
  * @author eric.casanovas@est.fib.upc.edu
@@ -34,13 +32,13 @@ public class ExportaData extends Exporta {
 	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
 	 * @return la codificació de la Data
 	 */
-	public String exportaData(Data d, boolean crea) {
+	public String exportaData(String path, int dia, int hora, boolean crea) {
 		String endl = "\n";
 		String str = "Data".concat(endl);
-		str = str.concat(String.valueOf(d.getDia())).concat(endl);
-		str = str.concat(String.valueOf(d.getHora())).concat(endl);
+		str = str.concat(String.valueOf(dia)).concat(endl);
+		str = str.concat(String.valueOf(hora)).concat(endl);
 		str = str.concat("END");
-		if (crea) Exporta.exporta(str);
+		if (crea) Exporta.exporta(path, str);
 		return str;
 	}
 }

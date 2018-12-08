@@ -1,8 +1,6 @@
 package persistencia.exports;
 
-import java.util.HashSet;
-
-import domini.classes.*;
+import java.util.*;
 
 /**
  * 
@@ -36,10 +34,10 @@ public class ExportaSessioSubGrup extends Exporta {
 	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
 	 * @return la codificació de la SessioSubGrup
 	 */
-	public String exportaSessioSubGrup(SessioSubGrup ssg, boolean crea) {
+	public String exportaSessioSubGrup(String path, String nomPE, String nomAssig, HashSet<String> equip,
+			int hores, String tipus, int nsessions, int[] nsubgrups, boolean crea) {
 		String endl = "\n";
 		String str = "SessioSubGrup".concat(endl);
-		HashSet<String> equip = ssg.getMaterial();
 		boolean first = true;  
 		if (equip.isEmpty()) str = str.concat("noequip");
 		for (String s : equip) {
@@ -48,11 +46,18 @@ public class ExportaSessioSubGrup extends Exporta {
 			str = str.concat(s);
 		}
 		str = str.concat(endl);
-		str = str.concat(String.valueOf(ssg.getHores())).concat(endl);
-		str = str.concat(ssg.getTipus()).concat(endl);
-		str = str.concat(String.valueOf(ssg.getnsessions())).concat(endl);
+		str = str.concat(String.valueOf(hores)).concat(endl);
+		str = str.concat(tipus).concat(endl);
+		str = str.concat(String.valueOf(nsessions)).concat(endl);
+		first = true;  
+		if (nsubgrups.length == 0) str = str.concat("none");
+		for (int n : nsubgrups) {
+			if (first) first = false;
+			else str = str.concat(",");
+			str = str.concat(String.valueOf(n));
+		}
 		str = str.concat("END");
-		if (crea) Exporta.exporta(str);
+		if (crea) Exporta.exporta(path, str);
 		return str;
 	}
 }

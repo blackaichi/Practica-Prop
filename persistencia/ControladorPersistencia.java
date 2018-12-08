@@ -22,6 +22,8 @@ public final class ControladorPersistencia {
 	 */
 	private static ControladorPersistencia cp = new ControladorPersistencia();
 	
+	private ControladorPersistencia() {}
+	
 	/**
 	 * Instància del controlador del domini
 	 */
@@ -47,8 +49,8 @@ public final class ControladorPersistencia {
 	 * Exporta una Assignatura
 	 * @param a assignatura a exportar
 	 * @return null en cas de cap error, l'error com a String altrament
-	 */
-	public String exportaAssignatura(Assignatura a) {
+	 *//*
+	public String exportaAssignatura(String nom, String autor) {
 		try {
 			ExportaAssignatura assignatura = ExportaAssignatura.getInstancia();
 			assignatura.exportaAssignatura(a, true);
@@ -58,48 +60,48 @@ public final class ControladorPersistencia {
 			return e.getMessage();
 		}
 	}
-	
+	*/
 	/**
 	 * Exporta un Aula
 	 * @param a aula a exportar
 	 * @return null en cas de cap error, l'error com a String altrament
-	 */
-	public String exportaAula(Aula a) {
+	 *//*
+	public String exportaAula(String nom, int capacitat, HashSet<String> equip) {
 		try {
 			ExportaAula aula = ExportaAula.getInstancia();
-			aula.exportaAula(a, true);
+			aula.exportaAula(nom, capacitat, equip, true);
 			return null;
 		}
 		catch (Exception e) {
 			return e.getMessage();
 		}
-	}
+	}*/
 	
 	/**
 	 * Exporta un Campus
 	 * @param c campus a exportar
 	 * @return null en cas de cap error, l'error com a String altrament
-	 */
-	public String exportaCampus(Campus c) {
+	 *//*
+	public String exportaCampus(String nom, String autor, String[] aules) {
 		try {
 			ExportaCampus campus = ExportaCampus.getInstancia();
-			campus.exportaCampus(c, true);
+			campus.exportaCampus(nom, autor, aules, true);
 			return null;
 		}
 		catch (Exception e) {
 			return e.getMessage();
 		}
-	}
+	}*/
 	
 	/**
 	 * Exporta una Data
 	 * @param d data a exportar
 	 * @return null en cas de cap error, l'error com a String altrament
-	 */
-	public String exportaData(Data d) {
+	 *//*
+	public String exportaData(int dia, int hora) {
 		try {
 			ExportaData data = ExportaData.getInstancia();
-			data.exportaData(d, true);
+			data.exportaData(dia, hora, true);
 			return null;
 		}
 		catch (Exception e) {
@@ -111,8 +113,8 @@ public final class ControladorPersistencia {
 	 * Exporta un Grup
 	 * @param g grup a exportar
 	 * @return null en cas de cap error, l'error com a String altrament
-	 */
-	public String exportaGrup(Grup g) {
+	 *//*
+	public String exportaGrup(int numero, int places, String franja, ) {
 		try {
 			ExportaGrup grup = ExportaGrup.getInstancia();
 			grup.exportaGrup(g, true);
@@ -160,10 +162,11 @@ public final class ControladorPersistencia {
 	 * @param pe pla d'estudis a exportar
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
-	public String exportaPlaEstudis(PlaEstudis pe) {
+	public String exportaPlaEstudis(String path, String nom, String autor, Map<Integer, 
+			boolean[]> franja, int[] rang, String[] nomassig) {
 		try {
 			ExportaPlaEstudis plaEstudis = ExportaPlaEstudis.getInstancia();
-			plaEstudis.exportaPlaEstudis(pe, true);
+			plaEstudis.exportaPlaEstudis(path, nom, autor, franja, rang, nomassig, true);
 			return null;
 		}
 		catch (Exception e) {
@@ -355,12 +358,6 @@ public final class ControladorPersistencia {
 	public String importaPlaEstudis(String path) {
 		ImportaPlaEstudis ipe = ImportaPlaEstudis.getInstancia();
 		if ((error = ipe.importaPlaEstudis(path)) != null) return error;
-		if ((error = cd.CrearCampus(ipe.getNom())) != null) return error;
-		if ((error = cd.ModificarPlaEstudis(ipe.getNom(), null, ipe.getAutor(), ipe.getLectiu(), ipe.getRangDia())) != null) return error;
-		for (Assignatura a : ipe.getAssignatures()) {
-			if ((error = cd.CrearAssignatura(ipe.getNom(), a.getNom())) != null) return error;
-			if ((error = cd.ModificarAssignatura(ipe.getNom(), a.getNom(), null)) != null) return error;
-		}
 		return null;
 	}
 	
@@ -440,5 +437,62 @@ public final class ControladorPersistencia {
 	public String importaSolapaments(String path, PlaEstudis pe, Assignatura a, Grup g, SubGrup sg) {
 		ImportaSolapaments is = ImportaSolapaments.getInstancia();
 		return is.importaSolapaments(path, pe, a, g, sg);
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////  FUNCIONS  /////////////////////////////////////
+	
+	public String getAssignatura(String path, String pla, String assig) {
+		return cd.getExportAssignatura(path, pla, assig);
+	}
+
+	public String getAula(String path, String nom, String s) {
+		return cd.getExportAula(path, nom, s);
+	}
+
+	public String getSessionsG(String path, String nomPE, String nomAssig, String first, Integer second) {
+		return cd.getExportSessionsG(path, nomPE, nomAssig, first, second);
+	}
+	
+	public String getSessionsSG(String path, String nomPE, String nomAssig, String first, Integer second) {
+		return cd.getExportSessionsSG(path, nomPE, nomAssig, first, second);
+	}
+
+	public String getGrups(String path, String nomPE, String nomAssig, int g) {
+		return cd.getExportGrups(path, nomPE, nomAssig, g);
+	}
+
+	public String getHoresAptes(String path, String nomPE, String nomAssig) {
+		return cd.getExportHoresAptes(path, nomPE, nomAssig);
+	}
+
+	public String getSolapaments(String path, String nomPE, String nomAssig) {
+		return cd.getExportSolapaments(path, nomPE, nomAssig);
+	}
+
+	public String getSubGrup(String path, String nomPE, String nomAssig, int numero, int sg) {
+		return cd.getExportSubGrup(path, nomPE, nomAssig, numero, sg);
+	}
+
+	public String getHoresAptes(String path, String nomPE, String nomAssig, int numero) {
+		return getExportHoresAptes(path, nomPE, nomAssig, numero);
+	}
+
+	public String getSolapaments(String path, String nomPE, String nomAssig, int numero) {
+		return cd.getExportSolapaments(path, nomPE, nomAssig, numero);
+	}
+
+	public String getHoresAptes(String path, String nomPE, String nomAssig, int numGrup, int numero) {
+		return getExportHoresAptes(path, nomPE, nomAssig, numGrup, numero);
+	}
+
+	public String getSolapaments(String path, String nomPE, String nomAssig, int numGrup, int numero) {
+		return cd.getExportSolapaments(path, nomPE, nomAssig, numGrup, numero);
+	}
+	
+	public String creaPlaEstudisImportat(String nom, String autor, Map<Integer, boolean[]> lectiu, int[] rangDia) {
+		if ((error = cd.CrearPlaEstudis(nom)) != null) return error;
+		if ((error = cd.ModificarPlaEstudis(nom, null, autor, lectiu, rangDia)) != null) return error;
+		return null;
 	}
 }

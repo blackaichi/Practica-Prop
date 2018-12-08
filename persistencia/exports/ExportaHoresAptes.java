@@ -1,7 +1,6 @@
 package persistencia.exports;
 
-import java.util.Map;
-import domini.restriccions.*;
+import java.util.*;
 
 /**
  * 
@@ -35,10 +34,9 @@ public class ExportaHoresAptes extends Exporta {
 	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
 	 * @return la codificació de les HoresAptes
 	 */
-	public String exportaHoresAptes(HoresAptes ha, boolean crea) {
+	public String exportaHoresAptes(String path, Map<Integer, boolean[]> franja, boolean crea) {
 		String endl = "\n";
 		String str = "HoresAptes".concat(endl);
-		Map<Integer, boolean[]> franja = ha.getHoresAptes();
 		boolean[] b;
 		for (int i = 0; i < 7; ++i) {
 			b = franja.get(i);
@@ -54,7 +52,7 @@ public class ExportaHoresAptes extends Exporta {
 		}
 		str = str.concat(endl);
 		str = str.concat("END");
-		if (crea) Exporta.exporta(str);
+		if (crea) Exporta.exporta(path, str);
 		return str;
 	}
 }

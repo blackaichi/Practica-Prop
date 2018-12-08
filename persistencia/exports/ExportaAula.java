@@ -1,7 +1,6 @@
 package persistencia.exports;
 
 import java.util.*;
-import domini.classes.*;
 
 /**
  * 
@@ -35,12 +34,11 @@ public class ExportaAula extends Exporta {
 	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
 	 * @return la codificació de l'aula
 	 */
-	public String exportaAula(Aula a, boolean crea) {
+	public String exportaAula(String path, String nomAula, String autor, int capacitat, HashSet<String> equip, boolean crea) {
 		String endl = "\n";
 		String str = "Aula".concat(endl);
-		str = str.concat(a.getNom().concat(endl));
-		str = str.concat(String.valueOf(a.getCapacitat())).concat(endl);
-		HashSet<String> equip = a.getEquip();
+		str = str.concat(nomAula.concat(endl));
+		str = str.concat(String.valueOf(capacitat)).concat(endl);
 		boolean first = true;  
 		if (equip.isEmpty()) str = str.concat("noequip");
 		for (String s : equip) {
@@ -50,7 +48,7 @@ public class ExportaAula extends Exporta {
 		}
 		str = str.concat(endl);
 		str = str.concat("END");
-		if (crea) Exporta.exporta(str);
+		if (crea) Exporta.exporta(path, str);
 		return str;
 	}
 }

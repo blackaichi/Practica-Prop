@@ -1,7 +1,7 @@
 package persistencia.exports;
 
 import java.util.*;
-import domini.classes.*;
+import utils.*;
 
 /**
  * 
@@ -35,31 +35,24 @@ public class ExportaAssignatura extends Exporta {
 	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
 	 * @return la codificació de l'Assignatura
 	 */
-	public String exportaAssignatura(Assignatura a, boolean crea) {
+	public String exportaAssignatura(String path, String nomPE, String nomAssig, HashSet<Pair<String,Integer>> sessionsg,
+			HashSet<Pair<String,Integer>> sessionssg, int[] grups, boolean crea) {
 		String endl = "\n";
 		String str = "Assignatura".concat(endl);
-		ExportaSessioGrup esg = ExportaSessioGrup.getInstancia();
-		ExportaSessioSubGrup essg = ExportaSessioSubGrup.getInstancia();
-		ExportaGrup eg = ExportaGrup.getInstancia();
-		ExportaHoresAptes eha = ExportaHoresAptes.getInstancia();
-		ExportaSolapaments es = ExportaSolapaments.getInstancia();
-		str = str.concat(a.getNom().concat(endl));
-		HashSet<SessioGrup> sessionsG = a.getSessionsG();
-		str = str.concat(String.valueOf(sessionsG.size()).concat(endl).concat("{").concat(endl));
-		for (SessioGrup sg : sessionsG) str = str.concat(esg.exportaSessioGrup(sg, false)).concat(endl);
-		str = str.concat("}").concat(endl);
-		HashSet<SessioSubGrup> sessionsSG = a.getSessionsSG();
-		str = str.concat(String.valueOf(sessionsSG.size()).concat(endl).concat("{").concat(endl));
-		for (SessioSubGrup ssg : sessionsSG) str = str.concat(essg.exportaSessioSubGrup(ssg, false)).concat(endl);
-		str = str.concat("}").concat(endl);
-		HashSet<Grup> grup = a.getGrups();
-		str = str.concat(String.valueOf(grup.size()).concat(endl).concat("{").concat(endl));
-		for (Grup g : grup) str = str.concat(eg.exportaGrup(g, false)).concat(endl);
-		str = str.concat("}").concat(endl);
-		str = str.concat(eha.exportaHoresAptes(a.getHoresAptes(), false)).concat(endl);
-		str = str.concat(es.exportaSolapaments(a.getSolapaments(), false)).concat(endl);
+		str = str.concat(nomAssig.concat(endl));
+		for (Pair<String,Integer> s : sessionsg) {
+			str = str.concat(cp.getSessionsG(path, nomPE, nomAssig, s.first, s.second)).concat(endl);
+		}
+		for (Pair<String,Integer> s : sessionssg) {
+			str = str.concat(cp.getSessionsSG(path, nomPE, nomAssig, s.first, s.second)).concat(endl);
+		}
+		for (int g : grups) {
+			str = str.concat(cp.getGrups(path, nomPE, nomAssig, g)).concat(endl);
+		}
+		str = str.concat(cp.getHoresAptes(path, nomPE, nomAssig)).concat(endl);
+		str = str.concat(cp.getSolapaments(path, nomPE, nomAssig)).concat(endl);
 		str = str.concat("END");
-		if (crea) Exporta.exporta(str);
+		if (crea) Exporta.exporta(path, str);
 		return str;
 	}
 	
