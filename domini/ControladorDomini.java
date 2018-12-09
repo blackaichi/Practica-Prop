@@ -1,13 +1,20 @@
 package domini;
 
 import domini.classes.*;
+import domini.restriccions.*;
+import persistencia.ControladorPersistencia;
+import persistencia.exports.ExportaSessioSGAssignada;
+import persistencia.exports.ExportaSessioSubGrup;
+import persistencia.exports.ExportaSolapaments;
+import persistencia.exports.ExportaSubGrup;
+
 import java.util.*;
 import utils.*;
-
 /**
  * 
  * @author eric.casanovas@est.fib.upc.edu
  * @autor hector.morales.carnice@est.fib.upc.edu
+ * @author adria.manero@est.fib.upc.edu
  *
  */
 public final class ControladorDomini {
@@ -438,30 +445,12 @@ public final class ControladorDomini {
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////  EXPORTS  //////////////////////////////////////
 	
-	public String exportaPlaEstudis(String path, String nom) {
-		try {
-			String autor = PlaEstudis.getPlaEstudis(nom).getAutor();
-			Map<Integer,boolean[]> lectiu = PlaEstudis.getPlaEstudis(nom).getLectiuSetmana();
-			int[] rang = PlaEstudis.getPlaEstudis(nom).getRang();
-			HashSet<Assignatura> assigs = PlaEstudis.getPlaEstudis(nom).getAssignatures();
-			String[] nomAssig = new String[assigs.size()];
-			int i = 0;
-			for (Assignatura a : assigs) {
-				nomAssig[i++] = a.getNom();
-			}
-			ControladorPersistencia.getInstancia().exportaPlaEstudis(path,nom,autor,lectiu,rang,nomAssig);
-		}
-		catch(Exception e) {
-			return e.toString();
-		}
-		
-		return null;
-	}
+
 	public String exportaAssignatura(String path, String plaEst, String nomA) {
 		try {
 			Assignatura a = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(nomA);
 			
-			HashSet<SessioGrup> SG = a.getSessionsG(); //HE DE PASSAR SOL ELS IDENTIFICADORS
+			HashSet<SessioGrup> SG = a.getSessionsG();
 			HashSet<SessioSubGrup> SSG = a.getSessionsSG();
 			HashSet<Grup> G = a.getGrups();
 			
@@ -486,7 +475,7 @@ public final class ControladorDomini {
 			}
 			Map<Integer, boolean[]> horesAptes = a.getHoresAptes().getHoresAptes();
 			HashMap<String, HashSet<Integer>> solapaments = a.getSolapaments().getDisjuntes();
-			ControladorPersistencia.getInstancia().exportaAssignatura(path,nomA,plaEst,sessionsGrup,sessionsSGrup,grups,horesAptes,solapaments);
+			ControladorPersistencia.getInstancia().exportaAssignatura(path,plaEst,nomA,sessionsGrup,sessionsSGrup,grups,horesAptes,solapaments);
 			return null;
 		}
 		catch(Exception e) {
@@ -494,28 +483,24 @@ public final class ControladorDomini {
 		}
 		return null;
 	}
+	
 	public String exportaAula(String path, String nomAula, String nomCampus) {
 		try {
 			Aula a = Campus.getCampus(nomCampus).getAula(nomAula);
 			int capacitat = a.getCapacitat();
 			HashSet<String> equipament = a.getEquip();
-			ControladorPersistencia.getInstancia().exportaAula(path,nomAula,nomCampus,capacitat,equipament);
+			ControladorPersistencia.getInstancia().exportaAula(path,nomAula,capacitat,equipament);
 			return null;
 		}
 		catch (Exception e) {
 			return e.toString();
 		}
 	}
+	
 	public String exportaCampus(String path, String nomC) {
 		try {
 			Campus c = Campus.getCampus(nomC);
-			HashSet<Campus> totCampus = Campus.getAllCampus();
-			HashSet<String> allCampus = new HashSet<String>();	
-			
-			for (Campus camp : totCampus) {
-				allCampus.add(camp.getNom());
-			}
-			
+
 			String autor = c.getAutor();
 			HashSet<Aula> aules = c.getAllAules();
 			HashSet<String> allAules = new HashSet<String> ();
@@ -523,58 +508,59 @@ public final class ControladorDomini {
 			for(Aula a : aules) {
 				allAules.add(a.getNom());
 			}
-			//TODO: he afegit el hashSet amb nom dels campus per si calía
-			ControladorPersistencia.getInstancia().exportaCampus(path,nomC,autor,allAules,allCampus);
-		}
-		catch (Exception e) {
-			return e.toString();
-		}
-	}
-	public String exportaData(String path) {
-		try {
-			
-		}
-		catch (Exception e) {
-			return e.toString();
-		}
-	}
-	
-	public String exportaGrup(String path,int numero, int places, String assignatura, String plaEst) {
-		try {
-			Grup g = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(assignatura).getGrup(numero);
-			String franja = g.getFranja();
-			HashSet<SubGrup> sg = g.getAllSubGrups();
-			HashSet<SessioGAssignada> sga = g.getSessions();
-			HashSet<Integer> allSubGrups = new HashSet<Integer>();
-			for (SubGrup subg : sg) {
-				allSubGrups.add(subg.getNumero());
-			}
-			//TODO: falta com tractar el hashSet de SessioGAssignada.
-			Map<Integer, boolean[]> horesAptes = g.getRestriccioHoresAptes().getHoresAptes();
-			HashMap<String, HashSet<Integer>> solapaments = g.getSolapaments().getDisjuntes();
-			ControladorPersistencia.getInstancia().exportaCampus(path,numero,places,franja,allSubGrups,sessionsAssignades,horesAptes,solapaments,assignatura,plaEst);
+			ControladorPersistencia.getInstancia().exportaCampus(path,nomC,autor,allAules);
 			return null;
 		}
 		catch (Exception e) {
 			return e.toString();
 		}
 	}
-	public String exportaHorari(String path) { //TODO
+		
+	public String exportaGrup(String path,int numero, String assignatura, String plaEst) {
 		try {
-			
-		}
-		catch (Exception ex) {
-			return ex.getMessage();
-		}
-	}
-	public String exportaHoresAptes(String path, String plaEst) { //TODO: com puc saber de quines hores aptes parlo si plaEstudis no té una instancia de HoresAptes.
-		try {
-			
+			Grup g = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(assignatura).getGrup(numero);
+			String franja = g.getFranja();
+			Integer places = g.getPlaces();
+			HashSet<SubGrup> sg = g.getAllSubGrups();
+			HashSet<SessioGAssignada> sga = g.getSessions();
+			HashSet<Integer> allSubGrups = new HashSet<Integer>();
+			for (SubGrup subg : sg) {
+				allSubGrups.add(subg.getNumero());
+			}
+			Map<Integer, boolean[]> horesAptes = g.getRestriccioHoresAptes().getHoresAptes();
+			HashMap<String, HashSet<Integer>> solapaments = g.getSolapaments().getDisjuntes();
+			ControladorPersistencia.getInstancia().exportaCampus(path,plaEst,assignatura,numero,places,franja,allSubGrups,horesAptes,solapaments);
+			return null;
 		}
 		catch (Exception e) {
-			return e.getMessage();
+			return e.toString();
 		}
 	}
+	
+	public String exportaHorari(String path) { //TODO
+		try {
+			return null;
+		}
+		catch (Exception ex) {
+			return ex.toString();
+		}
+	}
+	
+	public String exportaHoresAptes(String path, String plaEst, String assig, int grup, int subGrup) {
+		try {
+			HoresAptes ha;
+			if (subGrup != 0) ha = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(assig).getGrup(grup).getSubGrup(subGrup).getRestriccioHoresAptes();
+			else if (grup != 0) ha = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(assig).getGrup(grup).getRestriccioHoresAptes();
+			else ha = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(assig).getHoresAptes();
+			Map<Integer,boolean[]> franja = ha.getHoresAptes();
+			ControladorPersistencia.getInstancia().exportaHoresAptes(path,franja);
+			return null;
+		}
+		catch (Exception e) {
+			return e.toString();
+		}
+	}
+	
 	public String exportaPlaEstudis(String path, String plaEst) {
 		try {
 			PlaEstudis pe = PlaEstudis.getPlaEstudis(plaEst);
@@ -587,34 +573,88 @@ public final class ControladorDomini {
 			}
 			int[] rang = pe.getRang();
 			ControladorPersistencia.getInstancia().exportaPlaEstudis(path,plaEst,autor,lectiu,assignatures,rang);
-
+			return null;
 		}
 		catch (Exception e) {
-			return e.getMessage();
+			return e.toString();
 		}
 	}
-	public String exportaSessioGAssignada(String path, String nomG) {
+	public String exportaSessioGAssignada(String path, String nomG) { //TODO no se que he de exportar d'aqui
+		try {
+			return null;
+		}
+		catch (Exception e) {
+			return e.toString();
+		}
+	}
+	public String exportaSessioGrup(String path, String plaEst, String nomAssig, String tipus, Integer hores) {
 		try {
 			
+			SessioGrup sg = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(nomAssig).getSessioG(tipus,hores);
+			Pair<String,Integer> sessionsGrup = new Pair<String,Integer>();
+			HashSet<String> equip = sg.getMaterial();
+			int nsessions = sg.getnsessions();
+			HashSet<SessioGAssignada> sga = sg.getAllSessionsGA();
+			HashSet<Integer> ngrups = new HashSet<Integer>();
+			for (SessioGAssignada sessio : sga) {
+				ngrups.add(sessio.getGrup().getNumero());
+			}
+			ControladorPersistencia.getInstancia().exportaSessioGrup(path,plaEst,nomAssig,equip,hores,tipus,nsessions,ngrups);
+			
+			return null;
 		}
 		catch (Exception e) {
-			return e.getMessage();
+			return e.toString();
 		}
 	}
-	public String exportaSessioGrup(String path, String nomAssig, String plaEst) { 
+	
+	public String exportaSessioSGAssignada(String path) { //TODO
 		try {
-			HashSet<SessioGrup> sg = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(nomAssig).getSessionsG();
-			HashSet<Pair<String,Integer> > sessionsGrup = new HashSet<Pair<String,Integer> >();
-			for (SessioGrup sessio : sg) {
-				Pair<String,Integer> p = new Pair<String,Integer>();
-				p.first = sessio.getTipus();
-				p.second = sessio.getHores();
-				sessionsGrup.add(p);
-			}
-			//
+			
+			return null;
 		}
 		catch (Exception e) {
-			return e.getMessage();
+			return e.toString();
+		}
+	}
+	public String exportaSessioSubGrup(String path, String plaEst, String nomAssig, String tipus, Integer hores) {
+		try {
+			
+			SessioSubGrup ssg = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(nomAssig).getSessioSG(tipus, hores);
+			HashSet<String> equip = ssg.getMaterial();
+			int nsessions = ssg.getnsessions();
+			HashSet<SessioSGAssignada> ssga = ssg.getAllSessionsSGA();
+			HashSet<Integer> ngrups = new HashSet<Integer>();
+			for (SessioSGAssignada sessio : ssga) {
+				ngrups.add(sessio.getSubGrup().getNumero());
+			}
+			ControladorPersistencia.getInstancia().exportaSessioGrup(path,plaEst,nomAssig,equip,hores,tipus,nsessions,ngrups);
+			return null;
+		}
+		catch (Exception e) {
+			return e.toString();
+		}
+	}
+	public String exportaSubGrup(String path, int numeroSG,int numeroG, String assignatura, String plaEst) {
+		try {
+			SubGrup sg = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(assignatura).getGrup(numeroG).getSubGrup(numeroSG);
+			Integer places = sg.getPlaces();
+			Map<Integer, boolean[]> horesAptes = sg.getRestriccioHoresAptes().getHoresAptes();
+			HashMap<String, HashSet<Integer>> solapaments = sg.getSolapaments().getDisjuntes();
+			ControladorPersistencia.getInstancia().exportaCampus(path,plaEst,assignatura,numeroG,numeroSG,places,horesAptes,solapaments);
+			return null;
+		}
+		catch (Exception e) {
+			return e.toString();
+		}
+	}
+	public String exportaSolapaments(Solapaments s) { //TODO
+		try {
+			
+			return null;
+		}
+		catch (Exception e) {
+			return e.toString();
 		}
 	}
 }
