@@ -54,8 +54,8 @@ public final class ControladorPersistencia {
 			HashSet<Pair<String,Integer>> sessionssg, HashSet<Integer> grups, Map<Integer, boolean[]> horesAptes,
 			HashMap<String, HashSet<Integer>> solapaments) {
 		try {
-			ExportaAssignatura assignatura = ExportaAssignatura.getInstancia();
-			assignatura.exportaAssignatura(path, nomPE, nomAssig, sessionsg, sessionssg, grups, horesAptes, solapaments, true);
+			ExportaAssignatura.getInstancia().exportaAssignatura(path, nomPE, 
+					nomAssig, sessionsg, sessionssg, grups, horesAptes, solapaments, true);
 			return null;
 		}
 		catch (Exception e) {
@@ -70,8 +70,7 @@ public final class ControladorPersistencia {
 	 */
 	public String exportaAula(String path, String nom, int capacitat, HashSet<String> equip) {
 		try {
-			ExportaAula aula = ExportaAula.getInstancia();
-			aula.exportaAula(path, nom, capacitat, equip, true);
+			ExportaAula.getInstancia().exportaAula(path, nom, capacitat, equip, true);
 			return null;
 		}
 		catch (Exception e) {
@@ -86,8 +85,7 @@ public final class ControladorPersistencia {
 	 */
 	public String exportaCampus(String path, String nom, String autor, HashSet<String> aules) {
 		try {
-			ExportaCampus campus = ExportaCampus.getInstancia();
-			campus.exportaCampus(path, nom, autor, aules, true);
+			ExportaCampus.getInstancia().exportaCampus(path, nom, autor, aules);
 			return null;
 		}
 		catch (Exception e) {
@@ -100,10 +98,9 @@ public final class ControladorPersistencia {
 	 * @param d data a exportar
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
-	public String exportaData(int dia, int hora) {
+	public String exportaData(String path, int dia, int hora) {
 		try {
-			ExportaData data = ExportaData.getInstancia();
-			data.exportaData(dia, hora, true);
+			ExportaData.getInstancia().exportaData(path, dia, hora, true);
 			return null;
 		}
 		catch (Exception e) {
@@ -119,15 +116,14 @@ public final class ControladorPersistencia {
 	public String exportaGrup(String path, String nomPE, String nomAssig, int numero, int places, String franja, 
 			HashSet<Integer> numsg, Map<Integer, boolean[]> horesAptes,	HashMap<String, HashSet<Integer>> solapaments) {
 		try {
-			ExportaGrup grup = ExportaGrup.getInstancia();
-			grup.exportaGrup(path, nomPE, nomAssig, numero, places, franja, numsg, horesAptes, solapaments, true);
+			ExportaGrup.getInstancia().exportaGrup(path, nomPE, nomAssig, numero, places, franja, numsg, horesAptes, solapaments, true);
 			return null;
 		}
 		catch (Exception e) {
 			return e.getMessage();
 		}
 	}
-	
+	//TODO
 	/**
 	 * Exporta un Horari
 	 * @param e horari a exportar
@@ -135,8 +131,7 @@ public final class ControladorPersistencia {
 	 */
 	public String exportaHorari(HashSet<Estructura> e) {
 		try {
-			ExportaHorari horari = ExportaHorari.getInstancia();
-			horari.exportaHoraris(e, true);
+			ExportaHorari.getInstancia().exportaHoraris(e, true);
 			return null;
 		}
 		catch (Exception ex) {
@@ -149,10 +144,9 @@ public final class ControladorPersistencia {
 	 * @param ha hores aptes a exportar
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
-	public String exportaHoresAptes(HoresAptes ha) {
+	public String exportaHoresAptes(String path, Map<Integer, boolean[]> horesAptes) {
 		try {
-			ExportaHoresAptes horesAptes = ExportaHoresAptes.getInstancia();
-			horesAptes.exportaHoresAptes(ha, true);
+			ExportaHoresAptes.getInstancia().exportaHoresAptes(path, horesAptes, true);
 			return null;
 		}
 		catch (Exception e) {
@@ -168,24 +162,7 @@ public final class ControladorPersistencia {
 	public String exportaPlaEstudis(String path, String nom, String autor, Map<Integer, 
 			boolean[]> franja, int[] rang, String[] nomassig) {
 		try {
-			ExportaPlaEstudis plaEstudis = ExportaPlaEstudis.getInstancia();
-			plaEstudis.exportaPlaEstudis(path, nom, autor, franja, rang, nomassig, true);
-			return null;
-		}
-		catch (Exception e) {
-			return e.getMessage();
-		}
-	}
-	
-	/**
-	 * Exporta una SessioGAssignada
-	 * @param sga sessió de grup assignada a exportar
-	 * @return null en cas de cap error, l'error com a String altrament
-	 */
-	public String exportaSessioGAssignada(SessioGAssignada sga) {
-		try {
-			ExportaSessioGAssignada sessioGAssignada = ExportaSessioGAssignada.getInstancia();
-			sessioGAssignada.exportaSessioGAssignada(sga, true);
+			ExportaPlaEstudis.getInstancia().exportaPlaEstudis(path, nom, autor, franja, rang, nomassig);
 			return null;
 		}
 		catch (Exception e) {
@@ -198,42 +175,26 @@ public final class ControladorPersistencia {
 	 * @param sg sessió de grup a exportar
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
-	public String exportaSessioGrup(SessioGrup sg) {
+	public String exportaSessioGrup(String path, HashSet<String> equip,
+			int hores, String tipus, int nsessions, int[] ngrups) {
 		try {
-			ExportaSessioGrup sessioGrup = ExportaSessioGrup.getInstancia();
-			sessioGrup.exportaSessioGrup(sg, true);
+			ExportaSessioGrup.getInstancia().exportaSessioGrup(path, equip, hores, tipus, nsessions, ngrups, true);
 			return null;
 		}
 		catch (Exception e) {
 			return e.getMessage();
 		}
 	}
-	
-	/**
-	 * Exporta una SessioSGAssignada
-	 * @param ssga sessió de subgrup assignada a exportar
-	 * @return null en cas de cap error, l'error com a String altrament
-	 */
-	public String exportaSessioSGAssignada(SessioSGAssignada ssga) {
-		try {
-			ExportaSessioSGAssignada sessioSGAssignada = ExportaSessioSGAssignada.getInstancia();
-			sessioSGAssignada.exportaSessioSGAssignada(ssga, true);
-			return null;
-		}
-		catch (Exception e) {
-			return e.getMessage();
-		}
-	}
-	
+
 	/**
 	 * Exporta una SessioSubGrup
 	 * @param ssg sessió de subgrup a exportar
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
-	public String exportaSessioSubGrup(SessioSubGrup ssg) {
+	public String exportaSessioSubGrup(String path, HashSet<String> equip,
+			int hores, String tipus, int nsessions, int[] nsubgrups) {
 		try {
-			ExportaSessioSubGrup sessioSubGrup = ExportaSessioSubGrup.getInstancia();
-			sessioSubGrup.exportaSessioSubGrup(ssg, true);
+			ExportaSessioSubGrup.getInstancia().exportaSessioSubGrup(path, equip, hores, tipus, nsessions, nsubgrups, true);
 			return null;
 		}
 		catch (Exception e) {
@@ -246,10 +207,10 @@ public final class ControladorPersistencia {
 	 * @param sg subgrup a exportar
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
-	public String exportaSubGrup(SubGrup sg) {
+	public String exportaSubGrup(String path, int numero, int places, 
+			Map<Integer, boolean[]> horesAptes,	HashMap<String, HashSet<Integer>> solapaments) {
 		try {
-			ExportaSubGrup subGrup = ExportaSubGrup.getInstancia();
-			subGrup.exportaSubGrup(sg, true);
+			ExportaSubGrup.getInstancia().exportaSubGrup(path, numero, places, horesAptes, solapaments, true);
 			return null;
 		}
 		catch (Exception e) {
@@ -262,10 +223,9 @@ public final class ControladorPersistencia {
 	 * @param s solapaments a exportar
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
-	public String exportaSolapaments(Solapaments s) {
+	public String exportaSolapaments(String path, HashMap<String, HashSet<Integer>> solapaments) {
 		try {
-			ExportaSolapaments solapaments = ExportaSolapaments.getInstancia();
-			solapaments.exportaSolapaments(s, true);
+			ExportaSolapaments.getInstancia().exportaSolapaments(path, solapaments, true);
 			return null;
 		}
 		catch (Exception e) {
@@ -293,9 +253,10 @@ public final class ControladorPersistencia {
 	 * @param c campus al qual pertany l'aula
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
-	public String importaAula(String path, Campus c) {
+	public String importaAula(String path, HashSet<String> nomaules, HashSet<Integer> capacitat,
+			HashSet<HashSet<String>> equip) {
 		ImportaAula ia = ImportaAula.getInstancia();
-		return ia.importaAula(path, c);
+		return ia.importaAula(path, nomaules, capacitat, equip);
 	}
 	
 	/**
@@ -303,9 +264,10 @@ public final class ControladorPersistencia {
 	 * @param path path del fitxer que volem importar
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
-	public String importaCampus(String path) {
+	public String importaCampus(String path, String nomC, String autor, HashSet<String> nomaules,
+			HashSet<Integer> capacitat, HashSet<HashSet<String>> equip) {
 		ImportaCampus ic = ImportaCampus.getInstancia();
-		return ic.importaCampus(path);
+		return ic.importaCampus(path, nomC, autor, nomaules, capacitat, equip);
 	}
 	
 	/**
@@ -313,9 +275,9 @@ public final class ControladorPersistencia {
 	 * @param path path del fitxer que volem importar
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
-	public String importaData(String path) {
+	public String importaData(String path, int dia, int hora) {
 		ImportaData id = ImportaData.getInstancia();
-		return id.importaData(path);
+		return id.importaData(path, dia, hora);
 	}
 	
 	/**

@@ -32,13 +32,12 @@ public class ExportaData extends Exporta {
 	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
 	 * @return la codificació de la Data
 	 */
-	public String exportaData(String path, int dia, int hora, boolean crea) {
+	public String exportaData(int dia, int hora) {
 		String endl = "\n";
 		String str = "Data".concat(endl);
 		str = str.concat(String.valueOf(dia)).concat(endl);
 		str = str.concat(String.valueOf(hora)).concat(endl);
-		str = str.concat("END");
-		if (crea) Exporta.exporta(path, str);
+		str = str.concat("END").concat(endl);
 		return str;
 	}
 }

@@ -35,7 +35,7 @@ public class ExportaPlaEstudis extends Exporta {
 	 * @return la codificació del PlaEstudis
 	 */
 	public String exportaPlaEstudis(String path, String nom, String autor, Map<Integer, boolean[]> franja,
-			int[] rang, String[] nomassig, boolean crea) throws Exception {
+			int[] rang, String[] nomassig) {
 		String endl = "\n";
 		String str = "PlaEstudis".concat(endl);
 		str = str.concat(nom).concat(endl);
@@ -69,7 +69,7 @@ public class ExportaPlaEstudis extends Exporta {
 			str = str.concat(cp.getAssignatura(path, nom, s)).concat(endl);
 		}
 		str = str.concat("END");
-		if (crea) Exporta.exporta(path, str);
+		Exporta.exporta(path, str);
 		return str;
 	}
 }

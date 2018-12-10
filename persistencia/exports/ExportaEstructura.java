@@ -30,28 +30,23 @@ public class ExportaEstructura extends Exporta {
 	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
 	 * @return la codificació de l'Estructura
 	 */
-	static String exportaEstructura(Estructura e, int n, boolean crea) {
+	static String exportaEstructura(String path, Map<Integer, Map<Integer, Pair<Pair<String, Integer>, String>>> horari,
+			HashSet<String> flags, String nomPE, String nomC, boolean crea) {
 		String endl = "\n";
-		String str = "Horari ".concat(String.valueOf(n)).concat(endl);
-		ExportaSegment es = ExportaSegment.getInstancia();
-		HashSet<Segment> s;
+		String str = "Horari ".concat(endl);
 		for (int dia = 0; dia < 7; ++dia) {
 			str = str.concat(String.valueOf(dia)).concat(endl);
-			str = str.concat("{").concat(endl);
 			for (int hora = 0; hora < 24; ++hora) {
 				str = str.concat(String.valueOf(hora)).concat(endl);
-				str = str.concat("{").concat(endl);
 				s = e.getAllSegments(dia, hora);
 				if (s.isEmpty()) str = str.concat("buit").concat(endl);
 				else {
-					for (Segment se : s) str = str.concat(es.exportaSegment(se, false));
+					for (Segment se : s) str = str.concat(ExportaSegment.getInstancia().exportaSegment(se, false));
 				}
-				str = str.concat("}").concat(endl);
 			}
-			str = str.concat("}").concat(endl);
 		}
 		str = str.concat("END").concat(endl);
-		if (crea) Exporta.exporta(str);
+		if (crea) Exporta.exporta(path, str);
 		return str;
 	}
 }

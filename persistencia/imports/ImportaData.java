@@ -1,8 +1,6 @@
 package persistencia.imports;
 
 import java.io.*;
-import domini.classes.*;
-import utils.*;
 
 /**
  * 
@@ -20,9 +18,8 @@ public class ImportaData extends Importa {
 		return instancia;
 	}
 	
-	public String importaData(String path) {
+	public String importaData(String path, int dia, int hora) {
 		try {
-			int dia, hora;
 			File file = new File(path); 
 			BufferedReader br = new BufferedReader(new FileReader(file)); 
 			String s; 
@@ -35,12 +32,11 @@ public class ImportaData extends Importa {
 			dia = Integer.valueOf(s);
 			s = br.readLine();
 			hora = Integer.valueOf(s);
-			Data data = new Data(dia, hora);
 			br.close();
-			return new Pair<String, Data>(null, data);
+			return null;
 		}
 		catch (Exception e) {
-			return new Pair<String, Data>(e.getMessage(), null);
+			return e.getMessage();
 		}
 	}
 }

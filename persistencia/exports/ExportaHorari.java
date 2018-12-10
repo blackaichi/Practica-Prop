@@ -35,18 +35,13 @@ public class ExportaHorari extends Exporta {
 	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
 	 * @return la codificació dels Horaris
 	 */
-	public String exportaHoraris(HashSet<Estructura> e, boolean crea) {
+	public String exportaHoraris(String path, Map<Integer, Map<Integer, HashSet<Segment>>> horari,
+			HashSet<String> flags, String nomPE, String nomC, boolean crea) {
 		String endl = "\n";
 		String str = "Horaris".concat(endl);
-		str = str.concat(String.valueOf(e.size()).concat(endl).concat("{").concat(endl));
-		int n = 1;
-		for (Estructura a : e) {
-			str = str.concat(ExportaEstructura.exportaEstructura(a, n, false));
-			++n;
-		}
-		str = str.concat("}").concat(endl);
+		
 		str = str.concat("END");
-		if (crea) Exporta.exporta(str);
+		if (crea) Exporta.exporta(path, str);
 		return str;
 	}
 }

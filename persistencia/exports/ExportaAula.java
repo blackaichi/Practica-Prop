@@ -47,8 +47,11 @@ public class ExportaAula extends Exporta {
 			str = str.concat(s);
 		}
 		str = str.concat(endl);
-		str = str.concat("END");
-		if (crea) Exporta.exporta(path, str);
+		if (crea) {
+			str = str.concat("END");
+			Exporta.exporta(path, str);
+		}
+		str = str.concat(endl);
 		return str;
 	}
 }

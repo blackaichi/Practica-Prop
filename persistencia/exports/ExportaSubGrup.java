@@ -1,5 +1,9 @@
 package persistencia.exports;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+
 /**
  * 
  * @author eric.casanovas@est.fib.upc.edu
@@ -32,16 +36,19 @@ public class ExportaSubGrup extends Exporta {
 	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
 	 * @return la codificació del subgrup
 	 */
-	public String exportaSubGrup(String path, String nomPE, String nomAssig, int numGrup, int numero,
-			int places, boolean crea) {
+	public String exportaSubGrup(String path, int numero, int places, Map<Integer, boolean[]> horesAptes,
+			HashMap<String, HashSet<Integer>> solapaments, boolean crea) {
 		String endl = "\n";
 		String str = "SubGrup".concat(endl);
 		str = str.concat(String.valueOf(numero)).concat(endl);
 		str = str.concat(String.valueOf(places)).concat(endl);
-		str = str.concat(cp.getHoresAptes(path, nomPE, nomAssig, numGrup, numero)).concat(endl);
-		str = str.concat(cp.getSolapaments(path, nomPE, nomAssig, numGrup, numero)).concat(endl);
-		str = str.concat("END");
-		if (crea) Exporta.exporta(path, str);
+		str = str.concat(ExportaHoresAptes.getInstancia().exportaHoresAptes(horesAptes)).concat(endl);
+		str = str.concat(ExportaSolapaments.getInstancia().exportaSolapaments(solapaments)).concat(endl);
+		if (crea) {
+			str = str.concat("END");
+			Exporta.exporta(path, str);
+		}
+		str = str.concat(endl);
 		return str;
 	}
 }

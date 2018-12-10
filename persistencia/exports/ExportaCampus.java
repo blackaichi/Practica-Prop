@@ -34,7 +34,7 @@ public class ExportaCampus extends Exporta {
 	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
 	 * @return la codificació del Campus
 	 */
-	public String exportaCampus(String path, String nom, String autor, HashSet<String> aules, boolean crea) {
+	public String exportaCampus(String path, String nom, String autor, HashSet<String> aules) {
 		String endl = "\n";
 		String str = "Campus".concat(endl);
 		str = str.concat(nom.concat(endl));
@@ -43,7 +43,7 @@ public class ExportaCampus extends Exporta {
 			str = str.concat(cp.getAula(path, nom, s)).concat(endl);
 		}
 		str = str.concat("END");
-		if (crea) Exporta.exporta(path, str);
+		Exporta.exporta(path, str);
 		return str;
 	}
 }

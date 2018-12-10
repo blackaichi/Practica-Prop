@@ -1,7 +1,6 @@
 package persistencia.exports;
 
 import java.io.*;
-import java.util.*;
 
 import persistencia.ControladorPersistencia;
 
@@ -13,7 +12,7 @@ import persistencia.ControladorPersistencia;
 
 public class Exporta {
 	
-	ControladorPersistencia cp = ControladorPersistencia.getInstancia();
+	protected ControladorPersistencia cp = ControladorPersistencia.getInstancia();
 	
 	/**
 	 * Exporta a un fitxer el contingut de l'String s
@@ -22,12 +21,6 @@ public class Exporta {
 	 */
 	static String exporta(String path, String s) {
 		try {
-			/*Scanner reader = new Scanner(System.in);
-			System.out.print("On vols guardar el fitxer? (escriu el path absolut acabat en /)");
-			String path = reader.next();
-			System.out.print("Fica un nom pel fitxer: ");
-			path = path + reader.next();
-			reader.close();*/
 			BufferedWriter writer = new BufferedWriter(new FileWriter(path));
 			writer.write(s);
 			writer.close();

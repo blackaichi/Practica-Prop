@@ -34,7 +34,7 @@ public class ExportaHoresAptes extends Exporta {
 	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
 	 * @return la codificació de les HoresAptes
 	 */
-	public String exportaHoresAptes(String path, Map<Integer, boolean[]> franja, boolean crea) {
+	public String exportaHoresAptes(Map<Integer, boolean[]> franja) {
 		String endl = "\n";
 		String str = "HoresAptes".concat(endl);
 		boolean[] b;
@@ -50,9 +50,7 @@ public class ExportaHoresAptes extends Exporta {
 			}
 			str = str.concat(")");
 		}
-		str = str.concat(endl);
-		str = str.concat("END");
-		if (crea) Exporta.exporta(path, str);
+		str = str.concat(endl).concat("END").concat(endl);
 		return str;
 	}
 }

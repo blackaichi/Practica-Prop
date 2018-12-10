@@ -2,8 +2,6 @@ package persistencia.imports;
 
 import java.io.*;
 import java.util.*;
-import domini.classes.*;
-import persistencia.ControladorPersistencia;
 
 /**
  * 
@@ -12,31 +10,6 @@ import persistencia.ControladorPersistencia;
  */
 
 public class ImportaPlaEstudis extends Importa {
-	
-	/**
-	 * Nom del pla d'estudis
-	 */
-	private String nom;
-	
-	/**
-	 * Enregistra el nom de l'autor d'aquest pla d'estudis
-	 */
-	private String autor;
-		
-	/**
-	 * Horari lectiu per dia del Pla d'Estudis
-	 */
-	private Map<Integer, boolean[] > lectiu;
-		
-	/**
-	 * Importar les assignatures del pla
-	 */
-	private ImportaAssignatura ia = ImportaAssignatura.getInstancia();
-	
-	/**
-	 * Rang del Pla d'estudis
-	 */
-	private int[] rangDia;
 
 	private static ImportaPlaEstudis ipe;
 	
@@ -44,34 +17,13 @@ public class ImportaPlaEstudis extends Importa {
 		ipe = new ImportaPlaEstudis();
 		return ipe;
 	}
-	
-	public String getNom() {
-		return nom;
-	}
-	
-	public String getAutor() {
-		return autor;
-	}
-	
-	public Map<Integer, boolean[]> getLectiu() {
-		return lectiu;
-	}
-	
-	public int[] getRangDia() {
-		return rangDia;
-	}
-	
-	public ImportaAssignatura getAssignatures() {
-		return ia;
-	}
-	
-	public String importaPlaEstudis(String path) {
+
+	public String importaPlaEstudis(String path, String nom, String autor, Map<Integer, boolean[]> lectiu,
+			int[] rangDia) {
 		try {
 			File file = new File(path); 
 			BufferedReader br = new BufferedReader(new FileReader(file)); 
 			String s; 
-			Map<Integer, boolean[]> lectiu = new HashMap<Integer, boolean[]>();
-			int[] rangDia = new int[24];
 			s = br.readLine();
 			if (!s.equals("PlaEstudis")) {
 				br.close();
@@ -122,11 +74,10 @@ public class ImportaPlaEstudis extends Importa {
 				br.close();
 				return "Rang del dia incorrecte";
 			}
-			if (tokens[i] != "mati:") {
+			if (tokens[i++] != "mati:") {
 				br.close();
 				return "Sintaxi incorrecta a rangDia";
 			}
-			++i;
 			if (tokens[i] == "null") {
 				rangDia[0] = -1;
 				rangDia[1] = -1;
@@ -159,18 +110,6 @@ public class ImportaPlaEstudis extends Importa {
 				br.close();
 				return "Sintaxi incorrecta a rangDia";
 			}
-			int nassig = Integer.valueOf(br.readLine());
-			if (br.readLine() != "{") {
-				br.close();
-				return "Sintaxi incorrecta";
-			}
-			ImportaAssignatura ia = ImportaAssignatura.getInstancia();
-			if (br.readLine() != "}") {
-				br.close();
-				return "Sintaxi incorrecta";
-			}
-			ControladorPersistencia cp = ControladorPersistencia.getInstancia();
-			cp.creaPlaEstudisImportat(nom, autor, lectiu, rangDia);
 			br.close();
 			return null;
 		}

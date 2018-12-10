@@ -1,6 +1,6 @@
 package persistencia.exports;
 
-import domini.restriccions.*;
+import java.util.*;
 
 /**
  * 
@@ -34,13 +34,19 @@ public class ExportaSolapaments extends Exporta {
 	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
 	 * @return la codificació del solapament
 	 */
-	public String exportaSolapaments(Solapaments s, boolean crea) {
+	public String exportaSolapaments(HashMap<String, HashSet<Integer>> solapaments) {
 		String endl = "\n";
 		String str = "Solapaments".concat(endl);
-		
-		
-		str = str.concat("END");
-		if (crea) Exporta.exporta(str);
+		for (HashMap.Entry<String, HashSet<Integer>> entry : solapaments.entrySet()) {
+			str = str.concat(entry.getKey()).concat(" ");
+			boolean first = true;
+			for (Integer i : entry.getValue()) {
+				if (first) first = false;
+				else str = str.concat(",").concat(String.valueOf(i));
+			}
+			str = str.concat(";");
+		}
+		str = str.concat("END").concat(endl);
 		return str;
 	}
 }

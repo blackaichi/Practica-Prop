@@ -39,18 +39,19 @@ public class ExportaGrup extends Exporta {
 			HashMap<String, HashSet<Integer>> solapaments, boolean crea) {
 		String endl = "\n";
 		String str = "Grup".concat(endl);
-		ExportaHoresAptes eha = ExportaHoresAptes.getInstancia();
-		ExportaSolapaments es = ExportaSolapaments.getInstancia();
 		str = str.concat(String.valueOf(numero)).concat(endl);
 		str = str.concat(String.valueOf(places)).concat(endl);
 		str = str.concat(franja).concat(endl);
 		for (int sg : numsg) {
 			str = str.concat(cp.getSubGrup(path, nomPE, nomAssig, numero, sg)).concat(endl);
 		}
-		str = str.concat(eha.exportaHoresAptes(path, horesAptes, false)).concat(endl);
-		str = str.concat(es.exportaSolapaments(solapaments, false)).concat(endl);
-		str = str.concat("END");
-		if (crea) Exporta.exporta(path, str);
+		str = str.concat(ExportaHoresAptes.getInstancia().exportaHoresAptes(horesAptes)).concat(endl);
+		str = str.concat(ExportaSolapaments.getInstancia().exportaSolapaments(solapaments)).concat(endl);
+		if (crea) {
+			str = str.concat("END");
+			Exporta.exporta(path, str);
+		}
+		str = str.concat(endl);
 		return str;
 	}
 }

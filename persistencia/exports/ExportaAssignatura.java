@@ -40,8 +40,6 @@ public class ExportaAssignatura extends Exporta {
 			HashMap<String, HashSet<Integer>> solapaments, boolean crea) {
 		String endl = "\n";
 		String str = "Assignatura".concat(endl);
-		ExportaHoresAptes eha = ExportaHoresAptes.getInstancia();
-		ExportaSolapaments es = ExportaSolapaments.getInstancia();
 		str = str.concat(nomAssig.concat(endl));
 		for (Pair<String,Integer> s : sessionsg) {
 			str = str.concat(cp.getSessionsG(path, nomPE, nomAssig, s.first, s.second)).concat(endl);
@@ -52,11 +50,13 @@ public class ExportaAssignatura extends Exporta {
 		for (int g : grups) {
 			str = str.concat(cp.getGrups(path, nomPE, nomAssig, g)).concat(endl);
 		}
-		str = str.concat(eha.exportaHoresAptes(path, horesAptes, false)).concat(endl);
-		str = str.concat(es.exportaSolapaments(solapaments, false)).concat(endl);
-		str = str.concat("END");
-		if (crea) Exporta.exporta(path, str);
+		str = str.concat(ExportaHoresAptes.getInstancia().exportaHoresAptes(horesAptes)).concat(endl);
+		str = str.concat(ExportaSolapaments.getInstancia().exportaSolapaments(solapaments)).concat(endl);
+		if (crea) {
+			str = str.concat("END");
+			Exporta.exporta(path, str);
+		}
+		str = str.concat(endl);
 		return str;
 	}
-	
 }
