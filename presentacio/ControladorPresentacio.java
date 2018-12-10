@@ -197,73 +197,58 @@ public class ControladorPresentacio {
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////  EXPORTS  //////////////////////////////////////
 
-	public void exportaAssignatura(Assignatura a) {
-		String s = ControladorPersistencia.getInstancia().exportaAssignatura(a);
+	public void exportaAssignatura(String path, String plaEstudis, String assignatura) {
+		String s = ControladorDomini.getInstance().exportaAssignatura(path, plaEstudis, assignatura);
 		if(s != null) Main.getInstance().showWarning("Error exportar Assignatura",s);
 	}
 	
-	public void exportaAula(Aula a) {
-		String s = ControladorPersistencia.getInstancia().exportaAula(a);
+	public void exportaAula(String path, String campus, String aula) {
+		String s = ControladorDomini.getInstance().exportaAula(path, aula, campus);
 		if(s != null) Main.getInstance().showWarning("Error exportar Aula",s);
 	}
 	
-	public void exportaCampus(Campus c) {
-		String s = ControladorPersistencia.getInstancia().exportaCampus(c);	
+	public void exportaCampus(String path, String campus) {
+		String s = ControladorDomini.getInstance().exportaCampus(path, campus);
 		if(s != null) Main.getInstance().showWarning("Error exportar Campus",s);
 	}
 	
-	public void exportaData(Data d) {
-		String s = ControladorPersistencia.getInstancia().exportaData(d);
-		if(s != null) Main.getInstance().showWarning("Error exportar Data",s);
-	}
-	
-	public void exportaGrup(Grup g) {
-		String s = ControladorPersistencia.getInstancia().exportaGrup(g);
+	public void exportaGrup(String path, String plaEstudis, String assignatura, int numero) {
+		String s = ControladorDomini.getInstance().exportaGrup(path, numero, assignatura, plaEstudis);
 		if(s != null) Main.getInstance().showWarning("Error exportar Grup",s);
 	}
 	
-	public void exportaHorari(HashSet<Estructura> e) {
-		String s = ControladorPersistencia.getInstancia().exportaHorari(e);
+	public void exportaHorari(String path, String plaEstudis, String campus) {
+		String s = null;
 		if(s != null) Main.getInstance().showWarning("Error exportar Horari",s);
 	}
 	
-	public void exportaHoresAptes(HoresAptes ha) {
-		String s = ControladorPersistencia.getInstancia().exportaHoresAptes(ha);
+	public void exportaHoresAptes(String path, String plaEstudis, String assignatura, int grup, int subgrup) {
+		String s = ControladorDomini.getInstance().exportaHoresAptes(path, plaEstudis, assignatura, grup, subgrup);
 		if(s != null) Main.getInstance().showWarning("Error exportar HoresAptes",s);
 	}
 	
-	public void exportaPlaEstudis(PlaEstudis pe) {
-		String s = ControladorPersistencia.getInstancia().exportaPlaEstudis(pe);
+	public void exportaPlaEstudis(String path, String plaEstudis) {
+		String s = ControladorDomini.getInstance().exportaPlaEstudis(path, plaEstudis);
 		if(s != null) Main.getInstance().showWarning("Error exportar PlaEstudis",s);
 	}
 	
-	public void exportaSessioGAssignada(SessioGAssignada sga) {
-		String s = ControladorPersistencia.getInstancia().exportaSessioGAssignada(sga);
-		if(s != null) Main.getInstance().showWarning("Error exportar SessioGAssignada",s);
-	}
-	
-	public void exportaSessioGrup(SessioGrup sg) {
-		String s = ControladorPersistencia.getInstancia().exportaSessioGrup(sg);
+	public void exportaSessioGrup(String path, String plaEstudis, String assignatura, String tipus, int hores) {
+		String s = ControladorDomini.getInstance().exportaSessioGrup(path, plaEstudis, assignatura, tipus, hores);
 		if(s != null) Main.getInstance().showWarning("Error exportar SessioGrup",s);
 	}
 	
-	public void exportaSessioSGAssignada(SessioSGAssignada ssga) {
-		String s = ControladorPersistencia.getInstancia().exportaSessioSGAssignada(ssga);
-		if(s != null) Main.getInstance().showWarning("Error exportar SessioSGAssignada",s);
-	}
-	
-	public void exportaSessioSubGrup(SessioSubGrup ssg) {
-		String s = ControladorPersistencia.getInstancia().exportaSessioSubGrup(ssg);
+	public void exportaSessioSubGrup(String path, String plaEstudis, String assignatura, String tipus, int hores) {
+		String s = ControladorDomini.getInstance().exportaSessioGrup(path, plaEstudis, assignatura, tipus, hores);
 		if(s != null) Main.getInstance().showWarning("Error exportar SessioSubGrup",s);
 	}
 	
-	public void exportaSubGrup(SubGrup sg) {
-		String s = ControladorPersistencia.getInstancia().exportaSubGrup(sg);
+	public void exportaSubGrup(String path, String plaEstudis, String assignatura, int grup, int subgrup) {
+		String s = ControladorDomini.getInstance().exportaSubGrup(path, subgrup, grup, assignatura, plaEstudis);
 		if(s != null) Main.getInstance().showWarning("Error exportar SessioSubGrup",s);
 	}
 	
-	public void exportaSolapaments(Solapaments sol) {
-		String s = ControladorPersistencia.getInstancia().exportaSolapaments(sol);
+	public void exportaSolapaments(String path, String plaEstudis, String assignatura, int grup, int subgrup) {
+		String s = ControladorDomini.getInstance().exportaSolapaments(null);
 		if(s != null) Main.getInstance().showWarning("Error exportar Solapaments",s);
 	}
 	
@@ -309,20 +294,10 @@ public class ControladorPresentacio {
 		String s = ControladorPersistencia.getInstancia().importaPlaEstudis(path);
 		if(s != null) Main.getInstance().showWarning("Error importar PlaEstudis",s);
 	}
-	
-	public void importaSessioGAssignada(String path, PlaEstudis pe, Assignatura a, Grup g) {
-		String s = ControladorPersistencia.getInstancia().importaSessioGAssignada(path,pe,a,g);
-		if(s != null) Main.getInstance().showWarning("Error importar SessioGAssignada",s);
-	}
-	
+		
 	public void importaSessioGrup(String path, PlaEstudis pe, Assignatura a) {
 		String s = ControladorPersistencia.getInstancia().importaSessioGrup(path,pe,a);
 		if(s != null) Main.getInstance().showWarning("Error importar SessioGrup",s);
-	}
-	
-	public void importaSessioSGAssignada(String path, PlaEstudis pe, Assignatura a, Grup g, SubGrup sg) {
-		String s = ControladorPersistencia.getInstancia().importaSessioSGAssignada(path,pe,a,g,sg);
-		if(s != null) Main.getInstance().showWarning("Error importar SessioSGAssignada",s);
 	}
 	
 	public void importaSessioSubGrup(String path, PlaEstudis pe, Assignatura a) {
