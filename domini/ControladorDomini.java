@@ -641,7 +641,7 @@ public final class ControladorDomini {
 			Integer places = sg.getPlaces();
 			Map<Integer, boolean[]> horesAptes = sg.getRestriccioHoresAptes().getHoresAptes();
 			HashMap<String, HashSet<Integer>> solapaments = sg.getSolapaments().getDisjuntes();
-			ControladorPersistencia.getInstancia().exportaCampus(path,plaEst,assignatura,numeroG,numeroSG,places,horesAptes,solapaments);
+			ControladorPersistencia.getInstancia().exportaSubGrup(path,plaEst,assignatura,numeroG,numeroSG,places,horesAptes,solapaments);
 			return null;
 		}
 		catch (Exception e) {
