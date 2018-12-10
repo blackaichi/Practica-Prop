@@ -90,6 +90,19 @@ public class Aula {
 		return 0;
 	}
 	
+	/**
+	 * Assigna l'equip de l'aula.
+	 * @param equip Conjunt d'equip present a l'aula.
+	 * @return Excepció codificada en forma d'enter.
+	 */
+	public int setEquip(HashSet<String> equip) {
+		if(equip == null) return 154;
+		
+		this.resetEquip();
+		this.equip.addAll(equip);
+		return 0;
+	}
+	
 	////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////  GETTERS  /////////////////////////////////////
 	/**
