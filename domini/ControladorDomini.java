@@ -7,6 +7,7 @@ import persistencia.exports.ExportaSessioSGAssignada;
 import persistencia.exports.ExportaSessioSubGrup;
 import persistencia.exports.ExportaSolapaments;
 import persistencia.exports.ExportaSubGrup;
+import presentacio.vistes.Main;
 
 import java.util.*;
 import utils.*;
@@ -441,6 +442,11 @@ public final class ControladorDomini {
 }
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////  FUNCIONS PERSISTENCIA  ////////////////////////
+	
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////  GETS D'EXPORTS  ///////////////////////////////	
+	
+	
 
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////  EXPORTS  //////////////////////////////////////
@@ -475,6 +481,7 @@ public final class ControladorDomini {
 			}
 			Map<Integer, boolean[]> horesAptes = a.getHoresAptes().getHoresAptes();
 			HashMap<String, HashSet<Integer>> solapaments = a.getSolapaments().getDisjuntes();
+			
 			ControladorPersistencia.getInstancia().exportaAssignatura(path,plaEst,nomA,sessionsGrup,sessionsSGrup,grups,horesAptes,solapaments);
 			return null;
 		}
@@ -484,12 +491,12 @@ public final class ControladorDomini {
 		return null;
 	}
 	
-	public String exportaAula(String path, String nomAula, String nomCampus) {
+	public String exportaAula(String path, String nomAula, String nomCampus, boolean rec) {
 		try {
 			Aula a = Campus.getCampus(nomCampus).getAula(nomAula);
 			int capacitat = a.getCapacitat();
 			HashSet<String> equipament = a.getEquip();
-			ControladorPersistencia.getInstancia().exportaAula(path,nomAula,capacitat,equipament);
+			ControladorPersistencia.getInstancia().exportaAula(path,nomAula,capacitat,equipament,rec);
 			return null;
 		}
 		catch (Exception e) {
@@ -641,7 +648,7 @@ public final class ControladorDomini {
 			Integer places = sg.getPlaces();
 			Map<Integer, boolean[]> horesAptes = sg.getRestriccioHoresAptes().getHoresAptes();
 			HashMap<String, HashSet<Integer>> solapaments = sg.getSolapaments().getDisjuntes();
-			ControladorPersistencia.getInstancia().exportaSubGrup(path,plaEst,assignatura,numeroG,numeroSG,places,horesAptes,solapaments);
+			ControladorPersistencia.getInstancia().exportaCampus(path,plaEst,assignatura,numeroG,numeroSG,places,horesAptes,solapaments);
 			return null;
 		}
 		catch (Exception e) {
@@ -657,4 +664,6 @@ public final class ControladorDomini {
 			return e.toString();
 		}
 	}
+	
+
 }
