@@ -255,4 +255,8 @@ public class Solapaments {
 		
 		return 0;
 	}
+
+	public HashMap<String, HashSet<Integer>> getDisjuntes() {
+		return this.disjuntes;
+	}
 }
