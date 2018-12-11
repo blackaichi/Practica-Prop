@@ -118,7 +118,7 @@ public class PlaEstudis {
 	public int setNom(String nom) {
 		if (nom == null || nom.isEmpty()) return 18;
 		else if(this.nom == null) this.nom = nom;
-		else if(this.nom == null && plansEstudis.contains(nom)) return 10;
+		else if(this.nom == null && plansEstudis.contains(PlaEstudis.getPlaEstudis(nom))) return 10;
 		
 		this.nom = nom;
 		return 0;
