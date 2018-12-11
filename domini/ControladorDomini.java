@@ -539,8 +539,9 @@ public final class ControladorDomini {
 		}
 	}
 	
-	public String exportaHorari(String path) { //TODO
+	public String exportaHorari(String path, HashSet<String> flags, String nomC, String nomPE, int id) {
 		try {
+			ControladorPersistencia.getInstancia().exportaHorari(path, flags, nomC, nomPE, id);
 			return null;
 		}
 		catch (Exception ex) {
@@ -626,9 +627,10 @@ public final class ControladorDomini {
 			HashSet<Estructura> h = Horari.getInstance().getHoraris(nomPE, nomC);
 			
 			Estructura aux = new Estructura(PlaEstudis.getPlaEstudis(nomPE),Campus.getCampus(nomC));
+			int it = id;
 			for(Estructura e : h) {
-				if (id == 0) aux = e;
-				id--;
+				if (it == 0) aux = e;
+				it--;
 			}
 			HashSet<Segment> segment = aux.getAllSegments(dia, hora);
 			for (Segment s : segment) {
