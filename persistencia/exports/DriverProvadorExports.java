@@ -2,6 +2,9 @@ package persistencia.exports;
 
 import java.util.*;
 
+import domini.ControladorDomini;
+import domini.classes.*;
+
 /**
  * 
  * @author eric.casanovas@est.fib.upc.edu
@@ -34,7 +37,7 @@ public class DriverProvadorExports {
 	 * @param args no entra res
 	 * @throws Exception
 	 */
-	public static void main (String [] args) {
+	public static void main (String [] args) throws Exception {
 		System.out.println("Benvingut a l'eina de comprovació dels Exports");
 		System.out.println("1-Exporta PlaEstudis, 2-ExportaCampus, 3-ExportaAula,  4-ExportaAssignatura,");
 		System.out.println("5-ExportaGrup, 6-ExportaHorari, 7-ExportaSessioGrup, 8-ExportaSessioSubGrup,");
@@ -58,6 +61,12 @@ public class DriverProvadorExports {
 			else if (n == 12) provaData();
 			else if (n == 13) provaSegment();
 			else break;
+			System.out.println("1-Exporta PlaEstudis, 2-ExportaCampus, 3-ExportaAula,  4-ExportaAssignatura,");
+			System.out.println("5-ExportaGrup, 6-ExportaHorari, 7-ExportaSessioGrup, 8-ExportaSessioSubGrup,");
+			System.out.println("9-ExportaSubGrup, 10-ExportaSolapaments, 11-ExportaHoresAptes, 12- ExportaData,");
+			System.out.println("13-ExportaSegment");
+			System.out.print("Enter an integer: ");
+			n = reader.nextInt();
 		}
 		reader.close();
 	}
@@ -144,29 +153,69 @@ public class DriverProvadorExports {
 	 * @throws Exception
 	 */
 	private static void provaAula() {
+		System.out.print("Indica el nom de l'aula(String): ");
+		String nomA = reader.next();
+		System.out.print("Indica la capacitat(int): ");
+		int capacitat = reader.nextInt();
+		System.out.print("Indica l'equip(String separat per comes sense espais): ");
+		String equips = reader.next();
+		String[] aux = equips.split(",");
 		HashSet<String> equip = new HashSet<String>();
-		equip.add("PCs");
-		equip.add("projector");
-		aula.exportaAula(path, "A5102", 20, equip, true);
+		for (String s : aux) {
+			equip.add(s);
+		}
+		aula.exportaAula(path, nomA, capacitat, equip, true);
 	}
 	
 	/**
 	 * Comprova l'Export de Campus
 	 * @throws Exception
 	 */
-	private static void provaCampus() {
+	private static void provaCampus() throws Exception {
+		Campus.newCampus("campus");
+		Campus c = Campus.getCampus("campus");
+		c.setAutor("eric");
+		c.altaAula("a5102", 20);
+		c.altaAula("a5101", 10);
+		
+		/*System.out.print("Indica el nom del campus(String): ");
+		String nomC = reader.next();
+		System.out.print("Indica l'autor(String): ");
+		String nomA = reader.next();
+		System.out.print("Indica les aules(String separat per comes sense espais): ");
+		String auless = reader.next();
+		String[] aux = auless.split(",");
 		HashSet<String> aules = new HashSet<String>();
-		String s = reader.next();
-		aules.add("a5102");
-		aules.add("a6102");
-		campus.exportaCampus(path, "campus nord", "eric", aules);
+		for (String s : aux) {
+			aules.add(s);
+		}*/
+		//campus.exportaCampus(path, nomC, nomA, aules);
+		ControladorDomini.getInstance().exportaCampus(path, "campus");
 	}
 	
 	/**
 	 * Comprova l'Export de PlaEstudis
 	 * @throws Exception
 	 */
-	private static void provaPlaEstudis() {
-		plaEstudis.exportaPlaEstudis(path, nom, autor, franja, rang, nomassig)
+	private static void provaPlaEstudis() throws Exception {
+		PlaEstudis.newPlaEstudis("pe");
+		PlaEstudis pe = PlaEstudis.getPlaEstudis("pe");
+		pe.altaAssignatura("PROP");
+		pe.altaAssignatura("IES");
+		Assignatura a = pe.getAssignatura("PROP");
+		Assignatura b = pe.getAssignatura("IES");
+		a.altaGrup(10, 20, "M");
+		b.altaGrup(20, 10, "T");
+		a.altaSessioG("PC", 2);
+		ControladorDomini.getInstance().exportaPlaEstudis(path, "pe");
+		
+		/*
+		System.out.print("Indica el campus(String): ");
+		String nomC = reader.next();
+		System.out.print("Indica l'autor(String): ");
+		String nomA = reader.next();
+		System.out.print("Indica les aules(String separat per comes sense espais): ");
+		String auless = reader.next();
+		plaEstudis.exportaPlaEstudis(path, nom, autor, franja, rang, nomassig)*/
 	}
 }

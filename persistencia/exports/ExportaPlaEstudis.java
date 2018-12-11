@@ -64,12 +64,11 @@ public class ExportaPlaEstudis extends Exporta {
 			str = str.concat(String.valueOf(rang[0]).concat(" "));
 			str = str.concat(String.valueOf(rang[1]).concat(endl));
 		}
-		str = str.concat(String.valueOf(nomassig.length).concat(endl));
-		for (String s : nomassig) {
-			str = str.concat(cp.getAssignatura(path, nom, s)).concat(endl);
+		Exporta.exporta(path, str, false);
+		for (String a : nomassig) {
+			cp.getAssignatura(path, nom, a);
 		}
-		str = str.concat("END");
-		Exporta.exporta(path, str);
+		Exporta.exporta(path, "END", true);
 		return str;
 	}
 }

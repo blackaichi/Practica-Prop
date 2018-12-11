@@ -35,28 +35,24 @@ public class ExportaAssignatura extends Exporta {
 	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
 	 * @return la codificació de l'Assignatura
 	 */
-	public String exportaAssignatura(String path, String nomPE, String nomAssig, HashSet<Pair<String,Integer>> sessionsg,
+	public void exportaAssignatura(String path, String nomPE, String nomAssig, HashSet<Pair<String,Integer>> sessionsg,
 			HashSet<Pair<String,Integer>> sessionssg, HashSet<Integer> grups, Map<Integer, boolean[]> horesAptes,
 			HashMap<String, HashSet<Integer>> solapaments, boolean crea) {
 		String endl = "\n";
 		String str = "Assignatura".concat(endl);
 		str = str.concat(nomAssig.concat(endl));
+		Exporta.exporta(path, str, crea);
 		for (Pair<String,Integer> s : sessionsg) {
-			str = str.concat(cp.getSessionsG(path, nomPE, nomAssig, s.first, s.second)).concat(endl);
+			cp.getSessionsG(path, nomPE, nomAssig, s.first, s.second);
 		}
 		for (Pair<String,Integer> s : sessionssg) {
-			str = str.concat(cp.getSessionsSG(path, nomPE, nomAssig, s.first, s.second)).concat(endl);
+			cp.getSessionsSG(path, nomPE, nomAssig, s.first, s.second);
 		}
 		for (int g : grups) {
-			str = str.concat(cp.getGrups(path, nomPE, nomAssig, g)).concat(endl);
+			cp.getGrups(path, nomPE, nomAssig, g);
 		}
 		str = str.concat(ExportaHoresAptes.getInstancia().exportaHoresAptes(horesAptes)).concat(endl);
 		str = str.concat(ExportaSolapaments.getInstancia().exportaSolapaments(solapaments)).concat(endl);
-		if (crea) {
-			str = str.concat("END");
-			Exporta.exporta(path, str);
-		}
-		str = str.concat(endl);
-		return str;
+		Exporta.exporta(path, "END".concat(endl), true);
 	}
 }

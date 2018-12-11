@@ -36,7 +36,7 @@ public class ExportaSubGrup extends Exporta {
 	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
 	 * @return la codificació del subgrup
 	 */
-	public String exportaSubGrup(String path, int numero, int places, Map<Integer, boolean[]> horesAptes,
+	public void exportaSubGrup(String path, int numero, int places, Map<Integer, boolean[]> horesAptes,
 			HashMap<String, HashSet<Integer>> solapaments, boolean crea) {
 		String endl = "\n";
 		String str = "SubGrup".concat(endl);
@@ -44,11 +44,7 @@ public class ExportaSubGrup extends Exporta {
 		str = str.concat(String.valueOf(places)).concat(endl);
 		str = str.concat(ExportaHoresAptes.getInstancia().exportaHoresAptes(horesAptes)).concat(endl);
 		str = str.concat(ExportaSolapaments.getInstancia().exportaSolapaments(solapaments)).concat(endl);
-		if (crea) {
-			str = str.concat("END");
-			Exporta.exporta(path, str);
-		}
-		str = str.concat(endl);
-		return str;
+		str = str.concat("END").concat(endl);
+		Exporta.exporta(path, str, crea);
 	}
 }

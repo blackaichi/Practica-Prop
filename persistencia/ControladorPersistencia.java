@@ -52,10 +52,10 @@ public final class ControladorPersistencia {
 	 */
 	public String exportaAssignatura(String path, String nomPE, String nomAssig, HashSet<Pair<String,Integer>> sessionsg,
 			HashSet<Pair<String,Integer>> sessionssg, HashSet<Integer> grups, Map<Integer, boolean[]> horesAptes,
-			HashMap<String, HashSet<Integer>> solapaments) {
+			HashMap<String, HashSet<Integer>> solapaments, boolean crea) {
 		try {
 			ExportaAssignatura.getInstancia().exportaAssignatura(path, nomPE, 
-					nomAssig, sessionsg, sessionssg, grups, horesAptes, solapaments, true);
+					nomAssig, sessionsg, sessionssg, grups, horesAptes, solapaments, crea);
 			return null;
 		}
 		catch (Exception e) {
@@ -68,9 +68,9 @@ public final class ControladorPersistencia {
 	 * @param a aula a exportar
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
-	public String exportaAula(String path, String nom, int capacitat, HashSet<String> equip) {
+	public String exportaAula(String path, String nom, int capacitat, HashSet<String> equip, boolean crea) {
 		try {
-			ExportaAula.getInstancia().exportaAula(path, nom, capacitat, equip, true);
+			ExportaAula.getInstancia().exportaAula(path, nom, capacitat, equip, crea);
 			return null;
 		}
 		catch (Exception e) {
@@ -94,21 +94,6 @@ public final class ControladorPersistencia {
 	}
 	
 	/**
-	 * Exporta una Data
-	 * @param d data a exportar
-	 * @return null en cas de cap error, l'error com a String altrament
-	 */
-	public String exportaData(String path, int dia, int hora) {
-		try {
-			ExportaData.getInstancia().exportaData(path, dia, hora, true);
-			return null;
-		}
-		catch (Exception e) {
-			return e.getMessage();
-		}		
-	}
-	
-	/**
 	 * Exporta un Grup
 	 * @param g grup a exportar
 	 * @return null en cas de cap error, l'error com a String altrament
@@ -123,7 +108,7 @@ public final class ControladorPersistencia {
 			return e.getMessage();
 		}
 	}
-	//TODO
+	
 	/**
 	 * Exporta un Horari
 	 * @param e horari a exportar
@@ -131,26 +116,11 @@ public final class ControladorPersistencia {
 	 */
 	public String exportaHorari(HashSet<Estructura> e) {
 		try {
-			ExportaHorari.getInstancia().exportaHoraris(e, true);
+			ExportaHorari.getInstancia().exportaHorari(e, true);
 			return null;
 		}
 		catch (Exception ex) {
 			return ex.getMessage();
-		}
-	}
-	
-	/**
-	 * Exporta unes HoresAptes
-	 * @param ha hores aptes a exportar
-	 * @return null en cas de cap error, l'error com a String altrament
-	 */
-	public String exportaHoresAptes(String path, Map<Integer, boolean[]> horesAptes) {
-		try {
-			ExportaHoresAptes.getInstancia().exportaHoresAptes(path, horesAptes, true);
-			return null;
-		}
-		catch (Exception e) {
-			return e.getMessage();
 		}
 	}
 	
@@ -211,21 +181,6 @@ public final class ControladorPersistencia {
 			Map<Integer, boolean[]> horesAptes,	HashMap<String, HashSet<Integer>> solapaments) {
 		try {
 			ExportaSubGrup.getInstancia().exportaSubGrup(path, numero, places, horesAptes, solapaments, true);
-			return null;
-		}
-		catch (Exception e) {
-			return e.getMessage();
-		}
-	}
-	
-	/**
-	 * Exporta uns Solapaments
-	 * @param s solapaments a exportar
-	 * @return null en cas de cap error, l'error com a String altrament
-	 */
-	public String exportaSolapaments(String path, HashMap<String, HashSet<Integer>> solapaments) {
-		try {
-			ExportaSolapaments.getInstancia().exportaSolapaments(path, solapaments, true);
 			return null;
 		}
 		catch (Exception e) {
@@ -407,52 +362,28 @@ public final class ControladorPersistencia {
 	////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////  FUNCIONS  /////////////////////////////////////
 	
-	public String getAssignatura(String path, String pla, String assig) {
-		return cd.getExportAssignatura(path, pla, assig);
+	public void getAssignatura(String path, String pla, String assig) {
+		cd.exportaAssignatura(path, pla, assig, false);
 	}
 
-	public String getAula(String path, String nom, String s) {
-		return cd.getExportAula(path, nom, s);
+	public void getAula(String path, String nom, String s) {
+		cd.exportaAula(path, s, nom, false);
 	}
 
-	public String getSessionsG(String path, String nomPE, String nomAssig, String first, Integer second) {
-		return cd.getExportSessionsG(path, nomPE, nomAssig, first, second);
+	public void getSessionsG(String path, String nomPE, String nomAssig, String tipus, Integer hores) {
+		cd.exportaSessioGrup(path, nomPE, nomAssig, tipus, hores, false);
 	}
 	
-	public String getSessionsSG(String path, String nomPE, String nomAssig, String first, Integer second) {
-		return cd.getExportSessionsSG(path, nomPE, nomAssig, first, second);
+	public void getSessionsSG(String path, String nomPE, String nomAssig, String tipus, int hores) {
+		cd.exportaSessioSubGrup(path, nomPE, nomAssig, tipus, hores, false);
 	}
 
-	public String getGrups(String path, String nomPE, String nomAssig, int g) {
-		return cd.getExportGrups(path, nomPE, nomAssig, g);
+	public void getGrups(String path, String nomPE, String nomAssig, int g) {
+		cd.exportaGrup(path, g, nomAssig, nomPE, false);
 	}
 
-	public String getHoresAptes(String path, String nomPE, String nomAssig) {
-		return cd.getExportHoresAptes(path, nomPE, nomAssig);
-	}
-
-	public String getSolapaments(String path, String nomPE, String nomAssig) {
-		return cd.getExportSolapaments(path, nomPE, nomAssig);
-	}
-
-	public String getSubGrup(String path, String nomPE, String nomAssig, int numero, int sg) {
-		return cd.getExportSubGrup(path, nomPE, nomAssig, numero, sg);
-	}
-
-	public String getHoresAptes(String path, String nomPE, String nomAssig, int numero) {
-		return getExportHoresAptes(path, nomPE, nomAssig, numero);
-	}
-
-	public String getSolapaments(String path, String nomPE, String nomAssig, int numero) {
-		return cd.getExportSolapaments(path, nomPE, nomAssig, numero);
-	}
-
-	public String getHoresAptes(String path, String nomPE, String nomAssig, int numGrup, int numero) {
-		return getExportHoresAptes(path, nomPE, nomAssig, numGrup, numero);
-	}
-
-	public String getSolapaments(String path, String nomPE, String nomAssig, int numGrup, int numero) {
-		return cd.getExportSolapaments(path, nomPE, nomAssig, numGrup, numero);
+	public void getSubGrup(String path, String nomPE, String nomAssig, int g, int sg) {
+		cd.exportaSubGrup(path, sg, g, nomAssig, nomPE, false);
 	}
 	
 	public String creaPlaEstudisImportat(String nom, String autor, Map<Integer, boolean[]> lectiu, int[] rangDia) {

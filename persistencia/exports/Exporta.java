@@ -19,11 +19,18 @@ public class Exporta {
 	 * @param s el contingut que volem ficar al fitxer
 	 * @return null en cas de cap error, sinó un string amb l'error
 	 */
-	static String exporta(String path, String s) {
+	static String exporta(String path, String s, boolean crea) {
 		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(path));
-			writer.write(s);
-			writer.close();
+			if (crea) {
+				BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+				writer.write(s);
+				writer.close();
+			}
+			else {
+			    FileWriter fw = new FileWriter(path, true); 
+			    fw.write(s);
+			    fw.close();
+			}
 			System.out.println("Exportat correctament");
 			return null;
 		}
