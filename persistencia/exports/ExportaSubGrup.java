@@ -38,13 +38,12 @@ public class ExportaSubGrup extends Exporta {
 	 */
 	public void exportaSubGrup(String path, int numero, int places, Map<Integer, boolean[]> horesAptes,
 			HashMap<String, HashSet<Integer>> solapaments, boolean crea) {
-		String endl = "\n";
 		String str = "SubGrup".concat(endl);
 		str = str.concat(String.valueOf(numero)).concat(endl);
 		str = str.concat(String.valueOf(places)).concat(endl);
-		str = str.concat(ExportaHoresAptes.getInstancia().exportaHoresAptes(horesAptes)).concat(endl);
-		str = str.concat(ExportaSolapaments.getInstancia().exportaSolapaments(solapaments)).concat(endl);
-		str = str.concat("END").concat(endl);
+		ExportaHoresAptes.getInstancia().exportaHoresAptes(horesAptes);
+		ExportaSolapaments.getInstancia().exportaSolapaments(solapaments);
+		str = str.concat("END SUBGRUP").concat(endl);
 		Exporta.exporta(path, str, crea);
 	}
 }

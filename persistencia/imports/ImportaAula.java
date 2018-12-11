@@ -49,7 +49,7 @@ public class ImportaAula extends Importa {
 		}
 	}
 	
-	public String importaAula(String path, HashSet<String> nomaules, HashSet<Integer> capacitat,
+	public String importaAula(Vector<String> s, HashSet<String> nomaules, HashSet<Integer> capacitat,
 			HashSet<HashSet<String>> equip) {
 		try {
 			File file = new File(path); 

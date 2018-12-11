@@ -1,9 +1,13 @@
 package persistencia.imports;
 
 import java.io.*;
+import persistencia.ControladorPersistencia;
 
 public class Importa {
-	static String importa(String path) throws IOException {
+	
+	protected ControladorPersistencia cp = ControladorPersistencia.getInstancia();
+	
+	static String importa(String path) {
 		try {
 			File file = new File(path); 
 			BufferedReader br = new BufferedReader(new FileReader(file));

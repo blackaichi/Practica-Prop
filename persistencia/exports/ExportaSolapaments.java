@@ -34,8 +34,7 @@ public class ExportaSolapaments extends Exporta {
 	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
 	 * @return la codificació del solapament
 	 */
-	public String exportaSolapaments(HashMap<String, HashSet<Integer>> solapaments) {
-		String endl = "\n";
+	public void exportaSolapaments(HashMap<String, HashSet<Integer>> solapaments) {
 		String str = "Solapaments".concat(endl);
 		for (HashMap.Entry<String, HashSet<Integer>> entry : solapaments.entrySet()) {
 			str = str.concat(entry.getKey()).concat(" ");
@@ -46,7 +45,6 @@ public class ExportaSolapaments extends Exporta {
 			}
 			str = str.concat(";");
 		}
-		str = str.concat("END").concat(endl);
-		return str;
+		str = str.concat("END SOLAP").concat(endl);
 	}
 }

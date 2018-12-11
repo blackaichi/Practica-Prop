@@ -1,7 +1,6 @@
 package persistencia.exports;
 
 import java.util.*;
-import utils.*;
 
 /**
  * 
@@ -35,23 +34,25 @@ public class ExportaHorari extends Exporta {
 	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
 	 * @return la codificació dels Horaris
 	 */
-	public String exportaHorari(String path, Map<Integer, Map<Integer, HashSet<Segment>>> horari,
-			HashSet<String> flags, String nomPE, String nomC, boolean crea) {
-		String endl = "\n";
-		String str = "Horari ".concat(endl);
+	public void exportaHorari(String path, HashSet<String> flags, String nomC, String nomPE, int id) {
+		String str = "Horari".concat(endl);
+		str = str.concat(nomPE).concat(endl);
+		str = str.concat(nomC).concat(endl);
+		boolean first = true;
+		for (String s : flags) {
+			if (first) first = false;
+			else str = str.concat(s).concat(",");
+		}
+		str = str.concat(endl);
+		Exporta.exporta(path, str, true);
 		for (int dia = 0; dia < 7; ++dia) {
 			str = str.concat(String.valueOf(dia)).concat(endl);
 			for (int hora = 0; hora < 24; ++hora) {
 				str = str.concat(String.valueOf(hora)).concat(endl);
-				s = e.getAllSegments(dia, hora);
-				if (s.isEmpty()) str = str.concat("buit").concat(endl);
-				else {
-					for (Segment se : s) str = str.concat(ExportaSegment.getInstancia().exportaSegment(se, false));
-				}
+				cp.getSegment(path, dia, hora, nomC, nomPE, id);
 			}
 		}
-		str = str.concat("END").concat(endl);
+		str = str.concat("END HORARI").concat(endl);
 		Exporta.exporta(path, str, false);
-		return str;
 	}
 }

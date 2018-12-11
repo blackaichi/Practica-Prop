@@ -1,7 +1,6 @@
 package persistencia.exports;
 
 import java.io.*;
-
 import persistencia.ControladorPersistencia;
 
 /**
@@ -13,6 +12,8 @@ import persistencia.ControladorPersistencia;
 public class Exporta {
 	
 	protected ControladorPersistencia cp = ControladorPersistencia.getInstancia();
+	
+	protected String endl = "\n";
 	
 	/**
 	 * Exporta a un fitxer el contingut de l'String s
@@ -31,7 +32,6 @@ public class Exporta {
 			    fw.write(s);
 			    fw.close();
 			}
-			System.out.println("Exportat correctament");
 			return null;
 		}
 		catch (Exception e) {

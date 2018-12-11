@@ -35,7 +35,6 @@ public class ExportaAula extends Exporta {
 	 * @return la codificació de l'aula
 	 */
 	public void exportaAula(String path, String nomAula, int capacitat, HashSet<String> equip, boolean crea) {
-		String endl = "\n";
 		String str = "Aula".concat(endl);
 		str = str.concat(nomAula.concat(endl));
 		str = str.concat(String.valueOf(capacitat)).concat(endl);
@@ -46,8 +45,7 @@ public class ExportaAula extends Exporta {
 			else str = str.concat(",");
 			str = str.concat(s);
 		}
-		str = str.concat(endl);
-		str = str.concat("END").concat(endl);
+		str = str.concat(endl).concat("END AULA").concat(endl);
 		Exporta.exporta(path, str, crea);
 	}
 }

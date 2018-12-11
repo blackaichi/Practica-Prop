@@ -99,9 +99,9 @@ public final class ControladorPersistencia {
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String exportaGrup(String path, String nomPE, String nomAssig, int numero, int places, String franja, 
-			HashSet<Integer> numsg, Map<Integer, boolean[]> horesAptes,	HashMap<String, HashSet<Integer>> solapaments) {
+			HashSet<Integer> numsg, Map<Integer, boolean[]> horesAptes,	HashMap<String, HashSet<Integer>> solapaments, boolean crea) {
 		try {
-			ExportaGrup.getInstancia().exportaGrup(path, nomPE, nomAssig, numero, places, franja, numsg, horesAptes, solapaments, true);
+			ExportaGrup.getInstancia().exportaGrup(path, nomPE, nomAssig, numero, places, franja, numsg, horesAptes, solapaments, crea);
 			return null;
 		}
 		catch (Exception e) {
@@ -114,9 +114,9 @@ public final class ControladorPersistencia {
 	 * @param e horari a exportar
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
-	public String exportaHorari(HashSet<Estructura> e) {
+	public String exportaHorari(String path, HashSet<String> flags, String nomC, String nomPE, int id) {
 		try {
-			ExportaHorari.getInstancia().exportaHorari(e, true);
+			ExportaHorari.getInstancia().exportaHorari(path, flags, nomC, nomPE, id);
 			return null;
 		}
 		catch (Exception ex) {
@@ -130,7 +130,7 @@ public final class ControladorPersistencia {
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String exportaPlaEstudis(String path, String nom, String autor, Map<Integer, 
-			boolean[]> franja, int[] rang, String[] nomassig) {
+			boolean[]> franja, int[] rang, HashSet<String> nomassig) {
 		try {
 			ExportaPlaEstudis.getInstancia().exportaPlaEstudis(path, nom, autor, franja, rang, nomassig);
 			return null;
@@ -146,9 +146,9 @@ public final class ControladorPersistencia {
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String exportaSessioGrup(String path, HashSet<String> equip,
-			int hores, String tipus, int nsessions, int[] ngrups) {
+			int hores, String tipus, int nsessions, HashSet<Integer> ngrups, boolean crea) {
 		try {
-			ExportaSessioGrup.getInstancia().exportaSessioGrup(path, equip, hores, tipus, nsessions, ngrups, true);
+			ExportaSessioGrup.getInstancia().exportaSessioGrup(path, equip, hores, tipus, nsessions, ngrups, crea);
 			return null;
 		}
 		catch (Exception e) {
@@ -162,9 +162,9 @@ public final class ControladorPersistencia {
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String exportaSessioSubGrup(String path, HashSet<String> equip,
-			int hores, String tipus, int nsessions, int[] nsubgrups) {
+			int hores, String tipus, int nsessions, HashSet<Integer> nsubgrups, boolean crea) {
 		try {
-			ExportaSessioSubGrup.getInstancia().exportaSessioSubGrup(path, equip, hores, tipus, nsessions, nsubgrups, true);
+			ExportaSessioSubGrup.getInstancia().exportaSessioSubGrup(path, equip, hores, tipus, nsessions, nsubgrups, crea);
 			return null;
 		}
 		catch (Exception e) {
@@ -178,9 +178,20 @@ public final class ControladorPersistencia {
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String exportaSubGrup(String path, int numero, int places, 
-			Map<Integer, boolean[]> horesAptes,	HashMap<String, HashSet<Integer>> solapaments) {
+			Map<Integer, boolean[]> horesAptes,	HashMap<String, HashSet<Integer>> solapaments, boolean crea) {
 		try {
-			ExportaSubGrup.getInstancia().exportaSubGrup(path, numero, places, horesAptes, solapaments, true);
+			ExportaSubGrup.getInstancia().exportaSubGrup(path, numero, places, horesAptes, solapaments, crea);
+			return null;
+		}
+		catch (Exception e) {
+			return e.getMessage();
+		}
+	}
+	
+	public String exportaSegment(String path, int numero, int places, 
+			Map<Integer, boolean[]> horesAptes,	HashMap<String, HashSet<Integer>> solapaments, boolean crea) {
+		try {
+			ExportaSubGrup.getInstancia().exportaSubGrup(path, numero, places, horesAptes, solapaments, crea);
 			return null;
 		}
 		catch (Exception e) {
@@ -384,6 +395,10 @@ public final class ControladorPersistencia {
 
 	public void getSubGrup(String path, String nomPE, String nomAssig, int g, int sg) {
 		cd.exportaSubGrup(path, sg, g, nomAssig, nomPE, false);
+	}
+
+	public void getSegment(String path, int dia, int hora, String nomC, String nomPE, int id) {
+		cd.exportaSegment(path, dia, hora, nomC, nomPE, id);
 	}
 	
 	public String creaPlaEstudisImportat(String nom, String autor, Map<Integer, boolean[]> lectiu, int[] rangDia) {

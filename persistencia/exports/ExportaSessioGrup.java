@@ -34,9 +34,8 @@ public class ExportaSessioGrup extends Exporta {
 	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
 	 * @return la codificació de la SessioGrup
 	 */
-	public void exportaSessioGrup(String path, HashSet<String> equip,	int hores,
-			String tipus, int nsessions, int[] ngrups, boolean crea) {
-		String endl = "\n";
+	public void exportaSessioGrup(String path, HashSet<String> equip, int hores,
+			String tipus, int nsessions, HashSet<Integer> ngrups, boolean crea) {
 		String str = "SessioGrup".concat(endl);
 		boolean first = true;  
 		if (equip.isEmpty()) str = str.concat("noequip");
@@ -50,13 +49,13 @@ public class ExportaSessioGrup extends Exporta {
 		str = str.concat(tipus).concat(endl);
 		str = str.concat(String.valueOf(nsessions)).concat(endl);
 		first = true;  
-		if (ngrups.length == 0) str = str.concat("none");
+		if (ngrups.size() == 0) str = str.concat("none");
 		for (int n : ngrups) {
 			if (first) first = false;
 			else str = str.concat(",");
 			str = str.concat(String.valueOf(n));
 		}
-		str = str.concat("END").concat(endl);
+		str = str.concat(endl).concat("END SESSIOG").concat(endl);
 		Exporta.exporta(path, str, crea);
 	}
 }

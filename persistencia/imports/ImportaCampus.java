@@ -22,16 +22,18 @@ public class ImportaCampus extends Importa {
 	public String importaCampus(String path, String nomC, String autor, HashSet<String> nomaules,
 			HashSet<Integer> capacitat, HashSet<HashSet<String>> equip) {
 		try {
-			File file = new File(path); 
-			BufferedReader br = new BufferedReader(new FileReader(file));
-			nomC = br.readLine();
-			autor = br.readLine();
+			String s = importa(path);
+			String[] aux = s.split("\n");
 			String error;
-			if ((error = ImportaAula.getInstancia().importaAula(path, nomaules, capacitat, equip)) != null) {
-				br.close();
-				return error;
+			Vector<String> entrada = new Vector<String>();
+			for (String ss : aux) {
+				entrada.add(ss);
 			}
-			br.close();
+			if (entrada.get(0) != "Campus") return s;
+			nomC = entrada.get(1);
+			autor = entrada.get(2);
+			if ((error = ImportaAula.getInstancia().importaAula(, nomaules, capacitat, equip)) != null) return error;
+			cp.creaCampusImportat()
 			return null;
 		}
 		catch (Exception e) {

@@ -37,7 +37,6 @@ public class ExportaGrup extends Exporta {
 	public void exportaGrup(String path, String nomPE, String nomAssig, int numero, int places, 
 			String franja, HashSet<Integer> numsg, Map<Integer, boolean[]> horesAptes,
 			HashMap<String, HashSet<Integer>> solapaments, boolean crea) {
-		String endl = "\n";
 		String str = "Grup".concat(endl);
 		str = str.concat(String.valueOf(numero)).concat(endl);
 		str = str.concat(String.valueOf(places)).concat(endl);
@@ -46,8 +45,8 @@ public class ExportaGrup extends Exporta {
 		for (int sg : numsg) {
 			cp.getSubGrup(path, nomPE, nomAssig, numero, sg);
 		}
-		str = str.concat(ExportaHoresAptes.getInstancia().exportaHoresAptes(horesAptes)).concat(endl);
-		str = str.concat(ExportaSolapaments.getInstancia().exportaSolapaments(solapaments)).concat(endl);
-		Exporta.exporta(path, "END".concat(endl), false);
+		ExportaHoresAptes.getInstancia().exportaHoresAptes(horesAptes);
+		ExportaSolapaments.getInstancia().exportaSolapaments(solapaments);
+		Exporta.exporta(path, "END GRUP".concat(endl), false);
 	}
 }

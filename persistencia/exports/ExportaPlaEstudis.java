@@ -34,9 +34,8 @@ public class ExportaPlaEstudis extends Exporta {
 	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
 	 * @return la codificació del PlaEstudis
 	 */
-	public String exportaPlaEstudis(String path, String nom, String autor, Map<Integer, boolean[]> franja,
-			int[] rang, String[] nomassig) {
-		String endl = "\n";
+	public void exportaPlaEstudis(String path, String nom, String autor, Map<Integer, boolean[]> franja,
+			int[] rang, HashSet<String> nomassig) {
 		String str = "PlaEstudis".concat(endl);
 		str = str.concat(nom).concat(endl);
 		str = str.concat(autor).concat(endl);
@@ -64,11 +63,10 @@ public class ExportaPlaEstudis extends Exporta {
 			str = str.concat(String.valueOf(rang[0]).concat(" "));
 			str = str.concat(String.valueOf(rang[1]).concat(endl));
 		}
-		Exporta.exporta(path, str, false);
+		Exporta.exporta(path, str, true);
 		for (String a : nomassig) {
 			cp.getAssignatura(path, nom, a);
 		}
-		Exporta.exporta(path, "END", true);
-		return str;
+		Exporta.exporta(path, "END PE".concat(endl), false);
 	}
 }

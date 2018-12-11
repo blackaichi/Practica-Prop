@@ -35,7 +35,6 @@ public class ExportaCampus extends Exporta {
 	 * @return la codificació del Campus
 	 */
 	public void exportaCampus(String path, String nom, String autor, HashSet<String> aules) {
-		String endl = "\n";
 		String str = "Campus".concat(endl);
 		str = str.concat(nom.concat(endl));
 		str = str.concat(autor.concat(endl));
@@ -43,7 +42,6 @@ public class ExportaCampus extends Exporta {
 		for (String s : aules) {
 			cp.getAula(path, nom, s);
 		}
-		str = "END";
-		Exporta.exporta(path, str, false);
+		Exporta.exporta(path, "END CAMPUS".concat(endl), false);
 	}
 }

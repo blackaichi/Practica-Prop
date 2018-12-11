@@ -35,8 +35,7 @@ public class ExportaSessioSubGrup extends Exporta {
 	 * @return la codificació de la SessioSubGrup
 	 */
 	public void exportaSessioSubGrup(String path, HashSet<String> equip, int hores,
-			String tipus, int nsessions, int[] nsubgrups, boolean crea) {
-		String endl = "\n";
+			String tipus, int nsessions, HashSet<Integer> nsubgrups, boolean crea) {
 		String str = "SessioGrup".concat(endl);
 		boolean first = true;  
 		if (equip.isEmpty()) str = str.concat("noequip");
@@ -50,13 +49,13 @@ public class ExportaSessioSubGrup extends Exporta {
 		str = str.concat(tipus).concat(endl);
 		str = str.concat(String.valueOf(nsessions)).concat(endl);
 		first = true;  
-		if (nsubgrups.length == 0) str = str.concat("none");
+		if (nsubgrups.size() == 0) str = str.concat("none");
 		for (int n : nsubgrups) {
 			if (first) first = false;
 			else str = str.concat(",");
 			str = str.concat(String.valueOf(n));
 		}
-		str = str.concat("END").concat(endl);
+		str = str.concat(endl).concat("END SESSIOSG").concat(endl);
 		Exporta.exporta(path, str, crea);
 	}
 }
