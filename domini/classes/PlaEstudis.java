@@ -310,6 +310,9 @@ public class PlaEstudis {
 		return null;
 	}
 	
+	public int[] getRang() {
+		return this.rangDia;
+	}
 	/////////////////////////////////////////////////////////////
 	//////////////////////// Modificadores /////////////////////
 			
@@ -392,4 +395,6 @@ public class PlaEstudis {
 		
 		return keys;
 	}
+
+
 }
