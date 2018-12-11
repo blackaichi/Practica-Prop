@@ -230,10 +230,8 @@ public final class ControladorPersistencia {
 	 * @param path path del fitxer que volem importar
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
-	public String importaCampus(String path, String nomC, String autor, HashSet<String> nomaules,
-			HashSet<Integer> capacitat, HashSet<HashSet<String>> equip) {
-		ImportaCampus ic = ImportaCampus.getInstancia();
-		return ic.importaCampus(path, nomC, autor, nomaules, capacitat, equip);
+	public String importaCampus(String path) {
+		return ImportaCampus.getInstancia().importaCampus(path);
 	}
 	
 	/**
@@ -404,6 +402,18 @@ public final class ControladorPersistencia {
 	public String creaPlaEstudisImportat(String nom, String autor, Map<Integer, boolean[]> lectiu, int[] rangDia) {
 		if ((error = cd.CrearPlaEstudis(nom)) != null) return error;
 		if ((error = cd.ModificarPlaEstudis(nom, null, autor, lectiu, rangDia)) != null) return error;
+		return null;
+	}
+
+	public String creaCampusImportat(String nomC, String autor) {
+		if ((error = cd.CrearCampus(nomC)) != null) return error;
+		if ((error = cd.ModificarCampus(nomC, null, autor)) != null) return error;
+		return null;
+	}
+
+	public String creaAulaImportada(String nomC, String nomA, int capacitat, HashSet<String> equip) {
+		if ((error = cd.CrearAula(nomC, nomA, capacitat)) != null) return error;
+		if ((error = cd.ModificarAula(nomC, nomA, null, capacitat, equip)) != null) return error;
 		return null;
 	}
 }

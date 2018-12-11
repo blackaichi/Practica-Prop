@@ -21,7 +21,7 @@ public class ImportaAula extends Importa {
 		return instancia;
 	}
 
-	public String importaAula(String path, String nom, int capacitat, HashSet<String> equip) {
+	public String importaAula(String path, String nomC) {
 		try {
 			File file = new File(path); 
 			BufferedReader br = new BufferedReader(new FileReader(file)); 
@@ -30,10 +30,11 @@ public class ImportaAula extends Importa {
 				br.close();
 				return "no es un aula el fitxer";
 			}
-			nom = br.readLine();
-			capacitat = Integer.parseInt(br.readLine());
+			String nomA = br.readLine();
+			int capacitat = Integer.parseInt(br.readLine());
 			s = br.readLine();
 			String[] equipament = s.split(",");
+			HashSet<String> equip = new HashSet<String>();
 			for (int j = 0; j < equipament.length; ++j) {
 				equip.add(equipament[j]);
 			}
@@ -41,6 +42,7 @@ public class ImportaAula extends Importa {
 				br.close();
 				return "No finalitza correctament";
 			}
+			cp.creaAulaImportada(nomC, nomA, capacitat, equip);
 			br.close();
 			return null;
 		}

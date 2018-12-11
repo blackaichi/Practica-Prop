@@ -1,6 +1,5 @@
 package persistencia.imports;
 
-import java.io.*;
 import java.util.*;
 
 /**
@@ -19,8 +18,7 @@ public class ImportaCampus extends Importa {
 		return instancia;
 	}
 
-	public String importaCampus(String path, String nomC, String autor, HashSet<String> nomaules,
-			HashSet<Integer> capacitat, HashSet<HashSet<String>> equip) {
+	public String importaCampus(String path) {
 		try {
 			String s = importa(path);
 			String[] aux = s.split("\n");
@@ -29,11 +27,11 @@ public class ImportaCampus extends Importa {
 			for (String ss : aux) {
 				entrada.add(ss);
 			}
-			if (entrada.get(0) != "Campus") return s;
-			nomC = entrada.get(1);
-			autor = entrada.get(2);
-			if ((error = ImportaAula.getInstancia().importaAula(, nomaules, capacitat, equip)) != null) return error;
-			cp.creaCampusImportat()
+			if (entrada.get(0) != "Campus") return "Error al llegir la primera linia del fitxer";
+			String nomC = entrada.get(1);
+			String autor = entrada.get(2);
+			if ((error = ImportaAula.getInstancia().importaAula(path, nomC)) != null) return error;
+			cp.creaCampusImportat(nomC, autor);
 			return null;
 		}
 		catch (Exception e) {
