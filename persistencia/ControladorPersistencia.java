@@ -188,10 +188,10 @@ public final class ControladorPersistencia {
 		}
 	}
 	
-	public String exportaSegment(String path, int numero, int places, 
-			Map<Integer, boolean[]> horesAptes,	HashMap<String, HashSet<Integer>> solapaments, boolean crea) {
+	public String exportaSegment(String path, String nomAula, String nomAssig, String tipus,
+			int numg, int numsg, boolean grup) {
 		try {
-			ExportaSubGrup.getInstancia().exportaSubGrup(path, numero, places, horesAptes, solapaments, crea);
+			ExportaSegment.getInstancia().exportaSegment(path, nomAula, nomAssig, tipus, numg, numsg, grup);
 			return null;
 		}
 		catch (Exception e) {
