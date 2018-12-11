@@ -3,11 +3,7 @@ package domini;
 import domini.classes.*;
 import domini.restriccions.*;
 import persistencia.ControladorPersistencia;
-import persistencia.exports.ExportaSessioSGAssignada;
-import persistencia.exports.ExportaSessioSubGrup;
-import persistencia.exports.ExportaSolapaments;
-import persistencia.exports.ExportaSubGrup;
-import presentacio.vistes.Main;
+import presentacio.ControladorPresentacio;
 
 import java.util.*;
 import utils.*;
@@ -624,6 +620,42 @@ public final class ControladorDomini {
 			return e.toString();
 		}
 	}
-
-
+	
+	public String exportaSegment(String path, int dia, int hora, String nomC, String nomPE, int id, boolean rec) {
+		try {
+			HashSet<Estructura> h = Horari.getInstance().getHoraris(nomPE, nomC);
+			
+			Estructura aux = new Estructura(PlaEstudis.getPlaEstudis(nomPE),Campus.getCampus(nomC));
+			for(Estructura e : h) {
+				if (id == 0) aux = e;
+				id--;
+			}
+			HashSet<Segment> segment = aux.getAllSegments(dia, hora);
+			for (Segment s : segment) {
+				int num;
+				int places;
+				Map<Integer, boolean[]> horesAptes;
+				HashMap<String, HashSet<Integer>> solapaments;
+				boolean grup = s.getSessio().snull();
+				if (grup) {
+					num = s.getSessio().first.getGrup().getNumero();
+					places = s.getSessio().first.getGrup().getPlaces();
+					horesAptes = s.getSessio().first.getGrup().getRestriccioHoresAptes().getHoresAptes();
+					solapaments = s.getSessio().first.getGrup().getSolapaments().getDisjuntes();
+					
+				}
+				else {
+					num = s.getSessio().second.getSubGrup().getNumero();
+					places = s.getSessio().second.getSubGrup().getPlaces();
+					horesAptes = s.getSessio().second.getSubGrup().getRestriccioHoresAptes().getHoresAptes();
+					solapaments = s.getSessio().second.getSubGrup().getSolapaments().getDisjuntes();
+				}
+				ControladorPersistencia.getInstancia().exportaSegment(path, num, places, horesAptes, solapaments, rec);
+			}
+			return null;
+		}
+		catch (Exception e) {
+			return e.toString();
+		}
+	}
 }
