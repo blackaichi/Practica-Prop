@@ -44,7 +44,7 @@ public class DadesAssignatura extends ExportaImporta {
 			HashMap<String, HashSet<Integer>> solapaments, boolean crea) {
 		String str = "Assignatura".concat(endl);
 		str = str.concat(nomAssig.concat(endl));
-		ExportaImporta.exporta(path, str, crea);
+		exporta(path, str, crea);
 		for (Pair<String,Integer> s : sessionsg) {
 			cp.getSessionsG(path, nomPE, nomAssig, s.first, s.second);
 		}
@@ -54,9 +54,9 @@ public class DadesAssignatura extends ExportaImporta {
 		for (int g : grups) {
 			cp.getGrups(path, nomPE, nomAssig, g);
 		}
-		DadesHoresAptes.getInstancia().exportaHoresAptes(horesAptes);
-		DadesSolapaments.getInstancia().exportaSolapaments(solapaments);
-		ExportaImporta.exporta(path, "END ASSIG".concat(endl), crea);
+		DadesHoresAptes.getInstancia().exportaHoresAptes(path, horesAptes);
+		DadesSolapaments.getInstancia().exportaSolapaments(path, solapaments);
+		exporta(path, "END ASSIG".concat(endl), crea);
 	}
 	
 	public String importaAssignatura(String path, String nomPE, String assig) {

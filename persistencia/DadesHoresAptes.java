@@ -2,8 +2,6 @@ package persistencia;
 
 import java.util.*;
 
-import domini.classes.PlaEstudis;
-
 /**
  * 
  * @author eric.casanovas@est.fib.upc.edu
@@ -36,7 +34,7 @@ public class DadesHoresAptes extends ExportaImporta {
 	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
 	 * @return la codificació de les HoresAptes
 	 */
-	public void exportaHoresAptes(Map<Integer, boolean[]> franja) {
+	public void exportaHoresAptes(String path, Map<Integer, boolean[]> franja) {
 		String str = "HoresAptes".concat(endl);
 		boolean[] b;
 		for (int i = 0; i < 7; ++i) {
@@ -52,9 +50,10 @@ public class DadesHoresAptes extends ExportaImporta {
 			str = str.concat(")");
 		}
 		str = str.concat(endl).concat("END HA").concat(endl);
+		exporta(path, str, false);
 	}
 
-	public String importaHoresAptes(String path, PlaEstudis pe) {
+	public String importaHoresAptes(String path) {
 		
 		return null;
 	}

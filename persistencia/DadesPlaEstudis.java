@@ -1,8 +1,6 @@
 package persistencia;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -66,11 +64,11 @@ public class DadesPlaEstudis extends ExportaImporta {
 			str = str.concat(String.valueOf(rang[0]).concat(" "));
 			str = str.concat(String.valueOf(rang[1]).concat(endl));
 		}
-		ExportaImporta.exporta(path, str, true);
+		exporta(path, str, true);
 		for (String a : nomassig) {
 			cp.getAssignatura(path, nom, a);
 		}
-		ExportaImporta.exporta(path, "END PE".concat(endl), false);
+		exporta(path, "END PE".concat(endl), false);
 	}
 
 	public String importaPlaEstudis(String path, String nom, String autor, Map<Integer, boolean[]> lectiu,

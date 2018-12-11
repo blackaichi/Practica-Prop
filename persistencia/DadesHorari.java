@@ -2,9 +2,6 @@ package persistencia;
 
 import java.util.*;
 
-import domini.classes.Campus;
-import domini.classes.PlaEstudis;
-
 /**
  * 
  * @author eric.casanovas@est.fib.upc.edu
@@ -47,7 +44,7 @@ public class DadesHorari extends ExportaImporta {
 			else str = str.concat(s).concat(",");
 		}
 		str = str.concat(endl);
-		ExportaImporta.exporta(path, str, true);
+		exporta(path, str, true);
 		for (int dia = 0; dia < 7; ++dia) {
 			str = str.concat(String.valueOf(dia)).concat(endl);
 			for (int hora = 0; hora < 24; ++hora) {
@@ -56,10 +53,10 @@ public class DadesHorari extends ExportaImporta {
 			}
 		}
 		str = str.concat("END HORARI").concat(endl);
-		ExportaImporta.exporta(path, str, false);
+		exporta(path, str, false);
 	}
 
-	public String importaHoraris(String path, PlaEstudis pe, Campus c) {
+	public String importaHoraris(String path) {
 		
 		return null;
 	}

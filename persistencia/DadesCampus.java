@@ -38,11 +38,11 @@ public class DadesCampus extends ExportaImporta {
 		String str = "Campus".concat(endl);
 		str = str.concat(nom.concat(endl));
 		str = str.concat(autor.concat(endl));
-		ExportaImporta.exporta(path, str, true);
+		exporta(path, str, true);
 		for (String s : aules) {
 			cp.getAula(path, nom, s);
 		}
-		ExportaImporta.exporta(path, "END CAMPUS".concat(endl), false);
+		exporta(path, "END CAMPUS".concat(endl), false);
 	}
 
 	public String importaCampus(String path) {
@@ -58,7 +58,8 @@ public class DadesCampus extends ExportaImporta {
 			if (entrada.get(0) != "Campus") return "Error al llegir la primera linia del fitxer";
 			String nomC = entrada.get(1);
 			String autor = entrada.get(2);
-			if ((error = DadesAula.getInstancia().importaAula(path, nomC)) != null) return error;
+			if (entrada.get(entrada.size()-1) != "END") return "Error al final del fitxer";
+			if ((error = DadesAula.getInstancia().importaAula(path, nomC, s)) != null) return error;
 			cp.creaCampusImportat(nomC, autor);
 			return null;
 		}

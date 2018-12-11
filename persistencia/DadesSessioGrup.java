@@ -2,9 +2,6 @@ package persistencia;
 
 import java.util.*;
 
-import domini.classes.Assignatura;
-import domini.classes.PlaEstudis;
-
 /**
  * 
  * @author eric.casanovas@est.fib.upc.edu
@@ -59,10 +56,10 @@ public class DadesSessioGrup extends ExportaImporta {
 			str = str.concat(String.valueOf(n));
 		}
 		str = str.concat(endl).concat("END SESSIOG").concat(endl);
-		ExportaImporta.exporta(path, str, crea);
+		exporta(path, str, crea);
 	}
 
-	public String importaSessioGrup(String path, PlaEstudis pe, Assignatura a) {
+	public String importaSessioGrup(String path) {
 
 		return null;
 	}

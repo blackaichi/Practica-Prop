@@ -34,6 +34,10 @@ public class DadesSegment extends ExportaImporta {
 		if (grup) str = str.concat(String.valueOf(numg));
 		else str = str.concat(String.valueOf(numsg));
 		str = str.concat(endl).concat("END SEGM").concat(endl);
-		ExportaImporta.exporta(path, str, false);
+		exporta(path, str, false);
+	}
+	
+	public void importaSegment(String path) {
+		
 	}
 }

@@ -2,9 +2,6 @@ package persistencia;
 
 import java.util.*;
 
-import domini.classes.Assignatura;
-import domini.classes.PlaEstudis;
-
 /**
  * 
  * @author eric.casanovas@est.fib.upc.edu
@@ -44,16 +41,16 @@ public class DadesGrup extends ExportaImporta {
 		str = str.concat(String.valueOf(numero)).concat(endl);
 		str = str.concat(String.valueOf(places)).concat(endl);
 		str = str.concat(franja).concat(endl);
-		ExportaImporta.exporta(path, str, crea);
+		exporta(path, str, crea);
 		for (int sg : numsg) {
 			cp.getSubGrup(path, nomPE, nomAssig, numero, sg);
 		}
-		DadesHoresAptes.getInstancia().exportaHoresAptes(horesAptes);
-		DadesSolapaments.getInstancia().exportaSolapaments(solapaments);
-		ExportaImporta.exporta(path, "END GRUP".concat(endl), false);
+		DadesHoresAptes.getInstancia().exportaHoresAptes(path, horesAptes);
+		DadesSolapaments.getInstancia().exportaSolapaments(path, solapaments);
+		exporta(path, "END GRUP".concat(endl), false);
 	}
 
-	public String importaGrup(String path, PlaEstudis pe, Assignatura a) {
+	public String importaGrup(String path) {
 		
 		return null;
 	}

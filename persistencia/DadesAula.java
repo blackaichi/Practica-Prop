@@ -1,8 +1,6 @@
 package persistencia;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -49,7 +47,7 @@ public class DadesAula extends ExportaImporta {
 			str = str.concat(s);
 		}
 		str = str.concat(endl).concat("END AULA").concat(endl);
-		ExportaImporta.exporta(path, str, crea);
+		exporta(path, str, crea);
 	}
 	
 	public String importaAula(String path, String nomC, String f) {

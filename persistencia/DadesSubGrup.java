@@ -1,12 +1,6 @@
 package persistencia;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-
-import domini.classes.Assignatura;
-import domini.classes.Grup;
-import domini.classes.PlaEstudis;
+import java.util.*;
 
 /**
  * 
@@ -45,13 +39,13 @@ public class DadesSubGrup extends ExportaImporta {
 		String str = "SubGrup".concat(endl);
 		str = str.concat(String.valueOf(numero)).concat(endl);
 		str = str.concat(String.valueOf(places)).concat(endl);
-		DadesHoresAptes.getInstancia().exportaHoresAptes(horesAptes);
-		DadesSolapaments.getInstancia().exportaSolapaments(solapaments);
+		DadesHoresAptes.getInstancia().exportaHoresAptes(path, horesAptes);
+		DadesSolapaments.getInstancia().exportaSolapaments(path, solapaments);
 		str = str.concat("END SUBGRUP").concat(endl);
-		ExportaImporta.exporta(path, str, crea);
+		exporta(path, str, crea);
 	}
 
-	public String importaSubGrup(String path, PlaEstudis pe, Assignatura a, Grup g) {
+	public String importaSubGrup(String path) {
 
 		return null;
 	}

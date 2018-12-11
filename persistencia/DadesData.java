@@ -1,8 +1,6 @@
 package persistencia;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 
 /**
  * 
@@ -41,7 +39,7 @@ public class DadesData extends ExportaImporta {
 		str = str.concat(String.valueOf(dia)).concat(endl);
 		str = str.concat(String.valueOf(hora)).concat(endl);
 		str = str.concat("END DATA").concat(endl);
-		ExportaImporta.exporta(path, str, false);
+		exporta(path, str, false);
 	}
 	
 	public String importaData(String path, int dia, int hora) {
