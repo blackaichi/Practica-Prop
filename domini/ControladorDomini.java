@@ -452,7 +452,7 @@ public final class ControladorDomini {
 ///////////////////////////////  EXPORTS  //////////////////////////////////////
 	
 
-	public String exportaAssignatura(String path, String plaEst, String nomA) {
+	public String exportaAssignatura(String path, String plaEst, String nomA, boolean rec) {
 		try {
 			Assignatura a = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(nomA);
 			
@@ -482,13 +482,12 @@ public final class ControladorDomini {
 			Map<Integer, boolean[]> horesAptes = a.getHoresAptes().getHoresAptes();
 			HashMap<String, HashSet<Integer>> solapaments = a.getSolapaments().getDisjuntes();
 			
-			ControladorPersistencia.getInstancia().exportaAssignatura(path,plaEst,nomA,sessionsGrup,sessionsSGrup,grups,horesAptes,solapaments);
+			ControladorPersistencia.getInstancia().exportaAssignatura(path,plaEst,nomA,sessionsGrup,sessionsSGrup,grups,horesAptes,solapaments, rec);
 			return null;
 		}
 		catch(Exception e) {
 			return e.toString();
 		}
-		return null;
 	}
 	
 	public String exportaAula(String path, String nomAula, String nomCampus, boolean rec) {
@@ -523,7 +522,7 @@ public final class ControladorDomini {
 		}
 	}
 		
-	public String exportaGrup(String path,int numero, String assignatura, String plaEst) {
+	public String exportaGrup(String path,int numero, String assignatura, String plaEst, boolean rec) {
 		try {
 			Grup g = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(assignatura).getGrup(numero);
 			String franja = g.getFranja();
@@ -536,7 +535,7 @@ public final class ControladorDomini {
 			}
 			Map<Integer, boolean[]> horesAptes = g.getRestriccioHoresAptes().getHoresAptes();
 			HashMap<String, HashSet<Integer>> solapaments = g.getSolapaments().getDisjuntes();
-			ControladorPersistencia.getInstancia().exportaCampus(path,plaEst,assignatura,numero,places,franja,allSubGrups,horesAptes,solapaments);
+			ControladorPersistencia.getInstancia().exportaGrup(path,plaEst,assignatura,numero,places,franja,allSubGrups,horesAptes,solapaments,rec);
 			return null;
 		}
 		catch (Exception e) {
@@ -553,21 +552,6 @@ public final class ControladorDomini {
 		}
 	}
 	
-	public String exportaHoresAptes(String path, String plaEst, String assig, int grup, int subGrup) {
-		try {
-			HoresAptes ha;
-			if (subGrup != 0) ha = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(assig).getGrup(grup).getSubGrup(subGrup).getRestriccioHoresAptes();
-			else if (grup != 0) ha = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(assig).getGrup(grup).getRestriccioHoresAptes();
-			else ha = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(assig).getHoresAptes();
-			Map<Integer,boolean[]> franja = ha.getHoresAptes();
-			ControladorPersistencia.getInstancia().exportaHoresAptes(path,franja);
-			return null;
-		}
-		catch (Exception e) {
-			return e.toString();
-		}
-	}
-	
 	public String exportaPlaEstudis(String path, String plaEst) {
 		try {
 			PlaEstudis pe = PlaEstudis.getPlaEstudis(plaEst);
@@ -579,22 +563,16 @@ public final class ControladorDomini {
 				assignatures.add(a.getNom());
 			}
 			int[] rang = pe.getRang();
-			ControladorPersistencia.getInstancia().exportaPlaEstudis(path,plaEst,autor,lectiu,assignatures,rang);
+			ControladorPersistencia.getInstancia().exportaPlaEstudis(path,plaEst,autor,lectiu,rang,assignatures);
 			return null;
 		}
 		catch (Exception e) {
 			return e.toString();
 		}
 	}
-	public String exportaSessioGAssignada(String path, String nomG) { //TODO no se que he de exportar d'aqui
-		try {
-			return null;
-		}
-		catch (Exception e) {
-			return e.toString();
-		}
-	}
-	public String exportaSessioGrup(String path, String plaEst, String nomAssig, String tipus, Integer hores) {
+	
+
+	public String exportaSessioGrup(String path, String plaEst, String nomAssig, String tipus, Integer hores, boolean rec) {
 		try {
 			
 			SessioGrup sg = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(nomAssig).getSessioG(tipus,hores);
@@ -606,7 +584,7 @@ public final class ControladorDomini {
 			for (SessioGAssignada sessio : sga) {
 				ngrups.add(sessio.getGrup().getNumero());
 			}
-			ControladorPersistencia.getInstancia().exportaSessioGrup(path,plaEst,nomAssig,equip,hores,tipus,nsessions,ngrups);
+			ControladorPersistencia.getInstancia().exportaSessioGrup(path,equip,hores,tipus,nsessions,ngrups,rec);
 			
 			return null;
 		}
@@ -615,16 +593,7 @@ public final class ControladorDomini {
 		}
 	}
 	
-	public String exportaSessioSGAssignada(String path) { //TODO
-		try {
-			
-			return null;
-		}
-		catch (Exception e) {
-			return e.toString();
-		}
-	}
-	public String exportaSessioSubGrup(String path, String plaEst, String nomAssig, String tipus, Integer hores) {
+	public String exportaSessioSubGrup(String path, String plaEst, String nomAssig, String tipus, Integer hores, boolean rec) {
 		try {
 			
 			SessioSubGrup ssg = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(nomAssig).getSessioSG(tipus, hores);
@@ -635,35 +604,26 @@ public final class ControladorDomini {
 			for (SessioSGAssignada sessio : ssga) {
 				ngrups.add(sessio.getSubGrup().getNumero());
 			}
-			ControladorPersistencia.getInstancia().exportaSessioGrup(path,plaEst,nomAssig,equip,hores,tipus,nsessions,ngrups);
+			ControladorPersistencia.getInstancia().exportaSessioSubGrup(path,equip,hores,tipus,nsessions,ngrups,rec);
 			return null;
 		}
 		catch (Exception e) {
 			return e.toString();
 		}
 	}
-	public String exportaSubGrup(String path, int numeroSG,int numeroG, String assignatura, String plaEst) {
+	public String exportaSubGrup(String path, int numeroSG,int numeroG, String assignatura, String plaEst, boolean rec) {
 		try {
 			SubGrup sg = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(assignatura).getGrup(numeroG).getSubGrup(numeroSG);
 			Integer places = sg.getPlaces();
 			Map<Integer, boolean[]> horesAptes = sg.getRestriccioHoresAptes().getHoresAptes();
 			HashMap<String, HashSet<Integer>> solapaments = sg.getSolapaments().getDisjuntes();
-			ControladorPersistencia.getInstancia().exportaCampus(path,plaEst,assignatura,numeroG,numeroSG,places,horesAptes,solapaments);
+			ControladorPersistencia.getInstancia().exportaSubGrup(path,numeroSG,places,horesAptes,solapaments,rec);
 			return null;
 		}
 		catch (Exception e) {
 			return e.toString();
 		}
 	}
-	public String exportaSolapaments(Solapaments s) { //TODO
-		try {
-			
-			return null;
-		}
-		catch (Exception e) {
-			return e.toString();
-		}
-	}
-	
+
 
 }
