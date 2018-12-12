@@ -391,8 +391,31 @@ public final class ControladorPersistencia {
 
 	public String creaSessioGrupImportada(String nomPE, String nomA, HashSet<String> equip, int hores, String tipus,
 			int nsessions) {
-		if ((error = cd.CrearAula(nomC, nomA, capacitat)) != null) return error;
-		if ((error = cd.ModificarAula(nomC, nomA, null, -1, equip)) != null) return error;
+		if ((error = cd.CrearSessioGrup(nomPE, nomA, tipus, hores)) != null) return error;
+		if ((error = cd.ModificarSessioGrup(nomPE, nomA, tipus, hores, null, -1, nsessions, equip)) != null) return error;
+		return null;
+	}
+	
+	public String creaSessioSubGrupImportada(String nomPE, String nomA, HashSet<String> equip, int hores, String tipus,
+			int nsessions) {
+		if ((error = cd.CrearSessioSubGrup(nomPE, nomA, tipus, hores)) != null) return error;
+		if ((error = cd.ModificarSessioSubGrup(nomPE, nomA, tipus, hores, null, -1, nsessions, equip)) != null) return error;
+		return null;
+	}
+
+	public String creaGrupImportat(String nomPE, String nomA, int grup, int capacitat, String franja) {
+		if ((error = cd.CrearGrup(nomPE, nomA, grup, capacitat)) != null) return error;
+		if ((error = cd.ModificarGrup(nomPE, nomA, grup, grup, capacitat, franja)) != null) return error;
+		return null;
+	}
+
+	public String creaHoresAptes(String nomPE, String nomA, int grup, int subgrup, Map<Integer, boolean[]> ha) {
+		if ((error = cd.HoresAptes(nomPE, nomA, grup, subgrup, ha, apte, force)) != null) return error;
+		return null;
+	}
+
+	public String creaSolapamentAssig(String nomPE, String nomA, HashMap<String, HashSet<Integer>> solapaments) {
+		if ((error = cd.SetSolapamentAssig(nomPE, nomA, assigToRegister, permet)) != null) return error;
 		return null;
 	}
 

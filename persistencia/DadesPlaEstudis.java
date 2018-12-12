@@ -85,10 +85,7 @@ public class DadesPlaEstudis extends ExportaImporta {
 			Map<Integer, boolean[]> lectiu = new HashMap<Integer, boolean[]>();
 			int[] rangDia = new int[4];
 			int it = 0;
-			if (!entrada.get(it++).equals("PlaEstudis")) {
-				br.close();
-				return "No es un fitxer amb un PlaEstudis";
-			}
+			if (!entrada.get(it++).equals("PlaEstudis")) return "No es un fitxer amb un PlaEstudis";
 			nom = entrada.get(it++);
 			autor = entrada.get(it++);
 			char[] c = entrada.get(it++).toCharArray();

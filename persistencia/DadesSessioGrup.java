@@ -75,10 +75,9 @@ public class DadesSessioGrup extends ExportaImporta {
 				br.close();
 			}
 			int i = 0;
-			
-			if (!f.get(i).equals("Aula")) return "no conte un aula el fitxer";
+			if (!f.get(i).equals("SessioGrup")) return "no conte una sessio de grup el fitxer";
 			while (i < f.size() && f.get(i++).equals("SessioGrup")) {
-				if (i + 4 > f.size()) return "error llargada de aula";
+				if (i + 4 > f.size()) return "error llargada de sessio grup";
 				HashSet<String> equip = new HashSet<String>();
 				int hores;
 				String tipus;
@@ -91,14 +90,13 @@ public class DadesSessioGrup extends ExportaImporta {
 				hores = Integer.parseInt(f.get(i++));
 				tipus = f.get(i++);
 				nsessions = Integer.parseInt(f.get(i++));
-				if (!f.get(i++).equals("END SESSIOG")) return "error en acabar fitxer aula";
+				if (!f.get(i++).equals("END SESSIOG")) return "error en acabar fitxer sessio grup";
 				if ((error = cp.creaSessioGrupImportada(nomPE, nomA, equip, hores, tipus, nsessions)) != null) return error;
 			}
-			
+			return null;			
 		}
 		catch (Exception e) {
-			
+			return e.getMessage();
 		}
-		return null;
 	}
 }

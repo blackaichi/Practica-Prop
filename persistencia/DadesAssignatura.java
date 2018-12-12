@@ -60,7 +60,9 @@ public class DadesAssignatura extends ExportaImporta {
 	}
 	
 	public String importaAssignatura(String path, String nomPE, List<String> f) {
-		try {
+		
+		return null;
+		/*try {
 			if (f == null) {
 				String s;
 				f = new ArrayList<String>();
@@ -72,28 +74,52 @@ public class DadesAssignatura extends ExportaImporta {
 				br.close();
 			}
 			int i = 0;
-			if (!f.get(i++).equals("Assignatura")) return "no es un aula el fitxer";
-			String nomA;
-			nomA = f.get(i++);
-			if (!f.get(4).equals("END ASSIG")) return "No finalitza correctament";
-			cp.creaAssignaturaImportada(nomPE, nomA);
 			List<String> aux;
-			if (f.contains("SessioGrup") && f.contains("END SESSIOG")) {
-				aux = f.subList(f.indexOf("SessioGrup"), f.lastIndexOf("END SESSIOG"));
-				DadesSessioGrup.getInstancia().importaSessioGrup(path, nomPE, nomA, aux);
-			}
-			if (f.contains("SessioSubGrup") && f.contains("END SESSIOSG")) {
-				aux = f.subList(f.indexOf("SessioSubGrup"), f.lastIndexOf("END SESSIOSG"));
-				DadesSessioSubGrup.getInstancia().importaSessioSubGrup(path, nomPE, nomA, aux);
-			}
-			if (f.contains("Grup") && f.contains("END GRUP")) {
-				aux = f.subList(f.indexOf("Grup"), f.lastIndexOf("END GRUP"));
-				DadesGrup.getInstancia().importaGrup(path, nomPE, nomA, aux);
+			while (i < f.size()) {
+				if (f.contains("END ASSIG") && f.contains("Assignatura")) 
+					aux = f.subList(f.indexOf("Assignatura"), f.indexOf("END ASSIG"));
+				else return "Error al fitxer d'assignatura";
+				if (i + 2 > f.size()) return "error a la assignatura";
+				if (!f.get(i++).equals("Assignatura")) return "no es una assignatura el fitxer";
+				String nomA;
+				nomA = f.get(i++);
+				List<String> entry;
+				cp.creaAssignaturaImportada(nomPE, nomA);
+				if (aux.contains("SessioGrup") && aux.contains("END SESSIOG")) {
+					entry = aux.subList(aux.indexOf("SessioGrup"), aux.lastIndexOf("END SESSIOG")+1);
+					if (aux.indexOf("SessioGrup") == -1 || aux.lastIndexOf("END SESSIOG") == -1) 
+						return "Error a la part de sessio grup";
+					DadesSessioGrup.getInstancia().importaSessioGrup(path, nomPE, nomA, entry);
+				}
+				if (aux.contains("SessioSubGrup") && aux.contains("END SESSIOSG")) {
+					if (aux.indexOf("SessioSubGrup") == -1 || aux.lastIndexOf("END SESSIOSG") == -1) 
+						return "Error a la part de sessio subgrup";
+					entry = aux.subList(aux.indexOf("SessioSubGrup"), aux.lastIndexOf("END SESSIOSG")+1);
+					DadesSessioSubGrup.getInstancia().importaSessioSubGrup(path, nomPE, nomA, entry);
+				}
+				if (aux.contains("Grup") && aux.contains("END GRUP")) {
+					if (aux.indexOf("Grup") == -1 || aux.lastIndexOf("END GRUP") == -1) 
+						return "Error a la part de grup";
+					entry = aux.subList(aux.indexOf("Grup"), aux.lastIndexOf("END GRUP")+1);
+					DadesGrup.getInstancia().importaGrup(path, nomPE, nomA, entry);
+				}
+				if (aux.contains("Solapaments") && aux.contains("END SOLAP")) {
+					entry = aux.subList(aux.indexOf("Solapaments"), aux.lastIndexOf("END SOLAP")+1);
+					DadesSolapaments.getInstancia().importaSolapaments(nomPE, nomA, entry);
+				}
+				else return "error no conte solapaments";
+				if (aux.contains("HoresAptes") && aux.contains("END HA")) {
+					entry = aux.subList(aux.indexOf("HoresAptes"), aux.lastIndexOf("END HA")+1);
+					DadesHoresAptes.getInstancia().importaHoresAptes(nomPE, nomA, entry);
+				}
+				else return "error no conte HoresAptes";
+				f = f.subList(aux.indexOf("END ASSIG")+1, f.size()-1);
+				i = 0;
 			}
 			return null;
 		}
 		catch (Exception e) {
 			return e.getMessage();
-		}
+		}*/
 	}
 }

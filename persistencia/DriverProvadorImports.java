@@ -171,6 +171,10 @@ public class DriverProvadorImports {
 	 * @throws Exception
 	 */
 	private static void provaPlaEstudis() {
-		
+		DadesPlaEstudis.getInstancia().importaPlaEstudis(path);
+		PlaEstudis pe = PlaEstudis.getPlaEstudis("pe");
+		System.out.println(pe.getNom());
+		System.out.println(pe.getAutor());
+		System.out.print(pe.getRang());
 	}
 }

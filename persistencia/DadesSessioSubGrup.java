@@ -1,5 +1,8 @@
 package persistencia;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.*;
 
 /**
@@ -36,7 +39,7 @@ public class DadesSessioSubGrup extends ExportaImporta {
 	 */
 	public void exportaSessioSubGrup(String path, HashSet<String> equip, int hores,
 			String tipus, int nsessions, HashSet<Integer> nsubgrups, boolean crea) {
-		String str = "SessioGrup".concat(endl);
+		String str = "SessioSubGrup".concat(endl);
 		boolean first = true;  
 		if (equip.isEmpty()) str = str.concat("noequip");
 		for (String s : equip) {
@@ -60,7 +63,40 @@ public class DadesSessioSubGrup extends ExportaImporta {
 	}
 
 	public String importaSessioSubGrup(String path, String nomPE, String nomA, List<String> f) {
-
-		return null;
+		try {
+			if (f == null) {
+				String s;
+				f = new ArrayList<String>();
+				File file = new File(path); 
+				BufferedReader br = new BufferedReader(new FileReader(file));
+				while ((s = br.readLine()) != null) {
+					f.add(s);
+				}
+				br.close();
+			}
+			int i = 0;
+			if (!f.get(i).equals("SessioSubGrup")) return "no conte una sessio subgrup el fitxer";
+			while (i < f.size() && f.get(i++).equals("SessioSubGrup")) {
+				if (i + 4 > f.size()) return "error llargada de sessio subgrup";
+				HashSet<String> equip = new HashSet<String>();
+				int hores;
+				String tipus;
+				String error;
+				int nsessions;
+				String[] equipament = f.get(i++).split(",");
+				for (int j = 0; j < equipament.length; ++j) {
+					equip.add(equipament[j]);
+				}
+				hores = Integer.parseInt(f.get(i++));
+				tipus = f.get(i++);
+				nsessions = Integer.parseInt(f.get(i++));
+				if (!f.get(i++).equals("END SESSIOG")) return "error en acabar fitxer sessiosubgrup";
+				if ((error = cp.creaSessioSubGrupImportada(nomPE, nomA, equip, hores, tipus, nsessions)) != null) return error;
+			}
+			return null;			
+		}
+		catch (Exception e) {
+			return e.getMessage();
+		}
 	}
 }
