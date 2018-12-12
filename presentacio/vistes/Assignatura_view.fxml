@@ -38,7 +38,7 @@
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
                                           <Button id="grup_creador" layoutX="2.0" layoutY="459.0" mnemonicParsing="false" onAction="#onCreateGrup" prefHeight="29.0" prefWidth="292.0" text="+ Crear grup" />
-                                          <ListView id="grups_list" fx:id="grups" prefHeight="459.0" prefWidth="295.0" />
+                                          <ListView id="grups_list" fx:id="grups" onMouseClicked="#onGrupItemClicked" prefHeight="459.0" prefWidth="295.0" />
                                        </children>
                                     </AnchorPane>
                               </content>
@@ -52,7 +52,7 @@
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
                                           <Button id="sessio_creador" layoutX="2.0" layoutY="459.0" mnemonicParsing="false" onAction="#onCreateSessio" prefHeight="29.0" prefWidth="292.0" text="+ Crear sessio" />
-                                          <ListView id="sessions_list" fx:id="sessions" prefHeight="459.0" prefWidth="295.0" />
+                                          <ListView id="sessions_list" fx:id="sessions" onMouseClicked="#onSessioItemClicked" prefHeight="459.0" prefWidth="295.0" />
                                        </children>
                                     </AnchorPane>
                                  </content>
@@ -67,7 +67,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Label ellipsisString="" layoutX="14.0" layoutY="14.0" prefHeight="55.0" prefWidth="563.0" text="Selecciona totes aquelles assignatures amb les quals no es pot solapar aquesta assignatura:" wrapText="true" />
+                        <Label ellipsisString="" layoutX="14.0" prefHeight="55.0" prefWidth="563.0" text="Selecciona totes aquelles assignatures amb les quals no es pot solapar aquesta assignatura:" wrapText="true" />
                         <GridPane id="solapaments_container" fx:id="solap_container" layoutX="15.0" layoutY="69.0" prefHeight="440.0" prefWidth="561.0">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -87,18 +87,22 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Label ellipsisString="" layoutX="14.0" layoutY="14.0" prefHeight="55.0" prefWidth="563.0" text="Selecciona totes aquelles hores en les quals hi pot haver classe d'aquesta assignatura:" wrapText="true" />
-                        <GridPane id="hores_aptes_container" fx:id="aptes_container" layoutX="15.0" layoutY="69.0" prefHeight="440.0" prefWidth="561.0">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                        </GridPane>
+                        <Label ellipsisString="" layoutX="15.0" prefHeight="55.0" prefWidth="563.0" text="Selecciona totes aquelles hores en les quals hi pot haver classe d'aquesta assignatura:" wrapText="true" />
+                        <ScrollPane layoutX="1.0" layoutY="53.0" prefHeight="465.0" prefWidth="590.0">
+                           <content>
+                              <GridPane id="hores_aptes_container" fx:id="aptes_container" maxHeight="1.7976931348623157E308" prefHeight="465.0" prefWidth="572.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                              </GridPane>
+                           </content>
+                        </ScrollPane>
                      </children>
                   </AnchorPane>
               </content>

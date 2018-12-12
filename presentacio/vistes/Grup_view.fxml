@@ -16,11 +16,6 @@
                </font>
             </Label>
             <Button id="aplicar_sessio" layoutX="405.0" layoutY="6.0" mnemonicParsing="false" onAction="#apply" prefHeight="29.0" prefWidth="88.0" text="Aplicar" />
-            <Label id="assignatura_grup" fx:id="path" layoutX="167.0" layoutY="11.0" prefHeight="19.0" prefWidth="204.0" text="Assignatura: nom_assignatura">
-               <font>
-                  <Font size="12.0" />
-               </font>
-            </Label>
          </children>
       </Pane>
       <Pane layoutY="70.0" prefHeight="130.0" prefWidth="500.0">
@@ -33,9 +28,9 @@
             <Label layoutX="14.0" layoutY="88.0" text="Franja:" />
             <MenuButton id="franja_opcions" fx:id="menu" layoutX="380.0" layoutY="83.0" mnemonicParsing="false" text="Opcions">
               <items>
-                <MenuItem mnemonicParsing="false" text="Mati" />
-                <MenuItem mnemonicParsing="false" text="Tarda" />
-                  <MenuItem mnemonicParsing="false" text="Qualsevol" />
+                <MenuItem mnemonicParsing="false" onAction="#onMatiItemClicked" text="Mati" />
+                <MenuItem mnemonicParsing="false" onAction="#onTardaItemClicked" text="Tarda" />
+                  <MenuItem mnemonicParsing="false" onAction="#onAnyItemClicked" text="Qualsevol" />
               </items>
             </MenuButton>
             <Label id="franja_title" fx:id="franja" layoutX="95.0" layoutY="88.0" prefHeight="15.0" prefWidth="277.0" text="Qualsevol" />

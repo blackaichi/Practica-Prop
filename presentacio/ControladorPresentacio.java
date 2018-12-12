@@ -6,6 +6,7 @@ import domini.ControladorDomini;
 import persistencia.ControladorPersistencia;
 import presentacio.vistes.*;
 import utils.Estructura;
+import utils.Pair;
 
 /**
  * 
@@ -41,6 +42,22 @@ public class ControladorPresentacio {
 	
 	public HashSet<String> getAllAssignatures(String plaEstudis) {
 		return ControladorDomini.getInstance().assignaturesPresents(plaEstudis);
+	}
+	
+	public HashSet<String> getAllGrups(String plaEstudis, String assignatura){
+		return ControladorDomini.getInstance().grupsPresents(plaEstudis, assignatura);
+	}
+	
+	public HashSet<String> getAllSessions(String plaEstudis, String assignatura){
+		return ControladorDomini.getInstance().sessionsPresents(plaEstudis, assignatura);
+	}
+	
+	public HashSet<String> getAllSubGrups(String plaEstudis, String assignatura, int grup){
+		return ControladorDomini.getInstance().subgrupsPresents(plaEstudis, assignatura, grup);
+	}
+	
+	public Map<Integer, boolean[]> getHorizon(String plaEstudis, String assignatura, int grup, int subgrup){
+		return ControladorDomini.getInstance().getHorizon(plaEstudis, assignatura, grup, subgrup);
 	}
 	
 	public void CrearCampus(String campus) {
@@ -141,6 +158,11 @@ public class ControladorPresentacio {
 		if(s != null) Main.getInstance().showWarning("Error eliminar SessioGrup",s);
 	}
 	
+	public void ModificarSessioGrup(String plaEstudis, String assignatura, String tipus, int hores, String newTipus, int newHores, int nsessions, HashSet<String> equip) {
+		String s = ControladorDomini.getInstance().ModificarSessioGrup(plaEstudis,assignatura,tipus,hores,newTipus,newHores,nsessions,equip);
+		if(s != null) Main.getInstance().showWarning("Error modificar SessioSubGrup",s);
+	}
+	
 	public void CrearSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores) {
 		String s = ControladorDomini.getInstance().CrearSessioSubGrup(plaEstudis,assignatura,tipus,hores);
 		if(s != null) Main.getInstance().showWarning("Error crear SessioSubGrup",s);
@@ -149,6 +171,11 @@ public class ControladorPresentacio {
 	public void EliminaSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores) {
 		String s = ControladorDomini.getInstance().EliminaSessioSubGrup(plaEstudis,assignatura,tipus,hores);
 		if(s != null) Main.getInstance().showWarning("Error eliminar SessioSubGrup",s);
+	}
+	
+	public void ModificarSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores, String newTipus, int newHores, int nsessions, HashSet<String> equip) {
+		String s = ControladorDomini.getInstance().ModificarSessioSubGrup(plaEstudis,assignatura,tipus,hores,newTipus,newHores,nsessions,equip);
+		if(s != null) Main.getInstance().showWarning("Error modificar SessioSubGrup",s);
 	}
 	
 	public void AssignaSessioGrup(String plaEstudis, String assignatura, String tipus, int hores, int grup) {
@@ -185,6 +212,7 @@ public class ControladorPresentacio {
 		String s = ControladorDomini.getInstance().SetSolapamentGrup(plaEstudis,assignatura,grup,assigToRegister,numToRegister,permet);
 		if(s != null) Main.getInstance().showWarning("Error Solapament Grup",s);
 	}
+	
 	public void SetSolapamentSubGrup(String plaEstudis, String assignatura, int grup, int subgrup, String assigToRegister, int numToRegister, boolean permet) {
 		String s = ControladorDomini.getInstance().SetSolapamentSubGrup(plaEstudis,assignatura,grup,subgrup,assigToRegister,numToRegister,permet);
 		if(s != null) Main.getInstance().showWarning("Error Solapament SubGrup",s);
@@ -198,12 +226,12 @@ public class ControladorPresentacio {
 ///////////////////////////////  EXPORTS  //////////////////////////////////////
 
 	public void exportaAssignatura(String path, String plaEstudis, String assignatura) {
-		String s = ControladorDomini.getInstance().exportaAssignatura(path, plaEstudis, assignatura);
+		String s = ControladorDomini.getInstance().exportaAssignatura(path, plaEstudis, assignatura, true);
 		if(s != null) Main.getInstance().showWarning("Error exportar Assignatura",s);
 	}
 	
 	public void exportaAula(String path, String campus, String aula) {
-		String s = ControladorDomini.getInstance().exportaAula(path, aula, campus);
+		String s = ControladorDomini.getInstance().exportaAula(path, aula, campus, true);
 		if(s != null) Main.getInstance().showWarning("Error exportar Aula",s);
 	}
 	
@@ -213,18 +241,13 @@ public class ControladorPresentacio {
 	}
 	
 	public void exportaGrup(String path, String plaEstudis, String assignatura, int numero) {
-		String s = ControladorDomini.getInstance().exportaGrup(path, numero, assignatura, plaEstudis);
+		String s = ControladorDomini.getInstance().exportaGrup(path, numero, assignatura, plaEstudis, true);
 		if(s != null) Main.getInstance().showWarning("Error exportar Grup",s);
 	}
 	
-	public void exportaHorari(String path, String plaEstudis, String campus) {
-		String s = null;
+	public void exportaHorari(String path, HashSet<String> flags, String plaEstudis, String campus, int iteracions) {
+		String s = ControladorDomini.getInstance().exportaHorari(path, flags, campus, plaEstudis, iteracions);
 		if(s != null) Main.getInstance().showWarning("Error exportar Horari",s);
-	}
-	
-	public void exportaHoresAptes(String path, String plaEstudis, String assignatura, int grup, int subgrup) {
-		String s = ControladorDomini.getInstance().exportaHoresAptes(path, plaEstudis, assignatura, grup, subgrup);
-		if(s != null) Main.getInstance().showWarning("Error exportar HoresAptes",s);
 	}
 	
 	public void exportaPlaEstudis(String path, String plaEstudis) {
@@ -233,28 +256,23 @@ public class ControladorPresentacio {
 	}
 	
 	public void exportaSessioGrup(String path, String plaEstudis, String assignatura, String tipus, int hores) {
-		String s = ControladorDomini.getInstance().exportaSessioGrup(path, plaEstudis, assignatura, tipus, hores);
+		String s = ControladorDomini.getInstance().exportaSessioGrup(path, plaEstudis, assignatura, tipus, hores, true);
 		if(s != null) Main.getInstance().showWarning("Error exportar SessioGrup",s);
 	}
 	
 	public void exportaSessioSubGrup(String path, String plaEstudis, String assignatura, String tipus, int hores) {
-		String s = ControladorDomini.getInstance().exportaSessioGrup(path, plaEstudis, assignatura, tipus, hores);
+		String s = ControladorDomini.getInstance().exportaSessioSubGrup(path, plaEstudis, assignatura, tipus, hores, true);
 		if(s != null) Main.getInstance().showWarning("Error exportar SessioSubGrup",s);
 	}
 	
 	public void exportaSubGrup(String path, String plaEstudis, String assignatura, int grup, int subgrup) {
-		String s = ControladorDomini.getInstance().exportaSubGrup(path, subgrup, grup, assignatura, plaEstudis);
+		String s = ControladorDomini.getInstance().exportaSubGrup(path, subgrup, grup, assignatura, plaEstudis, true);
 		if(s != null) Main.getInstance().showWarning("Error exportar SessioSubGrup",s);
-	}
-	
-	public void exportaSolapaments(String path, String plaEstudis, String assignatura, int grup, int subgrup) {
-		String s = ControladorDomini.getInstance().exportaSolapaments(null);
-		if(s != null) Main.getInstance().showWarning("Error exportar Solapaments",s);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////  IMPORTS  //////////////////////////////////////
-	
+	/*
 	public void importaAssignatura(String path, PlaEstudis pe) {
 		String s = ControladorPersistencia.getInstancia().importaAssignatura(path,pe);
 		if(s != null) Main.getInstance().showWarning("Error importar Assignatura",s);
@@ -315,5 +333,5 @@ public class ControladorPresentacio {
 		if(s != null) Main.getInstance().showWarning("Error importar Solapaments",s);
 	}
 
-
+	*/
 }

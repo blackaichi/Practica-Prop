@@ -10,15 +10,14 @@ import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.TextFieldListCell;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.Scene;
 import javafx.scene.Parent;
 
 import java.awt.Event;
 import javafx.fxml.*;
 import javafx.util.*;
-
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.event.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -26,6 +25,7 @@ import javafx.stage.WindowEvent;
 public class Main extends Application {
 	
 	static private Main current;
+	static private boolean errorOcurred;
 	
 	@FXML private GridPane horari_container;
 	@FXML private ListView<String> plansEstudis, campus;
@@ -43,6 +43,14 @@ public class Main extends Application {
 		return Main.current;
 	}
 	
+	public static boolean onError(boolean restore) {
+		if(errorOcurred) {
+			if(restore) errorOcurred = false;
+			return true;
+		}
+		else return false;
+	}
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("Main_view.fxml"));
@@ -51,7 +59,7 @@ public class Main extends Application {
 		primaryStage.setScene(new Scene(root, 1080, 720));
 		primaryStage.show();
 	}
-		
+	
 	public void newWindows(String fxml, String title, int x, int y) {
 		try {
 			Stage stage = new Stage();
@@ -70,16 +78,28 @@ public class Main extends Application {
 	////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////  PRIVADES /////////////////////////////////////
 	
+	private boolean paramChecker(){
+		if(selected_pl.getText().isEmpty() || selected_c.getText().isEmpty()) {
+			this.showWarning("Falta informació", "Cal seleccionar una parella de PlaEstudis i Campus.");
+			return false;
+		}
+		else try {
+			Integer.parseUnsignedInt(nhoraris.getText());
+			return true;
+		}
+		catch(NumberFormatException e) {
+			Main.getInstance().showWarning("Format incorrecte", "La quantitat d'horaris a generar no està definida en el format correcte.");
+			return false;
+		}
+	}
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
 	
 	public Main() {
 		Main.current = this;
+		Main.errorOcurred = false;
 	}
 		
-	////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////  FXML ///////////////////////////////////////
-	
 	public void update() {
 		this.campus.getItems().clear();
 		this.campus.getItems().addAll(ControladorPresentacio.getInstance().getAllCampus());
@@ -87,6 +107,9 @@ public class Main extends Application {
 		this.plansEstudis.getItems().clear();
 		this.plansEstudis.getItems().addAll(ControladorPresentacio.getInstance().getAllPlaEstudis());
 	}
+		
+	////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////  FXML ///////////////////////////////////////
 	
 	public void onCampusSelected() {
 		System.out.println(String.valueOf(campus.getSelectionModel().getSelectedItem()));
@@ -103,6 +126,7 @@ public class Main extends Application {
 		alert.setContentText(message);
 		
 		alert.show();
+		Main.errorOcurred = true;
 	}
 	
 	@FXML
@@ -112,7 +136,8 @@ public class Main extends Application {
 	
 	@FXML
 	public void onCreatePlaEstudis() {
-		this.newWindows("PlaEstudis_view.fxml", "Pla d'estudis", 1050, 720);
+		this.newWindows("PlaEstudis_view.fxml", "Pla d'estudis", 1050, 733);
+		PlaEstudisManager.getInstance().setGradPane();
 	}
 	
 	@FXML
@@ -127,7 +152,9 @@ public class Main extends Application {
 	
 	@FXML
 	public void onGenerarHorari(){
-		this.update();
+		if(paramChecker()) {
+			
+		}
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////
@@ -148,4 +175,24 @@ public class Main extends Application {
 		System.out.println("onNHoraris");
 	}
 	
+	////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////// ON ITEM CLICKED ////////////////////////////////////
+	
+	@FXML
+	public void onCampusItemClicked(MouseEvent click) {
+		if(click.getClickCount() == 1) this.selected_c.setText(campus.getSelectionModel().getSelectedItem());
+		else {
+			this.newWindows("Campus_view.fxml", "Campus", 400, 720);
+			CampusManager.setPath(campus.getSelectionModel().getSelectedItem());
+		}
+	}
+	
+	@FXML
+	public void onPlaEstudisItemClicked(MouseEvent click) {
+		if(click.getClickCount() == 1) this.selected_pl.setText(plansEstudis.getSelectionModel().getSelectedItem());
+		else {
+			this.newWindows("PlaEstudis_view.fxml", "Pla d'estudis", 1050, 733);
+			PlaEstudisManager.setPath(plansEstudis.getSelectionModel().getSelectedItem());
+		}
+	}
 }

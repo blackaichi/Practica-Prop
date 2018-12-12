@@ -16,11 +16,6 @@
                </font>
             </Label>
             <Button id="aplicar_sessio" layoutX="405.0" layoutY="6.0" mnemonicParsing="false" onAction="#apply" prefHeight="29.0" prefWidth="88.0" text="Aplicar" />
-            <Label id="grup_subgrup" fx:id="path" layoutX="250.0" layoutY="11.0" prefHeight="19.0" prefWidth="130.0" text="Grup: grup_nom">
-               <font>
-                  <Font size="12.0" />
-               </font>
-            </Label>
          </children>
       </Pane>
       <Pane layoutY="70.0" prefHeight="130.0" prefWidth="500.0">
@@ -32,6 +27,7 @@
             <Separator layoutY="-1.0" prefHeight="5.0" prefWidth="500.0" />
             <Label layoutX="14.0" layoutY="88.0" text="Franja:" />
             <Label id="franja_title" fx:id="franja" layoutX="95.0" layoutY="88.0" prefHeight="15.0" prefWidth="277.0" text="Qualsevol" />
+            <CheckBox fx:id="force" layoutX="335.0" layoutY="87.0" mnemonicParsing="false" text="Forçar les places" />
          </children>
       </Pane>
       <MenuBar id="status_bar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="500.0">

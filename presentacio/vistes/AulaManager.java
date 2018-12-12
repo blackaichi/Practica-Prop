@@ -22,19 +22,40 @@ public class AulaManager {
 		return path == null || path.isEmpty();
 	}
 	
+	private boolean paramChecker() {
+		try {
+			Integer.parseUnsignedInt(places.getText());
+			return true;
+		}
+		catch(NumberFormatException e) {
+			Main.getInstance().showWarning("Format incorrecte", "Les places no estan definides en el format correcte.");
+			return false;
+		}
+	}
+	
+	private HashSet<String> getEquipSet(){
+		HashSet<String> equip = new HashSet<String>();
+		StringTokenizer token = new StringTokenizer(this.equip.getText(), ";");
+		while(token.hasMoreTokens()) equip.add(token.nextToken());
+		
+		return equip;
+	}
+	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
 	
 	public AulaManager() {
 		path = null;
+		current = this;
 	}
 	
 	public static AulaManager getInstance() {
-		return AulaManager.current;
+		return current;
 	}
 	
 	public static void setPath(String path) {
-		AulaManager.path = path;
+		AulaManager.getInstance().nom.setText(path);
+		AulaManager.getInstance().update();
 	}
 	
 	public static String getPath() {
@@ -44,6 +65,8 @@ public class AulaManager {
 	public void update() {
 		path = nom.getText();
 		title.setText("Aula: ".concat(nom.getText()));
+		
+		CampusManager.getInstance().update();
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -51,14 +74,12 @@ public class AulaManager {
 	
 	@FXML
 	public void apply() {
-		//En cas de ser una nova aula
-		if(isNew()) ControladorPresentacio.getInstance().CrearAula(CampusManager.getPath(), nom.getText(), Integer.valueOf(places.getText()));
-		
-		HashSet<String> equip = new HashSet<String>();
-		StringTokenizer token = new StringTokenizer(this.equip.getText(), "; ");
-		while(token.hasMoreTokens()) equip.add(token.nextToken());
-		
-		ControladorPresentacio.getInstance().ModificarAula(CampusManager.getPath(), isNew()? nom.getText() : path, isNew()? null : nom.getText(), Integer.valueOf(places.getText()), equip);	
-		update();
+		if(paramChecker()) { //Si tots els parametres estan ben escrits:
+			//En cas de ser una nova aula
+			if(isNew()) ControladorPresentacio.getInstance().CrearAula(CampusManager.getPath(), nom.getText(), Integer.valueOf(places.getText()));
+			
+			if(!Main.onError(false)) ControladorPresentacio.getInstance().ModificarAula(CampusManager.getPath(), isNew()? nom.getText() : path, isNew()? null : nom.getText(), Integer.valueOf(places.getText()), getEquipSet());	
+			if(!Main.onError(true)) update();
+		}
 	}
 }

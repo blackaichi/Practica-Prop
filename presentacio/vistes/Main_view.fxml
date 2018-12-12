@@ -61,8 +61,10 @@
                         <Label fx:id="quants_horaris" layoutX="544.0" layoutY="13.0" text="horari 0 de 0" />
                         <Button id="previoushorari" layoutX="505.0" layoutY="8.0" mnemonicParsing="false" onAction="#showPreviousHorari" text="&lt;" />
                         <Button id="nexthorari" layoutX="638.0" layoutY="8.0" mnemonicParsing="false" onAction="#showNextHorari" text="&gt;" />
-                        <Label id="selected_plaEstudis" fx:id="selected_pl" layoutX="14.0" layoutY="13.0" text="Pla d'estudis:" />
-                        <Label id="selected_campus" fx:id="selected_c" layoutX="14.0" layoutY="33.0" text="Campus:" />
+                        <Label id="selected_plaEstudis" layoutX="14.0" layoutY="13.0" text="Pla d'estudis:" />
+                        <Label id="selected_campus" layoutX="14.0" layoutY="33.0" text="Campus:" />
+                        <Label id="selected_plaEstudis" fx:id="selected_pl" layoutX="111.0" layoutY="13.0" />
+                        <Label id="selected_campus" fx:id="selected_c" layoutX="111.0" layoutY="33.0" />
                      </children></AnchorPane>
                </content>
             </Tab>
@@ -101,7 +103,7 @@
                      <children>
                         <Button id="campus_creador" layoutY="561.0" mnemonicParsing="false" onAction="#onCreateCampus" prefHeight="25.0" prefWidth="200.0" text="+ Crear campus" />
                         <TextField id="campus_cercador" fx:id="searcher_c" layoutX="6.0" layoutY="8.0" onAction="#onSearchCampus" prefHeight="25.0" prefWidth="189.0" promptText="Cercar per nom o autor" />
-                        <ListView id="list_campus" fx:id="campus" layoutY="38.0" onMouseClicked="#update" prefHeight="523.0" prefWidth="200.0" />
+                        <ListView id="list_campus" fx:id="campus" layoutY="38.0" onMouseClicked="#onCampusItemClicked" prefHeight="523.0" prefWidth="200.0" />
                      </children>
                   </AnchorPane>
             </content>
@@ -116,7 +118,7 @@
                      <children>
                         <Button id="plaestudis_creador" layoutY="561.0" mnemonicParsing="false" onAction="#onCreatePlaEstudis" prefHeight="25.0" prefWidth="200.0" text="+ Crear pla d'estudis" />
                         <TextField id="plaestudis_cercador" fx:id="searcher_pl" layoutX="5.0" layoutY="8.0" onAction="#onSearchPlaEstudis" prefHeight="25.0" prefWidth="189.0" promptText="Cercar per nom o autor" />
-                        <ListView id="list_planEstudis" fx:id="plansEstudis" layoutY="38.0" onMouseClicked="#update" prefHeight="523.0" prefWidth="200.0" />
+                        <ListView id="list_planEstudis" fx:id="plansEstudis" layoutY="38.0" onMouseClicked="#onPlaEstudisItemClicked" prefHeight="523.0" prefWidth="200.0" />
                      </children>
                   </AnchorPane>
                </content>

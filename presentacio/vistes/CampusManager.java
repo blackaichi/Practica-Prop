@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldListCell;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.Scene;
 import javafx.scene.Parent;
 
@@ -48,7 +49,8 @@ public class CampusManager {
 	}
 	
 	public static void setPath(String path) {
-		CampusManager.path = path;
+		CampusManager.getInstance().nom_id.setText(path);
+		CampusManager.getInstance().update();
 	}
 	
 	public static String getPath() {
@@ -61,6 +63,8 @@ public class CampusManager {
 		
 		this.aules.getItems().clear();
 		this.aules.getItems().addAll(ControladorPresentacio.getInstance().getAllAules(path));
+		
+		Main.getInstance().update();
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -71,13 +75,24 @@ public class CampusManager {
 		 //En cas de ser un nou campus:
 		if(isNew()) ControladorPresentacio.getInstance().CrearCampus(nom_id.getText());
 
-		ControladorPresentacio.getInstance().ModificarCampus(isNew()? nom_id.getText() : path, isNew()? null : nom_id.getText(), autor_id.getText());
-		this.update();
+		if(!Main.onError(false)) ControladorPresentacio.getInstance().ModificarCampus(isNew()? nom_id.getText() : path, isNew()? null : nom_id.getText(), autor_id.getText());
+		if(!Main.onError(true)) this.update();
 	}
 
 	@FXML
 	public void onCreateAula() {
 		if(isNew()) this.apply();
 		Main.getInstance().newWindows("Aula_view.fxml", "Aula", 500, 240);
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////// ON ITEM CLICKED ////////////////////////////////////
+	
+	@FXML
+	public void onAulaItemClicked(MouseEvent click) {
+		if(click.getClickCount() == 2){
+			Main.getInstance().newWindows("Aula_view.fxml", "Aula", 500, 240);
+			AulaManager.setPath(this.aules.getSelectionModel().getSelectedItem());
+		}
 	}
 }
