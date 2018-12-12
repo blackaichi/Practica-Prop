@@ -1,9 +1,7 @@
 package domini;
 
 import domini.classes.*;
-import domini.restriccions.*;
 import persistencia.ControladorPersistencia;
-import presentacio.ControladorPresentacio;
 
 import java.util.*;
 import utils.*;
@@ -524,7 +522,6 @@ public final class ControladorDomini {
 			String franja = g.getFranja();
 			Integer places = g.getPlaces();
 			HashSet<SubGrup> sg = g.getAllSubGrups();
-			HashSet<SessioGAssignada> sga = g.getSessions();
 			HashSet<Integer> allSubGrups = new HashSet<Integer>();
 			for (SubGrup subg : sg) {
 				allSubGrups.add(subg.getNumero());
@@ -573,7 +570,6 @@ public final class ControladorDomini {
 		try {
 			
 			SessioGrup sg = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(nomAssig).getSessioG(tipus,hores);
-			Pair<String,Integer> sessionsGrup = new Pair<String,Integer>();
 			HashSet<String> equip = sg.getMaterial();
 			int nsessions = sg.getnsessions();
 			HashSet<SessioGAssignada> sga = sg.getAllSessionsGA();
@@ -634,25 +630,24 @@ public final class ControladorDomini {
 			}
 			HashSet<Segment> segment = aux.getAllSegments(dia, hora);
 			for (Segment s : segment) {
-				int num;
-				int places;
-				Map<Integer, boolean[]> horesAptes;
-				HashMap<String, HashSet<Integer>> solapaments;
+				int numg = 0;
+				int numsg = 0;
+				String nomAula = s.getAula().getNom();
+				String nomAssig;
+				String tipus;
 				boolean grup = s.getSessio().snull();
 				if (grup) {
-					num = s.getSessio().first.getGrup().getNumero();
-					places = s.getSessio().first.getGrup().getPlaces();
-					horesAptes = s.getSessio().first.getGrup().getRestriccioHoresAptes().getHoresAptes();
-					solapaments = s.getSessio().first.getGrup().getSolapaments().getDisjuntes();
+					numg = s.getSessio().first.getGrup().getNumero();
 					
+					nomAssig = s.getSessio().first.getSessioGrup().getAssignatura().getNom();
+					tipus = s.getSessio().first.getSessioGrup().getTipus();
 				}
 				else {
-					num = s.getSessio().second.getSubGrup().getNumero();
-					places = s.getSessio().second.getSubGrup().getPlaces();
-					horesAptes = s.getSessio().second.getSubGrup().getRestriccioHoresAptes().getHoresAptes();
-					solapaments = s.getSessio().second.getSubGrup().getSolapaments().getDisjuntes();
+					numsg = s.getSessio().second.getSubGrup().getNumero();
+					nomAssig = s.getSessio().second.getSessioSubGrup().getAssignatura().getNom();
+					tipus = s.getSessio().second.getSessioSubGrup().getTipus();
 				}
-				ControladorPersistencia.getInstancia().exportaSegment(path, num, places, horesAptes, solapaments, rec);
+				ControladorPersistencia.getInstancia().exportaSegment(path,nomAula,nomAssig,tipus,numg, numsg, grup);
 			}
 			return null;
 		}
