@@ -114,16 +114,14 @@ public abstract class Sessio {
 	 */
 	public int setTipus(String tipus) {
 		if (tipus == null || tipus.isEmpty()) return 92;
-		else if((this.tipus == null || this.tipus.equals(tipus)) /*&& this.assignatura.checkSessio(tipus, hores)*/) return 93;
+		//else if((this.tipus == null || this.tipus.equals(tipus)) && this.assignatura.checkSessio(tipus, hores)) return 93;
 		/*S'ha de comprovar que la sessio que s'esta pretenent assignar, sigui nova, o una modificació, no 
 		 * solapi amb una altre sessio ja creada!*/
 		
-		if(!this.tipus.equals(tipus)) {
-			char[] chars = tipus.toCharArray();
-			for (char c : chars) {
-		        if(!Character.isLetter(c)) return 93; // He de ficar el numero que li tocaretornar
-		    }
-		}
+		char[] chars = tipus.toLowerCase().toCharArray();
+		for (char c : chars) {
+	        if(!Character.isLetter(c)) return 93; // He de ficar el numero que li tocaretornar
+	    }
 		
 		this.tipus = tipus;
 		return 0;
