@@ -56,6 +56,12 @@ public class AulaManager {
 	public static void setPath(String path) {
 		AulaManager.getInstance().nom.setText(path);
 		AulaManager.getInstance().update();
+		
+		ArrayList<String> data = ControladorPresentacio.getInstance().GetMainAulaData(CampusManager.getPath(), path);
+		for(int it = 0; it < data.size(); it++) {
+			if(it == 0) AulaManager.getInstance().places.setText(data.get(it));
+			else AulaManager.getInstance().equip.setText(AulaManager.getInstance().equip.getText().concat(data.get(it)).concat(";"));
+		}
 	}
 	
 	public static String getPath() {

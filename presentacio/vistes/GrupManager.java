@@ -1,5 +1,6 @@
 package presentacio.vistes;
 
+import java.util.*;
 import domini.ControladorDomini;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -52,6 +53,19 @@ public class GrupManager {
 	public static void setPath(String path) {
 		GrupManager.getInstance().nom.setText(path);
 		GrupManager.getInstance().update();
+		
+		ArrayList<String> data = ControladorPresentacio.getInstance().GetMainGrupData(PlaEstudisManager.getPath(),
+																					  AssignaturaManager.getPath(),
+																					  Integer.parseInt(path));
+		
+		for(int it = 0; it < data.size(); it++) {
+			if(it == 0) GrupManager.getInstance().places.setText(data.get(it));
+			else if(it == 1) {
+				if(data.get(it).equals("M")) GrupManager.getInstance().onMatiItemClicked();
+				else if(data.get(it).equals("T")) GrupManager.getInstance().onTardaItemClicked();
+				else GrupManager.getInstance().onAnyItemClicked();
+			}
+		}
 	}
 	
 	public void setGradPane() {
@@ -72,6 +86,10 @@ public class GrupManager {
 		
 		setGradPane();
 		AssignaturaManager.getInstance().update();
+	}
+	
+	public String getFranja() {
+		return this.franja.getText();
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////

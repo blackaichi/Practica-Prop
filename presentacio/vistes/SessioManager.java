@@ -1,7 +1,6 @@
 package presentacio.vistes;
 
-import java.util.HashSet;
-import java.util.StringTokenizer;
+import java.util.*;
 
 import domini.ControladorDomini;
 import javafx.fxml.FXML;
@@ -69,8 +68,25 @@ public class SessioManager {
 	}
 	
 	public static void setPath(String path) {
-		SessioManager.getInstance().tipus.setText(path);
+		String[] scan = path.split(" ");
+		if(scan[0].charAt(1) == 'S') SessioManager.getInstance().onSubGrupItemClicked();
+		else SessioManager.getInstance().onGrupItemClicked();
+		
+		SessioManager.getInstance().tipus.setText(scan[1]);
+		SessioManager.getInstance().durada.setText(scan[3]);
+		
 		SessioManager.getInstance().update();
+		
+		ArrayList<String> data = ControladorPresentacio.getInstance().GetMainSessioData(PlaEstudisManager.getPath(),
+																						AssignaturaManager.getPath(),
+																						SessioManager.getInstance().tipus.getText(),
+																						Integer.parseInt(SessioManager.getInstance().durada.getText()),
+																						!SessioManager.getInstance().conjunt.getText().contains("S"));
+		
+		for(int it = 0; it < data.size(); it++) {
+			if(it == 0) SessioManager.getInstance().nsessions.setText(data.get(it));
+			else SessioManager.getInstance().equip.setText(SessioManager.getInstance().equip.getText().concat(data.get(it)).concat(";"));
+		}
 	}
 	
 	public static String getPath() {

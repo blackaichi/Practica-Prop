@@ -1,5 +1,7 @@
 package presentacio.vistes;
 
+import java.util.ArrayList;
+
 import domini.ControladorDomini;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -56,6 +58,14 @@ public class SubGrupManager {
 	public static void setPath(String path) {
 		SubGrupManager.getInstance().nom.setText(path);
 		SubGrupManager.getInstance().update();
+		
+		ArrayList<String> data = ControladorPresentacio.getInstance().GetMainSubGrupData(PlaEstudisManager.getPath(),
+																					  	 AssignaturaManager.getPath(),
+																					  	 Integer.parseInt(GrupManager.getPath()),
+																					  	 Integer.parseInt(path));
+		
+		SubGrupManager.getInstance().places.setText(data.get(0));
+		SubGrupManager.getInstance().franja.setText(GrupManager.getInstance().getFranja());
 	}
 	
 	public static String getPath() {

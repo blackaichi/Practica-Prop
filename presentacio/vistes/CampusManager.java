@@ -51,6 +51,8 @@ public class CampusManager {
 	public static void setPath(String path) {
 		CampusManager.getInstance().nom_id.setText(path);
 		CampusManager.getInstance().update();
+		
+		CampusManager.getInstance().autor_id.setText(ControladorPresentacio.getInstance().GetMainCampusData(path));
 	}
 	
 	public static String getPath() {

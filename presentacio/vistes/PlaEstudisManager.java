@@ -68,6 +68,8 @@ public class PlaEstudisManager {
 	public static void setPath(String path) {
 		PlaEstudisManager.getInstance().nom_id.setText(path);
 		PlaEstudisManager.getInstance().update();
+		
+		PlaEstudisManager.getInstance().autor_id.setText(ControladorPresentacio.getInstance().GetMainPlaEstudisData(path));
 	}
 	
 	public static String getPath() {

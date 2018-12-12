@@ -32,12 +32,24 @@ public class ControladorPresentacio {
 		return ControladorDomini.getInstance().campusPresents();
 	}
 	
+	public String GetMainCampusData(String campus) {
+		return ControladorDomini.getInstance().GetMainCampusData(campus);
+	}
+	
 	public HashSet<String> getAllAules(String campus) {
 		return ControladorDomini.getInstance().aulesPresents(campus);
 	}
 	
+	public ArrayList<String> GetMainAulaData(String campus, String aula) {
+		return ControladorDomini.getInstance().GetMainAulaData(campus, aula);
+	}
+	
 	public HashSet<String> getAllPlaEstudis() {
 		return ControladorDomini.getInstance().plansEstudisPresents();
+	}
+	
+	public String GetMainPlaEstudisData(String plaEstudis) {
+		return ControladorDomini.getInstance().GetMainPlaEstudisData(plaEstudis);
 	}
 	
 	public HashSet<String> getAllAssignatures(String plaEstudis) {
@@ -48,12 +60,24 @@ public class ControladorPresentacio {
 		return ControladorDomini.getInstance().grupsPresents(plaEstudis, assignatura);
 	}
 	
+	public ArrayList<String> GetMainGrupData(String plaEstudis, String assignatura, int grup) {
+		return ControladorDomini.getInstance().GetMainGrupData(plaEstudis, assignatura, grup);
+	}
+	
 	public HashSet<String> getAllSessions(String plaEstudis, String assignatura){
 		return ControladorDomini.getInstance().sessionsPresents(plaEstudis, assignatura);
 	}
 	
+	public ArrayList<String> GetMainSessioData(String plaEstudis, String assignatura, String tipus, int hores, boolean deGrup) {
+		return ControladorDomini.getInstance().GetMainSessioData(plaEstudis, assignatura, tipus, hores, deGrup);
+	}
+	
 	public HashSet<String> getAllSubGrups(String plaEstudis, String assignatura, int grup){
 		return ControladorDomini.getInstance().subgrupsPresents(plaEstudis, assignatura, grup);
+	}
+	
+	public ArrayList<String> GetMainSubGrupData(String plaEstudis, String assignatura, int grup, int subgrup) {
+		return ControladorDomini.getInstance().GetMainSubGrupData(plaEstudis, assignatura, grup, subgrup);
 	}
 	
 	public Map<Integer, boolean[]> getHorizon(String plaEstudis, String assignatura, int grup, int subgrup){
