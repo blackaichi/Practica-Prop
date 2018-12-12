@@ -117,8 +117,10 @@ public class PlaEstudis {
 	 */
 	public int setNom(String nom) {
 		if (nom == null || nom.isEmpty()) return 18;
-		else if(this.nom == null) this.nom = nom;
-		else if(this.nom == null && plansEstudis.contains(PlaEstudis.getPlaEstudis(nom))) return 10;
+		if(!this.nom.equals(nom)){
+			if(this.nom == null) this.nom = nom;
+			else if(this.nom == null && plansEstudis.contains(PlaEstudis.getPlaEstudis(nom))) return 10;
+		}
 		
 		this.nom = nom;
 		return 0;
@@ -253,6 +255,14 @@ public class PlaEstudis {
 	}
 	
 	/**
+	 * Retorna el rang complet del pla d'estudis.
+	 * @return Un array de 4 posicions.
+	 */
+	public int[] getRang() {
+		return this.rangDia;
+	}
+	
+	/**
 	 * Retorna el set d'Assignatures que pertanyen al Pla d'Estudis.
 	 * @return Set d'Assignatures del pla.
 	 */
@@ -310,9 +320,6 @@ public class PlaEstudis {
 		return null;
 	}
 	
-	public int[] getRang() {
-		return this.rangDia;
-	}
 	/////////////////////////////////////////////////////////////
 	//////////////////////// Modificadores /////////////////////
 			
@@ -395,6 +402,4 @@ public class PlaEstudis {
 		
 		return keys;
 	}
-
-
 }

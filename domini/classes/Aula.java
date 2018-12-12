@@ -69,8 +69,8 @@ public class Aula {
 	 * @return Excepció en forma d'enter.
 	 */
 	public int setNom(String nom) {
-		if(nom == null) return 152; //El nom no pot ser null
-		else if(this.nom != null) { //En cas d'una modificació:
+		if(nom == null || nom.isEmpty()) return 152; //El nom no pot ser null
+		else if(this.nom != null && !this.nom.equals(nom)) { //En cas d'una modificació:
 			if(this.campus != null && this.campus.checkAula(nom)) return 151; //El campus ja conté una aula amb la mateixa identificació
 		}
 		

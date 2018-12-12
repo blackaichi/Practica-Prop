@@ -67,8 +67,8 @@ public class Campus {
 	 * @throws Exception
 	 */
 	public int setNom(String nom) {
-		if(nom == null) return 130; //El nom del campus no pot ser null.
-		else if(checkCampus(nom)) return 131; //Ja existeix un campus amb aquest nom.
+		if(nom == null || nom.isEmpty()) return 130; //El nom del campus no pot ser null.
+		else if(!this.nom.equals(nom) && checkCampus(nom)) return 131; //Ja existeix un campus amb aquest nom.
 		
 		this.nom = nom;
 		return 0;

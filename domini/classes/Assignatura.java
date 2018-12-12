@@ -76,8 +76,11 @@ public class Assignatura {
 	 * @throws Exception si nom no cambia o nom ja existeix en el Pla d'Estudis.
 	 */
 	public int setNom(String nom) {
-		if (nom == null) return 30;
-		else if(this.plaEstudis.checkAssignatura(nom)) return 32;
+		if (nom == null || nom.isEmpty()) return 30;
+		else if(!this.nom.equals(nom)) {
+			if(this.plaEstudis.checkAssignatura(nom)) return 32;
+		}
+		
 		this.nom = nom;
 		return 0;
 	}

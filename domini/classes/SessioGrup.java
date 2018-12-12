@@ -91,6 +91,10 @@ public class SessioGrup extends Sessio{
 	@Override
 	public int setHores(int hores) {
 		if (hores < 1) return 91;
+		else if(this.hores != hores) {
+			//TODO: Rerik as aki tuz mieldas
+		}
+		
 		this.hores = hores;
 		return 0;
 	}

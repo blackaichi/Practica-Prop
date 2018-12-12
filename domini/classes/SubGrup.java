@@ -122,13 +122,15 @@ public class SubGrup {
 	 */
 	public int setNumero(int numero) {
 		if(numero <= 0) return 50;
-		else if(this.grup.getAssignatura().checkGrup(numero)) return 70;
-		else for(Grup grup: this.grup.getAssignatura().getGrups())
-			if(grup.checkSubGrup(numero)) return 70;
+		else if(this.numero != numero) {
+			if(this.grup.getAssignatura().checkGrup(numero)) return 70;
+			else for(Grup grup: this.grup.getAssignatura().getGrups())
+				if(grup.checkSubGrup(numero)) return 70;
+		}
 		
 		//En cas d'estar modificant el numero de subGrup, aquest s'ha d'actualitzar en les
 		//restriccions de solapament:
-		if(this.numero != 0)
+		if(this.numero != 0 && this.numero != numero)
 			this.getSolapaments().actualitzaNumero(this.grup.getAssignatura().getNom(), this.numero, numero);
 		
 		this.numero = numero;

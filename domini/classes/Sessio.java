@@ -114,10 +114,13 @@ public abstract class Sessio {
 	 */
 	public int setTipus(String tipus) {
 		if (tipus == null || tipus.isEmpty()) return 92;
-		char[] chars = tipus.toCharArray();
-		for (char c : chars) {
-	        if(!Character.isLetter(c)) return 93; // He de ficar el numero que li tocaretornar
-	    }
+		else if(!this.tipus.equals(tipus)) {
+			char[] chars = tipus.toCharArray();
+			for (char c : chars) {
+		        if(!Character.isLetter(c)) return 93; // He de ficar el numero que li tocaretornar
+		    }
+		}
+		
 		this.tipus = tipus;
 		return 0;
 	}

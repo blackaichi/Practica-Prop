@@ -152,13 +152,14 @@ public class Grup {
 	 */
 	public int setNumero(int numero) {
 		if(numero <= 0) return 50;
-		else if(this.assig.checkGrup(numero)) return 51;
-		else for(Grup grup: assig.getGrups())
-			if(grup.checkSubGrup(numero)) return 51;
-
+		else if(this.numero != numero) {
+			if(this.assig.checkGrup(numero)) return 51;
+			else for(Grup grup: assig.getGrups())
+				if(grup.checkSubGrup(numero)) return 51;
+		}
 		//En cas d'estar modificant el numero de grup, aquest s'ha d'actualitzar en les
 		//restriccions de solapament:
-		if(this.numero != 0)
+		if(this.numero != 0 && this.numero != numero)
 			this.getSolapaments().actualitzaNumero(this.assig.getNom(), this.numero, numero);
 		
 		this.numero = numero;
@@ -172,7 +173,7 @@ public class Grup {
 	 */
 	public int setPlaces(int places){
 		if(places <= 0) return 52;
-		else if(places < this.getPlacesAssignades()) return 53; 
+		else if(this.places != places && places < this.getPlacesAssignades()) return 53; 
 		
 		this.places = places;
 		return 0;
