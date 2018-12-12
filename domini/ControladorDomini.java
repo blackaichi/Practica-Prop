@@ -31,6 +31,16 @@ public final class ControladorDomini {
 		return Campus.getKeys();
 	}
 	
+	public String GetMainCampusData(String campus) {
+		try {
+			Campus toGet = Campus.getCampus(campus);
+			return toGet.getAutor();
+		}
+		catch(Exception e) {
+			return e.toString();
+		}
+	}
+	
 	public HashSet<String> aulesPresents(String campus){
 		HashSet<Aula> aules = Campus.getCampus(campus).getAllAules();
 		
@@ -40,10 +50,35 @@ public final class ControladorDomini {
 		return allAules;
 	}
 	
+	public ArrayList<String> GetMainAulaData(String campus, String aula) {
+		try {
+			ArrayList<String> data = new ArrayList<>();
+			Aula toGet = Campus.getCampus(campus).getAula(aula);
+			
+			data.add(String.valueOf(toGet.getCapacitat()));
+			for(String equip : toGet.getEquip()) data.add(equip);
+			return data;
+		
+		}
+		catch(Exception e) {
+			return null;
+		}	
+	}
+	
 	public HashSet<String> plansEstudisPresents(){
 		return PlaEstudis.getKeys();
 	}
 		
+	public String GetMainPlaEstudisData(String plaEstudis) {
+		try {
+			PlaEstudis toGet = PlaEstudis.getPlaEstudis(plaEstudis);
+			return toGet.getAutor();
+		}
+		catch(Exception e) {
+			return e.toString();
+		}
+	}
+	
 	public HashSet<String> assignaturesPresents(String plaEstudis){
 		HashSet<Assignatura> assig = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatures();
 		
@@ -51,6 +86,95 @@ public final class ControladorDomini {
 		for(Assignatura assign: assig) allAssig.add(assign.getNom());
 		
 		return allAssig;
+	}
+	
+	public HashSet<String> grupsPresents(String plaEstudis, String assignatura){
+		HashSet<Grup> grups = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrups();
+		
+		HashSet<String> allGrups = new HashSet<>();
+		for(Grup grup: grups) allGrups.add(String.valueOf(grup.getNumero()));
+		
+		return allGrups;
+	}
+	
+	public ArrayList<String> GetMainGrupData(String plaEstudis, String assignatura, int grup) {
+		try {
+			ArrayList<String> data = new ArrayList<>();
+			Grup toGet = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup);
+			
+			data.add(String.valueOf(toGet.getPlaces()));
+			data.add(String.valueOf(toGet.getFranja()));
+			return data;
+		
+		}
+		catch(Exception e) {
+			return null;
+		}
+	}
+	
+	public HashSet<String> sessionsPresents(String plaEstudis, String assignatura){
+		HashSet<SessioGrup> sessionsGrup = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getSessionsG();
+		HashSet<SessioSubGrup> sessionsSubGrup = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getSessionsSG();
+		
+		HashSet<String> allSessions = new HashSet<>();
+		for(SessioGrup sessio: sessionsGrup) allSessions.add("[G] ".concat(sessio.getTipus()).concat(" - ").concat(String.valueOf(sessio.getHores())));
+		for(SessioSubGrup sessio: sessionsSubGrup) allSessions.add("[S] ".concat(sessio.getTipus()).concat(" - ").concat(String.valueOf(sessio.getHores())));
+		
+		return allSessions;
+	}
+	
+	public ArrayList<String> GetMainSessioData(String plaEstudis, String assignatura, String tipus, int hores, boolean deGrup) {
+		try {
+			ArrayList<String> data = new ArrayList<>();
+			if(deGrup) {
+				SessioGrup toGet = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getSessioG(tipus, hores);
+				data.add(String.valueOf(toGet.getnsessions()));
+				for(String equip : toGet.getMaterial()) data.add(equip);
+			}
+			else {
+				SessioSubGrup toGet = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getSessioSG(tipus, hores);
+				data.add(String.valueOf(toGet.getnsessions()));
+				for(String equip : toGet.getMaterial()) data.add(equip);
+			}
+			
+			return data;
+		
+		}
+		catch(Exception e) {
+			return null;
+		}
+	}
+	
+	public HashSet<String> subgrupsPresents(String plaEstudis, String assignatura, int numero){
+		HashSet<SubGrup> subgrups = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(numero).getAllSubGrups();
+		
+		HashSet<String> allSubGrups = new HashSet<>();
+		for(SubGrup subgrup: subgrups) allSubGrups.add(String.valueOf(subgrup.getNumero()));
+		
+		return allSubGrups;
+	}
+	
+	public ArrayList<String> GetMainSubGrupData(String plaEstudis, String assignatura, int grup, int subgrup) {
+		try {
+			ArrayList<String> data = new ArrayList<>();
+			SubGrup toGet = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).getSubGrup(subgrup);
+			
+			data.add(String.valueOf(toGet.getPlaces()));
+			return data;
+		
+		}
+		catch(Exception e) {
+			return null;
+		}
+	}
+	
+	public Map<Integer, boolean[]> getHorizon(String plaEstudis, String assignatura, int grup, int subgrup){
+		if(subgrup > 0) return PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).getSubGrup(subgrup).getRestriccioHoresAptes().getHoresAptes();
+		else if(grup > 0) return PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).getRestriccioHoresAptes().getHoresAptes();
+		else if(assignatura != null) return PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getHoresAptes().getHoresAptes();
+		else if(plaEstudis != null) return PlaEstudis.getPlaEstudis(plaEstudis).getLectiuSetmana();
+		
+		return null;
 	}
 	
 	public String CrearCampus(String campus) {
@@ -436,11 +560,6 @@ public final class ControladorDomini {
 }
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////  FUNCIONS PERSISTENCIA  ////////////////////////
-	
-////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////  GETS D'EXPORTS  ///////////////////////////////	
-	
-	
 
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////  EXPORTS  //////////////////////////////////////
@@ -565,7 +684,6 @@ public final class ControladorDomini {
 		}
 	}
 	
-
 	public String exportaSessioGrup(String path, String plaEst, String nomAssig, String tipus, Integer hores, boolean rec) {
 		try {
 			
@@ -604,6 +722,7 @@ public final class ControladorDomini {
 			return e.toString();
 		}
 	}
+	
 	public String exportaSubGrup(String path, int numeroSG,int numeroG, String assignatura, String plaEst, boolean rec) {
 		try {
 			SubGrup sg = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(assignatura).getGrup(numeroG).getSubGrup(numeroSG);
