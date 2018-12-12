@@ -618,7 +618,7 @@ public final class ControladorDomini {
 		}
 	}
 	
-	public String exportaSegment(String path, int dia, int hora, String nomC, String nomPE, int id, boolean rec) {
+	public String exportaSegment(String path, int dia, int hora, String nomC, String nomPE, int id) {
 		try {
 			HashSet<Estructura> h = Horari.getInstance().getHoraris(nomPE, nomC);
 			
