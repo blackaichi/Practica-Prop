@@ -77,9 +77,7 @@ public class Assignatura {
 	 */
 	public int setNom(String nom) {
 		if (nom == null || nom.isEmpty()) return 30;
-		else if(!this.nom.equals(nom)) {
-			if(this.plaEstudis.checkAssignatura(nom)) return 32;
-		}
+		else if((this.nom == null || !this.nom.equals(nom)) && this.plaEstudis.checkAssignatura(nom)) return 32;
 		
 		this.nom = nom;
 		return 0;
