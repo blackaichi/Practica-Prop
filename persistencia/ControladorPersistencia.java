@@ -5,8 +5,6 @@ import java.util.*;
 import domini.*;
 import domini.classes.*;
 import domini.restriccions.*;
-import persistencia.exports.*;
-import persistencia.imports.*;
 import utils.*;
 
 /**
@@ -382,7 +380,17 @@ public final class ControladorPersistencia {
 
 	public String creaAulaImportada(String nomC, String nomA, int capacitat, HashSet<String> equip) {
 		if ((error = cd.CrearAula(nomC, nomA, capacitat)) != null) return error;
-		if ((error = cd.ModificarAula(nomC, nomA, null, capacitat, equip)) != null) return error;
+		if ((error = cd.ModificarAula(nomC, nomA, null, -1, equip)) != null) return error;
+		return null;
+	}
+	
+	public String creaAssignaturaImportada(String nomPE, String nomA) {
+		if ((error = cd.CrearAssignatura(nomPE, nomA)) != null) return error;
+		return null;
+	}
+
+	public String eliminaCampus(String nomC) {
+		if ((error = cd.EliminarCampus(nomC)) != null) return error;
 		return null;
 	}
 }

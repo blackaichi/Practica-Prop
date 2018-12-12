@@ -33,6 +33,7 @@ public class DriverProvadorExports {
 	private static DadesSolapaments solapaments = DadesSolapaments.getInstancia();
 	private static DadesSubGrup subGrup = DadesSubGrup.getInstancia();
 	private static Scanner reader = new Scanner(System.in);
+	private static ControladorDomini cd = ControladorDomini.getInstance();
 	
 	/**
 	 * Comprova l'Export que es descomenti
@@ -157,8 +158,7 @@ public class DriverProvadorExports {
 		Horari.getInstance().GENERADOR(pe, c, f, n, true);
 		for(Estructura struct : Horari.getInstance().getHoraris(pe.getNom(), c.getNom()))
 			Estructura.printHorari(struct);
-		
-		ControladorDomini.getInstance().exportaHorari(path,f,c.getNom(),pe.getNom(),0);
+		cd.exportaHorari(path, f, c.getNom(), pe.getNom(), 0);
 	}
 
 	/**
@@ -227,7 +227,7 @@ public class DriverProvadorExports {
 			aules.add(s);
 		}*/
 		//campus.exportaCampus(path, nomC, nomA, aules);
-		ControladorDomini.getInstance().exportaCampus(path, "campus");
+		cd.exportaCampus(path, "campus");
 	}
 	
 	/**
@@ -244,7 +244,7 @@ public class DriverProvadorExports {
 		a.altaGrup(10, 20, "M");
 		b.altaGrup(20, 10, "T");
 		a.altaSessioG("PC", 2);
-		ControladorDomini.getInstance().exportaPlaEstudis(path, "pe");
+		cd.exportaPlaEstudis(path, "pe");
 		
 		/*
 		System.out.print("Indica el campus(String): ");

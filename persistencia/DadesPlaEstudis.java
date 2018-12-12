@@ -71,20 +71,27 @@ public class DadesPlaEstudis extends ExportaImporta {
 		exporta(path, "END PE".concat(endl), false);
 	}
 
-	public String importaPlaEstudis(String path, String nom, String autor, Map<Integer, boolean[]> lectiu,
-			int[] rangDia) {
+	public String importaPlaEstudis(String path) {
 		try {
 			File file = new File(path); 
 			BufferedReader br = new BufferedReader(new FileReader(file)); 
 			String s; 
-			s = br.readLine();
-			if (!s.equals("PlaEstudis")) {
+			List<String> entrada = new ArrayList<String>();
+			while ((s = br.readLine()) != null) {
+				entrada.add(s);
+			}
+			br.close();
+			String nom, autor;
+			Map<Integer, boolean[]> lectiu = new HashMap<Integer, boolean[]>();
+			int[] rangDia = new int[4];
+			int it = 0;
+			if (!entrada.get(it++).equals("PlaEstudis")) {
 				br.close();
 				return "No es un fitxer amb un PlaEstudis";
 			}
-			nom = br.readLine();
-			autor = br.readLine();
-			char[] c = br.readLine().toCharArray();
+			nom = entrada.get(it++);
+			autor = entrada.get(it++);
+			char[] c = entrada.get(it++).toCharArray();
 			boolean[] franja = new boolean[24];
 			int dia = 0;
 			int i;
@@ -95,42 +102,24 @@ public class DadesPlaEstudis extends ExportaImporta {
 					++i;
 				}
 				else {
-					if (i+23 > c.length) {
-						br.close();
-						return "error falten dades a la franja";
-					}
+					if (i+23 > c.length) return "error falten dades a la franja";
 					for (int j = 0; j < 24; ++j) {
 						if (c[i+j] == 't') franja[j] = true;
 						else if (c[i+j] == 'f') franja[j] = false;
-						else {
-							br.close();
-							return "error no es ni una t, ni una f, ni una n";
-						}
+						else return "error no es ni una t, ni una f, ni una n";
 					}
 					lectiu.put(dia, franja);
 					i += 24;
 				}
 				++dia;
 			}
-			if (dia != 7) {
-				br.close();
-				return "No estan tots els dies de la franja de l'horari lectiu";
-			}
-			if (c.length != i+1) {
-				br.close();
-				return "Hi ha més lletres de les que toquen";
-			}
-			s = br.readLine();
+			if (dia != 7) return "No estan tots els dies de la franja de l'horari lectiu";
+			if (c.length != i+1) return "Hi ha més lletres de les que toquen";
+			s = entrada.get(it++);
 			String[] tokens = s.split(" ");
 			i = 0;
-			if (tokens.length > 6 || tokens.length < 4) {
-				br.close();
-				return "Rang del dia incorrecte";
-			}
-			if (tokens[i++] != "mati:") {
-				br.close();
-				return "Sintaxi incorrecta a rangDia";
-			}
+			if (tokens.length > 6 || tokens.length < 4)	return "Rang del dia incorrecte";
+			if (tokens[i++] != "mati:")	return "Sintaxi incorrecta a rangDia";
 			if (tokens[i] == "null") {
 				rangDia[0] = -1;
 				rangDia[1] = -1;
@@ -140,15 +129,9 @@ public class DadesPlaEstudis extends ExportaImporta {
 				rangDia[1] = Integer.valueOf(rangDia[1]);
 				++i;
 			}
-			else {
-				br.close();
-				return "Sintaxi incorrecta a rangDia";
-			}
+			else return "Sintaxi incorrecta a rangDia";
 			++i;
-			if (tokens[i] != "tarda:") {
-				br.close();
-				return "Sintaxi incorrecta a rangDia";
-			}
+			if (tokens[i] != "tarda:") return "Sintaxi incorrecta a rangDia";
 			++i;
 			if (tokens[i] == "null") {
 				rangDia[2] = -1;
@@ -159,11 +142,12 @@ public class DadesPlaEstudis extends ExportaImporta {
 				rangDia[3] = Integer.valueOf(rangDia[1]);
 				++i;
 			}
-			else {
-				br.close();
-				return "Sintaxi incorrecta a rangDia";
-			}
-			br.close();
+			else return "Sintaxi incorrecta a rangDia";
+			if (!entrada.get(entrada.size()-1).equals("END CAMPUS")) return "Error al final del fitxer";
+			entrada = entrada.subList(i, entrada.size()-1);
+			String error;
+			if ((error = DadesAssignatura.getInstancia().importaAssignatura(path, nom, entrada)) != null) return error;
+			cp.creaPlaEstudisImportat(nom, autor, lectiu, rangDia);
 			return null;
 		}
 		catch (Exception e) {

@@ -37,21 +37,4 @@ public class ExportaImporta {
 			return e.getMessage();
 		}
 	}
-	
-	static String importa(String path, String s) {
-		try {
-			File file = new File(path); 
-			BufferedReader br = new BufferedReader(new FileReader(file));
-			s = "";
-			String res = "";
-			while ((res = br.readLine()) != null) {
-				s = s.concat(res).concat("\n");
-			}
-			br.close();
-			return null;
-		}
-		catch (Exception e) {
-			return e.getMessage();
-		}
-	}
 }

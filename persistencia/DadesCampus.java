@@ -1,5 +1,8 @@
 package persistencia;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.*;
 
 /**
@@ -49,18 +52,25 @@ public class DadesCampus extends ExportaImporta {
 		try {
 			String s = "";
 			String error;
-			if ((error = importa(path, s)) != null) return error;
-			String[] aux = s.split("\n");
-			Vector<String> entrada = new Vector<String>();
-			for (String ss : aux) {
-				entrada.add(ss);
+			File file = new File(path); 
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			List<String> entrada = new ArrayList<String>();
+			while ((s = br.readLine()) != null) {
+				entrada.add(s);
 			}
-			if (entrada.get(0) != "Campus") return "Error al llegir la primera linia del fitxer";
-			String nomC = entrada.get(1);
-			String autor = entrada.get(2);
-			if (entrada.get(entrada.size()-1) != "END") return "Error al final del fitxer";
-			if ((error = DadesAula.getInstancia().importaAula(path, nomC, s)) != null) return error;
-			cp.creaCampusImportat(nomC, autor);
+			br.close();
+			int i = 0;
+			if (!entrada.get(i++).equals("Campus")) return "Error al llegir la primera linia del fitxer";
+			String nomC = entrada.get(i++);
+			String autor = entrada.get(i++);
+			if (!entrada.get(entrada.size()-1).equals("END CAMPUS")) return "Error al final del fitxer";
+			if (entrada.contains("Aula") && entrada.contains("END AULA"))
+				entrada = entrada.subList(entrada.indexOf("Aula"), entrada.lastIndexOf("END AULA")+1);
+			if ((error = cp.creaCampusImportat(nomC, autor)) != null) return error;
+			if ((error = DadesAula.getInstancia().importaAula(path, nomC, entrada)) != null) {
+				cp.eliminaCampus(nomC);
+				return error;
+			}
 			return null;
 		}
 		catch (Exception e) {

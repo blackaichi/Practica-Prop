@@ -2,6 +2,9 @@ package persistencia;
 
 import java.util.*;
 
+import domini.ControladorDomini;
+import domini.classes.*;
+
 /**
  * 
  * @author eric.casanovas@est.fib.upc.edu
@@ -27,6 +30,7 @@ public class DriverProvadorImports {
 	private static DadesSolapaments solapaments = DadesSolapaments.getInstancia();
 	private static DadesSubGrup subGrup = DadesSubGrup.getInstancia();
 	private static Scanner reader = new Scanner(System.in);
+	private static ControladorDomini cd = ControladorDomini.getInstance();
 	
 	public static void main (String [] args) {
 		System.out.println("Benvingut a l'eina de comprovació dels Imports");
@@ -151,7 +155,15 @@ public class DriverProvadorImports {
 	 * @throws Exception
 	 */
 	private static void provaCampus() {
-		
+		DadesCampus.getInstancia().importaCampus(path);
+		Campus c = Campus.getCampus("campus");
+		System.out.println(c.getNom());
+		System.out.println(c.getAutor());
+		for (Aula a : c.getAllAules()) {
+			System.out.println(a.getNom());
+			System.out.println(a.getCapacitat());
+			System.out.println(a.getEquip().size());			
+		}
 	}
 	
 	/**

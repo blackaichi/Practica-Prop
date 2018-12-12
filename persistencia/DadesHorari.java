@@ -41,19 +41,20 @@ public class DadesHorari extends ExportaImporta {
 		boolean first = true;
 		for (String s : flags) {
 			if (first) first = false;
-			else str = str.concat(s).concat(",");
+			else str = str.concat(",");
+			str = str.concat(s);
 		}
 		str = str.concat(endl);
 		exporta(path, str, true);
+		str = "";
 		for (int dia = 0; dia < 7; ++dia) {
-			str = str.concat(String.valueOf(dia)).concat(endl);
+			exporta(path, String.valueOf(dia).concat(endl), false);
 			for (int hora = 0; hora < 24; ++hora) {
-				str = str.concat(String.valueOf(hora)).concat(endl);
+				exporta(path, String.valueOf(hora).concat(endl), false);
 				cp.getSegment(path, dia, hora, nomC, nomPE, id);
 			}
 		}
-		str = str.concat("END HORARI").concat(endl);
-		exporta(path, str, false);
+		exporta(path, "END HORARI", false);
 	}
 
 	public String importaHoraris(String path) {

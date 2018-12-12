@@ -1,5 +1,8 @@
 package persistencia;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.*;
 
 /**
@@ -59,8 +62,23 @@ public class DadesSessioGrup extends ExportaImporta {
 		exporta(path, str, crea);
 	}
 
-	public String importaSessioGrup(String path) {
-
+	public String importaSessioGrup(String path, String nomPE, String nomA, List<String> f) {
+		try {
+			if (f == null) {
+				String s;
+				f = new ArrayList<String>();
+				File file = new File(path); 
+				BufferedReader br = new BufferedReader(new FileReader(file));
+				while ((s = br.readLine()) != null) {
+					f.add(s);
+				}
+				br.close();
+			}
+			
+		}
+		catch (Exception e) {
+			
+		}
 		return null;
 	}
 }

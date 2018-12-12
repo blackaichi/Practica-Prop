@@ -29,12 +29,15 @@ public class DadesSegment extends ExportaImporta {
 	public void exportaSegment(String path, String nomAula,	String nomAssig, String tipus,
 			int numg, int numsg, boolean grup) {
 		String str = "";
-		str = str.concat(nomAula).concat(endl);
-		str = str.concat(nomAssig.concat(" ")).concat(tipus.concat(" "));
-		if (grup) str = str.concat(String.valueOf(numg));
-		else str = str.concat(String.valueOf(numsg));
-		str = str.concat(endl).concat("END SEGM").concat(endl);
-		exporta(path, str, false);
+		if (nomAula == null) exporta(path, "buit\n", false);
+		else {
+			str = str.concat(nomAula).concat(endl);
+			str = str.concat(nomAssig.concat(" ")).concat(tipus.concat(" "));
+			if (grup) str = str.concat(String.valueOf(numg));
+			else str = str.concat(String.valueOf(numsg));
+			str = str.concat(endl).concat("END SEGM").concat(endl);
+			exporta(path, str, false);
+		}
 	}
 	
 	public void importaSegment(String path) {

@@ -59,13 +59,37 @@ public class DadesAssignatura extends ExportaImporta {
 		exporta(path, "END ASSIG".concat(endl), crea);
 	}
 	
-	public String importaAssignatura(String path, String nomPE, String assig) {
+	public String importaAssignatura(String path, String nomPE, List<String> f) {
 		try {
-			File file = new File(path); 
-			BufferedReader br = new BufferedReader(new FileReader(file)); 
-			String s;
-			br.readLine();
-			while (br.readLine() != "Assignatura");
+			if (f == null) {
+				String s;
+				f = new ArrayList<String>();
+				File file = new File(path); 
+				BufferedReader br = new BufferedReader(new FileReader(file));
+				while ((s = br.readLine()) != null) {
+					f.add(s);
+				}
+				br.close();
+			}
+			int i = 0;
+			if (!f.get(i++).equals("Assignatura")) return "no es un aula el fitxer";
+			String nomA;
+			nomA = f.get(i++);
+			if (!f.get(4).equals("END ASSIG")) return "No finalitza correctament";
+			cp.creaAssignaturaImportada(nomPE, nomA);
+			List<String> aux;
+			if (f.contains("SessioGrup") && f.contains("END SESSIOG")) {
+				aux = f.subList(f.indexOf("SessioGrup"), f.lastIndexOf("END SESSIOG"));
+				DadesSessioGrup.getInstancia().importaSessioGrup(path, nomPE, nomA, aux);
+			}
+			if (f.contains("SessioSubGrup") && f.contains("END SESSIOSG")) {
+				aux = f.subList(f.indexOf("SessioSubGrup"), f.lastIndexOf("END SESSIOSG"));
+				DadesSessioSubGrup.getInstancia().importaSessioSubGrup(path, nomPE, nomA, aux);
+			}
+			if (f.contains("Grup") && f.contains("END GRUP")) {
+				aux = f.subList(f.indexOf("Grup"), f.lastIndexOf("END GRUP"));
+				DadesGrup.getInstancia().importaGrup(path, nomPE, nomA, aux);
+			}
 			return null;
 		}
 		catch (Exception e) {
