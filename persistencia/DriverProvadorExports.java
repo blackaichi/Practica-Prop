@@ -157,7 +157,8 @@ public class DriverProvadorExports {
 		Horari.getInstance().GENERADOR(pe, c, f, n, true);
 		for(Estructura struct : Horari.getInstance().getHoraris(pe.getNom(), c.getNom()))
 			Estructura.printHorari(struct);
-		ControladorDomini.getInstance().exportaHorari(path);
+		
+		ControladorDomini.getInstance().exportaHorari(path,f,c.getNom(),pe.getNom(),0);
 	}
 
 	/**
