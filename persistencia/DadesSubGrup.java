@@ -45,7 +45,7 @@ public class DadesSubGrup extends ExportaImporta {
 		exporta(path, str, crea);
 	}
 
-	public String importaSubGrup(String path) {
+	public String importaSubGrup(String path, String nomPE, String nomA, int grup, List<String> f) {
 
 		return null;
 	}

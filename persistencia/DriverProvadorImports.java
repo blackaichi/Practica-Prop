@@ -32,7 +32,7 @@ public class DriverProvadorImports {
 	private static Scanner reader = new Scanner(System.in);
 	private static ControladorDomini cd = ControladorDomini.getInstance();
 	
-	public static void main (String [] args) {
+	public static void main (String [] args) throws Exception {
 		System.out.println("Benvingut a l'eina de comprovació dels Imports");
 		System.out.println("1-ImportaPlaEstudis, 2-ImportaCampus, 3-ImportaAula,  4-ImportaAssignatura,");
 		System.out.println("5-ImportaGrup, 6-ImportaHorari, 7-ImportaSessioGrup, 8-ImportaSessioSubGrup,");
@@ -138,8 +138,11 @@ public class DriverProvadorImports {
 	 * Comprova l'Import d'Assignatura
 	 * @throws Exception
 	 */
-	private static void provaAssignatura() {
-		
+	private static void provaAssignatura() throws Exception {
+		PlaEstudis.newPlaEstudis("campus");
+		PlaEstudis c = PlaEstudis.getPlaEstudis("campus");
+		DadesAssignatura.getInstancia().importaAssignatura(path, c.getNom(), null);
+		System.out.println(c.getAssignatura("prop").getNom());
 	}
 	
 	/**

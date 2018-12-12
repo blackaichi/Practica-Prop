@@ -65,7 +65,8 @@ public class DadesSolapaments extends ExportaImporta {
 				for (String ss3 : sa3) valor.add(Integer.valueOf(ss3));
 				solapaments.put(sa2[0], valor);
 			}
-			cp.creaSolapamentAssig(nomPE, nomA, solapaments);
+			String error;
+			if ((error = cp.creaSolapamentAssig(nomPE, nomA, solapaments)) != null) return error;
 			return null;
 		}
 		catch (Exception e) {

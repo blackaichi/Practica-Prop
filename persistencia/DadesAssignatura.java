@@ -1,8 +1,6 @@
 package persistencia;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.util.*;
 
 import utils.*;
@@ -45,24 +43,22 @@ public class DadesAssignatura extends ExportaImporta {
 		String str = "Assignatura".concat(endl);
 		str = str.concat(nomAssig.concat(endl));
 		exporta(path, str, crea);
+		for (int g : grups) {
+			cp.getGrups(path, nomPE, nomAssig, g);
+		}
 		for (Pair<String,Integer> s : sessionsg) {
 			cp.getSessionsG(path, nomPE, nomAssig, s.first, s.second);
 		}
 		for (Pair<String,Integer> s : sessionssg) {
 			cp.getSessionsSG(path, nomPE, nomAssig, s.first, s.second);
 		}
-		for (int g : grups) {
-			cp.getGrups(path, nomPE, nomAssig, g);
-		}
 		DadesHoresAptes.getInstancia().exportaHoresAptes(path, horesAptes);
 		DadesSolapaments.getInstancia().exportaSolapaments(path, solapaments);
-		exporta(path, "END ASSIG".concat(endl), crea);
+		exporta(path, "END ASSIG".concat(endl), false);
 	}
 	
 	public String importaAssignatura(String path, String nomPE, List<String> f) {
-		
-		return null;
-		/*try {
+		try {
 			if (f == null) {
 				String s;
 				f = new ArrayList<String>();
@@ -75,6 +71,7 @@ public class DadesAssignatura extends ExportaImporta {
 			}
 			int i = 0;
 			List<String> aux;
+			String error;
 			while (i < f.size()) {
 				if (f.contains("END ASSIG") && f.contains("Assignatura")) 
 					aux = f.subList(f.indexOf("Assignatura"), f.indexOf("END ASSIG"));
@@ -84,33 +81,48 @@ public class DadesAssignatura extends ExportaImporta {
 				String nomA;
 				nomA = f.get(i++);
 				List<String> entry;
-				cp.creaAssignaturaImportada(nomPE, nomA);
+				if ((error = cp.creaAssignaturaImportada(nomPE, nomA)) != null) return error;
 				if (aux.contains("SessioGrup") && aux.contains("END SESSIOG")) {
 					entry = aux.subList(aux.indexOf("SessioGrup"), aux.lastIndexOf("END SESSIOG")+1);
 					if (aux.indexOf("SessioGrup") == -1 || aux.lastIndexOf("END SESSIOG") == -1) 
 						return "Error a la part de sessio grup";
-					DadesSessioGrup.getInstancia().importaSessioGrup(path, nomPE, nomA, entry);
+					if ((error = DadesSessioGrup.getInstancia().importaSessioGrup(path, nomPE, nomA, entry)) != null) {
+						cp.eliminaAssignatura(nomPE, nomA);
+						return error;
+					}
 				}
 				if (aux.contains("SessioSubGrup") && aux.contains("END SESSIOSG")) {
 					if (aux.indexOf("SessioSubGrup") == -1 || aux.lastIndexOf("END SESSIOSG") == -1) 
 						return "Error a la part de sessio subgrup";
 					entry = aux.subList(aux.indexOf("SessioSubGrup"), aux.lastIndexOf("END SESSIOSG")+1);
-					DadesSessioSubGrup.getInstancia().importaSessioSubGrup(path, nomPE, nomA, entry);
+					if ((error = DadesSessioSubGrup.getInstancia().importaSessioSubGrup(path, nomPE, nomA, entry)) != null) {
+						cp.eliminaAssignatura(nomPE, nomA);
+						return error;
+					}
 				}
 				if (aux.contains("Grup") && aux.contains("END GRUP")) {
 					if (aux.indexOf("Grup") == -1 || aux.lastIndexOf("END GRUP") == -1) 
 						return "Error a la part de grup";
 					entry = aux.subList(aux.indexOf("Grup"), aux.lastIndexOf("END GRUP")+1);
-					DadesGrup.getInstancia().importaGrup(path, nomPE, nomA, entry);
+					if ((error = DadesGrup.getInstancia().importaGrup(path, nomPE, nomA, entry)) != null) {
+						cp.eliminaAssignatura(nomPE, nomA);
+						return error;
+					}
 				}
 				if (aux.contains("Solapaments") && aux.contains("END SOLAP")) {
 					entry = aux.subList(aux.indexOf("Solapaments"), aux.lastIndexOf("END SOLAP")+1);
-					DadesSolapaments.getInstancia().importaSolapaments(nomPE, nomA, entry);
+					if ((error = DadesSolapaments.getInstancia().importaSolapaments(nomPE, nomA, entry)) != null) {
+						cp.eliminaAssignatura(nomPE, nomA);
+						return error;
+					}
 				}
 				else return "error no conte solapaments";
 				if (aux.contains("HoresAptes") && aux.contains("END HA")) {
 					entry = aux.subList(aux.indexOf("HoresAptes"), aux.lastIndexOf("END HA")+1);
-					DadesHoresAptes.getInstancia().importaHoresAptes(nomPE, nomA, entry);
+					if ((error = DadesHoresAptes.getInstancia().importaHoresAptes(nomPE, nomA, entry)) != null) {
+						cp.eliminaAssignatura(nomPE, nomA);
+						return error;
+					}
 				}
 				else return "error no conte HoresAptes";
 				f = f.subList(aux.indexOf("END ASSIG")+1, f.size()-1);
@@ -120,6 +132,6 @@ public class DadesAssignatura extends ExportaImporta {
 		}
 		catch (Exception e) {
 			return e.getMessage();
-		}*/
+		}
 	}
 }

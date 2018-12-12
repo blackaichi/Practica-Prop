@@ -1,6 +1,7 @@
 package persistencia;
 
 import java.io.*;
+import java.util.List;
 
 /**
  * 
@@ -42,21 +43,13 @@ public class DadesData extends ExportaImporta {
 		exporta(path, str, false);
 	}
 	
-	public String importaData(String path, int dia, int hora) {
+	public String importaData(List<String> f) {
 		try {
-			File file = new File(path); 
-			BufferedReader br = new BufferedReader(new FileReader(file)); 
-			String s; 
-			s = br.readLine();
-			if (!s.equals("Data")) {
-				br.close();
-				return "No es un fitxer amb una data";
-			}
-			s = br.readLine();
-			dia = Integer.valueOf(s);
-			s = br.readLine();
-			hora = Integer.valueOf(s);
-			br.close();
+			if (f.size() != 4) return "error a la data";
+			if (!f.get(0).equals("Data") || !f.get(3).equals("END DATA")) return "error a la data";
+			int dia = Integer.valueOf(f.get(1));
+			int hora = Integer.valueOf(f.get(2));
+			cp.creaData(dia, hora);
 			return null;
 		}
 		catch (Exception e) {

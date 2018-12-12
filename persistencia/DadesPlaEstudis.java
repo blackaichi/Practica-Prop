@@ -99,6 +99,7 @@ public class DadesPlaEstudis extends ExportaImporta {
 					++i;
 				}
 				else {
+					System.out.println("aqui no");
 					if (i+23 > c.length) return "error falten dades a la franja";
 					for (int j = 0; j < 24; ++j) {
 						if (c[i+j] == 't') franja[j] = true;
@@ -111,13 +112,13 @@ public class DadesPlaEstudis extends ExportaImporta {
 				++dia;
 			}
 			if (dia != 7) return "No estan tots els dies de la franja de l'horari lectiu";
-			if (c.length != i+1) return "Hi ha més lletres de les que toquen";
+			if (c.length != i) return "Hi ha més lletres de les que toquen";
 			s = entrada.get(it++);
 			String[] tokens = s.split(" ");
 			i = 0;
 			if (tokens.length > 6 || tokens.length < 4)	return "Rang del dia incorrecte";
-			if (tokens[i++] != "mati:")	return "Sintaxi incorrecta a rangDia";
-			if (tokens[i] == "null") {
+			if (!tokens[i++].equals("mati:")) return "Sintaxi incorrecta a rangDia";
+			if (tokens[i].equals("null")) {
 				rangDia[0] = -1;
 				rangDia[1] = -1;
 			}
@@ -128,9 +129,9 @@ public class DadesPlaEstudis extends ExportaImporta {
 			}
 			else return "Sintaxi incorrecta a rangDia";
 			++i;
-			if (tokens[i] != "tarda:") return "Sintaxi incorrecta a rangDia";
+			if (!tokens[i].equals("tarda:")) return "Sintaxi incorrecta a rangDia";
 			++i;
-			if (tokens[i] == "null") {
+			if (tokens[i].equals("null")) {
 				rangDia[2] = -1;
 				rangDia[3] = -1;
 			}
@@ -140,11 +141,14 @@ public class DadesPlaEstudis extends ExportaImporta {
 				++i;
 			}
 			else return "Sintaxi incorrecta a rangDia";
-			if (!entrada.get(entrada.size()-1).equals("END CAMPUS")) return "Error al final del fitxer";
+			if (!entrada.get(entrada.size()-1).equals("END PE")) return "Error al final del fitxer";
 			entrada = entrada.subList(i, entrada.size()-1);
 			String error;
-			if ((error = DadesAssignatura.getInstancia().importaAssignatura(path, nom, entrada)) != null) return error;
-			cp.creaPlaEstudisImportat(nom, autor, lectiu, rangDia);
+			if ((error = cp.creaPlaEstudisImportat(nom, autor, lectiu, rangDia)) != null) return error;
+			if ((error = DadesAssignatura.getInstancia().importaAssignatura(path, nom, entrada)) != null) {
+				cp.eliminaPlaEstudis(nom);
+				return error;
+			}
 			return null;
 		}
 		catch (Exception e) {

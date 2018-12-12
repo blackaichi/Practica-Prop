@@ -73,7 +73,8 @@ public class DadesHoresAptes extends ExportaImporta {
 					ha.put(Integer.parseInt(sa2[0]), b);
 				}
 			}
-			cp.creaHoresAptes(nomPE, nomA, 0, 0, ha);
+			String error;
+			if ((error = cp.creaHoresAptes(nomPE, nomA, 0, 0, ha)) != null)	return error;
 			return null;
 		}
 		catch (Exception e) {

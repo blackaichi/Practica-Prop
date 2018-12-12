@@ -181,8 +181,12 @@ public class DriverProvadorExports {
 	 * Comprova l'Export d'Assignatura
 	 * @throws Exception
 	 */
-	private static void provaAssignatura() {
-		
+	private static void provaAssignatura() throws Exception {
+		PlaEstudis.newPlaEstudis("campus");
+		PlaEstudis c = PlaEstudis.getPlaEstudis("campus");
+		c.altaAssignatura("prop");
+		Assignatura a = c.getAssignatura("prop");
+		assignatura.exportaAssignatura(path, "campus", "prop", null, null, null, null, null, true);
 	}
 	
 	/**

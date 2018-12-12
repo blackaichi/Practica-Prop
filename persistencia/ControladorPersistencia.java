@@ -45,7 +45,15 @@ public final class ControladorPersistencia {
 	
 	/**
 	 * Exporta una Assignatura
-	 * @param a assignatura a exportar
+	 * @param path
+	 * @param nomPE
+	 * @param nomAssig
+	 * @param sessionsg
+	 * @param sessionssg
+	 * @param grups
+	 * @param horesAptes
+	 * @param solapaments
+	 * @param crea
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String exportaAssignatura(String path, String nomPE, String nomAssig, HashSet<Pair<String,Integer>> sessionsg,
@@ -62,8 +70,12 @@ public final class ControladorPersistencia {
 	}
 	
 	/**
-	 * Exporta un Aula
-	 * @param a aula a exportar
+	 * 
+	 * @param path
+	 * @param nom
+	 * @param capacitat
+	 * @param equip
+	 * @param crea
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String exportaAula(String path, String nom, int capacitat, HashSet<String> equip, boolean crea) {
@@ -77,8 +89,11 @@ public final class ControladorPersistencia {
 	}
 	
 	/**
-	 * Exporta un Campus
-	 * @param c campus a exportar
+	 * 
+	 * @param path
+	 * @param nom
+	 * @param autor
+	 * @param aules
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String exportaCampus(String path, String nom, String autor, HashSet<String> aules) {
@@ -92,8 +107,17 @@ public final class ControladorPersistencia {
 	}
 	
 	/**
-	 * Exporta un Grup
-	 * @param g grup a exportar
+	 * 
+	 * @param path
+	 * @param nomPE
+	 * @param nomAssig
+	 * @param numero
+	 * @param places
+	 * @param franja
+	 * @param numsg
+	 * @param horesAptes
+	 * @param solapaments
+	 * @param crea
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String exportaGrup(String path, String nomPE, String nomAssig, int numero, int places, String franja, 
@@ -108,8 +132,12 @@ public final class ControladorPersistencia {
 	}
 	
 	/**
-	 * Exporta un Horari
-	 * @param e horari a exportar
+	 * 
+	 * @param path
+	 * @param flags
+	 * @param nomC
+	 * @param nomPE
+	 * @param id
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String exportaHorari(String path, HashSet<String> flags, String nomC, String nomPE, int id) {
@@ -123,8 +151,13 @@ public final class ControladorPersistencia {
 	}
 	
 	/**
-	 * Exporta un PlaEstudis
-	 * @param pe pla d'estudis a exportar
+	 * 
+	 * @param path
+	 * @param nom
+	 * @param autor
+	 * @param franja
+	 * @param rang
+	 * @param nomassig
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String exportaPlaEstudis(String path, String nom, String autor, Map<Integer, 
@@ -139,8 +172,14 @@ public final class ControladorPersistencia {
 	}
 	
 	/**
-	 * Exporta una SessioGrup
-	 * @param sg sessió de grup a exportar
+	 * 
+	 * @param path
+	 * @param equip
+	 * @param hores
+	 * @param tipus
+	 * @param nsessions
+	 * @param ngrups
+	 * @param crea
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String exportaSessioGrup(String path, HashSet<String> equip,
@@ -155,8 +194,14 @@ public final class ControladorPersistencia {
 	}
 
 	/**
-	 * Exporta una SessioSubGrup
-	 * @param ssg sessió de subgrup a exportar
+	 * 
+	 * @param path
+	 * @param equip
+	 * @param hores
+	 * @param tipus
+	 * @param nsessions
+	 * @param nsubgrups
+	 * @param crea
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String exportaSessioSubGrup(String path, HashSet<String> equip,
@@ -171,8 +216,13 @@ public final class ControladorPersistencia {
 	}
 	
 	/**
-	 * Exporta un SubGrup 
-	 * @param sg subgrup a exportar
+	 * 
+	 * @param path
+	 * @param numero
+	 * @param places
+	 * @param horesAptes
+	 * @param solapaments
+	 * @param crea
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String exportaSubGrup(String path, int numero, int places, 
@@ -201,19 +251,19 @@ public final class ControladorPersistencia {
 	///////////////////////////////  IMPORTS  //////////////////////////////////////
 	
 	/**
-	 * Importa una Assignatura
-	 * @param path path del fitxer que volem importar
-	 * @param pe pla d'estudis al qual pertany l'assignatura
+	 * 
+	 * @param path
+	 * @param nomPE
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
-	public String importaAssignatura(String path, PlaEstudis pe) {
-		return DadesAssignatura.getInstancia().importaAssignatura(path, pe);
+	public String importaAssignatura(String path, String nomPE) {
+		return DadesAssignatura.getInstancia().importaAssignatura(path, nomPE, null);
 	}
 	
 	/**
-	 * Importa un Aula
-	 * @param path path del fitxer que volem importar
-	 * @param c campus al qual pertany l'aula
+	 * 
+	 * @param path
+	 * @param nomC
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String importaAula(String path, String nomC) {
@@ -221,8 +271,8 @@ public final class ControladorPersistencia {
 	}
 	
 	/**
-	 * Importa un Campus
-	 * @param path path del fitxer que volem importar
+	 * 
+	 * @param path
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String importaCampus(String path) {
@@ -230,165 +280,215 @@ public final class ControladorPersistencia {
 	}
 	
 	/**
-	 * Importa una Data
-	 * @param path path del fitxer que volem importar
+	 * 
+	 * @param path
+	 * @param nomPE
+	 * @param nomA
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
-	public String importaData(String path, int dia, int hora) {
-		DadesData id = DadesData.getInstancia();
-		return id.importaData(path, dia, hora);
+	public String importaGrup(String path, String nomPE, String nomA) {
+		return DadesGrup.getInstancia().importaGrup(path, nomPE, nomA, null);
 	}
 	
 	/**
-	 * Importa un Grup
-	 * @param path path del fitxer que volem importar
-	 * @param pe pla d'estudis al qual pertany el grup
-	 * @param a assignatura a la qual pertany el grup
+	 * 
+	 * @param path
+	 * @param nomC
+	 * @param nomPE
+	 * @param id
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
-	public String importaGrup(String path, PlaEstudis pe, Assignatura a) {
-		DadesGrup ig = DadesGrup.getInstancia();
-		return ig.importaGrup(path, pe, a);
+	public String importaHorari(String path, String nomC, String nomPE, int id) {
+		return DadesHorari.getInstancia().importaHoraris(path, nomC, nomPE, id);
 	}
 	
 	/**
-	 * Importa un Horari
-	 * @param path path del fitxer que volem importar
-	 * @param pe pla d'estudis al qual pertany l'horari
-	 * @param c campus al qual pertany l'horari
-	 * @return null en cas de cap error, l'error com a String altrament
-	 */
-	public String importaHorari(String path, PlaEstudis pe, Campus c) {
-		DadesHorari ih = DadesHorari.getInstancia();
-		return ih.importaHoraris(path, pe, c);
-	}
-	
-	/**
-	 * Importa unes HoresAptes
-	 * @param path path del fitxer que volem importar
-	 * @param pe pla d'estudis al qual pertanyen les hores aptes
-	 * @return null en cas de cap error, l'error com a String altrament
-	 */
-	public String importaHoresAptes(String path, PlaEstudis pe) {
-		DadesHoresAptes iha = DadesHoresAptes.getInstancia();
-		return iha.importaHoresAptes(path, pe);
-	}
-	
-	/**
-	 * Importa un PlaEstudis
-	 * @param path path del fitxer que volem importar
+	 * 
+	 * @param path
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String importaPlaEstudis(String path) {
-		if ((error = DadesPlaEstudis.getInstancia().importaPlaEstudis(path)) != null) return error;
-		return null;
+		return DadesPlaEstudis.getInstancia().importaPlaEstudis(path);
 	}
 	
 	/**
-	 * Importa una SessioGrup
-	 * @param path path del fitxer que volem importar
-	 * @param pe pla d'estudis al qual pertany la sessió de grup
-	 * @param a assignatura a la qual pertany la sessió de grup
+	 * 
+	 * @param path
+	 * @param nomPE
+	 * @param nomA
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
-	public String importaSessioGrup(String path, PlaEstudis pe, Assignatura a) {
-		DadesSessioGrup isg = DadesSessioGrup.getInstancia();
-		return isg.importaSessioGrup(path, pe, a);
+	public String importaSessioGrup(String path, String nomPE, String nomA) {
+		return DadesSessioGrup.getInstancia().importaSessioGrup(path, nomPE, nomA, null);
 	}
 	
 	/**
-	 * Importa una SessioSubGrup
-	 * @param path path del fitxer que volem importar
-	 * @param pe pla d'estudis al qual pertany la sessió de subgrup
-	 * @param a assignatura a la qual pertany la sessió de subgrup
+	 * 
+	 * @param path
+	 * @param nomPE
+	 * @param nomA
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
-	public String importaSessioSubGrup(String path, PlaEstudis pe, Assignatura a) {
-		DadesSessioSubGrup issg = DadesSessioSubGrup.getInstancia();
-		return issg.importaSessioSubGrup(path, pe, a);
+	public String importaSessioSubGrup(String path, String nomPE, String nomA) {
+		return DadesSessioSubGrup.getInstancia().importaSessioSubGrup(path, nomPE, nomA, null);
 	}
 	
 	/**
-	 * Importa un SubGrup
-	 * @param path path del fitxer que volem importar
-	 * @param pe pla d'estudis al qual pertany el subgrup
-	 * @param a assigntura a la qual pertany el subgrup
-	 * @param g grup al qual pertany el subgrup
+	 * 
+	 * @param path
+	 * @param nomPE
+	 * @param nomA
+	 * @param grup
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
-	public String importaSubGrup(String path, PlaEstudis pe, Assignatura a, Grup g) {
-		DadesSubGrup isg = DadesSubGrup.getInstancia();
-		return isg.importaSubGrup(path, pe, a, g);
-	}
-	
-	/**
-	 * Importa uns Solapaments
-	 * @param path path del fitxer que volem importar
-	 * @param pe pla d'estudis al qual pertanyen els solapaments
-	 * @param a assignatura a la qual pertanyen els solapaments
-	 * @param g grup al qual pertanyen els solapaments
-	 * @param sg subgrup al qual pertanyen els solapaments
-	 * @return null en cas de cap error, l'error com a String altrament
-	 */
-	public String importaSolapaments(String path, PlaEstudis pe, Assignatura a, Grup g, SubGrup sg) {
-		DadesSolapaments is = DadesSolapaments.getInstancia();
-		return is.importaSolapaments(path, pe, a, g, sg);
+	public String importaSubGrup(String path, String nomPE, String nomA, int grup) {
+		return DadesSubGrup.getInstancia().importaSubGrup(path, nomPE, nomA, grup, null);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////  FUNCIONS  /////////////////////////////////////
 	
+	/**
+	 * 
+	 * @param path
+	 * @param pla
+	 * @param assig
+	 */
 	public void getAssignatura(String path, String pla, String assig) {
 		cd.exportaAssignatura(path, pla, assig, false);
 	}
 
+	/**
+	 * 
+	 * @param path
+	 * @param nom
+	 * @param s
+	 */
 	public void getAula(String path, String nom, String s) {
 		cd.exportaAula(path, s, nom, false);
 	}
 
+	/**
+	 * 
+	 * @param path
+	 * @param nomPE
+	 * @param nomAssig
+	 * @param tipus
+	 * @param hores
+	 */
 	public void getSessionsG(String path, String nomPE, String nomAssig, String tipus, Integer hores) {
 		cd.exportaSessioGrup(path, nomPE, nomAssig, tipus, hores, false);
 	}
 	
+	/**
+	 * 
+	 * @param path
+	 * @param nomPE
+	 * @param nomAssig
+	 * @param tipus
+	 * @param hores
+	 */
 	public void getSessionsSG(String path, String nomPE, String nomAssig, String tipus, int hores) {
 		cd.exportaSessioSubGrup(path, nomPE, nomAssig, tipus, hores, false);
 	}
 
+	/**
+	 * 
+	 * @param path
+	 * @param nomPE
+	 * @param nomAssig
+	 * @param g
+	 */
 	public void getGrups(String path, String nomPE, String nomAssig, int g) {
 		cd.exportaGrup(path, g, nomAssig, nomPE, false);
 	}
 
+	/**
+	 * 
+	 * @param path
+	 * @param nomPE
+	 * @param nomAssig
+	 * @param g
+	 * @param sg
+	 */
 	public void getSubGrup(String path, String nomPE, String nomAssig, int g, int sg) {
 		cd.exportaSubGrup(path, sg, g, nomAssig, nomPE, false);
 	}
 
+	/**
+	 * 
+	 * @param path
+	 * @param dia
+	 * @param hora
+	 * @param nomC
+	 * @param nomPE
+	 * @param id
+	 */
 	public void getSegment(String path, int dia, int hora, String nomC, String nomPE, int id) {
 		cd.exportaSegment(path, dia, hora, nomC, nomPE, id);
 	}
 	
+	/**
+	 * 
+	 * @param nom
+	 * @param autor
+	 * @param lectiu
+	 * @param rangDia
+	 * @return null en cas de cap error, l'error com a String altrament
+	 */
 	public String creaPlaEstudisImportat(String nom, String autor, Map<Integer, boolean[]> lectiu, int[] rangDia) {
 		if ((error = cd.CrearPlaEstudis(nom)) != null) return error;
 		if ((error = cd.ModificarPlaEstudis(nom, null, autor, lectiu, rangDia)) != null) return error;
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param nomC
+	 * @param autor
+	 * @return null en cas de cap error, l'error com a String altrament
+	 */
 	public String creaCampusImportat(String nomC, String autor) {
 		if ((error = cd.CrearCampus(nomC)) != null) return error;
 		if ((error = cd.ModificarCampus(nomC, null, autor)) != null) return error;
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param nomC
+	 * @param nomA
+	 * @param capacitat
+	 * @param equip
+	 * @return null en cas de cap error, l'error com a String altrament
+	 */
 	public String creaAulaImportada(String nomC, String nomA, int capacitat, HashSet<String> equip) {
 		if ((error = cd.CrearAula(nomC, nomA, capacitat)) != null) return error;
 		if ((error = cd.ModificarAula(nomC, nomA, null, -1, equip)) != null) return error;
 		return null;
 	}
 	
+	/**
+	 * 
+	 * @param nomPE
+	 * @param nomA
+	 * @return null en cas de cap error, l'error com a String altrament
+	 */
 	public String creaAssignaturaImportada(String nomPE, String nomA) {
 		if ((error = cd.CrearAssignatura(nomPE, nomA)) != null) return error;
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param nomPE
+	 * @param nomA
+	 * @param equip
+	 * @param hores
+	 * @param tipus
+	 * @param nsessions
+	 * @return null en cas de cap error, l'error com a String altrament
+	 */
 	public String creaSessioGrupImportada(String nomPE, String nomA, HashSet<String> equip, int hores, String tipus,
 			int nsessions) {
 		if ((error = cd.CrearSessioGrup(nomPE, nomA, tipus, hores)) != null) return error;
@@ -396,6 +496,16 @@ public final class ControladorPersistencia {
 		return null;
 	}
 	
+	/**
+	 * 
+	 * @param nomPE
+	 * @param nomA
+	 * @param equip
+	 * @param hores
+	 * @param tipus
+	 * @param nsessions
+	 * @return null en cas de cap error, l'error com a String altrament
+	 */
 	public String creaSessioSubGrupImportada(String nomPE, String nomA, HashSet<String> equip, int hores, String tipus,
 			int nsessions) {
 		if ((error = cd.CrearSessioSubGrup(nomPE, nomA, tipus, hores)) != null) return error;
@@ -403,24 +513,136 @@ public final class ControladorPersistencia {
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param nomPE
+	 * @param nomA
+	 * @param grup
+	 * @param capacitat
+	 * @param franja
+	 * @return null en cas de cap error, l'error com a String altrament
+	 */
 	public String creaGrupImportat(String nomPE, String nomA, int grup, int capacitat, String franja) {
 		if ((error = cd.CrearGrup(nomPE, nomA, grup, capacitat)) != null) return error;
 		if ((error = cd.ModificarGrup(nomPE, nomA, grup, grup, capacitat, franja)) != null) return error;
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param nomPE
+	 * @param nomA
+	 * @param tipus
+	 * @param hores
+	 * @param grup
+	 * @return null en cas de cap error, l'error com a String altrament
+	 */
+	public String creaSessioGrupAImportada(String nomPE, String nomA, String tipus, int hores, int grup) {
+		if ((error = cd.AssignaSessioGrup(nomPE, nomA, tipus, hores, grup)) != null) return error;
+		return null;
+	}
+
+	/**
+	 * 
+	 * @param nomPE
+	 * @param nomA
+	 * @param tipus
+	 * @param hores
+	 * @param grup
+	 * @param subgrup
+	 * @return null en cas de cap error, l'error com a String altrament
+	 */
+	public String creaSessioSubGrupAImportada(String nomPE, String nomA, String tipus, int hores, int grup, int subgrup) {
+		if ((error = cd.AssignaSessioSubGrup(nomPE, nomA, tipus, hores, grup, subgrup)) != null) return error;
+		return null;
+	}
+
+	/**
+	 * 
+	 * @param nomPE
+	 * @param nomA
+	 * @param grup
+	 * @param subgrup
+	 * @param ha
+	 * @return null en cas de cap error, l'error com a String altrament
+	 */
 	public String creaHoresAptes(String nomPE, String nomA, int grup, int subgrup, Map<Integer, boolean[]> ha) {
-		if ((error = cd.HoresAptes(nomPE, nomA, grup, subgrup, ha, apte, force)) != null) return error;
+		Map<Integer, int[]> ha2;
+		//TODO passar el map de bools[] a int[]
+		if ((error = cd.HoresAptes(nomPE, nomA, grup, subgrup, ha, true, true)) != null) return error;
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param nomPE
+	 * @param nomA
+	 * @param solapaments
+	 * @return null en cas de cap error, l'error com a String altrament
+	 */
 	public String creaSolapamentAssig(String nomPE, String nomA, HashMap<String, HashSet<Integer>> solapaments) {
-		if ((error = cd.SetSolapamentAssig(nomPE, nomA, assigToRegister, permet)) != null) return error;
+		for (Map.Entry<String, HashSet<Integer>> entry : solapaments.entrySet()) {
+			HashSet<Integer> h = entry.getValue();
+			if (h.size() == 1 && h.contains(0))
+				if ((error = cd.SetSolapamentAssig(nomPE, nomA, entry.getKey(), false)) != null) return error;
+		}
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param nomC
+	 * @return null en cas de cap error, l'error com a String altrament
+	 */
 	public String eliminaCampus(String nomC) {
 		if ((error = cd.EliminarCampus(nomC)) != null) return error;
+		return null;
+	}
+
+	/**
+	 * 
+	 * @param nomPE
+	 * @return null en cas de cap error, l'error com a String altrament
+	 */
+	public String eliminaPlaEstudis(String nomPE) {
+		if ((error = cd.EliminaPlaEstudis(nomPE)) != null) return error;
+		return null;
+	}
+
+	/**
+	 * 
+	 * @param nomPE
+	 * @param nomA
+	 * @return null en cas de cap error, l'error com a String altrament
+	 */
+	public String eliminaAssignatura(String nomPE, String nomA) {
+		if ((error = cd.EliminarAssignatura(nomPE, nomA)) != null) return error;
+		return null;
+	}
+
+	/**
+	 * 
+	 * @param nomPE
+	 * @param nomA
+	 * @param tipus
+	 * @param hores
+	 * @return null en cas de cap error, l'error com a String altrament
+	 */
+	public String eliminaSessioGrup(String nomPE, String nomA, String tipus, int hores) {
+		if ((error = cd.EliminaSessioGrup(nomPE, nomA, tipus, hores)) != null) return error;
+		return null;
+	}
+	
+	/**
+	 * 
+	 * @param nomPE
+	 * @param nomA
+	 * @param tipus
+	 * @param hores
+	 * @return null en cas de cap error, l'error com a String altrament
+	 */
+	public String eliminaSessioSubGrup(String nomPE, String nomA, String tipus, int hores) {
+		if ((error = cd.EliminaSessioSubGrup(nomPE, nomA, tipus, hores)) != null) return error;
 		return null;
 	}
 }
