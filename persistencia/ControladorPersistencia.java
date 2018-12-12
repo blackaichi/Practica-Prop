@@ -389,6 +389,13 @@ public final class ControladorPersistencia {
 		return null;
 	}
 
+	public String creaSessioGrupImportada(String nomPE, String nomA, HashSet<String> equip, int hores, String tipus,
+			int nsessions) {
+		if ((error = cd.CrearAula(nomC, nomA, capacitat)) != null) return error;
+		if ((error = cd.ModificarAula(nomC, nomA, null, -1, equip)) != null) return error;
+		return null;
+	}
+
 	public String eliminaCampus(String nomC) {
 		if ((error = cd.EliminarCampus(nomC)) != null) return error;
 		return null;

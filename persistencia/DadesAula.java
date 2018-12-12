@@ -63,18 +63,18 @@ public class DadesAula extends ExportaImporta {
 				br.close();
 			}
 			int i = 0;
-			String nomA = "";
-			String error;
-			int capacitat = -1;
-			HashSet<String> equip = new HashSet<String>();
 			if (!f.get(i).equals("Aula")) return "no conte un aula el fitxer";
 			while (i < f.size() && f.get(i++).equals("Aula")) {
 				if (i + 3 > f.size()) return "error llargada de aula";
+				String nomA;
+				String error;
+				int capacitat;
+				HashSet<String> equip = new HashSet<String>();
 				nomA = f.get(i++);
 				capacitat = Integer.parseInt(f.get(i++));
 				String[] equipament = f.get(i++).split(",");
-				for (int j = 0; j < equipament.length; ++j) {
-					equip.add(equipament[j]);
+				for (String ss : equipament) {
+					equip.add(ss);
 				}
 				if (!f.get(i++).equals("END AULA")) return "error en acabar fitxer aula";
 				if ((error = cp.creaAulaImportada(nomC, nomA, capacitat, equip)) != null) return error;

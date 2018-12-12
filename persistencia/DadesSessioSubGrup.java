@@ -59,7 +59,7 @@ public class DadesSessioSubGrup extends ExportaImporta {
 		exporta(path, str, crea);
 	}
 
-	public String importaSessioSubGrup(String path) {
+	public String importaSessioSubGrup(String path, String nomPE, String nomA, List<String> f) {
 
 		return null;
 	}

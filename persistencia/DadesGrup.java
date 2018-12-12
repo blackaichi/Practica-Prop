@@ -50,7 +50,7 @@ public class DadesGrup extends ExportaImporta {
 		exporta(path, "END GRUP".concat(endl), false);
 	}
 
-	public String importaGrup(String path) {
+	public String importaGrup(String path, String nomPE, String nomA, List<String> f) {
 		
 		return null;
 	}

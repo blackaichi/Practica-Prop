@@ -21,16 +21,24 @@ public class DadesSegment extends ExportaImporta {
 	}
 	
 	/**
-	 * Exporta un Segment
-	 * @param s segment que volem exportar
-	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
-	 * @return la codificació del Segment
+	 * Exporta un segment
+	 * @param path 
+	 * @param nomAula
+	 * @param nomAssig
+	 * @param tipus
+	 * @param numg
+	 * @param numsg
+	 * @param grup
 	 */
 	public void exportaSegment(String path, String nomAula,	String nomAssig, String tipus,
 			int numg, int numsg, boolean grup) {
 		String str = "";
-		if (nomAula == null) exporta(path, "buit\n", false);
+		System.out.println(nomAula);
+		if (nomAula == null) {
+			exporta(path, "Segment\nbuit\nEND SEGM\n", false);
+		}
 		else {
+			str = str.concat("Segment").concat(endl);
 			str = str.concat(nomAula).concat(endl);
 			str = str.concat(nomAssig.concat(" ")).concat(tipus.concat(" "));
 			if (grup) str = str.concat(String.valueOf(numg));
