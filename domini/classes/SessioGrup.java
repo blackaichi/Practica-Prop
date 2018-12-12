@@ -91,10 +91,10 @@ public class SessioGrup extends Sessio{
 	@Override
 	public int setHores(int hores) {
 		if (hores < 1) return 91;
-		else if(this.hores != hores) {
-			//TODO: Rerik as aki tuz mieldas
+		HashSet<SessioGrup> sg = assignatura.getSessionsG();
+		for (SessioGrup s : sg) {
+			if (s.getHores() == hores && s.getTipus().equals(this.tipus)) return 114;
 		}
-		
 		this.hores = hores;
 		return 0;
 	}

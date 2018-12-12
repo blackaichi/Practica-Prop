@@ -111,18 +111,15 @@ public abstract class Sessio {
 	 * Assigna de quin tipus es la sessió
 	 * @param tipus tipus de la sessió
 	 * @return 0 en cas de que no hi hagi error, altrament error
+	 * @throws Exception 
 	 */
-	public int setTipus(String tipus) {
+	public int setTipus(String tipus) throws Exception {
 		if (tipus == null || tipus.isEmpty()) return 92;
-		//else if((this.tipus == null || this.tipus.equals(tipus)) && this.assignatura.checkSessio(tipus, hores)) return 93;
-		/*S'ha de comprovar que la sessio que s'esta pretenent assignar, sigui nova, o una modificació, no 
-		 * solapi amb una altre sessio ja creada!*/
-		
+		if (assignatura.checkSessioG(tipus, hores) || assignatura.checkSessioSG(tipus, hores)) return 115;
 		char[] chars = tipus.toLowerCase().toCharArray();
 		for (char c : chars) {
 	        if(!Character.isLetter(c)) return 93; // He de ficar el numero que li tocaretornar
 	    }
-		
 		this.tipus = tipus;
 		return 0;
 	}
