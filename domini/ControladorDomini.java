@@ -623,6 +623,9 @@ public final class ControladorDomini {
 			HashSet<Estructura> h = Horari.getInstance().getHoraris(nomPE, nomC);
 			
 			Estructura aux = new Estructura(PlaEstudis.getPlaEstudis(nomPE),Campus.getCampus(nomC));
+			String nomAula = null;
+			String nomAssig = null;
+			String tipus = null;
 			int it = id;
 			for(Estructura e : h) {
 				if (it == 0) aux = e;
@@ -632,9 +635,7 @@ public final class ControladorDomini {
 			for (Segment s : segment) {
 				int numg = 0;
 				int numsg = 0;
-				String nomAula = s.getAula().getNom();
-				String nomAssig;
-				String tipus;
+				nomAula = s.getAula().getNom();
 				boolean grup = s.getSessio().snull();
 				if (grup) {
 					numg = s.getSessio().first.getGrup().getNumero();
