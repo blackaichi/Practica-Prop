@@ -42,7 +42,7 @@ public class ExceptionManager {
 			titles[15] = "El dia no te franjas";
 			titles[16] = "Rang incorrecte";
 			titles[17] = "Valor no pot ser null";
-			titles[18] = "Nom no pot ser null";
+			titles[18] = "El nom no pot ser null";
 			titles[19] = "Una franja només pot estar composta per dos enters, ni més ni menys.";
 			
 			
@@ -117,8 +117,6 @@ public class ExceptionManager {
 			titles[107] = "No podem eliminar un material que no existeix a la sessió.";
 			titles[108] = "Equip no pot ser null o buit.";
 			titles[109] = "El HashSet passat com a paràmetre no pot ser null.";
-			titles[114] = "No podem canviar les hores de la sessio si hi ha un altra sessio amb mateixes hores i tipus";
-			titles[115] = "No podem canviar el tipus de la sessio si hi ha un altra sessio amb mateixes hores i tipus";
 			
 			//SESSIO ASSIGNADA 110:129 :
 			titles[110] = "El paràmetre grup no pot ser null.";
@@ -128,7 +126,7 @@ public class ExceptionManager {
 			
 			//CAMPUS 130:149 :
 			titles[130] = "El nom del campus no pot ser null."; 
-			titles[131] = "El nom de l'aula no pot ser null." ;
+			titles[131] = "Ja existeix un campus amb aquest nom." ;
 			titles[132] = "El campus ja conté aquesta aula.";
 			
 			
