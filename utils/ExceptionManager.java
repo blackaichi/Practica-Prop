@@ -117,6 +117,8 @@ public class ExceptionManager {
 			titles[107] = "No podem eliminar un material que no existeix a la sessió.";
 			titles[108] = "Equip no pot ser null o buit.";
 			titles[109] = "El HashSet passat com a paràmetre no pot ser null.";
+			titles[114] = "No podem canviar les hores de la sessio si hi ha un altra sessio amb mateixes hores i tipus";
+			titles[115] = "No podem canviar el tipus de la sessio si hi ha un altra sessio amb mateixes hores i tipus";
 			
 			//SESSIO ASSIGNADA 110:129 :
 			titles[110] = "El paràmetre grup no pot ser null.";
