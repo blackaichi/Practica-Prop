@@ -711,7 +711,6 @@ public final class ControladorDomini {
 			HashSet<String> equip = ssg.getMaterial();
 			int nsessions = ssg.getnsessions();
 			HashSet<SessioSGAssignada> ssga = ssg.getAllSessionsSGA();
-			HashSet<Integer> ngrups = new HashSet<Integer>();
 			for (SessioSGAssignada sessio : ssga) {
 				num.add(new Pair<Integer,Integer> (sessio.getSubGrup().getGrup().getNumero(),sessio.getSubGrup().getNumero()));
 			}
