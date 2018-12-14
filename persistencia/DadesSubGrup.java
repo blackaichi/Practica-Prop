@@ -1,5 +1,8 @@
 package persistencia;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.*;
 
 /**
@@ -46,7 +49,54 @@ public class DadesSubGrup extends ExportaImporta {
 	}
 
 	public String importaSubGrup(String path, String nomPE, String nomA, int grup, List<String> f) {
-
-		return null;
+		try {
+			if (f == null) {
+				String s;
+				f = new ArrayList<String>();
+				File file = new File(path); 
+				BufferedReader br = new BufferedReader(new FileReader(file));
+				while ((s = br.readLine()) != null) {
+					f.add(s);
+				}
+				br.close();
+			}
+			List<String> aux = new ArrayList<String>();
+			int i = 0;
+			int numero, places;
+			String error;
+			if (!f.get(i).equals("SubGrup")) return "no conte un subgrup el fitxer";
+			while (i < f.size() && f.get(i++).equals("SubGrup")) {
+				if (f.contains("END SUBGRUP") && f.contains("SubGrup")) 
+					aux = f.subList(f.indexOf("SubGrup"), f.indexOf("END SUBGRUP"));
+				else return "error al grup";
+				if (i + 2 > f.size()) return "error llargada del subgrup";
+				numero = Integer.parseInt(f.get(i++));
+				places = Integer.parseInt(f.get(i++));
+				if (!f.get(i++).equals("END SUBGRUP")) return "error en acabar fitxer grup";
+				if ((error = cp.creaSubGrupImportat(nomPE, nomA, grup, numero, places)) != null) return error;
+				List<String> entry;
+				if (aux.contains("Solapaments") && aux.contains("END SOLAP")) {
+					entry = aux.subList(aux.indexOf("Solapaments"), aux.lastIndexOf("END SOLAP")+1);
+					if ((error = DadesSolapaments.getInstancia().importaSolapaments(nomPE, nomA, grup, numero, entry)) != null) {
+						cp.eliminaAssignatura(nomPE, nomA);
+						return error;
+					}
+				}
+				else return "error no conte solapaments";
+				if (aux.contains("HoresAptes") && aux.contains("END HA")) {
+					entry = aux.subList(aux.indexOf("HoresAptes"), aux.lastIndexOf("END HA")+1);
+					if ((error = DadesHoresAptes.getInstancia().importaHoresAptes(nomPE, nomA, grup, numero, entry)) != null) {
+						cp.eliminaAssignatura(nomPE, nomA);
+						return error;
+					}
+				}
+				f = f.subList(aux.indexOf("END ASSIG")+1, f.size()-1);
+				i = 0;
+			}
+			return null;			
+		}
+		catch (Exception e) {
+			return e.getMessage();
+		}
 	}
 }

@@ -30,10 +30,13 @@ public class DadesPlaEstudis extends ExportaImporta {
 	}
 	
 	/**
-	 * Exporta un PlaEstudis
-	 * @param PE pla d'estudis que volem exportar
-	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
-	 * @return la codificació del PlaEstudis
+	 * Exporta un pla d'estudis
+	 * @param path nom del pla d'estudis
+	 * @param nom
+	 * @param autor
+	 * @param franja
+	 * @param rang
+	 * @param nomassig
 	 */
 	public void exportaPlaEstudis(String path, String nom, String autor, Map<Integer, boolean[]> franja,
 			int[] rang, HashSet<String> nomassig) {
@@ -71,6 +74,11 @@ public class DadesPlaEstudis extends ExportaImporta {
 		exporta(path, "END PE".concat(endl), false);
 	}
 
+	/**
+	 * Importa un Pla d'estudis
+	 * @param path nom del pla d'estudis
+	 * @return
+	 */
 	public String importaPlaEstudis(String path) {
 		try {
 			File file = new File(path); 
@@ -99,7 +107,6 @@ public class DadesPlaEstudis extends ExportaImporta {
 					++i;
 				}
 				else {
-					System.out.println("aqui no");
 					if (i+23 > c.length) return "error falten dades a la franja";
 					for (int j = 0; j < 24; ++j) {
 						if (c[i+j] == 't') franja[j] = true;
@@ -142,7 +149,7 @@ public class DadesPlaEstudis extends ExportaImporta {
 			}
 			else return "Sintaxi incorrecta a rangDia";
 			if (!entrada.get(entrada.size()-1).equals("END PE")) return "Error al final del fitxer";
-			entrada = entrada.subList(i, entrada.size()-1);
+			entrada = entrada.subList(entrada.indexOf("Assignatura"), entrada.lastIndexOf("END ASSIG")+1);
 			String error;
 			if ((error = cp.creaPlaEstudisImportat(nom, autor, lectiu, rangDia)) != null) return error;
 			if ((error = DadesAssignatura.getInstancia().importaAssignatura(path, nom, entrada)) != null) {

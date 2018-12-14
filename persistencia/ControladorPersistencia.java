@@ -205,7 +205,7 @@ public final class ControladorPersistencia {
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String exportaSessioSubGrup(String path, HashSet<String> equip,
-			int hores, String tipus, int nsessions, HashSet<Integer> nsubgrups, boolean crea) {
+			int hores, String tipus, int nsessions, HashSet<Pair<Integer, Integer>> nsubgrups, boolean crea) {
 		try {
 			DadesSessioSubGrup.getInstancia().exportaSessioSubGrup(path, equip, hores, tipus, nsessions, nsubgrups, crea);
 			return null;
@@ -236,10 +236,10 @@ public final class ControladorPersistencia {
 		}
 	}
 	
-	public String exportaSegment(String path, String nomAula, String nomAssig, String tipus,
+	public String exportaSegment(String path, String nomAula, String nomAssig, String tipus, int hores,
 			int numg, int numsg, boolean grup) {
 		try {
-			DadesSegment.getInstancia().exportaSegment(path, nomAula, nomAssig, tipus, numg, numsg, grup);
+			DadesSegment.getInstancia().exportaSegment(path, nomAula, nomAssig, tipus, hores, numg, numsg, grup);
 			return null;
 		}
 		catch (Exception e) {
@@ -567,9 +567,35 @@ public final class ControladorPersistencia {
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String creaHoresAptes(String nomPE, String nomA, int grup, int subgrup, Map<Integer, boolean[]> ha) {
-		Map<Integer, int[]> ha2;
-		//TODO passar el map de bools[] a int[]
-		if ((error = cd.HoresAptes(nomPE, nomA, grup, subgrup, ha, true, true)) != null) return error;
+		Map<Integer, int[]> ha2 = new HashMap<Integer, int[]>();
+		Map<Integer, int[]> ha3 = new HashMap<Integer, int[]>();
+		for (Map.Entry<Integer, boolean[]> entry : ha.entrySet()) {
+			List<Integer> lt = new ArrayList<Integer>();
+			List<Integer> lf = new ArrayList<Integer>();
+			int j = 0;
+			if (entry.getValue() != null) {
+				for (boolean bb : entry.getValue()) {
+					if (bb) lt.add(j++);
+					else lf.add(j++);
+				}
+				int[] b = new int[lt.size()];
+				for (int i = 0; i < lt.size(); ++i) {
+					b[i] = lt.get(i);
+				}
+				ha2.put(entry.getKey(), b);
+				b = new int[lf.size()];
+				for (int i = 0; i < lf.size(); ++i) {
+					b[i] = lf.get(i);
+				}
+				ha3.put(entry.getKey(), b);
+			}
+			else {
+				ha2.put(entry.getKey(), null);
+				ha3.put(entry.getKey(), null);
+			}
+		}
+		if ((error = cd.HoresAptes(nomPE, nomA, grup, subgrup, ha2, true, true)) != null) return error;
+		if ((error = cd.HoresAptes(nomPE, nomA, grup, subgrup, ha3, false, true)) != null) return error;
 		return null;
 	}
 
@@ -580,12 +606,52 @@ public final class ControladorPersistencia {
 	 * @param solapaments
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
-	public String creaSolapamentAssig(String nomPE, String nomA, HashMap<String, HashSet<Integer>> solapaments) {
-		for (Map.Entry<String, HashSet<Integer>> entry : solapaments.entrySet()) {
-			HashSet<Integer> h = entry.getValue();
-			if (h.size() == 1 && h.contains(0))
+	public String creaSolapament(String nomPE, String nomA, int grup, int subgrup, HashMap<String, HashSet<Integer>> solapaments) {
+		if (grup < 0) {
+			for (Map.Entry<String, HashSet<Integer>> entry : solapaments.entrySet()) 
 				if ((error = cd.SetSolapamentAssig(nomPE, nomA, entry.getKey(), false)) != null) return error;
 		}
+		else if (subgrup < 0) {
+			for (Map.Entry<String, HashSet<Integer>> entry : solapaments.entrySet()) {
+				for (int i : entry.getValue())
+					if ((error = cd.SetSolapamentGrup(nomPE, nomA, grup, entry.getKey(), i, false)) != null) return error;
+			}
+		}
+		else {
+			for (Map.Entry<String, HashSet<Integer>> entry : solapaments.entrySet()) {
+				for (int i : entry.getValue())
+					if ((error = cd.SetSolapamentSubGrup(nomPE, nomA, grup, subgrup, entry.getKey(), i, false)) != null) return error;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 
+	 * @param nomPE
+	 * @param nomA
+	 * @param grup
+	 * @param places
+	 * @param franja
+	 * @return null en cas de cap error, l'error com a String altrament
+	 */
+	public String creaSubGrupImportat(String nomPE, String nomA, int grup, int places, String franja) {
+		if ((error = cd.CrearGrup(nomPE, nomA, grup, places)) != null) return error;
+		if ((error = cd.ModificarGrup(nomPE, nomA, grup, -1, places, franja)) != null) return error;
+		return null;
+	}
+
+	/**
+	 * 
+	 * @param nomPE
+	 * @param nomA
+	 * @param grup
+	 * @param numero
+	 * @param places
+	 * @return null en cas de cap error, l'error com a String altrament
+	 */
+	public String creaSubGrupImportat(String nomPE, String nomA, int grup, int numero, int places) {
+		if ((error = cd.CrearSubGrup(nomPE, nomA, grup, numero, places, false)) != null) return error; 
 		return null;
 	}
 
@@ -643,6 +709,18 @@ public final class ControladorPersistencia {
 	 */
 	public String eliminaSessioSubGrup(String nomPE, String nomA, String tipus, int hores) {
 		if ((error = cd.EliminaSessioSubGrup(nomPE, nomA, tipus, hores)) != null) return error;
+		return null;
+	}
+
+	/**
+	 * 
+	 * @param nomPE
+	 * @param nomA
+	 * @param numero
+	 * @return null en cas de cap error, l'error com a String altrament
+	 */
+	public String eliminaGrup(String nomPE, String nomA, int numero) {
+		if ((error = cd.EliminarGrup(nomPE, nomA, numero)) != null) return error;
 		return null;
 	}
 }

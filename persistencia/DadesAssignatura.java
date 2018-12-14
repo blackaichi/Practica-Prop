@@ -32,10 +32,16 @@ public class DadesAssignatura extends ExportaImporta {
 	}
 	
 	/**
-	 * Exporta una Assignatura
-	 * @param a assignatura que volem exportar
-	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
-	 * @return la codificació de l'Assignatura
+	 * Exporta una assignatura
+	 * @param path path del fitxer que volem 
+	 * @param nomPE nom del pla d'estudis
+	 * @param nomAssig nom de l'assignatura
+	 * @param sessionsg nom de la sessió de grup
+	 * @param sessionssg nom de la sessió subgrup
+	 * @param grups nom dels grups
+	 * @param horesAptes les hores aptes del pla
+	 * @param solapaments els solapaments del pla
+	 * @param crea en cas de voler crear el fitxer
 	 */
 	public void exportaAssignatura(String path, String nomPE, String nomAssig, HashSet<Pair<String,Integer>> sessionsg,
 			HashSet<Pair<String,Integer>> sessionssg, HashSet<Integer> grups, Map<Integer, boolean[]> horesAptes,
@@ -57,6 +63,13 @@ public class DadesAssignatura extends ExportaImporta {
 		exporta(path, "END ASSIG".concat(endl), false);
 	}
 	
+	/**
+	 * Importa una assignatura
+	 * @param path path del fitxer que volem 
+	 * @param nomPE nom del pla d'estudis
+	 * @param f llista amb el que hi havia al fitxer
+	 * @return null en cas de estar correcte, sinó l'error
+	 */
 	public String importaAssignatura(String path, String nomPE, List<String> f) {
 		try {
 			if (f == null) {
@@ -74,7 +87,7 @@ public class DadesAssignatura extends ExportaImporta {
 			String error;
 			while (i < f.size()) {
 				if (f.contains("END ASSIG") && f.contains("Assignatura")) 
-					aux = f.subList(f.indexOf("Assignatura"), f.indexOf("END ASSIG"));
+					aux = f.subList(f.indexOf("Assignatura"), f.indexOf("END ASSIG")+1);
 				else return "Error al fitxer d'assignatura";
 				if (i + 2 > f.size()) return "error a la assignatura";
 				if (!f.get(i++).equals("Assignatura")) return "no es una assignatura el fitxer";
@@ -82,6 +95,15 @@ public class DadesAssignatura extends ExportaImporta {
 				nomA = f.get(i++);
 				List<String> entry;
 				if ((error = cp.creaAssignaturaImportada(nomPE, nomA)) != null) return error;
+				if (aux.contains("Grup") && aux.contains("END GRUP")) {
+					if (aux.indexOf("Grup") == -1 || aux.lastIndexOf("END GRUP") == -1) 
+						return "Error a la part de grup";
+					entry = aux.subList(aux.indexOf("Grup"), aux.lastIndexOf("END GRUP")+1);
+					if ((error = DadesGrup.getInstancia().importaGrup(path, nomPE, nomA, entry)) != null) {
+						cp.eliminaAssignatura(nomPE, nomA);
+						return error;
+					}
+				}
 				if (aux.contains("SessioGrup") && aux.contains("END SESSIOG")) {
 					entry = aux.subList(aux.indexOf("SessioGrup"), aux.lastIndexOf("END SESSIOG")+1);
 					if (aux.indexOf("SessioGrup") == -1 || aux.lastIndexOf("END SESSIOG") == -1) 
@@ -95,37 +117,29 @@ public class DadesAssignatura extends ExportaImporta {
 					if (aux.indexOf("SessioSubGrup") == -1 || aux.lastIndexOf("END SESSIOSG") == -1) 
 						return "Error a la part de sessio subgrup";
 					entry = aux.subList(aux.indexOf("SessioSubGrup"), aux.lastIndexOf("END SESSIOSG")+1);
+					System.out.println("PER PUTO FI");
 					if ((error = DadesSessioSubGrup.getInstancia().importaSessioSubGrup(path, nomPE, nomA, entry)) != null) {
 						cp.eliminaAssignatura(nomPE, nomA);
 						return error;
 					}
 				}
-				if (aux.contains("Grup") && aux.contains("END GRUP")) {
-					if (aux.indexOf("Grup") == -1 || aux.lastIndexOf("END GRUP") == -1) 
-						return "Error a la part de grup";
-					entry = aux.subList(aux.indexOf("Grup"), aux.lastIndexOf("END GRUP")+1);
-					if ((error = DadesGrup.getInstancia().importaGrup(path, nomPE, nomA, entry)) != null) {
-						cp.eliminaAssignatura(nomPE, nomA);
-						return error;
-					}
-				}
 				if (aux.contains("Solapaments") && aux.contains("END SOLAP")) {
-					entry = aux.subList(aux.indexOf("Solapaments"), aux.lastIndexOf("END SOLAP")+1);
-					if ((error = DadesSolapaments.getInstancia().importaSolapaments(nomPE, nomA, entry)) != null) {
+					entry = aux.subList(aux.indexOf("Solapaments"), aux.indexOf("END SOLAP")+1);
+					if ((error = DadesSolapaments.getInstancia().importaSolapaments(nomPE, nomA, -1, -1, entry)) != null) {
 						cp.eliminaAssignatura(nomPE, nomA);
 						return error;
 					}
 				}
 				else return "error no conte solapaments";
 				if (aux.contains("HoresAptes") && aux.contains("END HA")) {
-					entry = aux.subList(aux.indexOf("HoresAptes"), aux.lastIndexOf("END HA")+1);
-					if ((error = DadesHoresAptes.getInstancia().importaHoresAptes(nomPE, nomA, entry)) != null) {
+					entry = aux.subList(aux.lastIndexOf("HoresAptes"), aux.lastIndexOf("END HA")+1);
+					if ((error = DadesHoresAptes.getInstancia().importaHoresAptes(nomPE, nomA, -1, -1, entry)) != null) {
 						cp.eliminaAssignatura(nomPE, nomA);
 						return error;
 					}
 				}
 				else return "error no conte HoresAptes";
-				f = f.subList(aux.indexOf("END ASSIG")+1, f.size()-1);
+				f = f.subList(f.indexOf("END ASSIG")+1, f.size());
 				i = 0;
 			}
 			return null;

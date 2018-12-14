@@ -21,7 +21,6 @@ public class DriverProvadorImports {
 	private static DadesCampus campus = DadesCampus.getInstancia();
 	private static DadesAula aula = DadesAula.getInstancia();
 	private static DadesAssignatura assignatura = DadesAssignatura.getInstancia();
-	private static DadesData data = DadesData.getInstancia();
 	private static DadesGrup grup = DadesGrup.getInstancia();
 	private static DadesHorari horari = DadesHorari.getInstancia();
 	private static DadesHoresAptes horesAptes = DadesHoresAptes.getInstancia();

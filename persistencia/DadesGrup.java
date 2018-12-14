@@ -66,8 +66,12 @@ public class DadesGrup extends ExportaImporta {
 				br.close();
 			}
 			int i = 0;
+			List<String> aux;
 			if (!f.get(i).equals("Grup")) return "no conte un grup el fitxer";
-			while (i < f.size() && f.get(i++).equals("Grup")) {
+			while (!f.isEmpty() && f.get(i++).equals("Grup")) {
+				if (f.contains("END GRUP") && f.contains("Grup")) 
+					aux = f.subList(f.indexOf("Grup"), f.indexOf("END GRUP")+1);
+				else return "error al grup";
 				if (i + 3 > f.size()) return "error llargada del grup";
 				int numero, places;
 				String franja;
@@ -75,8 +79,36 @@ public class DadesGrup extends ExportaImporta {
 				numero = Integer.parseInt(f.get(i++));
 				places = Integer.parseInt(f.get(i++));
 				franja = f.get(i++);
-				if (!f.get(i++).equals("END GRUP")) return "error en acabar fitxer grup";
+				List<String> entry;
+				if (aux.contains("HoresAptes") && aux.contains("END HA")) {
+					entry = aux.subList(aux.indexOf("HoresAptes"), aux.indexOf("END HA")+1);
+					if ((error = DadesHoresAptes.getInstancia().importaHoresAptes(nomPE, nomA, numero, -1, entry)) != null) {
+						cp.eliminaAssignatura(nomPE, nomA);
+						return error;
+					}
+				}
+				else return "no conte hores aptes";
+				if (aux.contains("Solapaments") && aux.contains("END SOLAP")) {
+					entry = aux.subList(aux.indexOf("Solapaments"), aux.lastIndexOf("END SOLAP")+1);
+					if ((error = DadesSolapaments.getInstancia().importaSolapaments(nomPE, nomA, numero, -1, entry)) != null) {
+						cp.eliminaAssignatura(nomPE, nomA);
+						return error;
+					}
+				}
+				else return "error no conte solapaments";
+				if (!aux.get(aux.size()-1).equals("END GRUP")) return "error en acabar fitxer grup";
 				if ((error = cp.creaGrupImportat(nomPE, nomA, numero, places, franja)) != null) return error;
+				if (aux.contains("SubGrup") && aux.contains("END SUBGRUP")) {
+					if (aux.indexOf("SubGrup") == -1 || aux.lastIndexOf("END SUBGRUP") == -1) 
+						return "Error a la part de grup";
+					entry = aux.subList(aux.indexOf("Grup"), aux.lastIndexOf("END GRUP")+1);
+					if ((error = DadesSubGrup.getInstancia().importaSubGrup(path, nomPE, nomA, numero, entry)) != null) {
+						cp.eliminaGrup(nomPE, nomA, numero);
+						return error;
+					}
+				}
+				f = f.subList(aux.indexOf("END GRUP")+1, f.size());
+				i = 0;
 			}
 			return null;			
 		}

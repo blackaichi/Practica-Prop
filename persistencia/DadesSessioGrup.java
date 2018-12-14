@@ -92,9 +92,9 @@ public class DadesSessioGrup extends ExportaImporta {
 				hores = Integer.parseInt(f.get(i++));
 				tipus = f.get(i++);
 				nsessions = Integer.parseInt(f.get(i++));
-				if (!f.get(i++).equals("END SESSIOG")) return "error en acabar fitxer sessio grup";
+				if (!f.get(i+1).equals("END SESSIOG")) return "error en acabar fitxer sessio grup";
 				if ((error = cp.creaSessioGrupImportada(nomPE, nomA, equip, hores, tipus, nsessions)) != null) return error;
-				if (assignada) {
+				if (assignada && !f.get(i).equals("none")) {
 					String[] a = f.get(i).split(",");
 					for (String as : a) {
 						if ((error = cp.creaSessioGrupAImportada(nomPE, nomA, tipus, hores, Integer.parseInt(as))) != null) {

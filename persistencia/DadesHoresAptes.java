@@ -53,16 +53,16 @@ public class DadesHoresAptes extends ExportaImporta {
 		exporta(path, str, false);
 	}
 
-	public String importaHoresAptes(String nomPE, String nomA, List<String> entry) {
+	public String importaHoresAptes(String nomPE, String nomA, int grup, int subgrup, List<String> entry) {
 		try {
 			if (!entry.get(0).equals("HoresAptes") || !entry.get(entry.size()-1).equals("END HA") || entry.size() != 3) 
 				return "error a les hores aptes";
 			Map<Integer, boolean[]> ha = new HashMap<Integer, boolean[]>();
-			String[] sa = entry.get(1).split(")");
+			String[] sa = entry.get(1).split("\\x29");
 			for (String s : sa) {
 				boolean[] b = new boolean[24];
-				String[] sa2 = s.split("(");
-				if (sa2[1] == "null") ha.put(Integer.parseInt(sa[0]), null);
+				String[] sa2 = s.split("\\x28");
+				if (sa2[1].equals("null")) ha.put(Integer.parseInt(sa2[0]), null); 
 				else {
 					char[] ca = sa2[1].toCharArray();
 					for (int i = 0; i < ca.length; ++i) {

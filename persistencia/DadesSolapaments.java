@@ -36,7 +36,9 @@ public class DadesSolapaments extends ExportaImporta {
 	 */
 	public void exportaSolapaments(String path, HashMap<String, HashSet<Integer>> solapaments) {
 		String str = "Solapaments".concat(endl);
+		boolean in = false;
 		for (HashMap.Entry<String, HashSet<Integer>> entry : solapaments.entrySet()) {
+			in = true;
 			str = str.concat(entry.getKey()).concat(" ");
 			boolean first = true;
 			for (Integer i : entry.getValue()) {
@@ -46,27 +48,34 @@ public class DadesSolapaments extends ExportaImporta {
 			}
 			str = str.concat(";");
 		}
-		str = str.concat(endl).concat("END SOLAP").concat(endl);
+		if (!in) str = str.concat("none");
+		str = str.concat(endl);
+		str = str.concat("END SOLAP").concat(endl);
 		exporta(path, str, false);
 	}
 
-	public String importaSolapaments(String nomPE, String nomA, List<String> entry) {
+	public String importaSolapaments(String nomPE, String nomA, int grup, int subgrup, List<String> entry) {
 		try {
-			if (!entry.get(0).equals("Solapaments") || !entry.get(entry.size()-1).equals("END SOLAP") || entry.size() != 3) 
+			if (!entry.get(0).equals("Solapaments") || !entry.get(entry.size()-1).equals("END SOLAP") ||
+					entry.size() != 3)
 				return "error al solapaments";
-			HashMap<String, HashSet<Integer>> solapaments = new HashMap<String, HashSet<Integer>>();
-			HashSet<Integer> valor = new HashSet<Integer>();
-			String[] sa = entry.get(1).split(";");
-			for (String ss : sa) {
-				valor.clear();
-				String[] sa2 = ss.split(" ");
-				if (sa2.length != 2) return "error al solapaments";
-				String[] sa3 = sa2[1].split(",");
-				for (String ss3 : sa3) valor.add(Integer.valueOf(ss3));
-				solapaments.put(sa2[0], valor);
+			if (!entry.get(1).equals("none")) {
+				HashMap<String, HashSet<Integer>> solapaments = new HashMap<String, HashSet<Integer>>();
+				HashSet<Integer> valor = new HashSet<Integer>();
+				String[] sa = entry.get(1).split(";");
+				for (String ss : sa) {
+					valor.clear();
+					String[] sa2 = ss.split(" ");
+					if (sa2[1] == null) valor.add(null);
+					else {
+						String[] sa3 = sa2[1].split(",");
+						for (String ss3 : sa3) valor.add(Integer.valueOf(ss3));
+					}
+					solapaments.put(sa2[0], valor);
+				}
+				String error;
+				if ((error = cp.creaSolapament(nomPE, nomA, grup, subgrup, solapaments)) != null) return error;
 			}
-			String error;
-			if ((error = cp.creaSolapamentAssig(nomPE, nomA, solapaments)) != null) return error;
 			return null;
 		}
 		catch (Exception e) {

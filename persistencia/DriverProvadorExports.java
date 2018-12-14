@@ -3,6 +3,7 @@ package persistencia;
 import java.util.*;
 import domini.ControladorDomini;
 import domini.classes.*;
+import domini.tools.Estructura;
 import utils.*;
 
 /**
@@ -24,7 +25,6 @@ public class DriverProvadorExports {
 	private static DadesCampus campus = DadesCampus.getInstancia();
 	private static DadesAula aula = DadesAula.getInstancia();
 	private static DadesAssignatura assignatura = DadesAssignatura.getInstancia();
-	private static DadesData data = DadesData.getInstancia();
 	private static DadesGrup grup = DadesGrup.getInstancia();
 	private static DadesHorari horari = DadesHorari.getInstancia();
 	private static DadesHoresAptes horesAptes = DadesHoresAptes.getInstancia();
@@ -92,7 +92,14 @@ public class DriverProvadorExports {
 	 * @throws Exception
 	 */
 	private static void provaSolapaments() {
-		
+		HashMap<String, HashSet<Integer>> solapaments = new HashMap<String, HashSet<Integer>>();
+		HashSet<Integer> i = new HashSet<Integer>();
+		i.add(null);
+		solapaments.put("IES", i);
+		i.add(1);
+		i.add(2);
+		solapaments.put("PROP", i);
+		DadesSolapaments.getInstancia().exportaSolapaments(path, solapaments);
 	}
 
 	/**
