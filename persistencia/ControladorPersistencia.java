@@ -1,10 +1,7 @@
 package persistencia;
 
 import java.util.*;
-
-import domini.*;
-import domini.classes.*;
-import domini.restriccions.*;
+import domini.ControladorDomini;
 import utils.*;
 
 /**
@@ -19,8 +16,6 @@ public final class ControladorPersistencia {
 	 * Instancia de la propia classe seguint el patró de disseny singleton
 	 */
 	private static ControladorPersistencia cp = new ControladorPersistencia();
-	
-	private ControladorPersistencia() {}
 	
 	/**
 	 * Instància del controlador del domini
@@ -44,16 +39,16 @@ public final class ControladorPersistencia {
 	///////////////////////////////  EXPORTS  //////////////////////////////////////
 	
 	/**
-	 * Exporta una Assignatura
-	 * @param path
-	 * @param nomPE
-	 * @param nomAssig
-	 * @param sessionsg
-	 * @param sessionssg
-	 * @param grups
-	 * @param horesAptes
-	 * @param solapaments
-	 * @param crea
+	 * Exporta una assignatura
+	 * @param path path del fitxer que volem 
+	 * @param nomPE nom del pla d'estudis
+	 * @param nomAssig nom de l'assignatura
+	 * @param sessionsg nom de la sessió de grup
+	 * @param sessionssg nom de la sessió subgrup
+	 * @param grups nom dels grups
+	 * @param horesAptes les hores aptes del pla
+	 * @param solapaments els solapaments del pla
+	 * @param crea en cas de voler crear el fitxer
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String exportaAssignatura(String path, String nomPE, String nomAssig, HashSet<Pair<String,Integer>> sessionsg,
@@ -251,10 +246,10 @@ public final class ControladorPersistencia {
 	///////////////////////////////  IMPORTS  //////////////////////////////////////
 	
 	/**
-	 * 
-	 * @param path
-	 * @param nomPE
-	 * @return null en cas de cap error, l'error com a String altrament
+	 * Importa una assignatura
+	 * @param path path del fitxer que volem 
+	 * @param nomPE nom del pla d'estudis
+	 * @return null en cas de estar correcte, sinó l'error
 	 */
 	public String importaAssignatura(String path, String nomPE) {
 		return DadesAssignatura.getInstancia().importaAssignatura(path, nomPE, null);
@@ -721,6 +716,12 @@ public final class ControladorPersistencia {
 	 */
 	public String eliminaGrup(String nomPE, String nomA, int numero) {
 		if ((error = cd.EliminarGrup(nomPE, nomA, numero)) != null) return error;
+		return null;
+	}
+
+	public String creaSegmentImportat(String plaEst, String nomC, int dia, int hora, String aula, String nomA,
+			String tipus, int hores, int numg, int numsg, int id) {
+		if ((error = cd.crearSegment(plaEst, nomC, dia, hora, aula, nomA, tipus, hores, numg, numsg, id)) != null) return error;
 		return null;
 	}
 }
