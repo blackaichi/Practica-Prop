@@ -1,5 +1,8 @@
 package persistencia;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.*;
 
 /**
@@ -28,12 +31,6 @@ public class DadesHorari extends ExportaImporta {
 		return instancia;
 	}
 	
-	/**
-	 * Exporta un Horari
-	 * @param e conjunt d'horaris que volem exportar
-	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
-	 * @return la codificació dels Horaris
-	 */
 	public void exportaHorari(String path, HashSet<String> flags, String nomC, String nomPE, int id) {
 		String str = "Horari".concat(endl);
 		str = str.concat(nomPE).concat(endl);
@@ -57,8 +54,39 @@ public class DadesHorari extends ExportaImporta {
 		exporta(path, "END HORARI", false);
 	}
 
-	public String importaHoraris(String path) {
-		
+
+	public String importaHoraris(String path, String nomPla, String nomCampus,int id) {
+		try {
+			File file = new File(path); 
+			BufferedReader br = new BufferedReader(new FileReader(file)); 
+			String s = "";
+			List<String> entrada = new ArrayList<String>();
+			while ((s = br.readLine()) != null) {
+				entrada.add(s);
+			}
+			br.close();
+			int i = 0;
+			if (!entrada.get(i++).equals("Horari")) return "Error al llegir la primera linia del fitxer";
+			nomPla = entrada.get(i++);
+			nomCampus = entrada.get(i++);
+			HashSet<String> flags = new HashSet<String>();
+			String[] f = entrada.get(i++).split(",");
+			for(String nom : f) 
+				flags.add(nom);
+			for(int k = 0; k < 7; ++k) {
+				for(int j = 0; j < 24; ++j) {
+					if (!entrada.get(i++).equals("Segment")) return "Error al llegir Segment";
+					List<String> aux;
+					aux = entrada.subList(entrada.indexOf("Segment"), entrada.indexOf("END SEGM"));
+					if (!entrada.get(i++).equals("buit")) {
+						DadesSegment.getInstancia().importaSegment(nomPla, nomCampus, k, j, aux,id);
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			return e.getMessage();
+		}
 		return null;
 	}
 }

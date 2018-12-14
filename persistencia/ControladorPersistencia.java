@@ -299,7 +299,7 @@ public final class ControladorPersistencia {
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String importaHorari(String path, String nomC, String nomPE, int id) {
-		return DadesHorari.getInstancia().importaHoraris(path, nomC, nomPE, id);
+		return DadesHorari.getInstancia().importaHorari(path, nomC, nomPE, id);
 	}
 	
 	/**
