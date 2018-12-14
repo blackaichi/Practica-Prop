@@ -120,7 +120,7 @@ public class Assignatura {
 		else for(Map.Entry<Integer, int[]> iter: franja.entrySet()) {
 			int checker = 0;
 			if(apte) checker = this.horesAptes.permetHores(force, Integer.valueOf(iter.getKey()), iter.getValue());
-			else checker = this.horesAptes.permetHores(force, Integer.valueOf(iter.getKey()), iter.getValue());
+			else checker = this.horesAptes.prohibirHores(force, Integer.valueOf(iter.getKey()), iter.getValue());
 			if(checker != 0) return checker;
 		}
 		

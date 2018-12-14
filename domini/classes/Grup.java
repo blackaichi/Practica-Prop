@@ -221,10 +221,10 @@ public class Grup {
 	 */
 	public int setHoresAptes(Map<Integer, int[]> franja, boolean apte, boolean force) {
 		if(franja == null) return 0;
-		else for(Map.Entry<Integer, int[]> iter: franja.entrySet()) {
+		else for(Map.Entry<Integer, int[]> iter: franja.entrySet()) {			
 			int checker = 0;
 			if(apte) checker = this.horesAptes.permetHores(force, Integer.valueOf(iter.getKey()), iter.getValue());
-			else checker = this.horesAptes.permetHores(force, Integer.valueOf(iter.getKey()), iter.getValue());
+			else checker = this.horesAptes.prohibirHores(force, Integer.valueOf(iter.getKey()), iter.getValue());
 			if(checker != 0) return checker;
 		}
 		
