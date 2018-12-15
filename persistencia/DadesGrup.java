@@ -98,7 +98,7 @@ public class DadesGrup extends ExportaImporta {
 				if (aux.contains("HoresAptes") && aux.contains("END HA")) {
 					entry = aux.subList(aux.indexOf("HoresAptes"), aux.indexOf("END HA")+1);
 					if ((error = DadesHoresAptes.getInstancia().importaHoresAptes(nomPE, nomA, numero, -1, entry)) != null) {
-						cp.eliminaAssignatura(nomPE, nomA);
+						cp.eliminaGrup(nomPE, nomA, numero);
 						return error;
 					}
 				}
@@ -106,7 +106,7 @@ public class DadesGrup extends ExportaImporta {
 				if (aux.contains("Solapaments") && aux.contains("END SOLAP")) {
 					entry = aux.subList(aux.indexOf("Solapaments"), aux.lastIndexOf("END SOLAP")+1);
 					if ((error = DadesSolapaments.getInstancia().importaSolapaments(nomPE, nomA, numero, -1, entry)) != null) {
-						cp.eliminaAssignatura(nomPE, nomA);
+						cp.eliminaGrup(nomPE, nomA, numero);
 						return error;
 					}
 				}
