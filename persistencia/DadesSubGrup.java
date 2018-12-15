@@ -32,10 +32,13 @@ public class DadesSubGrup extends ExportaImporta {
 	}
 	
 	/**
-	 * Exporta un sub grup
-	 * @param sg SubGrup que volem exportar
-	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
-	 * @return la codificació del subgrup
+	 * Exporta un subgrup
+	 * @param path path del fitxer que volem 
+	 * @param numero numero del subgrup
+	 * @param places places del subgrup
+	 * @param horesAptes hores aptes del subgrup
+	 * @param solapaments solapaments dels subgrups
+	 * @param crea true si es vol truncar el fitxer, false si es vol fer un append
 	 */
 	public void exportaSubGrup(String path, int numero, int places, Map<Integer, boolean[]> horesAptes,
 			HashMap<String, HashSet<Integer>> solapaments, boolean crea) {
@@ -48,6 +51,15 @@ public class DadesSubGrup extends ExportaImporta {
 		exporta(path, str, crea);
 	}
 
+	/**
+	 * Importa un subgrup
+	 * @param path path del fitxer que volem 
+	 * @param nomPE nom del pla d'estudis al qual pertany el subgrup
+	 * @param nomA nom de l'assignatura a la qual pertany el subgrup
+	 * @param grup nom del grup al qual pertany el grup
+	 * @param f llista amb el que hi havia al fitxer
+	 * @return null en cas de estar correcte, sinó l'error
+	 */
 	public String importaSubGrup(String path, String nomPE, String nomA, int grup, List<String> f) {
 		try {
 			if (f == null) {

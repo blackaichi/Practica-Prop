@@ -65,12 +65,12 @@ public final class ControladorPersistencia {
 	}
 	
 	/**
-	 * 
-	 * @param path
-	 * @param nom
-	 * @param capacitat
-	 * @param equip
-	 * @param crea
+	 * Exporta un aula
+	 * @param path llista amb el que hi havia al fitxer
+	 * @param nomAula nom de l'aula
+	 * @param capacitat capacitat de l'aula
+	 * @param equip equipament de l'aula
+	 * @param crea true si es vol truncar el fitxer, false si es vol fer un append
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String exportaAula(String path, String nom, int capacitat, HashSet<String> equip, boolean crea) {
@@ -84,11 +84,11 @@ public final class ControladorPersistencia {
 	}
 	
 	/**
-	 * 
-	 * @param path
-	 * @param nom
-	 * @param autor
-	 * @param aules
+	 * Exporta un campus
+	 * @param path path del fitxer que volem 
+	 * @param nom nom del campus
+	 * @param autor autor del campus
+	 * @param aules aules que conté el campus
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String exportaCampus(String path, String nom, String autor, HashSet<String> aules) {
@@ -102,17 +102,17 @@ public final class ControladorPersistencia {
 	}
 	
 	/**
-	 * 
-	 * @param path
-	 * @param nomPE
-	 * @param nomAssig
-	 * @param numero
-	 * @param places
-	 * @param franja
-	 * @param numsg
-	 * @param horesAptes
-	 * @param solapaments
-	 * @param crea
+	 * Exporta un grup
+	 * @param path path del fitxer que volem 
+	 * @param nomPE nom del pla d'estudis
+	 * @param nomAssig nom de l'assignatura
+	 * @param numero numero que identifica el grup
+	 * @param places places del grup
+	 * @param franja franja del grup
+	 * @param numsg subgrups que pertanyen al grup
+	 * @param horesAptes hores aptes del grup
+	 * @param solapaments solapaments del grup
+	 * @param crea true si es vol truncar el fitxer, false si es vol fer un append
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String exportaGrup(String path, String nomPE, String nomAssig, int numero, int places, String franja, 
@@ -127,12 +127,12 @@ public final class ControladorPersistencia {
 	}
 	
 	/**
-	 * 
-	 * @param path
-	 * @param flags
-	 * @param nomC
-	 * @param nomPE
-	 * @param id
+	 * Exporta un horari
+	 * @param path path del fitxer que volem 
+	 * @param flags flags de l'horari
+	 * @param nomC nom del campus al que pertany l'horari
+	 * @param nomPE nom del pla d'estudis al que pertany l'horari
+	 * @param id identifica l'horari
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String exportaHorari(String path, HashSet<String> flags, String nomC, String nomPE, int id) {
@@ -146,13 +146,13 @@ public final class ControladorPersistencia {
 	}
 	
 	/**
-	 * 
-	 * @param path
-	 * @param nom
-	 * @param autor
-	 * @param franja
-	 * @param rang
-	 * @param nomassig
+	 * Exporta un pla d'estudis
+	 * @param path path del fitxer que volem 
+	 * @param nom nom del pla d'estudis
+	 * @param autor autor del pla d'estudis
+	 * @param franja franja del pla d'estudis
+	 * @param rang rang del pla d'estudis
+	 * @param nomassig assignatures del pla d'estudis
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String exportaPlaEstudis(String path, String nom, String autor, Map<Integer, 
@@ -167,14 +167,14 @@ public final class ControladorPersistencia {
 	}
 	
 	/**
-	 * 
-	 * @param path
-	 * @param equip
-	 * @param hores
-	 * @param tipus
-	 * @param nsessions
-	 * @param ngrups
-	 * @param crea
+	 * Exporta una sessio de grup
+	 * @param path path del fitxer que volem 
+	 * @param equip equip de la sessió
+	 * @param hores hores de la sessió
+	 * @param tipus tipus de la sessió
+	 * @param nsessions nombre de sessions de la sessió
+	 * @param ngrups números dels grups que pertanyen juntament amb la sessió formen una sessió assignada
+	 * @param crea true si es vol truncar el fitxer, false si es vol fer un append
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String exportaSessioGrup(String path, HashSet<String> equip,
@@ -189,14 +189,14 @@ public final class ControladorPersistencia {
 	}
 
 	/**
-	 * 
-	 * @param path
-	 * @param equip
-	 * @param hores
-	 * @param tipus
-	 * @param nsessions
-	 * @param nsubgrups
-	 * @param crea
+	 * Exporta una sessió de subgrup
+	 * @param path path del fitxer que volem 
+	 * @param equip equip de la sessió
+	 * @param hores hores de la sessió
+	 * @param tipus tipus de la sessió
+	 * @param nsessions nombre de sessions de la sessió
+	 * @param nsubgrups números dels subgrups que pertanyen juntament amb la sessió formen una sessió assignada
+	 * @param crea true si es vol truncar el fitxer, false si es vol fer un append
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String exportaSessioSubGrup(String path, HashSet<String> equip,
@@ -211,13 +211,13 @@ public final class ControladorPersistencia {
 	}
 	
 	/**
-	 * 
-	 * @param path
-	 * @param numero
-	 * @param places
-	 * @param horesAptes
-	 * @param solapaments
-	 * @param crea
+	 * Exporta un subgrup
+	 * @param path path del fitxer que volem 
+	 * @param numero numero del subgrup
+	 * @param places places del subgrup
+	 * @param horesAptes hores aptes del subgrup
+	 * @param solapaments solapaments dels subgrups
+	 * @param crea true si es vol truncar el fitxer, false si es vol fer un append
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String exportaSubGrup(String path, int numero, int places, 
@@ -231,6 +231,18 @@ public final class ControladorPersistencia {
 		}
 	}
 	
+	/**
+	 * Exporta un segment
+	 * @param path path del fitxer que volem 
+	 * @param nomAula nom de l'aula del segment
+	 * @param nomAssig nom de l'assignatura del segment
+	 * @param tipus tipus de sessio del segment
+	 * @param hores hores de la sessio del segment
+	 * @param numg numero de grup del segment
+	 * @param numsg numero de subgrup del segment
+	 * @param grup true si es un segment de grup, false si es de subgrup
+	 * @return null en cas de cap error, l'error com a String altrament
+	 */
 	public String exportaSegment(String path, String nomAula, String nomAssig, String tipus, int hores,
 			int numg, int numsg, boolean grup) {
 		try {
@@ -256,9 +268,9 @@ public final class ControladorPersistencia {
 	}
 	
 	/**
-	 * 
-	 * @param path
-	 * @param nomC
+	 * Importa un aula
+	 * @param path llista amb el que hi havia al fitxer
+	 * @param nomC nom del campus que pertany l'aula
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String importaAula(String path, String nomC) {
@@ -266,31 +278,31 @@ public final class ControladorPersistencia {
 	}
 	
 	/**
-	 * 
-	 * @param path
-	 * @return null en cas de cap error, l'error com a String altrament
+	 * Importa un campus
+	 * @param path llista amb el que hi havia al fitxer
+	 * @return null en cas de estar correcte, sinó l'error
 	 */
 	public String importaCampus(String path) {
 		return DadesCampus.getInstancia().importaCampus(path);
 	}
 	
 	/**
-	 * 
-	 * @param path
-	 * @param nomPE
-	 * @param nomA
-	 * @return null en cas de cap error, l'error com a String altrament
+	 * Importa un grup
+	 * @param path path del fitxer que volem 
+	 * @param nomPE nom del pla d'estudis
+	 * @param nomA nom de l'assignatura
+	 * @return null en cas de estar correcte, sinó l'error
 	 */
 	public String importaGrup(String path, String nomPE, String nomA) {
 		return DadesGrup.getInstancia().importaGrup(path, nomPE, nomA, null);
 	}
 	
 	/**
-	 * 
-	 * @param path
-	 * @param nomC
-	 * @param nomPE
-	 * @param id
+	 * Importa un horari
+	 * @param path path del fitxer que volem 
+	 * @param nomC nom del campus
+	 * @param nomPE nom del pla d'estudis
+	 * @param id identificador de l'horari
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
 	public String importaHorari(String path, String nomC, String nomPE, int id) {
@@ -298,43 +310,43 @@ public final class ControladorPersistencia {
 	}
 	
 	/**
-	 * 
-	 * @param path
-	 * @return null en cas de cap error, l'error com a String altrament
+	 * Importa un Pla d'estudis
+	 * @param path  path del fitxer que volem 
+	 * @return null en cas de estar correcte, sinó l'error
 	 */
 	public String importaPlaEstudis(String path) {
 		return DadesPlaEstudis.getInstancia().importaPlaEstudis(path);
 	}
 	
 	/**
-	 * 
-	 * @param path
-	 * @param nomPE
-	 * @param nomA
-	 * @return null en cas de cap error, l'error com a String altrament
+	 * Importa una sessió de grup
+	 * @param path path del fitxer que volem 
+	 * @param nomPE nom del pla d'estudis
+	 * @param nomA nom de l'assignatura
+	 * @return null en cas de estar correcte, sinó l'error
 	 */
 	public String importaSessioGrup(String path, String nomPE, String nomA) {
 		return DadesSessioGrup.getInstancia().importaSessioGrup(path, nomPE, nomA, null);
 	}
 	
 	/**
-	 * 
-	 * @param path
-	 * @param nomPE
-	 * @param nomA
-	 * @return null en cas de cap error, l'error com a String altrament
+	 * Importa una sessió de subgrup
+	 * @param path path del fitxer que volem 
+	 * @param nomPE nom del pla d'estudis 
+	 * @param nomA nom de l'assignatura
+	 * @return null en cas de estar correcte, sinó l'error
 	 */
 	public String importaSessioSubGrup(String path, String nomPE, String nomA) {
 		return DadesSessioSubGrup.getInstancia().importaSessioSubGrup(path, nomPE, nomA, null);
 	}
 	
 	/**
-	 * 
-	 * @param path
-	 * @param nomPE
-	 * @param nomA
-	 * @param grup
-	 * @return null en cas de cap error, l'error com a String altrament
+	 * Importa un subgrup
+	 * @param path path del fitxer que volem 
+	 * @param nomPE nom del pla d'estudis al qual pertany el subgrup
+	 * @param nomA nom de l'assignatura a la qual pertany el subgrup
+	 * @param grup nom del grup al qual pertany el grup
+	 * @return null en cas de estar correcte, sinó l'error
 	 */
 	public String importaSubGrup(String path, String nomPE, String nomA, int grup) {
 		return DadesSubGrup.getInstancia().importaSubGrup(path, nomPE, nomA, grup, null);
@@ -344,32 +356,32 @@ public final class ControladorPersistencia {
 	///////////////////////////////  FUNCIONS  /////////////////////////////////////
 	
 	/**
-	 * 
-	 * @param path
-	 * @param pla
-	 * @param assig
+	 * Demana al controlador de domini que exporti una assignatura
+	 * @param path path del fitxer que volem 
+	 * @param pla pla d'estudis de l'assignatura
+	 * @param assig assignatura que es vol exportar
 	 */
 	public void getAssignatura(String path, String pla, String assig) {
 		cd.exportaAssignatura(path, pla, assig, false);
 	}
 
 	/**
-	 * 
-	 * @param path
-	 * @param nom
-	 * @param s
+	 * Demana al controlador de domini que exporti un aula
+	 * @param path path del fitxer que volem 
+	 * @param nom nom del campus de l'aula
+	 * @param s nom de l'aula
 	 */
 	public void getAula(String path, String nom, String s) {
 		cd.exportaAula(path, s, nom, false);
 	}
 
 	/**
-	 * 
-	 * @param path
-	 * @param nomPE
-	 * @param nomAssig
-	 * @param tipus
-	 * @param hores
+	 * Demana al controlador de domini que exporti una assignatura
+	 * @param path path del fitxer que volem 
+	 * @param nomPE nom del pla d'estudis de la sessió
+	 * @param nomAssig nom de l'assignatura de la sessió
+	 * @param tipus tipus de la sessió
+	 * @param hores hores de la sessió
 	 */
 	public void getSessionsG(String path, String nomPE, String nomAssig, String tipus, Integer hores) {
 		cd.exportaSessioGrup(path, nomPE, nomAssig, tipus, hores, false);

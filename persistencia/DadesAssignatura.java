@@ -41,7 +41,7 @@ public class DadesAssignatura extends ExportaImporta {
 	 * @param grups nom dels grups
 	 * @param horesAptes les hores aptes del pla
 	 * @param solapaments els solapaments del pla
-	 * @param crea en cas de voler crear el fitxer
+	 * @param crea true si es vol truncar el fitxer, false si es vol fer un append
 	 */
 	public void exportaAssignatura(String path, String nomPE, String nomAssig, HashSet<Pair<String,Integer>> sessionsg,
 			HashSet<Pair<String,Integer>> sessionssg, HashSet<Integer> grups, Map<Integer, boolean[]> horesAptes,

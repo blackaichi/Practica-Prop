@@ -32,10 +32,17 @@ public class DadesGrup extends ExportaImporta {
 	}
 	
 	/**
-	 * Exporta un Grup
-	 * @param g grup que volem exportar
-	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
-	 * @return la codificació del Grup
+	 * Exporta un grup
+	 * @param path path del fitxer que volem 
+	 * @param nomPE nom del pla d'estudis
+	 * @param nomAssig nom de l'assignatura
+	 * @param numero numero que identifica el grup
+	 * @param places places del grup
+	 * @param franja franja del grup
+	 * @param numsg subgrups que pertanyen al grup
+	 * @param horesAptes hores aptes del grup
+	 * @param solapaments solapaments del grup
+	 * @param crea true si es vol truncar el fitxer, false si es vol fer un append
 	 */
 	public void exportaGrup(String path, String nomPE, String nomAssig, int numero, int places, 
 			String franja, HashSet<Integer> numsg, Map<Integer, boolean[]> horesAptes,
@@ -53,6 +60,14 @@ public class DadesGrup extends ExportaImporta {
 		exporta(path, "END GRUP".concat(endl), false);
 	}
 
+	/**
+	 * Importa un grup
+	 * @param path path del fitxer que volem 
+	 * @param nomPE nom del pla d'estudis
+	 * @param nomA nom de l'assignatura
+	 * @param f llista amb el que hi havia al fitxer
+	 * @return null en cas de estar correcte, sinó l'error
+	 */
 	public String importaGrup(String path, String nomPE, String nomA, List<String> f) {
 		try {
 			if (f == null) {

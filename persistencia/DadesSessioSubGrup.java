@@ -31,10 +31,14 @@ public class DadesSessioSubGrup extends ExportaImporta {
 	}
 	
 	/**
-	 * Exporta una SessioSubGrup
-	 * @param ssg sessió de sub grup que volem exportar
-	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
-	 * @return la codificació de la SessioSubGrup
+	 * Exporta una sessió de subgrup
+	 * @param path path del fitxer que volem 
+	 * @param equip equip de la sessió
+	 * @param hores hores de la sessió
+	 * @param tipus tipus de la sessió
+	 * @param nsessions nombre de sessions de la sessió
+	 * @param nsubgrups números dels subgrups que pertanyen juntament amb la sessió formen una sessió assignada
+	 * @param crea true si es vol truncar el fitxer, false si es vol fer un append
 	 */
 	public void exportaSessioSubGrup(String path, HashSet<String> equip, int hores,
 			String tipus, int nsessions, HashSet<Pair<Integer, Integer>> nsubgrups, boolean crea) {
@@ -61,6 +65,14 @@ public class DadesSessioSubGrup extends ExportaImporta {
 		exporta(path, str, crea);
 	}
 
+	/**
+	 * Importa una sessió de subgrup
+	 * @param path path del fitxer que volem 
+	 * @param nomPE nom del pla d'estudis 
+	 * @param nomA nom de l'assignatura
+	 * @param f llista amb el que hi havia al fitxer
+	 * @return null en cas de estar correcte, sinó l'error
+	 */
 	public String importaSessioSubGrup(String path, String nomPE, String nomA, List<String> f) {
 		try {
 			boolean assignada = true;

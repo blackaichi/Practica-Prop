@@ -8,18 +8,26 @@ import java.io.*;
  *
  */
 
-public class ExportaImporta {
+public abstract class ExportaImporta {
 	
+	/**
+	 * Instància del controlador de persistència
+	 */
 	protected ControladorPersistencia cp = ControladorPersistencia.getInstancia();
 	
+	/**
+	 * Papu esto esta chido
+	 */
 	protected String endl = "\n";
 	
 	/**
-	 * Exporta a un fitxer el contingut de l'String s
-	 * @param s el contingut que volem ficar al fitxer
-	 * @return null en cas de cap error, sinó un string amb l'error
+	 * Exporta a un fitxer que trobem a path tot el contingut de l'string s
+	 * @param path path del fitxer que volem 
+	 * @param s contingut que volem ficar al fitxer
+	 * @param crea si es vol truncar el fitxer, false si es vol fer un append
+	 * @return null en cas de estar correcte, sinó l'error
 	 */
-	static String exporta(String path, String s, boolean crea) {
+	static protected String exporta(String path, String s, boolean crea) {
 		try {
 			if (crea) {
 				BufferedWriter writer = new BufferedWriter(new FileWriter(path));

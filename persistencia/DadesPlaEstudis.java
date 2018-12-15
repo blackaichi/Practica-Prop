@@ -31,12 +31,12 @@ public class DadesPlaEstudis extends ExportaImporta {
 	
 	/**
 	 * Exporta un pla d'estudis
-	 * @param path nom del pla d'estudis
-	 * @param nom
-	 * @param autor
-	 * @param franja
-	 * @param rang
-	 * @param nomassig
+	 * @param path path del fitxer que volem 
+	 * @param nom nom del pla d'estudis
+	 * @param autor autor del pla d'estudis
+	 * @param franja franja del pla d'estudis
+	 * @param rang rang del pla d'estudis
+	 * @param nomassig assignatures del pla d'estudis
 	 */
 	public void exportaPlaEstudis(String path, String nom, String autor, Map<Integer, boolean[]> franja,
 			int[] rang, HashSet<String> nomassig) {
@@ -76,8 +76,8 @@ public class DadesPlaEstudis extends ExportaImporta {
 
 	/**
 	 * Importa un Pla d'estudis
-	 * @param path nom del pla d'estudis
-	 * @return
+	 * @param path  path del fitxer que volem 
+	 * @return null en cas de estar correcte, sinó l'error
 	 */
 	public String importaPlaEstudis(String path) {
 		try {

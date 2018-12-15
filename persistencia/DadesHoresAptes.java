@@ -29,10 +29,9 @@ public class DadesHoresAptes extends ExportaImporta {
 	}
 	
 	/**
-	 * Exporta unes HoresAptes
-	 * @param ha hores aptes que volem exportar
-	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
-	 * @return la codificació de les HoresAptes
+	 * Exporta unes hores aptes
+	 * @param path path del fitxer que volem 
+	 * @param franja franja de les hores aptes
 	 */
 	public void exportaHoresAptes(String path, Map<Integer, boolean[]> franja) {
 		String str = "HoresAptes".concat(endl);
@@ -53,6 +52,15 @@ public class DadesHoresAptes extends ExportaImporta {
 		exporta(path, str, false);
 	}
 
+	/**
+	 * Importa unes hores aptes d'assignatura si grup es < 0, de grup si subgrup < 0 o de subgrup altrament
+	 * @param nomPE nom del pla d'estudis a la que petanyen
+	 * @param nomA nom de l'assignatura a la qual pertanyen
+	 * @param grup numero del grup de les hores aptes
+	 * @param subgrup numero del subgrup de les hores aptes
+	 * @param entry llista amb lo necessari per importar hores aptes
+	 * @return null en cas de estar correcte, sinó l'error
+	 */
 	public String importaHoresAptes(String nomPE, String nomA, int grup, int subgrup, List<String> entry) {
 		try {
 			if (!entry.get(0).equals("HoresAptes") || !entry.get(entry.size()-1).equals("END HA") || entry.size() != 3) 

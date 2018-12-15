@@ -29,10 +29,9 @@ public class DadesSolapaments extends ExportaImporta {
 	}
 	
 	/**
-	 * Exporta un solapament
-	 * @param s solapament que volem exportar
-	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
-	 * @return la codificació del solapament
+	 * Exporta solapaments
+	 * @param path path del fitxer que volem 
+	 * @param solapaments solapaments que volem exportar
 	 */
 	public void exportaSolapaments(String path, HashMap<String, HashSet<Integer>> solapaments) {
 		String str = "Solapaments".concat(endl);
@@ -54,6 +53,15 @@ public class DadesSolapaments extends ExportaImporta {
 		exporta(path, str, false);
 	}
 
+	/**
+	 * Importa uns solapaments d'assignatura si grup es < 0, de grup si subgrup < 0 o de subgrup altrament
+	 * @param nomPE nom del pla d'estudis del solapament
+	 * @param nomA nom de l'assignatura del solapament
+	 * @param grup numero del grup del solapament
+	 * @param subgrup numero del subgrup del solapament
+	 * @param entry llista amb lo necessari per importar solapaments
+	 * @return null en cas de estar correcte, sinó l'error
+	 */
 	public String importaSolapaments(String nomPE, String nomA, int grup, int subgrup, List<String> entry) {
 		try {
 			if (!entry.get(0).equals("Solapaments") || !entry.get(entry.size()-1).equals("END SOLAP") ||

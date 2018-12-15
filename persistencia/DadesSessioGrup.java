@@ -32,10 +32,14 @@ public class DadesSessioGrup extends ExportaImporta {
 	}
 	
 	/**
-	 * Exporta una SessioGrup
-	 * @param sg sessió de grup que volem exportar
-	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
-	 * @return la codificació de la SessioGrup
+	 * Exporta una sessio de grup
+	 * @param path path del fitxer que volem 
+	 * @param equip equip de la sessió
+	 * @param hores hores de la sessió
+	 * @param tipus tipus de la sessió
+	 * @param nsessions nombre de sessions de la sessió
+	 * @param ngrups números dels grups que pertanyen juntament amb la sessió formen una sessió assignada
+	 * @param crea true si es vol truncar el fitxer, false si es vol fer un append
 	 */
 	public void exportaSessioGrup(String path, HashSet<String> equip, int hores,
 			String tipus, int nsessions, HashSet<Integer> ngrups, boolean crea) {
@@ -62,6 +66,14 @@ public class DadesSessioGrup extends ExportaImporta {
 		exporta(path, str, crea);
 	}
 
+	/**
+	 * Importa una sessió de grup
+	 * @param path path del fitxer que volem 
+	 * @param nomPE nom del pla d'estudis
+	 * @param nomA nom de l'assignatura
+	 * @param f llista amb el que hi havia al fitxer
+	 * @return null en cas de estar correcte, sinó l'error
+	 */
 	public String importaSessioGrup(String path, String nomPE, String nomA, List<String> f) {
 		try {
 			boolean assignada = true;

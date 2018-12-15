@@ -30,10 +30,12 @@ public class DadesAula extends ExportaImporta {
 	}
 	
 	/**
-	 * Exporta un Aula
-	 * @param a aula que volem exportar
-	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
-	 * @return la codificació de l'aula
+	 * Exporta un aula
+	 * @param path llista amb el que hi havia al fitxer
+	 * @param nomAula nom de l'aula
+	 * @param capacitat capacitat de l'aula
+	 * @param equip equipament de l'aula
+	 * @param crea true si es vol truncar el fitxer, false si es vol fer un append
 	 */
 	public void exportaAula(String path, String nomAula, int capacitat, HashSet<String> equip, boolean crea) {
 		String str = "Aula".concat(endl);
@@ -50,6 +52,13 @@ public class DadesAula extends ExportaImporta {
 		exporta(path, str, crea);
 	}
 	
+	/**
+	 * Importa un aula
+	 * @param path llista amb el que hi havia al fitxer
+	 * @param nomC nom del campus que pertany l'aula
+	 * @param f llista amb el que hi havia al fitxer
+	 * @return null en cas de estar correcte, sinó l'error
+	 */
 	public String importaAula(String path, String nomC, List<String> f) {
 		try {
 			if (f == null) {

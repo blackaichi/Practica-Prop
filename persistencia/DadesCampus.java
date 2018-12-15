@@ -32,10 +32,11 @@ public class DadesCampus extends ExportaImporta {
 	}
 	
 	/**
-	 * Exporta un Campus
-	 * @param c campus que volem exportar
-	 * @param crea true si volem que escrigui al fitxer, false si només volem retornar la codificació
-	 * @return la codificació del Campus
+	 * Exporta un campus
+	 * @param path path del fitxer que volem 
+	 * @param nom nom del campus
+	 * @param autor autor del campus
+	 * @param aules aules que conté el campus
 	 */
 	public void exportaCampus(String path, String nom, String autor, HashSet<String> aules) {
 		String str = "Campus".concat(endl);
@@ -48,6 +49,11 @@ public class DadesCampus extends ExportaImporta {
 		exporta(path, "END CAMPUS".concat(endl), false);
 	}
 
+	/**
+	 * Importa un campus
+	 * @param path llista amb el que hi havia al fitxer
+	 * @return null en cas de estar correcte, sinó l'error
+	 */
 	public String importaCampus(String path) {
 		try {
 			String s = "";
