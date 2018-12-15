@@ -116,10 +116,6 @@ public abstract class Sessio {
 	public int setTipus(String tipus) throws Exception {
 		if (tipus == null || tipus.isEmpty()) return 92;
 		if (assignatura.checkSessioG(tipus, hores) || assignatura.checkSessioSG(tipus, hores)) return 115;
-		char[] chars = tipus.toLowerCase().toCharArray();
-		for (char c : chars) {
-	        if(!Character.isLetter(c)) return 93; // He de ficar el numero que li tocaretornar
-	    }
 		this.tipus = tipus;
 		return 0;
 	}
