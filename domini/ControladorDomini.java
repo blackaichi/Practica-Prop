@@ -862,18 +862,18 @@ public final class ControladorDomini {
 		}
 	}
 	
-	public String exportaSessioSubGrup(String path, String plaEst, String nomAssig, String tipus, Integer hores, boolean rec) {
+	public String exportaSessioSubGrup(String path, String plaEst, String nomAssig, String tipus, Integer hores, int numg ,boolean rec) {
 		try {
 			
 			SessioSubGrup ssg = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(nomAssig).getSessioSG(tipus, hores);
 			HashSet<String> equip = ssg.getMaterial();
 			int nsessions = ssg.getnsessions();
 			HashSet<SessioSGAssignada> ssga = ssg.getAllSessionsSGA();
-			HashSet<Integer> ngrups = new HashSet<Integer>();
+			HashSet<Pair<Integer, Integer>> num = new HashSet<Pair<Integer, Integer>>();
 			for (SessioSGAssignada sessio : ssga) {
-				ngrups.add(sessio.getSubGrup().getNumero());
+				num.add(new Pair<Integer,Integer> (numg,sessio.getSubGrup().getNumero()));
 			}
-			ControladorPersistencia.getInstancia().exportaSessioSubGrup(path,equip,hores,tipus,nsessions,ngrups,rec);
+			ControladorPersistencia.getInstancia().exportaSessioSubGrup(path,equip,hores,tipus,nsessions,num,rec);
 			return null;
 		}
 		catch (Exception e) {
