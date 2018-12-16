@@ -1,6 +1,8 @@
 package presentacio.vistes;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Map;
 
 import domini.ControladorDomini;
 import javafx.fxml.FXML;
@@ -52,7 +54,11 @@ public class SubGrupManager {
 	
 	public void setGradPane() {
 		GridPaneManager.getInstance().buildGridPane(aptes_container, PlaEstudisManager.getPath(), AssignaturaManager.getPath(), Integer.parseInt(GrupManager.getPath()), 0);
-		if(!isNew()) GridPaneManager.getInstance().updateGridPane(aptes_container, PlaEstudisManager.getPath(), AssignaturaManager.getPath(), Integer.parseInt(GrupManager.getPath()), Integer.parseInt(path));
+		GridPaneManager.getInstance().buildSolapaments(solap_container, ControladorPresentacio.getInstance().getConjunts(PlaEstudisManager.getPath()), false);
+		if(!isNew()) {
+			GridPaneManager.getInstance().updateGridPane(aptes_container, PlaEstudisManager.getPath(), AssignaturaManager.getPath(), Integer.parseInt(GrupManager.getPath()), Integer.parseInt(path));
+			GridPaneManager.getInstance().updateSolapaments(solap_container, PlaEstudisManager.getPath(), AssignaturaManager.getPath(), Integer.parseInt(GrupManager.getPath()), Integer.parseInt(path));
+		}
 	}
 	
 	public static void setPath(String path) {
@@ -93,25 +99,45 @@ public class SubGrupManager {
 																		  Integer.parseInt(places.getText()),
 																		  force.isSelected());
 			
-			if(!Main.onError(false)) ControladorPresentacio.getInstance().ModificarSubGrup(PlaEstudisManager.getPath(),
-																					  AssignaturaManager.getPath(),
-																					  Integer.parseInt(GrupManager.getPath()),
-																					  Integer.parseInt(isNew()? nom.getText() : path),
-																					  isNew()? 0 : Integer.parseInt(nom.getText()),
-																					  isNew()? 0 : Integer.parseInt(places.getText()),
-																					  force.isSelected());
-			
 			if(!Main.onError(false)) ControladorPresentacio.getInstance().HoresAptes(PlaEstudisManager.getPath(),
-																				AssignaturaManager.getPath(),
-																				Integer.parseInt(GrupManager.getPath()),
-																				Integer.parseInt(isNew()? nom.getText() : path),
-																				GridPaneManager.getInstance().scannForState(aptes_container, true), true, false);
+																					 AssignaturaManager.getPath(),
+																					 Integer.parseInt(GrupManager.getPath()),
+																					 Integer.parseInt(isNew()? nom.getText() : path),
+																					 GridPaneManager.getInstance().scannForState(aptes_container, true), true, true);
 
 			if(!Main.onError(false)) ControladorPresentacio.getInstance().HoresAptes(PlaEstudisManager.getPath(),
-																				AssignaturaManager.getPath(),
-																				Integer.parseInt(GrupManager.getPath()),
-																				Integer.parseInt(isNew()? nom.getText() : path),
-																				GridPaneManager.getInstance().scannForState(aptes_container, false), false, false);
+																					 AssignaturaManager.getPath(),
+																					 Integer.parseInt(GrupManager.getPath()),
+																					 Integer.parseInt(isNew()? nom.getText() : path),
+																					 GridPaneManager.getInstance().scannForState(aptes_container, false), false, true);
+			
+			for(Map.Entry<String, HashSet<Integer>> iter : GridPaneManager.getInstance().scannForState(solap_container, true, false).entrySet()) {
+				for(int numero : iter.getValue()) {
+					ControladorPresentacio.getInstance().SetSolapamentSubGrup(PlaEstudisManager.getPath(),
+																		   AssignaturaManager.getPath(),
+																		   Integer.parseInt(GrupManager.getPath()),
+																		   Integer.parseInt(isNew()? nom.getText() : path),
+																		   iter.getKey(), numero, false);
+					}
+			}
+			
+			for(Map.Entry<String, HashSet<Integer>> iter : GridPaneManager.getInstance().scannForState(solap_container, false, false).entrySet()) {
+				for(int numero : iter.getValue()) {
+					ControladorPresentacio.getInstance().SetSolapamentSubGrup(PlaEstudisManager.getPath(),
+																			  AssignaturaManager.getPath(),
+																			  Integer.parseInt(GrupManager.getPath()),
+																			  Integer.parseInt(isNew()? nom.getText() : path),
+																			  iter.getKey(), numero, true);
+				}
+			}
+			
+			if(!Main.onError(false)) ControladorPresentacio.getInstance().ModificarSubGrup(PlaEstudisManager.getPath(),
+																		 				   AssignaturaManager.getPath(),
+																						   Integer.parseInt(GrupManager.getPath()),
+																						   Integer.parseInt(isNew()? nom.getText() : path),
+																						   isNew()? 0 : Integer.parseInt(nom.getText()),
+																						   isNew()? 0 : Integer.parseInt(places.getText()),
+																						   force.isSelected());
 			
 			if(!Main.onError(true)) update();
 		}

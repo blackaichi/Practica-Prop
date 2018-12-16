@@ -48,6 +48,15 @@ public class CampusManager {
 		return CampusManager.current;
 	}
 	
+	private boolean checkSelection() {
+		if(aules.getSelectionModel().getSelectedIndex() == -1 || aules.getSelectionModel().getSelectedItem().isEmpty()) {
+			Main.getInstance().showWarning("Acció incorrecte", "Cal seleccionar una aula per poder procedir.");
+			return false;
+		}
+		
+		return true;
+	}
+	
 	public static void setPath(String path) {
 		CampusManager.getInstance().nom_id.setText(path);
 		CampusManager.getInstance().update();
@@ -92,9 +101,21 @@ public class CampusManager {
 	
 	@FXML
 	public void onAulaItemClicked(MouseEvent click) {
-		if(click.getClickCount() == 2){
+		if(click == null || (click.getClickCount() == 2 && this.aules.getSelectionModel().getSelectedIndex() > -1)){
 			Main.getInstance().newWindows("Aula_view.fxml", "Aula", 500, 240);
 			AulaManager.setPath(this.aules.getSelectionModel().getSelectedItem());
 		}
+	}
+
+	@FXML
+	public void onModify() {
+		if(checkSelection()) onAulaItemClicked(null);
+		this.update();
+	}
+	
+	@FXML
+	public void onDelete() {
+		if(checkSelection()) ControladorPresentacio.getInstance().EliminarAula(path, aules.getSelectionModel().getSelectedItem());
+		this.update();
 	}
 }

@@ -1,6 +1,9 @@
 package presentacio.vistes;
 
-import presentacio.ControladorPresentacio;	
+import presentacio.ControladorPresentacio;
+import presentacio.tools.GridPaneManager;
+
+import utils.Pair;
 import java.util.*;
 
 import javafx.application.Application;
@@ -27,6 +30,8 @@ public class Main extends Application {
 	static private Main current;
 	static private boolean errorOcurred;
 	
+	private Pair<String, Boolean> lastSelected;
+	
 	@FXML private GridPane horari_container;
 	@FXML private ListView<String> plansEstudis, campus;
 	
@@ -34,6 +39,7 @@ public class Main extends Application {
 	@FXML private Label selected_pl, selected_c, quants_horaris;
 	
 	@FXML private CheckBox purge, D_LECTIU, H_LECTIU, ASSIG_SOLAP, ASSIG_HAPTES, G_SOLAP, G_HAPTES, G_FRANJA, S_ALIGN, S_NSESSIONS;
+	@FXML private Button next, previous;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -56,7 +62,7 @@ public class Main extends Application {
 		Parent root = FXMLLoader.load(getClass().getResource("Main_view.fxml"));
 		
 		primaryStage.setTitle("Generador d'horaris");
-		primaryStage.setScene(new Scene(root, 1080, 720));
+		primaryStage.setScene(new Scene(root, 1080, 790));
 		primaryStage.show();
 	}
 	
@@ -78,6 +84,21 @@ public class Main extends Application {
 	////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////  PRIVADES /////////////////////////////////////
 	
+	private HashSet<String> computeFlags(){
+		HashSet<String> flags = new HashSet<>();
+		if(D_LECTIU.isSelected()) flags.add("D_LECTIU");
+		if(H_LECTIU.isSelected()) flags.add("H_LECTIU");
+		if(ASSIG_SOLAP.isSelected()) flags.add("ASSIG_SOLAP");
+		if(ASSIG_HAPTES.isSelected()) flags.add("ASSIG_HAPTES");
+		if(G_SOLAP.isSelected()) flags.add("G_SOLAP");
+		if(G_HAPTES.isSelected()) flags.add("G_HAPTES");
+		if(G_FRANJA.isSelected()) flags.add("G_FRANJA");
+		if(S_ALIGN.isSelected()) flags.add("S_ALIGN");
+		if(S_NSESSIONS.isSelected()) flags.add("S_NSESSIONS");
+		
+		return flags;
+	}
+	
 	private boolean paramChecker(){
 		if(selected_pl.getText().isEmpty() || selected_c.getText().isEmpty()) {
 			this.showWarning("Falta informació", "Cal seleccionar una parella de PlaEstudis i Campus.");
@@ -92,12 +113,62 @@ public class Main extends Application {
 			return false;
 		}
 	}
+	
+	private boolean checkSelection() {
+		if(this.lastSelected.first == null) {
+			this.showWarning("Acció incorrecte", "Cal seleccionar un pla d'estudis o un campus per poder procedir.");
+			return false;
+		}
+		
+		return true;
+	}
+	
+	private int getIteration() {
+		String[] depurat = quants_horaris.getText().split(" ");
+		return Integer.parseInt(depurat[1]);
+	}
+	
+	private int getNHoraris() {
+		String[] depurat = quants_horaris.getText().split(" ");
+		return Integer.parseInt(depurat[3]);
+	}
+	
+	private void setButtonsState() {
+		next.setDisable(this.getIteration() == this.getNHoraris());
+		previous.setDisable(this.getIteration() <= 1);
+	}
+	
+	private void loadSelected(int nhoraris, boolean purge) {
+		if(plansEstudis.getSelectionModel().getSelectedIndex() > -1 && !selected_pl.getText().isEmpty() &&
+		   campus.getSelectionModel().getSelectedIndex() > -1 && !selected_c.getText().isEmpty()) {
+			int result = ControladorPresentacio.getInstance().generarHorari(selected_pl.getText(),
+																			selected_c.getText(),
+																			nhoraris,
+																			computeFlags(),
+																			purge);
+
+			quants_horaris.setText("Horari ".concat(result == 0? "0" : "1").concat(" de ").concat(String.valueOf(result)));
+			GridPaneManager.getInstance().buildHorari(horari_container, selected_pl.getText(), selected_c.getText());
+			
+			if(this.getNHoraris() > 0)
+				GridPaneManager.getInstance().updateHorari(horari_container, selected_pl.getText(), selected_c.getText(), getIteration());
+			
+			this.setButtonsState();
+		}
+		else {
+			quants_horaris.setText("Horari 0 de 0");
+			GridPaneManager.getInstance().reset(horari_container, false);
+		}
+	}
+	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
 	
 	public Main() {
 		Main.current = this;
 		Main.errorOcurred = false;
+		
+		lastSelected = new Pair<String, Boolean>(null, null);
 	}
 		
 	public void update() {
@@ -106,17 +177,28 @@ public class Main extends Application {
 		
 		this.plansEstudis.getItems().clear();
 		this.plansEstudis.getItems().addAll(ControladorPresentacio.getInstance().getAllPlaEstudis());
+		this.loadSelected(getIteration(), false);
 	}
 		
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////  FXML ///////////////////////////////////////
 	
 	public void onCampusSelected() {
-		System.out.println(String.valueOf(campus.getSelectionModel().getSelectedItem()));
+		this.selected_c.setText(campus.getSelectionModel().getSelectedItem());
+		
+		this.lastSelected.first = campus.getSelectionModel().getSelectedItem();
+		this.lastSelected.second = true;
+		
+		this.loadSelected(0, false);
 	}
 	
 	public void onPlaEstudisSelected() {
-		System.out.println(String.valueOf(plansEstudis.getSelectionModel().getSelectedItem()));
+		this.selected_pl.setText(plansEstudis.getSelectionModel().getSelectedItem());
+		
+		this.lastSelected.first = plansEstudis.getSelectionModel().getSelectedItem();
+		this.lastSelected.second = false;
+		
+		this.loadSelected(0, false);
 	}
 	
 	public void showWarning(String title, String message) {
@@ -142,19 +224,25 @@ public class Main extends Application {
 	
 	@FXML
 	public void showPreviousHorari() {
-		System.out.println("showPreviousHorari");
+		if(paramChecker()) {
+			quants_horaris.setText("Horari ".concat(String.valueOf(getIteration()-1)).concat(" de ").concat(String.valueOf(getNHoraris())));
+			GridPaneManager.getInstance().updateHorari(horari_container, selected_pl.getText(), selected_c.getText(), getIteration());
+			this.setButtonsState();
+		}
 	}
 	
 	@FXML
 	public void showNextHorari() {
-		System.out.println("showNextHorari");
+		if(paramChecker()) {
+			quants_horaris.setText("Horari ".concat(String.valueOf(getIteration()+1)).concat(" de ").concat(String.valueOf(getNHoraris())));
+			GridPaneManager.getInstance().updateHorari(horari_container, selected_pl.getText(), selected_c.getText(), getIteration());
+			this.setButtonsState();
+		}
 	}
 	
 	@FXML
 	public void onGenerarHorari(){
-		if(paramChecker()) {
-			
-		}
+		if(paramChecker()) this.loadSelected(Integer.parseInt(nhoraris.getText()), purge.isSelected());
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////
@@ -169,19 +257,14 @@ public class Main extends Application {
 	public void onSearchCampus() {
 		System.out.println("onSearchCampus");
 	}
-	
-	@FXML
-	public void onNHoraris() {
-		System.out.println("onNHoraris");
-	}
-	
+		
 	////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////// ON ITEM CLICKED ////////////////////////////////////
 	
 	@FXML
 	public void onCampusItemClicked(MouseEvent click) {
-		if(click.getClickCount() == 1) this.selected_c.setText(campus.getSelectionModel().getSelectedItem());
-		else {
+		if(click != null && click.getClickCount() == 1) this.onCampusSelected();
+		else if(campus.getSelectionModel().getSelectedIndex() > -1) {
 			this.newWindows("Campus_view.fxml", "Campus", 400, 720);
 			CampusManager.setPath(campus.getSelectionModel().getSelectedItem());
 		}
@@ -189,10 +272,52 @@ public class Main extends Application {
 	
 	@FXML
 	public void onPlaEstudisItemClicked(MouseEvent click) {
-		if(click.getClickCount() == 1) this.selected_pl.setText(plansEstudis.getSelectionModel().getSelectedItem());
-		else {
+		if(click != null && click.getClickCount() == 1) this.onPlaEstudisSelected();
+		else if(plansEstudis.getSelectionModel().getSelectedIndex() > -1){
 			this.newWindows("PlaEstudis_view.fxml", "Pla d'estudis", 1050, 733);
 			PlaEstudisManager.setPath(plansEstudis.getSelectionModel().getSelectedItem());
+		}
+	}
+
+	public void onHorariButtonPressed(MouseEvent click) {
+		Pair<String, Integer> select = GridPaneManager.getInstance().scannButtonPressed(horari_container);
+		if(!select.isNull()) {
+			this.newWindows("Segments_view.fxml", "Sessions", 450, 629);
+			SegmentsManager.getInstance().setPath(selected_pl.getText(), selected_c.getText(), select.first, String.valueOf(select.second));
+		}
+	}
+	
+	@FXML
+	public void onModify() {
+		if(checkSelection()) {
+			if(lastSelected.second) onCampusItemClicked(null);
+			else onPlaEstudisItemClicked(null);
+		}
+	}
+	
+	@FXML
+	public void onDelete() {
+		if(checkSelection()) {
+			if(lastSelected.second) {
+				ControladorPresentacio.getInstance().EliminarCampus(campus.getSelectionModel().getSelectedItem());
+				this.selected_c.setText("");
+			}
+			else {
+				ControladorPresentacio.getInstance().EliminaPlaEstudis(plansEstudis.getSelectionModel().getSelectedItem());
+				this.selected_pl.setText("");
+			}
+			this.update();
+		}
+	}
+	
+	@FXML
+	public void onDeleteHorari() {
+		if(getIteration() == 0) showWarning("Acció impossible", "No hi ha cap horari per esborrar.");
+		else {
+			ControladorPresentacio.getInstance().EliminaHorari(plansEstudis.getSelectionModel().getSelectedItem(),
+															   campus.getSelectionModel().getSelectedItem(),
+															   getIteration());
+			this.update();
 		}
 	}
 }

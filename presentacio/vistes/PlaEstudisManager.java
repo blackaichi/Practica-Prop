@@ -22,6 +22,8 @@ public class PlaEstudisManager {
 	@FXML private ListView<String> assignatures;
 	@FXML private Label title;
 	
+	private boolean panic;
+	
 	////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////  PRIVADES /////////////////////////////////////
 	
@@ -48,12 +50,22 @@ public class PlaEstudisManager {
 		return scannRang() != null;
 	}
 	
+	private boolean checkSelection() {
+		if(assignatures.getSelectionModel().getSelectedIndex() == -1 || assignatures.getSelectionModel().getSelectedItem().isEmpty()) {
+			Main.getInstance().showWarning("Acció incorrecte", "Cal seleccionar una assignatura per poder procedir.");
+			return false;
+		}
+		
+		return true;
+	}
+	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
 	
 	public PlaEstudisManager() {
 		path = null;
 		PlaEstudisManager.current = this;
+		this.panic = false;
 	}
 	
 	public static PlaEstudisManager getInstance() {
@@ -101,7 +113,7 @@ public class PlaEstudisManager {
 																						 autor_id.getText(),
 																						 GridPaneManager.getInstance().scannGridPane(lectiu_container),
 																						 this.scannRang());
-			
+			this.panic = Main.onError(false);
 			if(!Main.onError(true)) this.update();
 		}
 	}
@@ -109,8 +121,10 @@ public class PlaEstudisManager {
 	@FXML
 	public void onCreateAssignatura() {
 		if(isNew()) this.apply();
-		Main.getInstance().newWindows("Assignatura_view.fxml", "Assignatura", 590, 720);
-		AssignaturaManager.getInstance().setGradPane();
+		if(!panic) {
+			Main.getInstance().newWindows("Assignatura_view.fxml", "Assignatura", 590, 720);
+			AssignaturaManager.getInstance().setGradPane();
+		}
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////
@@ -118,9 +132,21 @@ public class PlaEstudisManager {
 	
 	@FXML
 	public void onAssignaturaItemClicked(MouseEvent click) {
-		if(click.getClickCount() == 2){
+		if(click == null || (click.getClickCount() == 2 && assignatures.getSelectionModel().getSelectedIndex() > -1)){
 			Main.getInstance().newWindows("Assignatura_view.fxml", "Assignatura", 590, 720);
 			AssignaturaManager.setPath(assignatures.getSelectionModel().getSelectedItem());
 		}
+	}
+
+	@FXML
+	public void onModify() {
+		if(checkSelection()) onAssignaturaItemClicked(null);
+		this.update();
+	}
+	
+	@FXML
+	public void onDelete() {
+		if(checkSelection()) ControladorPresentacio.getInstance().EliminarAssignatura(path, assignatures.getSelectionModel().getSelectedItem());;
+		this.update();
 	}
 }

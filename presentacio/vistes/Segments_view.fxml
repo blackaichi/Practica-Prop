@@ -1,8 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1">
-	<!-- TODO Add Nodes -->
-</AnchorPane>
-
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="629.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentacio.vistes.SegmentsManager">
+   <children>
+      <MenuBar id="status_bar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="450.0">
+         <menus>
+            <Menu mnemonicParsing="false" text="Modificar">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#onMove" text="Desplaçar" />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+      <Pane layoutY="29.0" prefHeight="101.0" prefWidth="450.0">
+         <children>
+            <Label layoutX="14.0" layoutY="14.0" text="Pla Estudis:" />
+            <Label layoutX="14.0" layoutY="29.0" text="Campus:" />
+            <Label layoutX="14.0" layoutY="58.0" text="Dia:" />
+            <Label layoutX="14.0" layoutY="73.0" text="Hora:" />
+            <Label fx:id="plaEstudis" layoutX="103.0" layoutY="14.0" text="pla_estudis_seleccionat" />
+            <Label fx:id="campus" layoutX="103.0" layoutY="29.0" text="campus_seleccionat" />
+            <Label fx:id="dia" layoutX="103.0" layoutY="58.0" text="dia_seleccionat" />
+            <Label fx:id="hora" layoutX="103.0" layoutY="73.0" text="pla_estudis_seleccionat" />
+         </children>
+      </Pane>
+      <ScrollPane layoutY="130.0" prefHeight="500.0" prefWidth="450.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="499.0" prefWidth="448.0">
+               <children>
+                  <ListView fx:id="sessions" layoutY="-1.0" prefHeight="500.0" prefWidth="450.0" />
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+   </children>
+</Pane>

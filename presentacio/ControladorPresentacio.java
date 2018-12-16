@@ -3,9 +3,9 @@ package presentacio;
 import java.util.*;
 
 import domini.ControladorDomini;
+import domini.tools.Estructura;
 import persistencia.ControladorPersistencia;
 import presentacio.vistes.*;
-import utils.Estructura;
 import utils.Pair;
 
 /**
@@ -27,6 +27,26 @@ public class ControladorPresentacio {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////  ACCIONS  ////////////////////////////////////
+	
+	public Map<Integer, HashSet<Integer>> getConjunts(String plaEstudis, String assignatura){
+		return ControladorDomini.getInstance().getConjunts(plaEstudis, assignatura);
+	}
+	
+	public Map<String, HashSet<Integer>> getConjunts(String plaEstudis){
+		return ControladorDomini.getInstance().getConjunts(plaEstudis);
+	}
+	
+	public Map<String, HashSet<Integer>> getDisjuntes(String plaEstudis, String assignatura, int grup, int subgrup){
+		return ControladorDomini.getInstance().getDisjuntes(plaEstudis, assignatura, grup, subgrup);
+	}
+	
+	public HashSet<Integer> getAssignades(String plaEstudis, String assignatura, String tipus, int hores, boolean sessioGrup){
+		return ControladorDomini.getInstance().getAssignades(plaEstudis, assignatura, tipus, hores, sessioGrup);
+	}
+	
+	public Map<String, HashSet<Integer>> getSolapaments(String plaEstudis, String assignatura, int grup, int subgrup){
+		return ControladorDomini.getInstance().getSolapaments(plaEstudis, assignatura, grup, subgrup);
+	}
 	
 	public HashSet<String> getAllCampus() {
 		return ControladorDomini.getInstance().campusPresents();
@@ -82,6 +102,25 @@ public class ControladorPresentacio {
 	
 	public Map<Integer, boolean[]> getHorizon(String plaEstudis, String assignatura, int grup, int subgrup){
 		return ControladorDomini.getInstance().getHorizon(plaEstudis, assignatura, grup, subgrup);
+	}
+	
+	public HashSet<ArrayList<String>> getSegments(String plaEstudis, String campus, int dia, int hora, int iter){
+		return ControladorDomini.getInstance().getSegments(plaEstudis, campus, dia, hora, iter);
+	}
+	
+	public int generarHorari(String plaEstudis, String campus, int nhoraris, HashSet<String> flags, boolean purge) {
+		String warn = ControladorDomini.getInstance().generarHorari(plaEstudis, campus, nhoraris, flags, purge);
+		
+		try {
+			int total = Integer.parseInt(warn);
+			if(total < nhoraris) Main.getInstance().showWarning("Horaris insuficients", "Amb la configuració actual s'ha generat un total de: ".concat(String.valueOf(total)).concat(" horaris."));
+			
+			return total;
+		}
+		catch(NumberFormatException e) {
+			Main.getInstance().showWarning("Error en la generació.", "Vaja! No s'ha pogut generar l'horari correctament.");
+			return 0;
+		}
 	}
 	
 	public void CrearCampus(String campus) {
@@ -195,6 +234,11 @@ public class ControladorPresentacio {
 	public void EliminaSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores) {
 		String s = ControladorDomini.getInstance().EliminaSessioSubGrup(plaEstudis,assignatura,tipus,hores);
 		if(s != null) Main.getInstance().showWarning("Error eliminar SessioSubGrup",s);
+	}
+	
+	public void EliminaHorari(String plaEstudis, String campus, int iter) {
+		String s = ControladorDomini.getInstance().EliminaHorari(plaEstudis,campus, iter);
+		if(s != null) Main.getInstance().showWarning("Error eliminar horari",s);
 	}
 	
 	public void ModificarSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores, String newTipus, int newHores, int nsessions, HashSet<String> equip) {

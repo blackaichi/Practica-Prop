@@ -19,6 +19,8 @@ public class GrupManager {
 	@FXML private GridPane solap_container, aptes_container;
 	@FXML private Label title, franja;
 	
+	private boolean panic;
+	
 	////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////  PRIVADES /////////////////////////////////////
 	
@@ -38,26 +40,20 @@ public class GrupManager {
 		}
 	}
 	
-	////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
-	
-	public GrupManager() {
-		path = null;
-		current = this;
-	}
-	
-	public static GrupManager getInstance() {
-		return current;
-	}
-	
-	public static void setPath(String path) {
-		GrupManager.getInstance().nom.setText(path);
-		GrupManager.getInstance().update();
+	private boolean checkSelection() {
+		if(subgrups.getSelectionModel().getSelectedIndex() == -1 || subgrups.getSelectionModel().getSelectedItem().isEmpty()) {
+			Main.getInstance().showWarning("Acció incorrecte", "Cal seleccionar un subgrup per poder procedir.");
+			return false;
+		}
 		
+		return true;
+	}
+	
+	private void setMainData() {
 		ArrayList<String> data = ControladorPresentacio.getInstance().GetMainGrupData(PlaEstudisManager.getPath(),
-																					  AssignaturaManager.getPath(),
-																					  Integer.parseInt(path));
-		
+				  AssignaturaManager.getPath(),
+				  Integer.parseInt(path));
+
 		for(int it = 0; it < data.size(); it++) {
 			if(it == 0) GrupManager.getInstance().places.setText(data.get(it));
 			else if(it == 1) {
@@ -68,9 +64,31 @@ public class GrupManager {
 		}
 	}
 	
+	////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
+	
+	public GrupManager() {
+		path = null;
+		current = this;
+		panic = false;
+	}
+	
+	public static GrupManager getInstance() {
+		return current;
+	}
+	
+	public static void setPath(String path) {
+		GrupManager.getInstance().nom.setText(path);
+		GrupManager.getInstance().update();
+	}
+	
 	public void setGradPane() {
 		GridPaneManager.getInstance().buildGridPane(aptes_container, PlaEstudisManager.getPath(), AssignaturaManager.getPath(), 0, 0);
-		if(!isNew()) GridPaneManager.getInstance().updateGridPane(aptes_container, PlaEstudisManager.getPath(), AssignaturaManager.getPath(), Integer.parseInt(path), 0);
+		GridPaneManager.getInstance().buildSolapaments(solap_container, ControladorPresentacio.getInstance().getConjunts(PlaEstudisManager.getPath()), false);
+		if(!isNew()) {
+			GridPaneManager.getInstance().updateGridPane(aptes_container, PlaEstudisManager.getPath(), AssignaturaManager.getPath(), Integer.parseInt(path), 0);
+			GridPaneManager.getInstance().updateSolapaments(solap_container, PlaEstudisManager.getPath(), AssignaturaManager.getPath(), Integer.parseInt(path), 0);
+		}
 	}
 	
 	public static String getPath() {
@@ -83,6 +101,7 @@ public class GrupManager {
 		
 		this.subgrups.getItems().clear();
 		this.subgrups.getItems().addAll(ControladorPresentacio.getInstance().getAllSubGrups(PlaEstudisManager.getPath(), AssignaturaManager.getPath(), Integer.parseInt(path)));
+		this.setMainData();
 		
 		setGradPane();
 		AssignaturaManager.getInstance().update();
@@ -103,23 +122,44 @@ public class GrupManager {
 																	   Integer.parseInt(nom.getText()),
 																	   Integer.parseInt(places.getText()));
 			
+			if(!Main.onError(false)) ControladorPresentacio.getInstance().HoresAptes(PlaEstudisManager.getPath(),
+																				     AssignaturaManager.getPath(),
+																					 Integer.parseInt(isNew()? nom.getText() : path),
+																					 0,
+																					 GridPaneManager.getInstance().scannForState(aptes_container, true), true, true);
+				
+			if(!Main.onError(false)) ControladorPresentacio.getInstance().HoresAptes(PlaEstudisManager.getPath(),
+																					 AssignaturaManager.getPath(),
+																					 Integer.parseInt(isNew()? nom.getText() : path),
+																					 0,
+																					 GridPaneManager.getInstance().scannForState(aptes_container, false), false, true);
+			
+			for(Map.Entry<String, HashSet<Integer>> iter : GridPaneManager.getInstance().scannForState(solap_container, true, false).entrySet()) {
+				for(int numero : iter.getValue()) {
+					ControladorPresentacio.getInstance().SetSolapamentGrup(PlaEstudisManager.getPath(),
+																		   AssignaturaManager.getPath(),
+																		   Integer.parseInt(isNew()? nom.getText() : path),
+																		   iter.getKey(), numero, false);
+					}
+			}
+			
+			for(Map.Entry<String, HashSet<Integer>> iter : GridPaneManager.getInstance().scannForState(solap_container, false, false).entrySet()) {
+				for(int numero : iter.getValue()) {
+					ControladorPresentacio.getInstance().SetSolapamentGrup(PlaEstudisManager.getPath(),
+																		   AssignaturaManager.getPath(),
+																		   Integer.parseInt(isNew()? nom.getText() : path),
+																		   iter.getKey(), numero, true);
+				}
+			}
+			
 			if(!Main.onError(false)) ControladorPresentacio.getInstance().ModificarGrup(PlaEstudisManager.getPath(),
-																				   AssignaturaManager.getPath(),
-																				   Integer.parseInt(isNew()? nom.getText() : path),
-																				   isNew()? 0 : Integer.parseInt(nom.getText()),
-																				   isNew()? 0 : Integer.parseInt(places.getText()),
-																				   franja.getText().contains("Q")? "MT" : franja.getText().contains("M")? "M" : "T");
+																					    AssignaturaManager.getPath(),
+																					    Integer.parseInt(isNew()? nom.getText() : path),
+																					    isNew()? 0 : Integer.parseInt(nom.getText()),
+																					    isNew()? 0 : Integer.parseInt(places.getText()),
+																					    franja.getText().contains("Q")? "MT" : franja.getText().contains("M")? "M" : "T");
 			
-			if(!Main.onError(false)) ControladorPresentacio.getInstance().HoresAptes(PlaEstudisManager.getPath(),
-																				AssignaturaManager.getPath(),
-																				Integer.parseInt(isNew()? nom.getText() : path),
-																				0, GridPaneManager.getInstance().scannForState(aptes_container, true), true, false);
-			
-			if(!Main.onError(false)) ControladorPresentacio.getInstance().HoresAptes(PlaEstudisManager.getPath(),
-																				AssignaturaManager.getPath(),
-																				Integer.parseInt(isNew()? nom.getText() : path),
-																				0, GridPaneManager.getInstance().scannForState(aptes_container, false), false, false);
-			
+			this.panic = Main.onError(false);
 			if(!Main.onError(true)) this.update();
 		}
 	}
@@ -127,8 +167,10 @@ public class GrupManager {
 	@FXML
 	public void onCreateSubGrup() {
 		if(isNew()) this.apply();
-		Main.getInstance().newWindows("Subgrup_view.fxml", "Subgrup", 500, 719);
-		SubGrupManager.getInstance().setGradPane();
+		if(!panic) {
+			Main.getInstance().newWindows("Subgrup_view.fxml", "Subgrup", 500, 770);
+			SubGrupManager.getInstance().setGradPane();
+		}
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////
@@ -151,9 +193,21 @@ public class GrupManager {
 	
 	@FXML
 	public void onSubGrupItemClicked(MouseEvent click) {
-		if(click.getClickCount() == 2){
-			Main.getInstance().newWindows("Subgrup_view.fxml", "Subgrup", 500, 719);
+		if(click == null || (click.getClickCount() == 2 && subgrups.getSelectionModel().getSelectedIndex() > -1)){
+			Main.getInstance().newWindows("Subgrup_view.fxml", "Subgrup", 500, 770);
 			SubGrupManager.setPath(subgrups.getSelectionModel().getSelectedItem());
 		}
+	}
+
+	@FXML
+	public void onModify() {
+		if(checkSelection()) onSubGrupItemClicked(null);
+		this.update();
+	}
+	
+	@FXML
+	public void onDelete() {
+		if(checkSelection()) ControladorPresentacio.getInstance().EliminaSubGrup(PlaEstudisManager.getPath(), AssignaturaManager.getPath(), Integer.parseInt(path), Integer.parseInt(subgrups.getSelectionModel().getSelectedItem()));
+		this.update();
 	}
 }
