@@ -111,11 +111,11 @@ public abstract class Sessio {
 	 * Assigna de quin tipus es la sessió
 	 * @param tipus tipus de la sessió
 	 * @return 0 en cas de que no hi hagi error, altrament error
-	 * @throws Exception 
 	 */
 	public int setTipus(String tipus) throws Exception {
 		if (tipus == null || tipus.isEmpty()) return 92;
 		if (assignatura.checkSessioG(tipus, hores) || assignatura.checkSessioSG(tipus, hores)) return 115;
+		
 		this.tipus = tipus;
 		return 0;
 	}
