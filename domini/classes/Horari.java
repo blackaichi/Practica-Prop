@@ -2,6 +2,8 @@ package domini.classes;
 
 import domini.classes.*;
 import domini.restriccions.*;
+import domini.tools.Estructura;
+import domini.tools.Segment;
 import utils.*;
 import java.util.*;
 

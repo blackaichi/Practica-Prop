@@ -200,7 +200,7 @@ public class SubGrup {
 	 * @param subGrup Referencia el subGrup a restringir.
 	 * @return Excepció codificada en forma d'enter.
 	 */
-	public int setSolapament(String assig, int numero, boolean permet) {		
+	public int setSolapament(String assig, int numero, boolean permet) {
 		return this.disjunts.setSolapament(assig, numero, permet);
 	}
 	
