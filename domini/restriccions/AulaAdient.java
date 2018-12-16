@@ -3,6 +3,8 @@ package domini.restriccions;
 import java.util.*;
 
 import domini.classes.*;
+import domini.tools.Estructura;
+import domini.tools.Segment;
 import utils.*;
 
 /**

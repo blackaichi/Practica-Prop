@@ -218,7 +218,7 @@ public class HoresAptes {
 		if(toClone == null) return null;
 		
 		Map<Integer, boolean[]> cloned = new HashMap<>();
-		for(int dia: toClone.keySet())
+		for(int dia: toClone.keySet()) if(toClone.get(dia) != null)
 			cloned.put(dia, Arrays.copyOf(toClone.get(dia), toClone.get(dia).length));
 		
 		return cloned;

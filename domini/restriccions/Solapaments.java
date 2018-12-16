@@ -2,6 +2,8 @@ package domini.restriccions;
 
 import java.util.*;
 import domini.classes.*;
+import domini.tools.Estructura;
+import domini.tools.Segment;
 import utils.*;
 
 /**
@@ -196,8 +198,8 @@ public class Solapaments {
 	 */
 	static public int kill(String plaEstudis, String assig, int numero) {
 		for(Solapaments solapament : Solapaments.get(plaEstudis)) {
-			if(numero == 0 && solapament.disjuntes.get(assig) != null) solapament.disjuntes.remove(assig);
-			else solapament.disjuntes.get(assig).removeIf(item -> item.intValue() == numero);
+			if(numero == 0 && solapament.disjuntes.containsKey(assig)) solapament.disjuntes.remove(assig);
+			else if(solapament.disjuntes.containsKey(assig)) solapament.disjuntes.get(assig).removeIf(item -> item.intValue() == numero);
 		}
 		
 		return 0;
@@ -256,6 +258,11 @@ public class Solapaments {
 		return 0;
 	}
 
+	/**
+	 * Retorna el set d'elements disjunts.
+	 * @return Un map buit o amb contingut, amb sets de numeros de grup/subgrup per una
+	 * assignatura donada.
+	 */
 	public HashMap<String, HashSet<Integer>> getDisjuntes() {
 		return this.disjuntes;
 	}
