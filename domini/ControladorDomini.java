@@ -4,7 +4,6 @@ import domini.classes.*;
 import domini.tools.Estructura;
 import domini.tools.Segment;
 import persistencia.ControladorPersistencia;
-import presentacio.vistes.Main;
 
 import java.util.*;
 import utils.*;
@@ -29,83 +28,6 @@ public final class ControladorDomini {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////  ACCIONS  /////////////////////////////////////
-	
-	public Map<Integer, HashSet<Integer>> getConjunts(String plaEstudis, String assignatura){
-		try {
-			Map<Integer, HashSet<Integer>> conjunts = new HashMap<Integer, HashSet<Integer>>();
-			Assignatura assign = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura);
-			for(Grup grup: assign.getGrups()) {
-				if(!conjunts.containsKey(grup.getNumero())) conjunts.put(grup.getNumero(), new HashSet<Integer>());
-				for(SubGrup subgrup: grup.getAllSubGrups()) conjunts.get(grup.getNumero()).add(subgrup.getNumero());
-			}
-			
-			return conjunts;
-		}
-		catch(Exception e) {
-			return new HashMap<Integer, HashSet<Integer>>();
-		}
-	}
-	
-	public Map<String, HashSet<Integer>> getConjunts(String plaEstudis){
-		Map<String, HashSet<Integer>> conjunts = new HashMap<String, HashSet<Integer>>();
-		try {
-			HashSet<Assignatura> assigs = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatures();
-			for(Assignatura assig : assigs) {
-				if(!conjunts.containsKey(assig.getNom())) conjunts.put(assig.getNom(), new HashSet<Integer>());
-				for(Grup grup : assig.getGrups()) {
-					conjunts.get(assig.getNom()).add(grup.getNumero());
-					for(SubGrup subgrup : grup.getAllSubGrups()) conjunts.get(assig.getNom()).add(subgrup.getNumero());
-				}
-			}
-			
-			return conjunts;
-		}
-		catch(Exception e) {
-			return conjunts;
-		}
-	}
-	
-	public Map<String, HashSet<Integer>> getDisjuntes(String plaEstudis, String assignatura, int grup, int subgrup){
-		try {
-			if(subgrup > 0) return PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).getSubGrup(subgrup).getSolapaments().getDisjuntes();
-			else if(grup > 0) return PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).getSolapaments().getDisjuntes();
-			else if(assignatura != null) return PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getSolapaments().getDisjuntes();
-			else return new HashMap<String, HashSet<Integer>>();
-		}
-		catch(Exception  e) {
-			return new HashMap<String, HashSet<Integer>>();
-		}
-	}
-	
-	public Map<String, HashSet<Integer>> getSolapaments(String plaEstudis, String assignatura, int grup, int subgrup){
-		try {
-			if(subgrup > 0) return PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).getSubGrup(subgrup).getSolapaments().getDisjuntes();
-			else if(grup > 0) return PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).getSolapaments().getDisjuntes();
-			else return PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getSolapaments().getDisjuntes();
-		}
-		catch(Exception e) {
-			return new HashMap<>();
-		}
-	}
-	
-	public HashSet<Integer> getAssignades(String plaEstudis, String assignatura, String tipus, int hores, boolean sessioGrup){
-		try {
-			HashSet<Integer> assignacions = new HashSet<Integer>();
-			if(sessioGrup) {
-				HashSet<SessioGAssignada> assigs = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getSessioG(tipus, hores).getAllSessionsGA();
-				for(SessioGAssignada sessio: assigs) assignacions.add(sessio.getGrup().getNumero());
-			}
-			else {
-				HashSet<SessioSGAssignada> assigs = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getSessioSG(tipus, hores).getAllSessionsSGA();
-				for(SessioSGAssignada sessio: assigs) assignacions.add(sessio.getSubGrup().getNumero());
-			}
-			
-			return assignacions;
-		}
-		catch(Exception e) {
-			return new HashSet<Integer>();
-		}
-	}
 	
 	public HashSet<String> campusPresents(){
 		return Campus.getKeys();
@@ -255,67 +177,6 @@ public final class ControladorDomini {
 		else if(plaEstudis != null) return PlaEstudis.getPlaEstudis(plaEstudis).getLectiuSetmana();
 		
 		return null;
-	}
-	
-	public HashSet<ArrayList<String>> getSegments(String plaEstudis, String campus, int dia, int hora, int iter){
-		HashSet<ArrayList<String>> dades = new HashSet<ArrayList<String>>();
-		
-		try {
-			HashSet<Estructura> horaris = Horari.getInstance().getHoraris(plaEstudis, campus);
-			if(iter < 1 || iter > horaris.size()) return dades;
-			
-			Iterator<Estructura> iterator = horaris.iterator();
-			while(iterator.hasNext() && 1 < iter--) iterator.next();
-			
-			Estructura horari = iterator.next();
-			HashSet<Segment> segments = horari.getAllSegments(dia, hora);
-			
-			for(Segment segment : segments) {
-				ArrayList<String> list = new ArrayList<String>();
-				String assignatura = segment.getSessio().snull()? segment.getSessio().first.getGrup().getAssignatura().getNom() :
-																  segment.getSessio().second.getSubGrup().getGrup().getAssignatura().getNom();
-				
-				String numero = String.valueOf(segment.getSessio().snull()? segment.getSessio().first.getGrup().getNumero() :
-														  					segment.getSessio().second.getSubGrup().getNumero());
-				
-				String sessio = segment.getSessio().snull()? segment.getSessio().first.getSessioGrup().getTipus() : 
-															 segment.getSessio().second.getSessioSubGrup().getTipus();
-				
-				String aula = segment.getAula().getNom();
-				
-				String conjunt = segment.getSessio().snull()? "[G]" : "[S]";
-				
-				list.add(assignatura);
-				list.add(numero);
-				list.add(sessio);
-				list.add(aula);
-				list.add(conjunt);
-				
-				dades.add(list);
-			}
-		}
-		catch(Exception e) {
-			return dades;
-		}
-		
-		return dades;
-	}
-	
-	public String generarHorari(String plaEstudis, String campus, int nhoraris, HashSet<String> flags, boolean purge) {
-		try {
-			PlaEstudis pl = PlaEstudis.getPlaEstudis(plaEstudis);
-			Campus camp = Campus.getCampus(campus);
-			
-			Horari.getInstance().GENERADOR(pl, camp, flags, nhoraris, purge);
-			
-			for(Estructura struct : Horari.getInstance().getHoraris(plaEstudis, campus))
-				Estructura.printHorari(struct);
-			
-			return String.valueOf(Horari.getInstance().getHoraris(plaEstudis, campus).size());
-		}
-		catch(Exception e) {
-			return e.toString();
-		}
 	}
 	
 	public String CrearCampus(String campus) {
@@ -551,10 +412,10 @@ public final class ControladorDomini {
 			SessioGrup toUpdate = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getSessioG(tipus, hores);
 			
 			int checker = 0;
-			if((newTipus != null && !newTipus.isEmpty() && (checker = toUpdate.setTipus(newTipus)) != 0) ||
+			if((newTipus != null && (checker = toUpdate.setTipus(newTipus)) != 0) ||
 			   (newHores > 0 && (checker = toUpdate.setHores(newHores)) != 0) ||
 			   (nsessions > 0 && (checker = toUpdate.setnsessions(nsessions)) != 0) ||
-			   (material != null && !material.isEmpty() && (checker = toUpdate.setMaterial(material)) != 0))
+			   (material != null && (checker = toUpdate.setMaterial(material)) != 0))
 				ExceptionManager.getException(checker);
 		}
 		catch(Exception e) {
@@ -586,32 +447,15 @@ public final class ControladorDomini {
 		return null;
 	}
 	
-	public String EliminaHorari(String plaEstudis, String campus, int iter) {
-		try {
-			int iteration = iter;
-			for(Estructura horari : Horari.getInstance().getHoraris(plaEstudis, campus)) {
-				if(--iteration == 0) {
-					Horari.getInstance().getHoraris(plaEstudis, campus).remove(horari);
-					break;
-				}
-			}
-		}
-		catch(Exception e) {
-			return e.toString();
-		}
-		
-		return null;
-	}
-	
 	public String ModificarSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores, String newTipus, int newHores, int nsessions, HashSet<String> material) {
 		try {
 			SessioSubGrup toUpdate = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getSessioSG(tipus, hores);
 			
 			int checker = 0;
-			if((newTipus != null && !newTipus.isEmpty() && (checker = toUpdate.setTipus(newTipus)) != 0) ||
+			if((newTipus != null && (checker = toUpdate.setTipus(newTipus)) != 0) ||
 			   (newHores > 0 && (checker = toUpdate.setHores(newHores)) != 0) ||
 			   (nsessions > 0 && (checker = toUpdate.setnsessions(nsessions)) != 0) ||
-			   (material != null && !material.isEmpty() && (checker = toUpdate.setMaterial(material)) != 0))
+			   (material != null && (checker = toUpdate.setMaterial(material)) != 0))
 				ExceptionManager.getException(checker);
 		}
 		catch(Exception e) {
@@ -715,14 +559,48 @@ public final class ControladorDomini {
 		}
 		
 		return null;
-}
-////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////  FUNCIONS PERSISTENCIA  ////////////////////////
-
-////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////  EXPORTS  //////////////////////////////////////
+	}
 	
-
+	public String CrearSegment(String plaEst, String nomC, int dia, int hora, String aula, String nomA, String tipus, int hores, int numg, int numsg, int id) {
+		try {
+			SessioGAssignada sg = null;
+			SessioSGAssignada ssg = null;
+			if (numsg == -1) sg = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(nomA).getGrup(numg).getSessio(tipus, hores);
+			ssg = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(nomA).getGrup(numg).getSubGrup(numsg).getSessio(tipus, hores);
+			Aula a = Campus.getCampus(nomC).getAula(aula);
+			Segment s = new Segment(sg, ssg);
+			s.setAula(a);
+			s.setData(new Data(dia,hora));
+			HashSet<Estructura> h = Horari.getInstance().getHoraris(plaEst, nomC);
+			Estructura aux = null;
+			for (Estructura hor : h) {
+				if (--id == 0) aux = hor;
+				//necessito saber amb quin horari estic treballant i itero amb id que em passen
+			}
+			aux.setSegment(s, dia, hora);
+		}
+		catch(Exception e) {
+			return e.toString();
+		}
+		
+		return null;
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////  FUNCIONS PERSISTENCIA  ////////////////////////
+	
+	
+	////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////  EXPORTS  //////////////////////////////////////
+	
+	/**
+	 * Exporta una assignatura
+	 * @param path Path on volem exportar l'Assignatura
+	 * @param plaEst Nom del pla d'estudis
+	 * @param nomA Nom de l'assignatura
+	 * @param rec True si es vol truncar el fitxer, false si es vol fer un append
+	 * @return
+	 */
 	public String exportaAssignatura(String path, String plaEst, String nomA, boolean rec) {
 		try {
 			Assignatura a = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(nomA);
@@ -761,6 +639,14 @@ public final class ControladorDomini {
 		}
 	}
 	
+	/**
+	 * Exporta un Aula
+	 * @param path Path on volem exportar l'Aula
+	 * @param nomAula Nom de l'aula
+	 * @param nomCampus Nom del Campus
+	 * @param rec True si es vol truncar el fitxer, false si es vol fer un append
+	 * @return
+	 */
 	public String exportaAula(String path, String nomAula, String nomCampus, boolean rec) {
 		try {
 			Aula a = Campus.getCampus(nomCampus).getAula(nomAula);
@@ -774,6 +660,12 @@ public final class ControladorDomini {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param path Path on volem exportar el Campus
+	 * @param nomC Nom del campus
+	 * @return
+	 */
 	public String exportaCampus(String path, String nomC) {
 		try {
 			Campus c = Campus.getCampus(nomC);
@@ -792,7 +684,16 @@ public final class ControladorDomini {
 			return e.toString();
 		}
 	}
-		
+	
+	/**
+	 * 
+	 * @param path Path on volem exportar el Grup
+	 * @param numero Numero de grup
+	 * @param assignatura Nom de l'assignatura
+	 * @param plaEst Nom del Pla d'Estudis
+	 * @param rec True si es vol truncar el fitxer, false si es vol fer un append
+	 * @return
+	 */
 	public String exportaGrup(String path,int numero, String assignatura, String plaEst, boolean rec) {
 		try {
 			Grup g = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(assignatura).getGrup(numero);
@@ -813,6 +714,15 @@ public final class ControladorDomini {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param path Path on volem exportar l'Horari
+	 * @param flags Flags corresponents al Horari
+	 * @param nomC Nom del campus
+	 * @param nomPE Nom del Pla d'Estudis
+	 * @param id Iterador per exportar l'horari desitjat.
+	 * @return
+	 */
 	public String exportaHorari(String path, HashSet<String> flags, String nomC, String nomPE, int id) {
 		try {
 			ControladorPersistencia.getInstancia().exportaHorari(path, flags, nomC, nomPE, id);
@@ -823,6 +733,12 @@ public final class ControladorDomini {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param path Path on volem exportar el Pla d'estudis
+	 * @param plaEst nom del Pla d'Estuds
+	 * @return
+	 */
 	public String exportaPlaEstudis(String path, String plaEst) {
 		try {
 			PlaEstudis pe = PlaEstudis.getPlaEstudis(plaEst);
@@ -842,6 +758,16 @@ public final class ControladorDomini {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param path Path on volem exportar la SessioGrup
+	 * @param plaEst Nom del Pla d'Estudis
+	 * @param nomAssig Nom de l'Assignatura
+	 * @param tipus Tipus de la sessio que volem exportar.
+	 * @param hores Hores de la sessio que volem exportar.
+	 * @param rec True si es vol truncar el fitxer, false si es vol fer un append
+	 * @return
+	 */
 	public String exportaSessioGrup(String path, String plaEst, String nomAssig, String tipus, Integer hores, boolean rec) {
 		try {
 			
@@ -862,6 +788,17 @@ public final class ControladorDomini {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param path Path on volem exportar la SessioSubGrup
+	 * @param plaEst Nom del Pla d'Estudis
+	 * @param nomAssig Nom de l'Assignatura
+	 * @param tipus Tipus de la Sessio
+	 * @param hores Hores de la Sessio
+	 * @param numg numero de grup.
+	 * @param rec True si es vol truncar el fitxer, false si es vol fer un append
+	 * @return
+	 */
 	public String exportaSessioSubGrup(String path, String plaEst, String nomAssig, String tipus, Integer hores, int numg ,boolean rec) {
 		try {
 			
@@ -881,6 +818,16 @@ public final class ControladorDomini {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param path Path on volem exportar el Sub Grup
+	 * @param numeroSG Numero del Sub Grup
+	 * @param numeroG Numero del Grup
+	 * @param assignatura Nom de l'Assignatura
+	 * @param plaEst Nom del Pla d'Estudis
+	 * @param rec True si es vol truncar el fitxer, false si es vol fer un append
+	 * @return
+	 */
 	public String exportaSubGrup(String path, int numeroSG,int numeroG, String assignatura, String plaEst, boolean rec) {
 		try {
 			SubGrup sg = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(assignatura).getGrup(numeroG).getSubGrup(numeroSG);
@@ -895,6 +842,16 @@ public final class ControladorDomini {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param path Path on volem exportar el Segment
+	 * @param dia Dia del Segment que volem exportar
+	 * @param hora Hora del Segment que volem exportar
+	 * @param nomC Nom del Campus
+	 * @param nomPE Nom del Pla d'estudis
+	 * @param id Iterador per identificar l'horari correcte
+	 * @return
+	 */
 	public String exportaSegment(String path, int dia, int hora, String nomC, String nomPE, int id) {
 		try {
 			HashSet<Estructura> h = Horari.getInstance().getHoraris(nomPE, nomC);
@@ -903,6 +860,7 @@ public final class ControladorDomini {
 			String nomAula = null;
 			String nomAssig = null;
 			String tipus = null;
+			int hores = -1;
 			int it = id;
 			for(Estructura e : h) {
 				if (it == 0) aux = e;
@@ -919,18 +877,118 @@ public final class ControladorDomini {
 					
 					nomAssig = s.getSessio().first.getSessioGrup().getAssignatura().getNom();
 					tipus = s.getSessio().first.getSessioGrup().getTipus();
+					hores = s.getSessio().first.getSessioGrup().getHores();
 				}
 				else {
 					numsg = s.getSessio().second.getSubGrup().getNumero();
 					nomAssig = s.getSessio().second.getSessioSubGrup().getAssignatura().getNom();
 					tipus = s.getSessio().second.getSessioSubGrup().getTipus();
+					hores = s.getSessio().second.getSessioSubGrup().getHores();
 				}
-				ControladorPersistencia.getInstancia().exportaSegment(path,nomAula,nomAssig,tipus,numg, numsg, grup);
+				ControladorPersistencia.getInstancia().exportaSegment(path,nomAula,nomAssig,tipus,hores,numg,numsg,grup);
 			}
 			return null;
 		}
 		catch (Exception e) {
 			return e.toString();
 		}
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////  IMPORTS  //////////////////////////////////////
+	
+	/**
+	 * Importa una assignatura
+	 * @param path Path del fitxer que volem 
+	 * @param nomPE Nom del pla d'estudis
+	 * @return Null en cas de estar correcte, sinó l'error
+	 */
+	public String importaAssignatura(String path, String nomPE) {
+		return ControladorPersistencia.getInstancia().importaAssignatura(path, nomPE);
+	}
+	
+	/**
+	 * Importa un aula
+	 * @param Path llista amb el que hi havia al fitxer
+	 * @param NomC nom del campus que pertany l'aula
+	 * @return Null en cas de cap error, l'error com a String altrament
+	 */
+	public String importaAula(String path, String nomC) {
+		return ControladorPersistencia.getInstancia().importaAula(path, nomC);
+	}
+	
+	/**
+	 * Importa un campus
+	 * @param Path llista amb el que hi havia al fitxer
+	 * @return Null en cas de estar correcte, sinó l'error
+	 */
+	public String importaCampus(String path) {
+		return ControladorPersistencia.getInstancia().importaCampus(path);
+	}
+	
+	/**
+	 * Importa un grup
+	 * @param path Path del fitxer que volem 
+	 * @param nomPE Nom del pla d'estudis
+	 * @param nomA Nom de l'assignatura
+	 * @return null en cas de estar correcte, sinó l'error
+	 */
+	public String importaGrup(String path, String nomPE, String nomA) {
+		return ControladorPersistencia.getInstancia().importaGrup(path, nomPE, nomA);
+	}
+	
+	/**
+	 * Importa un horari
+	 * @param path path del fitxer que volem 
+	 * @param nomC nom del campus
+	 * @param nomPE nom del pla d'estudis
+	 * @param id identificador de l'horari
+	 * @return null en cas de cap error, l'error com a String altrament
+	 */
+	public String importaHorari(String path, String nomC, String nomPE, int id) {
+		return ControladorPersistencia.getInstancia().importaHorari(path, nomC, nomPE, id);
+	}
+	
+	/**
+	 * Importa un Pla d'estudis
+	 * @param path  path del fitxer que volem 
+	 * @return null en cas de estar correcte, sinó l'error
+	 */
+	public String importaPlaEstudis(String path) {
+		return ControladorPersistencia.getInstancia().importaPlaEstudis(path);
+	}
+	
+	/**
+	 * Importa una sessió de grup
+	 * @param path path del fitxer que volem 
+	 * @param nomPE nom del pla d'estudis
+	 * @param nomA nom de l'assignatura
+	 * @return null en cas de estar correcte, sinó l'error
+	 */
+	public String importaSessioGrup(String path, String nomPE, String nomA) {
+		return ControladorPersistencia.getInstancia().importaSessioGrup(path, nomPE, nomA);
+	}
+	
+	/**
+	 * Importa una sessió de subgrup
+	 * @param path path del fitxer que volem 
+	 * @param nomPE nom del pla d'estudis 
+	 * @param nomA nom de l'assignatura
+	 * @return null en cas de estar correcte, sinó l'error
+	 */
+	public String importaSessioSubGrup(String path, String nomPE, String nomA) {
+		return ControladorPersistencia.getInstancia().importaSessioSubGrup(path, nomPE, nomA);
+	}
+	
+	/**
+	 * Importa un subgrup
+	 * @param path path del fitxer que volem 
+	 * @param nomPE nom del pla d'estudis al qual pertany el subgrup
+	 * @param nomA nom de l'assignatura a la qual pertany el subgrup
+	 * @param grup nom del grup al qual pertany el grup
+	 * @return null en cas de estar correcte, sinó l'error
+	 */
+	public String importaSubGrup(String path, String nomPE, String nomA, int grup) {
+		return ControladorPersistencia.getInstancia().importaSubGrup(path, nomPE, nomA, grup);
 	}
 }
