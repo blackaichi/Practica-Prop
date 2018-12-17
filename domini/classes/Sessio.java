@@ -115,7 +115,7 @@ public abstract class Sessio {
 	 */
 	public int setTipus(String tipus) throws Exception {
 		if (tipus == null || tipus.isEmpty()) return 92;
-		if (assignatura.checkSessioG(tipus, hores) || assignatura.checkSessioSG(tipus, hores)) return 115;
+		if(!tipus.equals(this.tipus) && assignatura.checkSessioG(tipus, hores) || assignatura.checkSessioSG(tipus, hores)) return 115;
 		
 		this.tipus = tipus;
 		return 0;
