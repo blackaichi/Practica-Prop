@@ -340,66 +340,107 @@ public class ControladorPresentacio {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////  IMPORTS  //////////////////////////////////////
-	/*
-	public void importaAssignatura(String path, PlaEstudis pe) {
-		String s = ControladorPersistencia.getInstancia().importaAssignatura(path,pe);
+	/**
+	 * Importa una assignatura
+	 * @param path Path del fitxer que volem 
+	 * @param nomPE Nom del pla d'estudis
+	 * @return Null en cas de estar correcte, sinó l'error
+	 */
+	public void importaAssignatura(String path, String nomPE) {
+		String s = ControladorDomini.getInstance().importaAssignatura(path, nomPE);
 		if(s != null) Main.getInstance().showWarning("Error importar Assignatura",s);
 	}
 	
-	public void importaAula(String path, Campus c) {
-		String s = ControladorPersistencia.getInstancia().importaAula(path,c);
+	/**
+	 * Importa un aula
+	 * @param Path llista amb el que hi havia al fitxer
+	 * @param NomC nom del campus que pertany l'aula
+	 * @return Null en cas de cap error, l'error com a String altrament
+	 */
+	public void importaAula(String path, String nomC) {
+		String s = ControladorDomini.getInstance().importaAula(path, nomC);
 		if(s != null) Main.getInstance().showWarning("Error importar Aula",s);
 	}
 	
+	/**
+	 * Importa un campus
+	 * @param Path llista amb el que hi havia al fitxer
+	 * @return Null en cas de estar correcte, sinó l'error
+	 */
 	public void importaCampus(String path) {
-		String s = ControladorPersistencia.getInstancia().importaCampus(path);
-		if(s != null) Main.getInstance().showWarning("Error importar Campus",s);	
+		String s = ControladorDomini.getInstance().importaCampus(path);
+		if(s != null) Main.getInstance().showWarning("Error importar Campus",s);
 	}
 	
-	public void importaData(String path) {
-		String s = ControladorPersistencia.getInstancia().importaData(path);
-		if(s != null) Main.getInstance().showWarning("Error importar Data",s);
-	}
-	
-	public void importaGrup(String path, PlaEstudis pe, Assignatura a) {
-		String s = ControladorPersistencia.getInstancia().importaGrup(path,pe,a);
+	/**
+	 * Importa un grup
+	 * @param path Path del fitxer que volem 
+	 * @param nomPE Nom del pla d'estudis
+	 * @param nomA Nom de l'assignatura
+	 * @return null en cas de estar correcte, sinó l'error
+	 */
+	public void importaGrup(String path, String nomPE, String nomA) {
+		String s = ControladorDomini.getInstance().importaGrup(path, nomPE, nomA);
 		if(s != null) Main.getInstance().showWarning("Error importar Grup",s);
 	}
 	
-	public void importaHorari(String path, PlaEstudis pe, Campus c) {
-		String s = ControladorPersistencia.getInstancia().importaHorari(path,pe,c);
+	/**
+	 * Importa un horari
+	 * @param path path del fitxer que volem 
+	 * @param nomC nom del campus
+	 * @param nomPE nom del pla d'estudis
+	 * @param id identificador de l'horari
+	 * @return null en cas de cap error, l'error com a String altrament
+	 */
+	public void importaHorari(String path, String nomC, String nomPE, int id) {
+		String s = ControladorDomini.getInstance().importaHorari(path, nomC, nomPE, id);
 		if(s != null) Main.getInstance().showWarning("Error importar Horari",s);
 	}
 	
-	public void importaHoresAptes(String path, PlaEstudis pe) {
-		String s = ControladorPersistencia.getInstancia().importaHoresAptes(path,pe);
-		if(s != null) Main.getInstance().showWarning("Error importar HoresAptes",s);
-	}
-	
+	/**
+	 * Importa un Pla d'estudis
+	 * @param path  path del fitxer que volem 
+	 * @return null en cas de estar correcte, sinó l'error
+	 */
 	public void importaPlaEstudis(String path) {
-		String s = ControladorPersistencia.getInstancia().importaPlaEstudis(path);
-		if(s != null) Main.getInstance().showWarning("Error importar PlaEstudis",s);
-	}
-		
-	public void importaSessioGrup(String path, PlaEstudis pe, Assignatura a) {
-		String s = ControladorPersistencia.getInstancia().importaSessioGrup(path,pe,a);
-		if(s != null) Main.getInstance().showWarning("Error importar SessioGrup",s);
+		String s = ControladorDomini.getInstance().importaPlaEstudis(path);
+		if(s != null) Main.getInstance().showWarning("Error importar Pla d'Estudis",s);
 	}
 	
-	public void importaSessioSubGrup(String path, PlaEstudis pe, Assignatura a) {
-		String s = ControladorPersistencia.getInstancia().importaSessioSubGrup(path,pe,a);
-		if(s != null) Main.getInstance().showWarning("Error importar SessioSubGrup",s);
+	/**
+	 * Importa una sessió de grup
+	 * @param path path del fitxer que volem 
+	 * @param nomPE nom del pla d'estudis
+	 * @param nomA nom de l'assignatura
+	 * @return null en cas de estar correcte, sinó l'error
+	 */
+	public void importaSessioGrup(String path, String nomPE, String nomA) {
+		String s = ControladorDomini.getInstance().importaSessioGrup(path, nomPE, nomA);
+		if(s != null) Main.getInstance().showWarning("Error importar Sessio Grup",s);
 	}
 	
-	public void importaSubGrup(String path, PlaEstudis pe, Assignatura a, Grup g) {
-		String s = ControladorPersistencia.getInstancia().importaSubGrup(path,pe,a,g);
-		if(s != null) Main.getInstance().showWarning("Error importar SubGrup",s);
+	/**
+	 * Importa una sessió de subgrup
+	 * @param path path del fitxer que volem 
+	 * @param nomPE nom del pla d'estudis 
+	 * @param nomA nom de l'assignatura
+	 * @return null en cas de estar correcte, sinó l'error
+	 */
+	public void importaSessioSubGrup(String path, String nomPE, String nomA) {
+		String s = ControladorDomini.getInstance().importaSessioSubGrup(path, nomPE, nomA);
+		if(s != null) Main.getInstance().showWarning("Error importar Sessio Sub Grup",s);
 	}
 	
-	public void importaSolapaments(String path, PlaEstudis pe, Assignatura a, Grup g, SubGrup sg) {
-		String s = ControladorPersistencia.getInstancia().importaSolapaments(path,pe,a,g,sg);
-		if(s != null) Main.getInstance().showWarning("Error importar Solapaments",s);
+	/**
+	 * Importa un subgrup
+	 * @param path path del fitxer que volem 
+	 * @param nomPE nom del pla d'estudis al qual pertany el subgrup
+	 * @param nomA nom de l'assignatura a la qual pertany el subgrup
+	 * @param grup nom del grup al qual pertany el grup
+	 * @return null en cas de estar correcte, sinó l'error
+	 */
+	public void importaSubGrup(String path, String nomPE, String nomA, int grup) {
+		String s = ControladorDomini.getInstance().importaSubGrup(path, nomPE, nomA, grup);
+		if(s != null) Main.getInstance().showWarning("Error importar Sub Grup",s);
 	}
-
-	*/
 }
