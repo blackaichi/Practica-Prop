@@ -145,25 +145,6 @@ public class SessioManager {
 																		  norma(tipus.getText()),
 																		  Integer.parseInt(durada.getText()));
 			}
-		
-			if(!Main.onError(false)) {
-				if(conjunt.getText().contains("S")) ControladorPresentacio.getInstance().ModificarSessioSubGrup(PlaEstudisManager.getPath(),
-																												AssignaturaManager.getPath(),
-																												isNew()? norma(tipus.getText()) : getType(),
-																												isNew()? Integer.parseInt(durada.getText()) : getHores(),
-																												norma(tipus.getText()),
-																												Integer.parseInt(durada.getText()),
-																												Integer.parseInt(nsessions.getText()),
-																												getEquipSet());
-				else ControladorPresentacio.getInstance().ModificarSessioGrup(PlaEstudisManager.getPath(),
-																			  AssignaturaManager.getPath(),
-																		      isNew()? norma(tipus.getText()) : getType(),
-																			  isNew()? Integer.parseInt(durada.getText()) : getHores(),
-																			  norma(tipus.getText()),
-																			  Integer.parseInt(durada.getText()),
-																			  Integer.parseInt(nsessions.getText()),
-																			  getEquipSet());
-			}
 
 			if(!Main.onError(false)) {
 				for(int grup: GridPaneManager.getInstance().scannAssignacions(assignats).keySet()) {
@@ -182,6 +163,25 @@ public class SessioManager {
 																			    Integer.parseInt(durada.getText()),
 																				grup);
 				}
+			}
+			
+			if(!Main.onError(false)) {
+				if(conjunt.getText().contains("S")) ControladorPresentacio.getInstance().ModificarSessioSubGrup(PlaEstudisManager.getPath(),
+																												AssignaturaManager.getPath(),
+																												isNew()? norma(tipus.getText()) : getType(),
+																												isNew()? Integer.parseInt(durada.getText()) : getHores(),
+																												norma(tipus.getText()),
+																												Integer.parseInt(durada.getText()),
+																												Integer.parseInt(nsessions.getText()),
+																												getEquipSet());
+				else ControladorPresentacio.getInstance().ModificarSessioGrup(PlaEstudisManager.getPath(),
+																			  AssignaturaManager.getPath(),
+																		      isNew()? norma(tipus.getText()) : getType(),
+																			  isNew()? Integer.parseInt(durada.getText()) : getHores(),
+																			  norma(tipus.getText()),
+																			  Integer.parseInt(durada.getText()),
+																			  Integer.parseInt(nsessions.getText()),
+																			  getEquipSet());
 			}
 			
 			if(!Main.onError(false)) this.update();

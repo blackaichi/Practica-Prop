@@ -3,11 +3,14 @@ package presentacio.tools;
 import utils.*;
 import java.util.*;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import presentacio.ControladorPresentacio;
+import presentacio.vistes.Main;
 
 public class GridPaneManager {
 	
@@ -20,34 +23,6 @@ public class GridPaneManager {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////  PRIVADES /////////////////////////////////////
-	
-	private String getDayByIndex(int index) {
-		switch(index) {
-			case 0: return "DL";
-			case 1: return "DM";
-			case 2: return "DC";
-			case 3: return "DJ";
-			case 4: return "DV";
-			case 5: return "DS";
-			case 6: return "DG";
-			
-			default: return "";
-		}
-	}
-	
-	private int getIndexByDay(String day) {
-		switch(day) {
-			case "DL": return 0;
-			case "DM": return 1;
-			case "DC": return 2;
-			case "DJ": return 3;
-			case "DV": return 4;
-			case "DS": return 5;
-			case "DG": return 6;
-			
-			default: return -1;
-		}
-	}
 	
 	private void configure(GridPane container, int minCol, int maxCol, int minRow, int maxRow) {
 		reset(container, true);
@@ -150,8 +125,50 @@ public class GridPaneManager {
 		return null;
 	}
 	
+	private Pair<Pair<Integer, Integer>, Pair<Integer, Integer>> complexHorizon(GridPane container, String plaEstudis, String campus, int iter){
+		Pair<Pair<Integer, Integer>, Pair<Integer, Integer>> margin = this.getHorizon(plaEstudis, null, 0, 0);
+		Pair<Pair<Integer, Integer>, Pair<Integer, Integer>> complex = ControladorPresentacio.getInstance().getMarginHorari(plaEstudis, campus, iter);
+		
+		if(!complex.first.isNull() && !complex.first.isNull()) {
+			margin.first.first = Math.min(margin.first.first, complex.first.first);
+			margin.first.second = Math.max(margin.first.second, complex.first.second);
+			margin.second.first = Math.min(margin.second.first, complex.second.first);
+			margin.second.second = Math.max(margin.second.second, complex.second.second);
+		}
+		
+		return margin;
+	}
+	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////  UTILS //////////////////////////////////////
+	
+	public String getDayByIndex(int index) {
+		switch(index) {
+			case 0: return "DL";
+			case 1: return "DM";
+			case 2: return "DC";
+			case 3: return "DJ";
+			case 4: return "DV";
+			case 5: return "DS";
+			case 6: return "DG";
+			
+			default: return "";
+		}
+	}
+	
+	public int getIndexByDay(String day) {
+		switch(day) {
+			case "DL": return 0;
+			case "DM": return 1;
+			case "DC": return 2;
+			case "DJ": return 3;
+			case "DV": return 4;
+			case "DS": return 5;
+			case "DG": return 6;
+			
+			default: return -1;
+		}
+	}
 	
 	public void reset(GridPane container, boolean center) {
 		container.getColumnConstraints().clear();
@@ -171,9 +188,9 @@ public class GridPaneManager {
 		enable(container, plaEstudis, assignatura, grup, subgrup);
 	}
 	
-	public void buildHorari(GridPane container, String plaEstudis, String campus) {
+	public void buildHorari(GridPane container, String plaEstudis, String campus, int iter) {
 		//Pair<Pair<Integer, Integer>, Pair<Integer, Integer>> margin = new Pair<Pair<Integer, Integer>, Pair<Integer, Integer>>(new Pair<Integer, Integer>(0,7), new Pair<Integer, Integer>(8,21));
-		Pair<Pair<Integer, Integer>, Pair<Integer, Integer>> margin = this.getHorizon(plaEstudis, null, 0, 0);
+		Pair<Pair<Integer, Integer>, Pair<Integer, Integer>> margin = this.complexHorizon(container, plaEstudis, campus, iter);
 		reset(container, false);
 		
 		//Construccio de totes les columnes (Columns):
@@ -344,23 +361,11 @@ public class GridPaneManager {
 		return assignacions;
 	}
 	
-	public Pair<String, Integer> scannButtonPressed(GridPane container){
+	public Pair<String, Integer> scannButtonPressed(GridPane container, Node node){
 		Pair<String, Integer> select = new Pair<String, Integer>(null, null);
-		
-		for(Node node : container.getChildren()) {
-			try {
-				if(((Button) node).isPressed()) {
-					Pair<Integer, Integer> diaIHora = getDiaIHora(container, node);
-					select.first = this.getDayByIndex(diaIHora.first);
-					select.second = diaIHora.second;
-					return select;
-				}
-			}
-			catch(Exception e) {
-				continue;
-			}
-		}
-		
+		Pair<Integer, Integer> diaIHora = getDiaIHora(container, node);
+		select.first = this.getDayByIndex(diaIHora.first);
+		select.second = diaIHora.second;
 		return select;
 	}
 	
@@ -413,7 +418,7 @@ public class GridPaneManager {
 	
 	public void updateHorari(GridPane container, String plaEstudis, String campus, int iter) {
 		//Pair<Pair<Integer, Integer>, Pair<Integer, Integer>> margin = new Pair<Pair<Integer, Integer>, Pair<Integer, Integer>>(new Pair<Integer, Integer>(0,7), new Pair<Integer, Integer>(8,21));
-		Pair<Pair<Integer, Integer>, Pair<Integer, Integer>> margin = this.getHorizon(plaEstudis, null, 0, 0);
+		Pair<Pair<Integer, Integer>, Pair<Integer, Integer>> margin = this.complexHorizon(container, plaEstudis, campus, iter);
 		container.getChildren().clear();
 		
 		//Agregració del contingut corresponent:
@@ -424,9 +429,15 @@ public class GridPaneManager {
 				else if(dia == margin.first.first) container.add(new Label(String.valueOf(hora-1).concat(":00 - ").concat(String.valueOf(hora == 24? 0 : hora)).concat(":00")), dia, hora);
 				else {
 					Button selector = new Button();
+					selector.setOnAction(new EventHandler<ActionEvent>() {
+			            @Override
+			            public void handle(ActionEvent e) {
+			                Main.getInstance().onHorariButtonPressed((Node)e.getSource());
+			            }
+			        });
+					
 					selector.setMaxHeight(1000);
 					selector.setMaxWidth(1000);
-										
 					selector.setDisable(ControladorPresentacio.getInstance().getSegments(plaEstudis, campus, dia-1, hora-1, iter).isEmpty());
 					container.add(selector, dia, hora);
 					

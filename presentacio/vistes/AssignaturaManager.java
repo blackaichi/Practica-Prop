@@ -40,21 +40,6 @@ public class AssignaturaManager {
 		return true;
 	}
 	
-	private boolean isSessioGrup(String sessio) {
-		String[] depurat = sessio.split(" ");
-		return depurat[0].equals("[G]");
-	}
-	
-	private String getTipusSessio(String sessio) {
-		String[] depurat = sessio.split(" ");
-		return depurat[1];
-	}
-	
-	private int getDuradaSessio(String sessio) {
-		String[] depurat = sessio.split(" ");
-		return Integer.parseInt(depurat[3]);
-	}
-	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
 	
@@ -108,6 +93,40 @@ public class AssignaturaManager {
 	public void onSessioSelected() {
 		this.lastSelected.first = sessions.getSelectionModel().getSelectedItem();
 		this.lastSelected.second = true;
+	}
+	
+	public boolean isSessioGrup(String sessio) {
+		String[] depurat = sessio.split(" ");
+		return depurat[0].equals("[G]");
+	}
+	
+	public String getTipusSessio(String sessio) {
+		String[] depurat = sessio.split(" ");
+		return depurat[1];
+	}
+	
+	public int getDuradaSessio(String sessio) {
+		String[] depurat = sessio.split(" ");
+		return Integer.parseInt(depurat[3]);
+	}
+	
+	@FXML
+	public void onExportAction() {
+		if(checkSelection()) {
+			Main.getInstance().newWindows("IOAction_view.fxml", "Exportar objecte", 500, 227);
+			if(lastSelected.second) {
+				if(this.isSessioGrup(lastSelected.first))
+					IOActionManager.getInstance().setPath("Exportar sessió de grup", lastSelected.first, "$HOME");
+				else IOActionManager.getInstance().setPath("Exportar sessió de subgrup", lastSelected.first, "$HOME");
+			}
+			else IOActionManager.getInstance().setPath("Exportar grup", lastSelected.first, "$HOME");
+		}
+	}
+	
+	@FXML
+	public void onImportarAction() {
+		Main.getInstance().newWindows("IOAction_view.fxml", "Importar objecte", 500, 227);
+		IOActionManager.getInstance().setPath("Importar objecte", "Qualsevol", "$HOME");
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////

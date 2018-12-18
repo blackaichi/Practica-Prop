@@ -91,8 +91,8 @@
          <menus>
             <Menu fx:id="onModify" mnemonicParsing="false" text="Dades">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Importar assignatura" />
-                  <MenuItem mnemonicParsing="false" text="Exportar assignatura" />
+                  <MenuItem mnemonicParsing="false" onAction="#onImportarAction" text="Importar assignatura" />
+                  <MenuItem mnemonicParsing="false" onAction="#onExportAction" text="Exportar assignatura" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Editar">

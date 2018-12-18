@@ -45,8 +45,8 @@
          <menus>
             <Menu mnemonicParsing="false" text="Dades">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Importar aula" />
-                  <MenuItem mnemonicParsing="false" text="Exportar aula" />
+                  <MenuItem mnemonicParsing="false" onAction="#onImportarAction" text="Importar aula" />
+                  <MenuItem mnemonicParsing="false" onAction="#onExportAction" text="Exportar aula" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Editar">

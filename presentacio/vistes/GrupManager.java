@@ -111,6 +111,20 @@ public class GrupManager {
 		return this.franja.getText();
 	}
 	
+	@FXML
+	public void onExportAction() {
+		if(checkSelection()) {
+			Main.getInstance().newWindows("IOAction_view.fxml", "Exportar objecte", 500, 227);
+			IOActionManager.getInstance().setPath("Exportar subgrup", subgrups.getSelectionModel().getSelectedItem(), "$HOME");
+		}
+	}
+	
+	@FXML
+	public void onImportarAction() {
+		Main.getInstance().newWindows("IOAction_view.fxml", "Importar objecte", 500, 227);
+		IOActionManager.getInstance().setPath("Importar subgrup", "Qualsevol", "$HOME");
+	}
+	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////  FXML ///////////////////////////////////////
 	

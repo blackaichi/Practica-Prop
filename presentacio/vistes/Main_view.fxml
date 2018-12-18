@@ -10,8 +10,9 @@
         <menus>
           <Menu mnemonicParsing="false" text="Dades">
             <items>
-              <MenuItem mnemonicParsing="false" text="Importar..." />
-                  <MenuItem mnemonicParsing="false" text="Exportar..." />
+              <MenuItem mnemonicParsing="false" onAction="#onImportarAction" text="Importar..." />
+                  <MenuItem mnemonicParsing="false" onAction="#onExportAction" text="Exportar..." />
+                  <MenuItem mnemonicParsing="false" onAction="#onExportarHorari" text="Exportar aquest horari" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Editar">
@@ -42,7 +43,7 @@
                         </Pane>
                         <Pane layoutX="14.0" layoutY="72.0" prefHeight="637.0" prefWidth="652.0">
                            <children>
-                              <GridPane fx:id="horari_container" onMouseClicked="#onHorariButtonPressed">
+                              <GridPane fx:id="horari_container">
                                 <columnConstraints>
                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -92,7 +93,7 @@
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="654.0" prefWidth="200.0">
                      <children>
                         <Button id="campus_creador" layoutX="1.0" layoutY="617.0" mnemonicParsing="false" onAction="#onCreateCampus" prefHeight="25.0" prefWidth="200.0" text="+ Crear campus" />
-                        <TextField id="campus_cercador" fx:id="searcher_c" layoutX="6.0" layoutY="8.0" onAction="#onSearchCampus" prefHeight="25.0" prefWidth="189.0" promptText="Cercar per nom o autor" />
+                        <TextField id="campus_cercador" fx:id="searcher_c" layoutX="6.0" layoutY="8.0" onInputMethodTextChanged="#onSearchCampus" onKeyPressed="#onSearchCampus" onKeyReleased="#onSearchCampus" prefHeight="25.0" prefWidth="189.0" promptText="Cercar per nom o autor" />
                         <ListView id="list_campus" fx:id="campus" layoutY="38.0" onMouseClicked="#onCampusItemClicked" prefHeight="580.0" prefWidth="200.0" />
                      </children>
                   </AnchorPane>
@@ -107,7 +108,7 @@
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="604.0" prefWidth="200.0">
                      <children>
                         <Button id="plaestudis_creador" layoutY="617.0" mnemonicParsing="false" onAction="#onCreatePlaEstudis" prefHeight="25.0" prefWidth="200.0" text="+ Crear pla d'estudis" />
-                        <TextField id="plaestudis_cercador" fx:id="searcher_pl" layoutX="5.0" layoutY="8.0" onAction="#onSearchPlaEstudis" prefHeight="25.0" prefWidth="189.0" promptText="Cercar per nom o autor" />
+                        <TextField id="plaestudis_cercador" fx:id="searcher_pl" layoutX="5.0" layoutY="8.0" onInputMethodTextChanged="#onSearchPlaEstudis" onKeyPressed="#onSearchPlaEstudis" onKeyReleased="#onSearchPlaEstudis" prefHeight="25.0" prefWidth="189.0" promptText="Cercar per nom o autor" />
                         <ListView id="list_planEstudis" fx:id="plansEstudis" layoutY="38.0" onMouseClicked="#onPlaEstudisItemClicked" prefHeight="580.0" prefWidth="200.0" />
                      </children>
                   </AnchorPane>

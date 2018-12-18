@@ -113,8 +113,8 @@
          <menus>
             <Menu mnemonicParsing="false" text="Dades">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Importar..." />
-                  <MenuItem mnemonicParsing="false" text="Exportar..." />
+                  <MenuItem mnemonicParsing="false" onAction="#onImportarAction" text="Importar..." />
+                  <MenuItem mnemonicParsing="false" onAction="#onExportAction" text="Exportar..." />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Editar">
