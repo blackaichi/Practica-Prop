@@ -46,13 +46,14 @@ public class AulaAdient {
 	static private Aula getMaximaAulaAdient(Estructura horari, HashSet<Aula> aules, HashSet<String> equip, int places, int dia, int hora, int durada) {
 		Map<Integer, HashSet<Aula>> aulesCandidates = new HashMap<>();
 		
-		for(Aula aula: aules)
-			if(!checkAula(horari, aula, dia, hora, durada) || aula.getCapacitat() < places) { //Si l'aula esta ocupada, es descarta.
+		for(Aula aula: aules) {
+			if(!checkAula(horari, aula, dia, hora, durada) && aula.getCapacitat() >= places) { //Si l'aula esta ocupada, es descarta.
 				if(aulesCandidates.get(aula.matchEquip(equip)) == null)
 					aulesCandidates.put(aula.matchEquip(equip), new HashSet<>());
 				
 				aulesCandidates.get(aula.matchEquip(equip)).add(aula);
 			}
+		}
 		
 		int maximMatch = 0;
 		for(int match: aulesCandidates.keySet()) //Selecciona aquella Key que conté més coincidencies.
