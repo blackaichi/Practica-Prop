@@ -725,7 +725,23 @@ public final class ControladorDomini {
 	 */
 	public String exportaHorari(String path, HashSet<String> flags, String nomC, String nomPE, int id) {
 		try {
-			ControladorPersistencia.getInstancia().exportaHorari(path, flags, nomC, nomPE, id);
+			Campus c = Campus.getCampus(nomC);
+			String autorC = c.getAutor();
+			HashSet<String> aules = new HashSet<String>();
+			HashSet<Aula> a = c.getAllAules();
+			for(Aula au : a) {
+				aules.add(au.getNom());
+			}
+			PlaEstudis pe = PlaEstudis.getPlaEstudis(nomPE);
+			String autorPE =pe.getAutor();
+			Map<Integer, boolean[] > lectiu = pe.getLectiuSetmana();
+			HashSet<Assignatura> assigs = pe.getAssignatures();
+			HashSet<String> assignatures = new HashSet<String>();
+			for(Assignatura as : assigs) {
+				assignatures.add(as.getNom());
+			}
+			int[] rang = pe.getRang();
+			ControladorPersistencia.getInstancia().exportaHorari(path,flags,nomC,autorC,aules,nomPE,autorPE,lectiu,rang,assignatures,id);
 			return null;
 		}
 		catch (Exception ex) {
