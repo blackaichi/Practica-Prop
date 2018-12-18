@@ -90,7 +90,7 @@ public class Horari {
 	 * @param SGOcup Controla les sessions de SubGrup ocupades.
 	 * @throws Exception
 	 */
-	private void backTracking(Estructura horari, HashSet<SessioGAssignada> sessionsG, HashSet<SessioSGAssignada> sessionsSG,  int nHoraris) throws Exception {
+	private void backTracking(Estructura horari, HashSet<SessioGAssignada> sessionsG, HashSet<SessioSGAssignada> sessionsSG, NSessions nSessions, int nHoraris) throws Exception {
 		//Cas base: tants horaris generats com nHoraris senyala: si ja tenim nhorari, no és continua.
 		if(HorarisCandidats.get(plaEstudis.getNom()).get(campus.getNom()).size() >= nHoraris) return;
 		
@@ -105,15 +105,16 @@ public class Horari {
 			for(int hora = 0; hora < 24; hora++) if(!horari.getFlagState("H_LECTIU") || plaEstudis.getLectiuDia(dia)[hora]){
 				Segment segment = new Segment(corrent.first, corrent.second);
 				Estructura updatedHorari = horari.getCopy(); //Copia de l'horari SENSE modificar.
+				NSessions updatedNSessions = nSessions.getCopy(); //Copia de NSessions SENSE modificar.
 				
-				if(tryToCommit(updatedHorari, segment, dia, hora, true, false).isEmpty()) {
+				if(tryToCommit(updatedHorari, updatedNSessions, segment, dia, hora, true, false).isEmpty()) {
 					//Si s'ha lograt colocar sense violar cap restricció:
 					HashSet<SessioGAssignada> updatedSessionsG = copySGA(sessionsG);
 					HashSet<SessioSGAssignada> updatedSessionsSG = copySSGA(sessionsSG);
 					
 					//RECURSIVITAT!!! Kernel del backTracking:
-					kill(updatedSessionsG, updatedSessionsSG); //S'elimina la sessió just assignada.
-					backTracking(updatedHorari, updatedSessionsG, updatedSessionsSG, nHoraris);
+					kill(updatedSessionsG, updatedSessionsSG, updatedNSessions); //S'elimina la sessió just assignada.
+					backTracking(updatedHorari, updatedSessionsG, updatedSessionsSG, updatedNSessions, nHoraris);
 				}
 			}
 		}
@@ -129,13 +130,14 @@ public class Horari {
 		int checker;
 		if((checker = inicialitzaEntorn(plaEstudis, campus, purge)) != 0) return checker;
 		
+		NSessions nSessions = new NSessions();
 		HashSet<SessioGAssignada> sessionsDeGrup = new HashSet<>(plaEstudis.getSessionsGrupA());
 		HashSet<SessioSGAssignada> sessionsDeSubGrup = new HashSet<>(plaEstudis.getSessionsSubGrupA());
 		Estructura esquelet =  new Estructura(plaEstudis, campus);
 		esquelet.setFlags(flags);
 		
 		int totalHoraris = nHoraris + getHoraris(plaEstudis.getNom(), campus.getNom()).size();
-		backTracking(esquelet, sessionsDeGrup, sessionsDeSubGrup, totalHoraris);
+		backTracking(esquelet, sessionsDeGrup, sessionsDeSubGrup, nSessions, totalHoraris);
 		return 0;
 	}
 		
@@ -180,19 +182,19 @@ public class Horari {
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////  MODIFICADORES  /////////////////////////////////
+	//////////////////////////////  MODIFICADORES  /////////////////////////////////	
 	/**
 	 * Elimina l'element dels hashset situal a la posició index.
 	 * @param index indica la posicio de l'element a eliminar.
 	 */
-	private void kill(HashSet<SessioGAssignada> sessionsDeGrup, HashSet<SessioSGAssignada> sessionsDeSubGrup) {
+	private void kill(HashSet<SessioGAssignada> sessionsDeGrup, HashSet<SessioSGAssignada> sessionsDeSubGrup, NSessions nSessions) {
 		if(!sessionsDeGrup.isEmpty()) {
 			SessioGAssignada sessio = sessionsDeGrup.iterator().next();
-			sessionsDeGrup.remove(sessio);
+			if(nSessions.readyToDie(sessio, null)) sessionsDeGrup.remove(sessio);
 		}
 		else if(!sessionsDeSubGrup.isEmpty()) {
 			SessioSGAssignada sessio = sessionsDeSubGrup.iterator().next();
-			sessionsDeSubGrup.remove(sessio);
+			if(nSessions.readyToDie(null, sessio)) sessionsDeSubGrup.remove(sessio);
 		}
 	}
 		
@@ -207,7 +209,7 @@ public class Horari {
 	 * @return Retorna 0 si la modificació es possible; altrament retorna el codi d'excepció
 	 * que indica quina restricció ha sigut violada.
 	 */
-	public HashSet<Integer> tryToCommit(Estructura horari, Segment segment, int dia, int horaIni, boolean commit, boolean force) throws Exception {
+	public HashSet<Integer> tryToCommit(Estructura horari, NSessions nSessions, Segment segment, int dia, int horaIni, boolean commit, boolean force) throws Exception {
 		HashSet<Integer> history = new HashSet<>();
 		
 		history.add(Alineament.checkAlineament(segment.getSessio().first, segment.getSessio().second, horaIni, horari.getFlags()));
@@ -215,6 +217,8 @@ public class Horari {
 		history.add(HoresAptes.checkHoresAptes(segment.getSessio().first, segment.getSessio().second, dia, horaIni, horari.getFlags()));
 
 		history.add(Solapaments.checkSolapament(horari, segment.getSessio().first, segment.getSessio().second, dia, horaIni));
+		
+		history.add(nSessions.checkNSessions(segment.getSessio().first, segment.getSessio().second, dia, horari.getFlags(), force));
 		
 		//RESTRICCIÓ D'AULA ADIENT: és sempre obligatoria
 		Aula seleccionada = AulaAdient.seleccionaAulaAdient(horari, campus.getAllAules(), segment.getSessio().first, segment.getSessio().second, dia, horaIni);

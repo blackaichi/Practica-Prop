@@ -102,6 +102,8 @@ public class Grup {
 	private void iniRestriccions() throws Exception {
 		this.horesAptes = new HoresAptes(this);
 		this.disjunts = new Solapaments(this);
+		this.disjunts.setSolapament(assig.getNom(), numero, false);
+		//Un grup no pot solapar-se amb si mateix
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -160,7 +162,7 @@ public class Grup {
 		//En cas d'estar modificant el numero de grup, aquest s'ha d'actualitzar en les
 		//restriccions de solapament:
 		if(this.numero != 0 && this.numero != numero)
-			this.getSolapaments().actualitzaNumero(this.assig.getNom(), this.numero, numero);
+			this.getSolapaments().actualitzaNumero(assig.getNom(), this.numero, numero);
 		
 		this.numero = numero;
 		return 0;
