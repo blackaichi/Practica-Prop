@@ -918,9 +918,32 @@ public final class ControladorDomini {
 	 * @param id Iterador per exportar l'horari desitjat.
 	 * @return
 	 */
-	public String exportaHorari(String path, HashSet<String> flags, String nomC, String nomPE, int id) {
+	public String exportaHorari(String path, String nomC, String nomPE, int id) {
 		try {
-			ControladorPersistencia.getInstancia().exportaHorari(path, flags, nomC, nomPE, id);
+			HashSet<Estructura> h = Horari.getInstance().getHoraris(nomPE, nomC);
+			int it = id;
+			HashSet<String> flags = new HashSet<String>();
+			for(Estructura es : h) {
+				if(it == 0) flags = es.getFlags();
+				--it;
+			}
+			Campus c = Campus.getCampus(nomC);
+			String autorC = c.getAutor();
+			HashSet<String> aules = new HashSet<String>();
+			HashSet<Aula> a = c.getAllAules();
+			for(Aula au : a) {
+				aules.add(au.getNom());
+			}
+			PlaEstudis pe = PlaEstudis.getPlaEstudis(nomPE);
+			String autorPE =pe.getAutor();
+			Map<Integer, boolean[] > lectiu = pe.getLectiuSetmana();
+			HashSet<Assignatura> assigs = pe.getAssignatures();
+			HashSet<String> assignatures = new HashSet<String>();
+			for(Assignatura as : assigs) {
+				assignatures.add(as.getNom());
+			}
+			int[] rang = pe.getRang();
+			ControladorPersistencia.getInstancia().exportaHorari(path,flags,nomC,autorC,aules,nomPE,autorPE,lectiu,rang,assignatures,id);
 			return null;
 		}
 		catch (Exception ex) {
@@ -1003,7 +1026,7 @@ public final class ControladorDomini {
 			HashSet<SessioSGAssignada> ssga = ssg.getAllSessionsSGA();
 			HashSet<Pair<Integer, Integer>> num = new HashSet<Pair<Integer, Integer>>();
 			for (SessioSGAssignada sessio : ssga) {
-				num.add(new Pair<Integer,Integer> (numg,sessio.getSubGrup().getNumero()));
+				num.add(new Pair<Integer,Integer> (sessio.getSubGrup().getGrup().getNumero(),sessio.getSubGrup().getNumero()));
 			}
 			ControladorPersistencia.getInstancia().exportaSessioSubGrup(path,equip,hores,tipus,nsessions,num,rec);
 			return null;
