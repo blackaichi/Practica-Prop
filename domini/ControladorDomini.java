@@ -994,7 +994,7 @@ public final class ControladorDomini {
 	 * @param rec True si es vol truncar el fitxer, false si es vol fer un append
 	 * @return
 	 */
-	public String exportaSessioSubGrup(String path, String plaEst, String nomAssig, String tipus, Integer hores, int numg ,boolean rec) {
+	public String exportaSessioSubGrup(String path, String plaEst, String nomAssig, String tipus, Integer hores, boolean rec) {
 		try {
 			
 			SessioSubGrup ssg = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(nomAssig).getSessioSG(tipus, hores);
