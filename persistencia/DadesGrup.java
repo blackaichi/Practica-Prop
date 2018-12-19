@@ -111,7 +111,6 @@ public class DadesGrup extends ExportaImporta {
 					}
 				}
 				else return "error no conte solapaments";
-				System.out.println("maner gay");
 				if (!aux.get(aux.size()-1).equals("END GRUP")) return "error en acabar fitxer grup";
 				if ((error = cp.creaGrupImportat(nomPE, nomA, numero, places, franja)) != null) return error;
 				if (aux.contains("SubGrup") && aux.contains("END SUBGRUP")) {
