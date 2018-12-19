@@ -184,6 +184,32 @@ public class Horari {
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  MODIFICADORES  /////////////////////////////////	
 	/**
+	 * Actualitza al registre d'horaris el nom d'un pla d'estudis.
+	 * @param oldPlaEstudis Identifica al pla d'estudis abans de la modificació.
+	 * @param newPlaEstudis Identifica al pla d'estudis despres de la modificació.
+	 */
+	public void actualitzaPlaEst(String oldPlaEstudis, String newPlaEstudis) {
+		if(HorarisCandidats.containsKey(oldPlaEstudis)) {
+			HorarisCandidats.put(newPlaEstudis, HorarisCandidats.get(oldPlaEstudis));
+			HorarisCandidats.remove(oldPlaEstudis);
+		}
+	}
+	
+	/**
+	 * Actualitza al registre d'horaris el nom d'un campus.
+	 * @param oldCampus Identifica al campus abans de la modificació.
+	 * @param newCampus Identifica al campus despres de la modificació.
+	 */
+	public void actualitzaCampus(String oldCampus, String newCampus) {
+		for(String key : HorarisCandidats.keySet()) {
+			if(HorarisCandidats.get(key).containsKey(oldCampus)) {
+				HorarisCandidats.get(key).put(newCampus, HorarisCandidats.get(key).get(oldCampus));
+				HorarisCandidats.get(key).remove(oldCampus);
+			}
+		}
+	}
+	
+	/**
 	 * Elimina l'element dels hashset situal a la posició index.
 	 * @param index indica la posicio de l'element a eliminar.
 	 */

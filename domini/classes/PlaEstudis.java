@@ -118,6 +118,7 @@ public class PlaEstudis {
 	public int setNom(String nom) {
 		if (nom == null || nom.isEmpty()) return 18;
 		else if((this.nom == null || !this.nom.equals(nom)) && plansEstudis.contains(PlaEstudis.getPlaEstudis(nom))) return 10;
+		if(this.nom != null && !this.nom.isEmpty()) Horari.getInstance().actualitzaPlaEst(this.nom, nom);
 		
 		this.nom = nom;
 		return 0;

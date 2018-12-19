@@ -69,6 +69,7 @@ public class Campus {
 	public int setNom(String nom) {
 		if(nom == null || nom.isEmpty()) return 130; //El nom del campus no pot ser null.
 		else if((this.nom == null || !this.nom.equals(nom)) && checkCampus(nom)) return 131; //Ja existeix un campus amb aquest nom.
+		if(this.nom != null && !this.nom.isEmpty()) Horari.getInstance().actualitzaCampus(this.nom, nom);
 		
 		this.nom = nom;
 		return 0;
