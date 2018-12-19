@@ -721,6 +721,19 @@ public final class ControladorPersistencia {
 		return null;
 	}
 
+	/**
+	 * Elimina un subgrup
+	 * @param nomPE nom del pla d'estudis del subgrup a eliminar
+	 * @param nomA nom de l'assignatura del subgrup a eliminar
+	 * @param grup numero del grup del subgrup a eliminar
+	 * @param numero numero del subgrup a eliminar
+	 * @return null en cas de estar correcte, sinó l'error
+	 */
+	public String eliminaSubGrup(String nomPE, String nomA, int grup, int numero) {
+		if ((error = cd.EliminaSubGrup(nomPE, nomA, grup, numero)) != null) return error;
+		return null;
+	}
+	
 	public String creaSegmentImportat(String plaEst, String nomC, int dia, int hora, String aula, String nomA,
 			String tipus, int hores, int numg, int numsg, int id) {
 		if ((error = cd.crearSegment(plaEst, nomC, dia, hora, aula, nomA, tipus, hores, numg, numsg, id)) != null) return error;
