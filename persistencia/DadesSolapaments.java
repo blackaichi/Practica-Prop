@@ -86,7 +86,6 @@ public class DadesSolapaments extends ExportaImporta {
 				String error;
 				if ((error = cp.creaSolapament(nomPE, nomA, grup, subgrup, solapaments)) != null) return error;
 			}
-			System.out.println("maner gay");
 			return null;
 		}
 		catch (Exception e) {
