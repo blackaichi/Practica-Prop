@@ -17,11 +17,18 @@ public class AulaManager {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////  PRIVADES /////////////////////////////////////
-	
+	/**
+	 * Indica si l'objecte corrent es nou pel que fa al sistema o, si per contra, s'està duent a terme una modificació.
+	 * @return True si, i només si, es nou. Altrament retorna false.
+	 */
 	private static boolean isNew() {
 		return path == null || path.isEmpty();
 	}
 	
+	/**
+	 * Comprova que els parametres necessaris per dur a terme una acció estiguin correctament configurats.
+	 * @return True si i només si tots els parametres estan correctes; false altrament.
+	 */
 	private boolean paramChecker() {
 		try {
 			Integer.parseUnsignedInt(places.getText());
@@ -33,6 +40,10 @@ public class AulaManager {
 		}
 	}
 	
+	/**
+	 * Passa d'un string amb una configuració concreta, al set d'equip.
+	 * @return Un set no null.
+	 */
 	private HashSet<String> getEquipSet(){
 		HashSet<String> equip = new HashSet<String>();
 		StringTokenizer token = new StringTokenizer(this.equip.getText(), ";");
@@ -43,16 +54,26 @@ public class AulaManager {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
-	
+	/**
+	 * Constructora de la classe AulaManager.
+	 */
 	public AulaManager() {
 		path = null;
 		current = this;
 	}
 	
+	/**
+	 * Retorna la instancia corrent de la classe.
+	 * @return Instancia de la classe.
+	 */
 	public static AulaManager getInstance() {
 		return current;
 	}
 	
+	/**
+	 * Assigna l'objecte a la pantalla.
+	 * @param path Identificador de l'objecte.
+	 */
 	public static void setPath(String path) {
 		AulaManager.getInstance().nom.setText(path);
 		AulaManager.getInstance().update();
@@ -64,10 +85,17 @@ public class AulaManager {
 		}
 	}
 	
+	/**
+	 * Retorna el path actual.
+	 * @return String no null.
+	 */
 	public static String getPath() {
 		return path;
 	}
 		
+	/**
+	 * Acutalitza tots els objectes de la pantalla.
+	 */
 	public void update() {
 		path = nom.getText();
 		title.setText("Aula: ".concat(nom.getText()));
@@ -77,7 +105,9 @@ public class AulaManager {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////  FXML ///////////////////////////////////////
-	
+	/**
+	 * Acció en cas de voler conservar els canvis fets.
+	 */
 	@FXML
 	public void apply() {
 		if(paramChecker()) { //Si tots els parametres estan ben escrits:

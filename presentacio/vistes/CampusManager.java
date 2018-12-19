@@ -31,23 +31,36 @@ public class CampusManager {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////  PRIVADES /////////////////////////////////////
-	
+	/**
+	 * Indica si l'objecte corrent es nou pel que fa al sistema o, si per contra, s'està duent a terme una modificació.
+	 * @return True si, i només si, es nou. Altrament retorna false.
+	 */
 	private static boolean isNew() {
 		return path == null || path.isEmpty();
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
-	
+	/**
+	 * Constructora de la classe.
+	 */
 	public CampusManager() {
 		path = null;
 		CampusManager.current = this;
 	}
 	
+	/**
+	 * Retorna la instancia corrent de la classe.
+	 * @return Instancia de la classe.
+	 */
 	public static CampusManager getInstance() {
 		return CampusManager.current;
 	}
 	
+	/**
+	 * Comprova l'estat de les seleccions.
+	 * @return True sempre i quan estiguin tot seleccionat correstament.
+	 */
 	private boolean checkSelection() {
 		if(aules.getSelectionModel().getSelectedIndex() == -1 || aules.getSelectionModel().getSelectedItem().isEmpty()) {
 			Main.getInstance().showWarning("Acció incorrecte", "Cal seleccionar una aula per poder procedir.");
@@ -57,6 +70,10 @@ public class CampusManager {
 		return true;
 	}
 	
+	/**
+	 * Assigna l'objecte a la pantalla.
+	 * @param path Identificador de l'objecte.
+	 */
 	public static void setPath(String path) {
 		CampusManager.getInstance().nom_id.setText(path);
 		CampusManager.getInstance().update();
@@ -64,10 +81,17 @@ public class CampusManager {
 		CampusManager.getInstance().autor_id.setText(ControladorPresentacio.getInstance().GetMainCampusData(path));
 	}
 	
+	/**
+	 * Retorna el path actual.
+	 * @return String no null.
+	 */
 	public static String getPath() {
 		return path;
 	}
 	
+	/**
+	 * Actualitza tots els objectes de la pantalla.
+	 */
 	public void update() {
 		path = nom_id.getText();
 		title.setText("Campus: ".concat(nom_id.getText()));
@@ -78,6 +102,9 @@ public class CampusManager {
 		Main.getInstance().update();
 	}
 	
+	/**
+	 * Acció en cas d'exportar.
+	 */
 	@FXML
 	public void onExportAction() {
 		if(checkSelection()) {
@@ -86,6 +113,9 @@ public class CampusManager {
 		}
 	}
 	
+	/**
+	 * Acció en cas d'importar.
+	 */
 	@FXML
 	public void onImportarAction() {
 		Main.getInstance().newWindows("IOAction_view.fxml", "Importar objecte", 500, 227);
@@ -94,7 +124,9 @@ public class CampusManager {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////  FXML ///////////////////////////////////////
-	
+	/**
+	 * Acció en cas de voler conservar els canvis fets.
+	 */
 	@FXML
 	public void apply() {
 		 //En cas de ser un nou campus:
@@ -104,6 +136,9 @@ public class CampusManager {
 		if(!Main.onError(true)) this.update();
 	}
 
+	/**
+	 * En cas de voler donar d'alta una nova aula.
+	 */
 	@FXML
 	public void onCreateAula() {
 		if(isNew()) this.apply();
@@ -112,7 +147,10 @@ public class CampusManager {
 
 	////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////// ON ITEM CLICKED ////////////////////////////////////
-	
+	/**
+	 * Acció en cas de clicar sobre una aula.
+	 * @param click Proporcionat pel sistema.
+	 */
 	@FXML
 	public void onAulaItemClicked(MouseEvent click) {
 		if(click == null || (click.getClickCount() == 2 && this.aules.getSelectionModel().getSelectedIndex() > -1)){
@@ -121,12 +159,18 @@ public class CampusManager {
 		}
 	}
 
+	/**
+	 * Acció en cas de modificació.
+	 */
 	@FXML
 	public void onModify() {
 		if(checkSelection()) onAulaItemClicked(null);
 		this.update();
 	}
 	
+	/**
+	 * Acció en cas d'eliminació.
+	 */
 	@FXML
 	public void onDelete() {
 		if(checkSelection()) ControladorPresentacio.getInstance().EliminarAula(path, aules.getSelectionModel().getSelectedItem());

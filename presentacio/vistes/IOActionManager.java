@@ -15,13 +15,20 @@ public class IOActionManager {
 	@FXML private Label title, objecte;
 	@FXML private TextField path, file;
 	
+	/**
+	 * Retorna la instancia corrent de la classe.
+	 * @return Instancia de la classe.
+	 */
 	public static IOActionManager getInstance() {
 		return current;
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////  PRIVADES /////////////////////////////////////
-	
+	/**
+	 * Comprova que els parametres necessaris per dur a terme una acció estiguin correctament configurats.
+	 * @return True si i només si tots els parametres estan correctes; false altrament.
+	 */
 	private boolean paramChecker() {
 		try {
 			if(!path.getText().isEmpty() && !file.getText().isEmpty()) return true;
@@ -36,6 +43,11 @@ public class IOActionManager {
 		}
 	}
 	
+	/**
+	 * Proporciona la extensió donat el nom d'un arxiu.
+	 * @param path Nom / direcció de l'arxiu.
+	 * @return Un string amb valor diferent a null.
+	 */
 	private String getExtension(String path) {
 		StringTokenizer token = new StringTokenizer(path, ".");
 		do {
@@ -46,6 +58,10 @@ public class IOActionManager {
 		return null;
 	}
 	
+	/**
+	 * Proporciona l'acció que s'està duent a terme.
+	 * @return Un pair identificador de l'acció.
+	 */
 	private Pair<String, Boolean> getAction() {
 		String[] depurat = this.title.getText().split(" ");
 		
@@ -58,6 +74,9 @@ public class IOActionManager {
 		return action;
 	}
 	
+	/**
+	 * Acció en cas de voler exportar.
+	 */
 	private void onExport() {
 		String completePath = path.getText();
 		completePath = completePath.replace("$HOME", "~");
@@ -67,7 +86,7 @@ public class IOActionManager {
 		switch(getAction().first) {
 			case "horari":
 				completePath = completePath.concat(".horari");
-				ControladorPresentacio.getInstance().exportaHorari(completePath, Main.getInstance().computeFlags(), Main.getInstance().getSelection().first, Main.getInstance().getSelection().second, Main.getInstance().getIteration());
+				ControladorPresentacio.getInstance().exportaHorari(completePath, Main.getInstance().getSelection().first, Main.getInstance().getSelection().second, Main.getInstance().getIteration());
 				break;
 		
 			case "pla d'estudis":
@@ -107,13 +126,16 @@ public class IOActionManager {
 				
 			case "sessió de subgrup":
 				completePath = completePath.concat(".sesssubg");
-				ControladorPresentacio.getInstance().exportaSessioSubGrup(completePath, PlaEstudisManager.getPath(), AssignaturaManager.getPath(), AssignaturaManager.getInstance().getTipusSessio(objecte.getText()), AssignaturaManager.getInstance().getDuradaSessio(objecte.getText()), 0);
+				ControladorPresentacio.getInstance().exportaSessioSubGrup(completePath, PlaEstudisManager.getPath(), AssignaturaManager.getPath(), AssignaturaManager.getInstance().getTipusSessio(objecte.getText()), AssignaturaManager.getInstance().getDuradaSessio(objecte.getText()));
 				break;
 				
 			default: break;
 		}
 	}
 	
+	/**
+	 * Acció en cas de voler importar.
+	 */
 	private void onImport() {
 		String completePath = path.getText();
 		completePath = completePath.replace("$HOME", "~");
@@ -175,11 +197,19 @@ public class IOActionManager {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
-	
+	/**
+	 * Contructora de la classe.
+	 */
 	public IOActionManager() {
 		IOActionManager.current = this;
 	}
 	
+	/**
+	 * Assigna tota la informació necessaria per a poder procedir amb l'acció.
+	 * @param title Titol de la pantalla.
+	 * @param objecte Nom de l'objecte a processar.
+	 * @param defaultPath Direcció d'accés per defecte.
+	 */
 	public void setPath(String title, String objecte, String defaultPath) {
 		this.title.setText(title);
 		if(!objecte.isEmpty()) {
@@ -195,7 +225,9 @@ public class IOActionManager {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////  FXML ///////////////////////////////////////
-	
+	/**
+	 * Acció en cas de voler conservar els canvis fets.
+	 */
 	@FXML
 	public void apply() {
 		if(paramChecker()) {

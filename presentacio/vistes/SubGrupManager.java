@@ -23,11 +23,19 @@ public class SubGrupManager {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////  PRIVADES /////////////////////////////////////
-	
+	/**
+	 * Indica si l'objecte corrent es nou pel que fa al sistema o, si per contra, s'està duent a terme una modificació.
+	 * @return True si, i només si, es nou. Altrament retorna false.
+	 */
  	private static boolean isNew() {
 		return path == null || path.isEmpty();
 	}
 	
+ 	/**
+	 * Comprova que els parametres necessaris per dur a terme una acció estiguin correctament configurats.
+	 * @param numberCheck Indica si es vol checkejar l'estat dels numeros.
+	 * @return True si i només si tots els parametres estan correctes; false altrament.
+	 */
 	private boolean paramChecker() {
 		try {
 			Integer.parseUnsignedInt(nom.getText());
@@ -42,16 +50,25 @@ public class SubGrupManager {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
-	
+	/*
+	 * Constructora de la classe.
+	 */
 	public SubGrupManager() {
 		path = null;
 		current = this;
 	}
 	
+	/**
+	 * Retorna la instancia corrent de la classe.
+	 * @return Instancia de la classe.
+	 */
 	public static SubGrupManager getInstance() {
 		return current;
 	}
 	
+	/**
+	 * Configura el GradPane de la pantalla.
+	 */
 	public void setGradPane() {
 		GridPaneManager.getInstance().buildGridPane(aptes_container, PlaEstudisManager.getPath(), AssignaturaManager.getPath(), Integer.parseInt(GrupManager.getPath()), 0);
 		GridPaneManager.getInstance().buildSolapaments(solap_container, ControladorPresentacio.getInstance().getConjunts(PlaEstudisManager.getPath()), false);
@@ -61,6 +78,10 @@ public class SubGrupManager {
 		}
 	}
 	
+	/**
+	 * Assigna l'objecte a la pantalla.
+	 * @param path Identificador de l'objecte.
+	 */
 	public static void setPath(String path) {
 		SubGrupManager.getInstance().nom.setText(path);
 		SubGrupManager.getInstance().update();
@@ -74,10 +95,17 @@ public class SubGrupManager {
 		SubGrupManager.getInstance().franja.setText(GrupManager.getInstance().getFranja());
 	}
 	
+	/**
+	 * Retorna el path actual.
+	 * @return String no null.
+	 */
 	public static String getPath() {
 		return path;
 	}
 	
+	/**
+	 * Actualitza tots els objectes de la pantalla.
+	 */
 	public void update() {
 		path = nom.getText();
 		title.setText("Subgrup: ".concat(nom.getText()));
@@ -88,7 +116,9 @@ public class SubGrupManager {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////  FXML ///////////////////////////////////////
-	
+	/**
+	 * Acció en cas de voler conservar els canvis fets.
+	 */
 	@FXML
 	public void apply() {
 		if(paramChecker()) {

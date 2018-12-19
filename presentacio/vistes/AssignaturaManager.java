@@ -26,11 +26,18 @@ public class AssignaturaManager {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////  PRIVADES /////////////////////////////////////
-	
+	/**
+	 * Indica si l'objecte corrent es nou pel que fa al sistema o, si per contra, s'està duent a terme una modificació.
+	 * @return True si, i només si, es nou. Altrament retorna false.
+	 */
 	private static boolean isNew() {
 		return path == null || path.isEmpty();
 	}
 	
+	/**
+	 * Comprova l'estat de les seleccions.
+	 * @return True sempre i quan estiguin tot seleccionat correstament.
+	 */
 	private boolean checkSelection() {
 		if(this.lastSelected.first == null) {
 			Main.getInstance().showWarning("Acció incorrecte", "Cal seleccionar un grup o una sessió per poder procedir.");
@@ -42,17 +49,26 @@ public class AssignaturaManager {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
-	
+	/**
+	 * Constructora de la classe AssignaturaManager. 
+	 */
 	public AssignaturaManager() {
 		path = null;
 		AssignaturaManager.current = this;
 		this.lastSelected = new Pair<String, Boolean>(null, null);
 	}
 	
+	/**
+	 * Retorna la instancia corrent de la classe.
+	 * @return Instancia de la classe.
+	 */
 	public static AssignaturaManager getInstance() {
 		return AssignaturaManager.current;
 	}
 	
+	/**
+	 * Configura el GradPane de la pantalla.
+	 */
 	public void setGradPane() {
 		GridPaneManager.getInstance().buildGridPane(aptes_container, PlaEstudisManager.getPath(), null, 0, 0);
 		GridPaneManager.getInstance().buildSolapaments(solap_container, ControladorPresentacio.getInstance().getConjunts(PlaEstudisManager.getPath()), true);
@@ -62,15 +78,26 @@ public class AssignaturaManager {
 		}
 	}
 	
+	/**
+	 * Assigna l'objecte a la pantalla.
+	 * @param path Identificador de l'objecte.
+	 */
 	public static void setPath(String path) {
 		AssignaturaManager.getInstance().nom.setText(path);
 		AssignaturaManager.getInstance().update();
 	}
 	
+	/**
+	 * Retorna el path actual.
+	 * @return String no null.
+	 */
 	public static String getPath() {
 		return path;
 	}
 	
+	/**
+	 * Actualitza tots els objectes de la pantalla.
+	 */
 	public void update() {
 		path = nom.getText();
 		title.setText("Assignatura: ".concat(nom.getText()));
@@ -85,31 +112,55 @@ public class AssignaturaManager {
 		PlaEstudisManager.getInstance().update();
 	}
 	
+	/**
+	 * Acció en cas de seleccionar un grup.
+	 */
 	public void onGrupSelected() {
 		this.lastSelected.first = grups.getSelectionModel().getSelectedItem();
 		this.lastSelected.second = false;
 	}
 	
+	/**
+	 * Acció en cas de seleccionar una sessió.
+	 */
 	public void onSessioSelected() {
 		this.lastSelected.first = sessions.getSelectionModel().getSelectedItem();
 		this.lastSelected.second = true;
 	}
 	
+	/**
+	 * Inidica si una sessio es de grup o subgrup.
+	 * @param sessio Nom de la sessio a comprovar.
+	 * @return True si es de grup, false altrament.
+	 */
 	public boolean isSessioGrup(String sessio) {
 		String[] depurat = sessio.split(" ");
 		return depurat[0].equals("[G]");
 	}
 	
+	/**
+	 * Retorna el tipus de la sessio. 
+	 * @param sessio Identificació de la sessio.
+	 * @return El tipus de la sessio.
+	 */
 	public String getTipusSessio(String sessio) {
 		String[] depurat = sessio.split(" ");
 		return depurat[1];
 	}
 	
+	/**
+	 * Retorna la durada d'una sessió.
+	 * @param sessio Identificació de la sessio.
+	 * @return Un enter igual o superior a 1.
+	 */
 	public int getDuradaSessio(String sessio) {
 		String[] depurat = sessio.split(" ");
 		return Integer.parseInt(depurat[3]);
 	}
 	
+	/**
+	 * Acció en cas d'exportar.
+	 */
 	@FXML
 	public void onExportAction() {
 		if(checkSelection()) {
@@ -123,6 +174,9 @@ public class AssignaturaManager {
 		}
 	}
 	
+	/**
+	 * Acció en cas d'importar.
+	 */
 	@FXML
 	public void onImportarAction() {
 		Main.getInstance().newWindows("IOAction_view.fxml", "Importar objecte", 500, 227);
@@ -131,7 +185,9 @@ public class AssignaturaManager {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////  FXML ///////////////////////////////////////
-	
+	/**
+	 * Acció en cas de voler conservar els canvis fets.
+	 */
 	@FXML
 	public void apply() {
 		 //En cas de ser un nou campus:
@@ -152,6 +208,9 @@ public class AssignaturaManager {
 		if(!Main.onError(true)) this.update();
 	}
 	
+	/**
+	 * Acció en cas de voler donar d'alta un nou grup.
+	 */
 	@FXML
 	public void onCreateGrup() {
 		if(isNew()) this.apply();
@@ -161,6 +220,9 @@ public class AssignaturaManager {
 		}
 	}
 	
+	/**
+	 * Acció en cas de voler donar d'alta una nova sessio.
+	 */
 	@FXML
 	public void onCreateSessio() {
 		if(isNew()) this.apply();
@@ -172,7 +234,10 @@ public class AssignaturaManager {
 
 	////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////// ON ITEM CLICKED ////////////////////////////////////
-	
+	/**
+	 * Acció en cas de clicar sobre un grup.
+	 * @param click Proporcionat pel sistema.
+	 */
 	@FXML
 	public void onGrupItemClicked(MouseEvent click) {
 		if(click != null && click.getClickCount() == 1) this.onGrupSelected();
@@ -182,6 +247,10 @@ public class AssignaturaManager {
 		}
 	}
 	
+	/**
+	 * Acció en cas de clicar sobre una sessio
+	 * @param click Proporcionat pel sistema.
+	 */
 	@FXML
 	public void onSessioItemClicked(MouseEvent click) {
 		if(click != null && click.getClickCount() == 1) this.onSessioSelected();
@@ -191,6 +260,9 @@ public class AssignaturaManager {
 		}
 	}
 
+	/**
+	 * Acció en cas de modificació.
+	 */
 	@FXML
 	public void onModify() {
 		if(checkSelection()) {
@@ -199,6 +271,9 @@ public class AssignaturaManager {
 		}
 	}
 	
+	/**
+	 * Acció en cas d'eliminació.
+	 */
 	@FXML
 	public void onDelete() {
 		if(checkSelection()) {

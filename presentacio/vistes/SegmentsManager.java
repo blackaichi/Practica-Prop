@@ -31,13 +31,21 @@ public class SegmentsManager {
 	private int iteration;
 	private Map<String, Pair<String, String>> timeData;
 	
+	/**
+	 * Retorna la instancia corrent de la classe.
+	 * @return Instancia de la classe.
+	 */
 	public static SegmentsManager getInstance() {
 		return SegmentsManager.current;
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////  PRIVADES /////////////////////////////////////
-	
+	/**
+	 * Proporciona la versió minimitzada del nom d'un dia de la setmana.
+	 * @param dia Nom complet del dia de la setmana.
+	 * @return String no null.
+	 */
 	private String minimize(String dia) {
 		switch(dia) {
 			case "Dilluns": return "DL";
@@ -51,6 +59,11 @@ public class SegmentsManager {
 		}
 	}
 	
+	/**
+	 * Proporciona la versió extesa d'un nom del dia de la setmana.
+	 * @param dia Nom curt del dia de la setmana.
+	 * @return String no null.
+	 */
 	private String expand(String dia) {
 		switch(dia) {
 			case "DL": return "Dilluns";
@@ -64,6 +77,10 @@ public class SegmentsManager {
 		}
 	}
 	
+	/**
+	 * Comprova que els parametres necessaris per dur a terme una acció estiguin correctament configurats.
+	 * @return True si i només si tots els parametres estan correctes; false altrament.
+	 */
 	private boolean paremChecker() {
 		try {
 			int hora = Integer.parseInt(newHoraIni.getText());
@@ -81,6 +98,11 @@ public class SegmentsManager {
 		return false;
 	}
 	
+	/**
+	 * Passa d'un string a una llista configurada especifica.
+	 * @param str String a depurar.
+	 * @return Llista amb totes les dades extretes.
+	 */
 	private ArrayList<String> depureDades(String str) {
 		ArrayList<String> dades = new ArrayList<>();
 		
@@ -92,12 +114,18 @@ public class SegmentsManager {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
-	
+	/**
+	 * Constructora de la classe.
+	 */
 	public SegmentsManager() {
 		current = this;
 		this.timeData = new HashMap<>();
 	}
 	
+	/**
+	 * Assigna l'objecte a la pantalla.
+	 * @param path Identificador de l'objecte.
+	 */
 	public void setPath(String plaEstudis, String campus, String dia, String hora, int iter) {
 		this.plaEstudis.setText(plaEstudis);
 		this.campus.setText(campus);
@@ -108,6 +136,9 @@ public class SegmentsManager {
 		this.update();
 	}
 	
+	/**
+	 * Actualitza tots els objectes de la pantalla.
+	 */
 	public void update() {
 		timeData.clear();
 		sessions.getItems().clear();
@@ -132,7 +163,9 @@ public class SegmentsManager {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////  FXML ///////////////////////////////////////
-	
+	/**
+	 * Controla les fases necessaries a l'hora de dur a terme una modificació de l'horari.
+	 */
 	@FXML
 	public void onTryToCommit() {
 		if(paremChecker()) {
@@ -181,6 +214,10 @@ public class SegmentsManager {
 		}
 	}
 	
+	/**
+	 * Acció en cas de clicar sobre algun item del menu.
+	 * @param event Proporcionat pel sistema.
+	 */
 	@FXML
 	public void onMenuAction(ActionEvent event) {
 		MenuItem item = (MenuItem) event.getSource();
@@ -189,6 +226,10 @@ public class SegmentsManager {
 	
 	////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////// ON ITEM CLICKED ////////////////////////////////////
+	/**
+	 * Acció en cas de clicar sobre una sessio.
+	 * @param click Proporcionat pel sistema.
+	 */
 	@FXML
 	public void onSessioItemClicked(MouseEvent click) {
 		if(sessions.getSelectionModel().getSelectedIndex() > -1) {

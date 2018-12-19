@@ -21,7 +21,10 @@ public class SessioManager {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////  PRIVADES /////////////////////////////////////
-	
+	/**
+	 * Indica si l'objecte corrent es nou pel que fa al sistema o, si per contra, s'està duent a terme una modificació.
+	 * @return True si, i només si, es nou. Altrament retorna false.
+	 */
 	private static boolean isNew() {
 		if(path == null) return true;
 		
@@ -29,6 +32,11 @@ public class SessioManager {
 		return fragment.length != 2;
 	}
 	
+	/**
+	 * Comprova que els parametres necessaris per dur a terme una acció estiguin correctament configurats.
+	 * @param numberCheck Indica si es vol checkejar l'estat dels numeros.
+	 * @return True si i només si tots els parametres estan correctes; false altrament.
+	 */
 	private boolean paramChecker() {
 		try {
 			if(tipus.getText().isEmpty()) return false;
@@ -42,16 +50,28 @@ public class SessioManager {
 		}
 	}
 	
+	/**
+	 * Proporciona el tipus de la sessio.
+	 * @return String no null.
+	 */
 	private String getType() {
 		String[] values = path.split("::");
 		return values[0];
 	}
 	
+	/**
+	 * Proporciona les hores de la sessió.
+	 * @return enter superior o igual a 0.
+	 */
 	private int getHores() {
 		String[] values = path.split("::");
 		return Integer.parseInt(values[1]);
 	}
 	
+	/**
+	 * Proporciona un set amb tot l'equip necessari de la sessio
+	 * @return Un set no null
+	 */
 	private HashSet<String> getEquipSet(){
 		HashSet<String> equip = new HashSet<String>();
 		StringTokenizer token = new StringTokenizer(this.equip.getText(), ";");
@@ -60,10 +80,19 @@ public class SessioManager {
 		return equip;
 	}
 	
+	/**
+	 * Retorna les assossiacions de la sessio
+	 * @return Un map no null
+	 */
 	private Map<Integer, HashSet<Integer>> getConjunts(){
 		return ControladorPresentacio.getInstance().getConjunts(PlaEstudisManager.getPath(), AssignaturaManager.getPath());
 	}
 	
+	/**
+	 * Normalitza la presentació de la sessio
+	 * @param sessio Identificador de la sessio
+	 * @return Un String no null.
+	 */
 	private String norma(String sessio) {
 		String[] depurat = sessio.split(" ");
 		
@@ -74,16 +103,25 @@ public class SessioManager {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
-	
+	/**
+	 * Constructora de la classe.
+	 */
 	public SessioManager() {
 		path = null;
 		current = this;
 	}
 	
+	/**
+	 * Retorna la instancia corrent de la classe.
+	 * @return Instancia de la classe.
+	 */
 	public static SessioManager getInstance() {
 		return current;
 	}
 	
+	/**
+	 * Configura el GradPane de la pantalla.
+	 */
 	public void setGradPane() {
 		GridPaneManager.getInstance().buildAssignador(assignats, getConjunts(), !conjunt.getText().contains("S"));
 		if(!isNew()) GridPaneManager.getInstance().updateAssignador(assignats,
@@ -94,6 +132,10 @@ public class SessioManager {
 																	!conjunt.getText().contains("S"));
 	}
 	
+	/**
+	 * Assigna l'objecte a la pantalla.
+	 * @param path Identificador de l'objecte.
+	 */
 	public static void setPath(String path) {
 		String[] scan = path.split(" ");
 		if(scan[0].charAt(1) == 'S') SessioManager.getInstance().onSubGrupItemClicked();
@@ -117,10 +159,17 @@ public class SessioManager {
 		}
 	}
 	
+	/**
+	 * Retorna el path actual.
+	 * @return String no null.
+	 */
 	public static String getPath() {
 		return path;
 	}
 	
+	/**
+	 * Actualitza tots els objectes de la pantalla.
+	 */
 	public void update() {
 		path = norma(tipus.getText()).concat("::").concat(durada.getText());
 		title.setText("Sessio: ".concat(norma(tipus.getText())));
@@ -131,7 +180,9 @@ public class SessioManager {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////  FXML ///////////////////////////////////////
-	
+	/**
+	 * Acció en cas de voler conservar els canvis fets.
+	 */
 	@FXML
 	public void apply() {
 		if(paramChecker()) {
@@ -191,13 +242,20 @@ public class SessioManager {
 
 	////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////// ON ITEM CLICKED ////////////////////////////////////
-	
+	/**
+	 * Acció en cas de clicar sobre un grup.
+	 * @param click Proporcionat pel sistema.
+	 */
 	@FXML
 	public void onGrupItemClicked() {
 		conjunt.setText("Grup");
 		this.setGradPane();
 	}
 	
+	/**
+	 * Acció en cas de clicar sobre un subgrup.
+	 * @param click Proporcionat pel sistema.
+	 */
 	@FXML
 	public void onSubGrupItemClicked() {
 		conjunt.setText("Subgrup");

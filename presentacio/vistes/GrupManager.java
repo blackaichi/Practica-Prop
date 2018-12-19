@@ -23,11 +23,18 @@ public class GrupManager {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////  PRIVADES /////////////////////////////////////
-	
+	/**
+	 * Indica si l'objecte corrent es nou pel que fa al sistema o, si per contra, s'està duent a terme una modificació.
+	 * @return True si, i només si, es nou. Altrament retorna false.
+	 */
 	private static boolean isNew() {
 		return path == null || path.isEmpty();
 	}
 	
+	/**
+	 * Comprova que els parametres necessaris per dur a terme una acció estiguin correctament configurats.
+	 * @return True si i només si tots els parametres estan correctes; false altrament.
+	 */
 	private boolean paramChecker() {
 		try {
 			Integer.parseUnsignedInt(nom.getText());
@@ -40,6 +47,10 @@ public class GrupManager {
 		}
 	}
 	
+	/**
+	 * Comprova l'estat de les seleccions.
+	 * @return True sempre i quan estiguin tot seleccionat correstament.
+	 */
 	private boolean checkSelection() {
 		if(subgrups.getSelectionModel().getSelectedIndex() == -1 || subgrups.getSelectionModel().getSelectedItem().isEmpty()) {
 			Main.getInstance().showWarning("Acció incorrecte", "Cal seleccionar un subgrup per poder procedir.");
@@ -49,6 +60,9 @@ public class GrupManager {
 		return true;
 	}
 	
+	/**
+	 * Carrega el contingut rellevant.
+	 */
 	private void setMainData() {
 		ArrayList<String> data = ControladorPresentacio.getInstance().GetMainGrupData(PlaEstudisManager.getPath(),
 				  AssignaturaManager.getPath(),
@@ -66,22 +80,35 @@ public class GrupManager {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
-	
+	/**
+	 * Constructora de la classe.
+	 */
 	public GrupManager() {
 		path = null;
 		current = this;
 		panic = false;
 	}
 	
+	/**
+	 * Retorna la instancia corrent de la classe.
+	 * @return Instancia de la classe.
+	 */
 	public static GrupManager getInstance() {
 		return current;
 	}
 	
+	/**
+	 * Assigna l'objecte a la pantalla.
+	 * @param path Identificador de l'objecte.
+	 */
 	public static void setPath(String path) {
 		GrupManager.getInstance().nom.setText(path);
 		GrupManager.getInstance().update();
 	}
 	
+	/**
+	 * Configura el GradPane de la pantalla.
+	 */
 	public void setGradPane() {
 		GridPaneManager.getInstance().buildGridPane(aptes_container, PlaEstudisManager.getPath(), AssignaturaManager.getPath(), 0, 0);
 		GridPaneManager.getInstance().buildSolapaments(solap_container, ControladorPresentacio.getInstance().getConjunts(PlaEstudisManager.getPath()), false);
@@ -91,10 +118,17 @@ public class GrupManager {
 		}
 	}
 	
+	/**
+	 * Retorna el path actual.
+	 * @return String no null.
+	 */
 	public static String getPath() {
 		return path;
 	}
 	
+	/**
+	 * Actualitza tots els objectes de la pantalla.
+	 */
 	public void update() {
 		path = nom.getText();
 		title.setText("Grup: ".concat(nom.getText()));
@@ -107,10 +141,17 @@ public class GrupManager {
 		AssignaturaManager.getInstance().update();
 	}
 	
+	/**
+	 * Proporciona la franja horari del grup.
+	 * @return Un string no null.
+	 */
 	public String getFranja() {
 		return this.franja.getText();
 	}
 	
+	/**
+	 * Acció en cas d'exportar.
+	 */
 	@FXML
 	public void onExportAction() {
 		if(checkSelection()) {
@@ -119,6 +160,9 @@ public class GrupManager {
 		}
 	}
 	
+	/**
+	 * Acció en cas d'importar.
+	 */
 	@FXML
 	public void onImportarAction() {
 		Main.getInstance().newWindows("IOAction_view.fxml", "Importar objecte", 500, 227);
@@ -127,10 +171,12 @@ public class GrupManager {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////  FXML ///////////////////////////////////////
-	
+	/**
+	 * Acció en cas de voler conservar els canvis fets.
+	 */
 	@FXML
 	public void apply() {
-		if(paramChecker()) {
+		if(!(panic = !paramChecker())) {
 			if(isNew()) ControladorPresentacio.getInstance().CrearGrup(PlaEstudisManager.getPath(),
 																	   AssignaturaManager.getPath(),
 																	   Integer.parseInt(nom.getText()),
@@ -148,21 +194,23 @@ public class GrupManager {
 																					 0,
 																					 GridPaneManager.getInstance().scannForState(aptes_container, false), false, true);
 			
-			for(Map.Entry<String, HashSet<Integer>> iter : GridPaneManager.getInstance().scannForState(solap_container, true, false).entrySet()) {
-				for(int numero : iter.getValue()) {
-					ControladorPresentacio.getInstance().SetSolapamentGrup(PlaEstudisManager.getPath(),
-																		   AssignaturaManager.getPath(),
-																		   Integer.parseInt(isNew()? nom.getText() : path),
-																		   iter.getKey(), numero, false);
+			if(!Main.onError(false)) {
+				for(Map.Entry<String, HashSet<Integer>> iter : GridPaneManager.getInstance().scannForState(solap_container, true, false).entrySet()) {
+					for(int numero : iter.getValue()) {
+						ControladorPresentacio.getInstance().SetSolapamentGrup(PlaEstudisManager.getPath(),
+																			   AssignaturaManager.getPath(),
+																			   Integer.parseInt(isNew()? nom.getText() : path),
+																			   iter.getKey(), numero, false);
+						}
+				}
+				
+				for(Map.Entry<String, HashSet<Integer>> iter : GridPaneManager.getInstance().scannForState(solap_container, false, false).entrySet()) {
+					for(int numero : iter.getValue()) {
+						ControladorPresentacio.getInstance().SetSolapamentGrup(PlaEstudisManager.getPath(),
+																			   AssignaturaManager.getPath(),
+																			   Integer.parseInt(isNew()? nom.getText() : path),
+																			   iter.getKey(), numero, true);
 					}
-			}
-			
-			for(Map.Entry<String, HashSet<Integer>> iter : GridPaneManager.getInstance().scannForState(solap_container, false, false).entrySet()) {
-				for(int numero : iter.getValue()) {
-					ControladorPresentacio.getInstance().SetSolapamentGrup(PlaEstudisManager.getPath(),
-																		   AssignaturaManager.getPath(),
-																		   Integer.parseInt(isNew()? nom.getText() : path),
-																		   iter.getKey(), numero, true);
 				}
 			}
 			
@@ -178,6 +226,9 @@ public class GrupManager {
 		}
 	}
 	
+	/**
+	 * Acció en cas de voler donar d'alta un subgrup.
+	 */
 	@FXML
 	public void onCreateSubGrup() {
 		if(isNew()) this.apply();
@@ -189,22 +240,34 @@ public class GrupManager {
 	
 	////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////// ON ITEM CLICKED ////////////////////////////////////
-	
+	/**
+	 * Acció en cas de clicar sobre l'item mati.
+	 */
 	@FXML
 	public void onMatiItemClicked() {
 		franja.setText("Matí");
 	}
 	
+	/**
+	 * Acció en cas de clicar sobre le item de tarda.
+	 */
 	@FXML
 	public void onTardaItemClicked() {
 		franja.setText("Tarda");
 	}
 	
+	/**
+	 * Acció en cas de clicar sobre el item de qualsevol.
+	 */
 	@FXML
 	public void onAnyItemClicked() {
 		franja.setText("Qualsevol");
 	}
 	
+	/**
+	 * En cas de clicar sobre un subgrup.
+	 * @param click Proporcionat pel sistema.
+	 */
 	@FXML
 	public void onSubGrupItemClicked(MouseEvent click) {
 		if(click == null || (click.getClickCount() == 2 && subgrups.getSelectionModel().getSelectedIndex() > -1)){
@@ -213,12 +276,18 @@ public class GrupManager {
 		}
 	}
 
+	/**
+	 * Acció en cas de modificació.
+	 */
 	@FXML
 	public void onModify() {
 		if(checkSelection()) onSubGrupItemClicked(null);
 		this.update();
 	}
 	
+	/**
+	 * Acció en cas d'eliminació.
+	 */
 	@FXML
 	public void onDelete() {
 		if(checkSelection()) ControladorPresentacio.getInstance().EliminaSubGrup(PlaEstudisManager.getPath(), AssignaturaManager.getPath(), Integer.parseInt(path), Integer.parseInt(subgrups.getSelectionModel().getSelectedItem()));

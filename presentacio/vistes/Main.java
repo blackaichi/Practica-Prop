@@ -44,14 +44,28 @@ public class Main extends Application {
 	@FXML private CheckBox purge, D_LECTIU, H_LECTIU, ASSIG_SOLAP, ASSIG_HAPTES, G_SOLAP, G_HAPTES, G_FRANJA, S_ALIGN, S_NSESSIONS;
 	@FXML private Button next, previous;
 	
+	/**
+	 * Inicialitza la interficie.
+	 * @param args Arguments proposats pel sistema.
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
 	
+	/**
+	 * Retorna la instancia corrent del controlador de la pantalla principal.
+	 * @return Accés a la instancia corrent del Main
+	 */
 	public static Main getInstance() {
 		return Main.current;
 	}
 	
+	/**
+	 * Informa de l'ocurrencia d'algun error que ha requerit de l'obertura
+	 * d'una finestra de diagnostic concreta.
+	 * @param restore Indica si es vol, despres de consultar l'estat, cancelar l'error.
+	 * @return True si i només si s'ha produit algun error; altrament retorna false.
+	 */
 	public static boolean onError(boolean restore) {
 		if(errorOcurred) {
 			if(restore) errorOcurred = false;
@@ -60,6 +74,9 @@ public class Main extends Application {
 		else return false;
 	}
 	
+	/**
+	 * Inicialitza la pantalla principal.
+	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("Main_view.fxml"));
@@ -69,6 +86,13 @@ public class Main extends Application {
 		primaryStage.show();
 	}
 	
+	/**
+	 * Permet l'obertura d'una nova pantalla concreta.
+	 * @param fxml Nom de l'arxiu on es troba el codi font del diseny de la pantalla.
+	 * @param title Titol desitjat per la finestra.
+	 * @param x Tamany horitzontal de la finestra.
+	 * @param y Tamany vertical de la finestra.
+	 */
 	public void newWindows(String fxml, String title, int x, int y) {
 		try {
 			Stage stage = new Stage();
@@ -86,7 +110,11 @@ public class Main extends Application {
 		
 	////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////  PRIVADES /////////////////////////////////////
-	
+	/**
+	 * Comprova que els parametres necessaris per dur a terme una acció estiguin correctament configurats.
+	 * @param numberCheck Indica si es vol checkejar l'estat dels numeros.
+	 * @return True si i només si tots els parametres estan correctes; false altrament.
+	 */
 	private boolean paramChecker(boolean numberCheck){
 		if(selected_pl.getText().isEmpty() || selected_c.getText().isEmpty()) {
 			this.showWarning("Falta informació", "Cal seleccionar una parella de PlaEstudis i Campus.");
@@ -103,6 +131,10 @@ public class Main extends Application {
 		return true;
 	}
 	
+	/**
+	 * Comprova si hi ha tants atributs seleccionats com siguin necessaris.
+	 * @return True si està tot correcte, false altrament.
+	 */
 	private boolean checkSelection() {
 		if(this.lastSelected.first == null) {
 			this.showWarning("Acció incorrecte", "Cal seleccionar un pla d'estudis o un campus per poder procedir.");
@@ -112,22 +144,35 @@ public class Main extends Application {
 		return true;
 	}
 	
+	/**
+	 * Configura l'estat dels botons de navegació entre horaris.
+	 */
 	private void setButtonsState() {
 		int nhoraris = ControladorPresentacio.getInstance().getNHoraris(selected_pl.getText(), selected_c.getText());
-		quants_horaris.setText("Horari ".concat(nhoraris <= 0? "0" : "1").concat(" de ").concat(String.valueOf(nhoraris)));
-		next.setDisable(this.getIteration() == this.getNHoraris());
+		quants_horaris.setText("Horari ".concat(nhoraris <= 0? "0" : String.valueOf(getIteration())).concat(" de ").concat(String.valueOf(nhoraris)));
+		if(this.getIteration() > this.getNHoraris()) quants_horaris.setText("Horari ".concat(String.valueOf(getNHoraris())).concat(" de ").concat(String.valueOf(getNHoraris())));
+		next.setDisable(this.getIteration() >= this.getNHoraris());
 		previous.setDisable(this.getIteration() <= 1);
 	}
 	
+	/**
+	 * Configura l'estat de l'horari segons toqui.
+	 */
 	private void updateBySelection() {
 		if(selected_pl.getText() != null && !selected_pl.getText().isEmpty() &&
 		   selected_c.getText() != null && !selected_c.getText().isEmpty()) {
-			this.setButtonsState();
+			
 			GridPaneManager.getInstance().buildHorari(horari_container, selected_pl.getText(), selected_c.getText(), getIteration());
 			if(this.getNHoraris() > 0) GridPaneManager.getInstance().updateHorari(horari_container, selected_pl.getText(), selected_c.getText(), getIteration());
+			this.setButtonsState();
 		}
 	}
 	
+	/**
+	 * Carrega la configuració de l'horari que toqui i en genera els candidats.
+	 * @param nhoraris Total d'horaris a generar.
+	 * @param purge Indica si es volen esborrar els horaris antics.
+	 */
 	private void loadSelected(int nhoraris, boolean purge) {
 		if(plansEstudis.getSelectionModel().getSelectedIndex() > -1 && !selected_pl.getText().isEmpty() &&
 		   campus.getSelectionModel().getSelectedIndex() > -1 && !selected_c.getText().isEmpty()) {
@@ -137,6 +182,7 @@ public class Main extends Application {
 																			computeFlags(),
 																			purge);
 
+			if(result > 0) quants_horaris.setText("Horari 1 de ".concat(String.valueOf(result)));
 			this.updateBySelection();
 		}
 		else {
@@ -147,7 +193,9 @@ public class Main extends Application {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
-	
+	/**
+	 * Constructora de la classe Main
+	 */
 	public Main() {
 		Main.current = this;
 		Main.errorOcurred = false;
@@ -155,6 +203,9 @@ public class Main extends Application {
 		lastSelected = new Pair<String, Boolean>(null, null);
 	}
 		
+	/**
+	 * Actualitza tots els components de la pantalla princiapal.
+	 */
 	public void update() {
 		this.onSearchCampus();
 		this.onSearchPlaEstudis();
@@ -162,16 +213,28 @@ public class Main extends Application {
 		this.updateBySelection();
 	}
 		
+	/**
+	 * Retorna la iteració corrent.
+	 * @return Un enter igual o superior a 0.
+	 */
 	public int getIteration() {
 		String[] depurat = quants_horaris.getText().split(" ");
 		return Integer.parseInt(depurat[1]);
 	}
 	
+	/**
+	 * Retorna el total d'horaris candidats de la selecció actual.
+	 * @return Un enter igual o superior a 0.
+	 */
 	public int getNHoraris() {
 		String[] depurat = quants_horaris.getText().split(" ");
 		return Integer.parseInt(depurat[3]);
 	}
 	
+	/**
+	 * Genera el set de flags necessaris per a la generació dels horaris.
+	 * @return El set de flags seleccionats.
+	 */
 	public HashSet<String> computeFlags(){
 		HashSet<String> flags = new HashSet<>();
 		if(D_LECTIU.isSelected()) flags.add("D_LECTIU");
@@ -187,6 +250,10 @@ public class Main extends Application {
 		return flags;
 	}
 	
+	/**
+	 * Retorna el conjunt pla d'estudis i campus seleecionats.
+	 * @return Un pair amb contingut o sense.
+	 */
 	public Pair<String, String> getSelection(){
 		Pair<String, String> selection = new Pair<String, String>();
 		selection.first = selected_pl.getText();
@@ -197,7 +264,9 @@ public class Main extends Application {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////  FXML ///////////////////////////////////////
-	
+	/**
+	 * Acció en cas de seleccionar un campus.
+	 */
 	public void onCampusSelected() {
 		this.selected_c.setText(campus.getSelectionModel().getSelectedItem());
 		
@@ -207,6 +276,9 @@ public class Main extends Application {
 		this.updateBySelection();
 	}
 	
+	/**
+	 * Acció en cas de seleccionar un pla d'estudis.
+	 */
 	public void onPlaEstudisSelected() {
 		this.selected_pl.setText(plansEstudis.getSelectionModel().getSelectedItem());
 		
@@ -216,6 +288,11 @@ public class Main extends Application {
 		this.updateBySelection();
 	}
 	
+	/**
+	 * Genera un tipus de pantalla especial per errors. 
+	 * @param title Titol de la finestra.
+	 * @param message Missatge a mostrar.
+	 */
 	public void showWarning(String title, String message) {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setResizable(true);
@@ -227,17 +304,26 @@ public class Main extends Application {
 		Main.errorOcurred = true;
 	}
 	
+	/**
+	 * Acció en cas de donar d'alta un campus.
+	 */
 	@FXML
 	public void onCreateCampus() {
 		this.newWindows("Campus_view.fxml", "Campus", 400, 720);
 	}
 	
+	/**
+	 * Acció en cas de donar d'alta un pla d'estudis.
+	 */
 	@FXML
 	public void onCreatePlaEstudis() {
 		this.newWindows("PlaEstudis_view.fxml", "Pla d'estudis", 1050, 733);
 		PlaEstudisManager.getInstance().setGradPane();
 	}
 	
+	/**
+	 * Acció en cas de voler mostrar un horari anterior a l'actual.
+	 */
 	@FXML
 	public void showPreviousHorari() {
 		if(paramChecker(true)) {
@@ -246,7 +332,10 @@ public class Main extends Application {
 			this.setButtonsState();
 		}
 	}
-	
+
+	/**
+	 * Acció en cas de voler mostrar un horari posterior a l'actual.
+	 */
 	@FXML
 	public void showNextHorari() {
 		if(paramChecker(true)) {
@@ -256,11 +345,17 @@ public class Main extends Application {
 		}
 	}
 	
+	/**
+	 * Acció en cas de voler generar un horari.
+	 */
 	@FXML
 	public void onGenerarHorari(){
 		if(paramChecker(true)) this.loadSelected(Integer.parseInt(nhoraris.getText()), purge.isSelected());
 	}
 	
+	/**
+	 * Acció en cas de voler exportar un horari.
+	 */
 	@FXML
 	public void onExportarHorari() {
 		if(paramChecker(false)) {
@@ -269,6 +364,9 @@ public class Main extends Application {
 		}
 	}
 	
+	/**
+	 * En cas de voler exportar.
+	 */
 	@FXML
 	public void onExportAction() {
 		if(checkSelection()) {
@@ -278,6 +376,9 @@ public class Main extends Application {
 		}
 	}
 	
+	/**
+	 * En cas de voler importar.
+	 */
 	@FXML
 	public void onImportarAction() {
 		Main.getInstance().newWindows("IOAction_view.fxml", "Importar objecte", 500, 227);
@@ -286,7 +387,9 @@ public class Main extends Application {
 	
 	////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////// ON TEXT ACTIONS ////////////////////////////////////
-	
+	/**
+	 * En cas de voler cercar un pla d'estudis concret.
+	 */
 	@FXML
 	public void onSearchPlaEstudis() {
 		HashSet<String> total = ControladorPresentacio.getInstance().getAllPlaEstudis();
@@ -297,6 +400,9 @@ public class Main extends Application {
 		this.plansEstudis.getItems().addAll(total);
 	}
 	
+	/**
+	 * En cas de voler cercar un campus concret.
+	 */
 	@FXML
 	public void onSearchCampus() {
 		HashSet<String> total = ControladorPresentacio.getInstance().getAllCampus();
@@ -309,7 +415,10 @@ public class Main extends Application {
 		
 	////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////// ON ITEM CLICKED ////////////////////////////////////
-	
+	/**
+	 * Acció en cas de clicar sobre un campus.
+	 * @param click Aportat pel sistema.
+	 */
 	@FXML
 	public void onCampusItemClicked(MouseEvent click) {
 		if(click != null && click.getClickCount() == 1) this.onCampusSelected();
@@ -319,6 +428,10 @@ public class Main extends Application {
 		}
 	}
 	
+	/**
+	 * Acció en cas de clicar sobre un pla d'estudis.
+	 * @param click Aportat pel sistema.
+	 */
 	@FXML
 	public void onPlaEstudisItemClicked(MouseEvent click) {
 		if(click != null && click.getClickCount() == 1) this.onPlaEstudisSelected();
@@ -328,6 +441,10 @@ public class Main extends Application {
 		}
 	}
 
+	/**
+	 * Acció en cas de clicar sobre una hora apte de l'horari corrent.
+	 * @param source Aportat pel sistema.
+	 */
 	public void onHorariButtonPressed(Node source) {
 		Pair<String, Integer> select = GridPaneManager.getInstance().scannButtonPressed(horari_container, source);
 		if(!select.isNull()) {
@@ -336,6 +453,9 @@ public class Main extends Application {
 		}
 	}
 	
+	/**
+	 * En cas de voler dur a terme una modificació.
+	 */
 	@FXML
 	public void onModify() {
 		if(checkSelection()) {
@@ -344,6 +464,9 @@ public class Main extends Application {
 		}
 	}
 	
+	/**
+	 * En cas de voler dur a terme una eliminació.
+	 */
 	@FXML
 	public void onDelete() {
 		if(checkSelection()) {
@@ -359,6 +482,9 @@ public class Main extends Application {
 		}
 	}
 	
+	/**
+	 * En cas de voler eliminar un horari.
+	 */
 	@FXML
 	public void onDeleteHorari() {
 		if(getIteration() == 0) showWarning("Acció impossible", "No hi ha cap horari per esborrar.");
