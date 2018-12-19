@@ -82,8 +82,10 @@ public class DadesAula extends ExportaImporta {
 				nomA = f.get(i++);
 				capacitat = Integer.parseInt(f.get(i++));
 				String[] equipament = f.get(i++).split(",");
-				for (String ss : equipament) {
-					equip.add(ss);
+				if (equipament.length > 1 || !equipament[0].equals("noequip")) {
+					for (String ss : equipament) {
+						equip.add(ss);
+					}
 				}
 				if (!f.get(i++).equals("END AULA")) return "error en acabar fitxer aula";
 				if ((error = cp.creaAulaImportada(nomC, nomA, capacitat, equip)) != null) return error;

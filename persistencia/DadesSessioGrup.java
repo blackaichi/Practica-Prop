@@ -98,8 +98,10 @@ public class DadesSessioGrup extends ExportaImporta {
 				String error;
 				int nsessions;
 				String[] equipament = f.get(i++).split(",");
-				for (int j = 0; j < equipament.length; ++j) {
-					equip.add(equipament[j]);
+				if (equipament.length > 1 || !equipament[0].equals("noequip")) {
+					for (int j = 0; j < equipament.length; ++j) {
+						equip.add(equipament[j]);
+					}
 				}
 				hores = Integer.parseInt(f.get(i++));
 				tipus = f.get(i++);
