@@ -1,6 +1,7 @@
 package persistencia;
 
 import java.io.*;
+import java.util.*;
 
 /**
  * 
@@ -44,5 +45,16 @@ public abstract class ExportaImporta {
 		catch (Exception e) {
 			return e.getMessage();
 		}
+	}
+	
+	static public HashSet<String> fitxersPath(String path) {
+		File folder = new File(path);
+		HashSet<String> res = new HashSet<String>();
+	    for (final File fileEntry : folder.listFiles()) {
+	        if (!fileEntry.isDirectory()) {
+	        	res.add(fileEntry.getName());
+	        }
+	    }
+	    return res;
 	}
 }

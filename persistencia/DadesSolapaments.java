@@ -36,8 +36,11 @@ public class DadesSolapaments extends ExportaImporta {
 	public void exportaSolapaments(String path, HashMap<String, HashSet<Integer>> solapaments) {
 		String str = "Solapaments".concat(endl);
 		boolean in = false;
+		boolean f = true;
 		for (HashMap.Entry<String, HashSet<Integer>> entry : solapaments.entrySet()) {
 			in = true;
+			if (f) f = false;
+			else str = str.concat(";");
 			str = str.concat(entry.getKey()).concat(" ");
 			boolean first = true;
 			for (Integer i : entry.getValue()) {
@@ -45,7 +48,6 @@ public class DadesSolapaments extends ExportaImporta {
 				else str = str.concat(",");
 				str = str.concat(String.valueOf(i));
 			}
-			str = str.concat(";");
 		}
 		if (!in) str = str.concat("none");
 		str = str.concat(endl);
@@ -84,6 +86,7 @@ public class DadesSolapaments extends ExportaImporta {
 				String error;
 				if ((error = cp.creaSolapament(nomPE, nomA, grup, subgrup, solapaments)) != null) return error;
 			}
+			System.out.println("maner gay");
 			return null;
 		}
 		catch (Exception e) {
