@@ -91,10 +91,11 @@ public class DadesGrup extends ExportaImporta {
 				int numero, places;
 				String franja;
 				String error;
-				numero = Integer.parseInt(f.get(i++));
-				places = Integer.parseInt(f.get(i++));
+				numero = Integer.parseUnsignedInt(f.get(i++));
+				places = Integer.parseUnsignedInt(f.get(i++));
 				franja = f.get(i++);
 				List<String> entry;
+				if ((error = cp.creaGrupImportat(nomPE, nomA, numero, places, franja)) != null) return error;
 				if (aux.contains("HoresAptes") && aux.contains("END HA")) {
 					entry = aux.subList(aux.indexOf("HoresAptes"), aux.indexOf("END HA")+1);
 					if ((error = DadesHoresAptes.getInstancia().importaHoresAptes(nomPE, nomA, numero, -1, entry)) != null) {
@@ -112,7 +113,6 @@ public class DadesGrup extends ExportaImporta {
 				}
 				else return "error no conte solapaments";
 				if (!aux.get(aux.size()-1).equals("END GRUP")) return "error en acabar fitxer grup";
-				if ((error = cp.creaGrupImportat(nomPE, nomA, numero, places, franja)) != null) return error;
 				if (aux.contains("SubGrup") && aux.contains("END SUBGRUP")) {
 					if (aux.indexOf("SubGrup") == -1 || aux.lastIndexOf("END SUBGRUP") == -1) 
 						return "Error a la part de grup";
