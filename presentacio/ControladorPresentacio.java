@@ -92,184 +92,184 @@ public class ControladorPresentacio {
 	 * @param tipus Identifica al tipus de la sessió.
 	 * @param hores Identifica a l'hora de la sessió.
 	 * @param sessioGrup Indica si és o no una sessio de grup.
-	 * @return
+	 * @return Un hashset amb contingut o sense.
 	 */
 	public HashSet<Integer> getAssignades(String plaEstudis, String assignatura, String tipus, int hores, boolean sessioGrup){
 		return ControladorDomini.getInstance().getAssignades(plaEstudis, assignatura, tipus, hores, sessioGrup);
 	}
 	
 	/**
-	 * 
+	 * Retorna tots els solapaments registrats.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param grup Identifica al grup.
 	 * @param subgrup Identifica al subgrup.
-	 * @return
+	 * @return Un map amb contingut o sense.
 	 */
 	public Map<String, HashSet<Integer>> getSolapaments(String plaEstudis, String assignatura, int grup, int subgrup){
 		return ControladorDomini.getInstance().getSolapaments(plaEstudis, assignatura, grup, subgrup);
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Retorna tots el campus existents.
+	 * @return  Un set amb contingut o sense.
 	 */
 	public HashSet<String> getAllCampus() {
 		return ControladorDomini.getInstance().campusPresents();
 	}
 	
 	/**
-	 * 
+	 * Retorna tota la informació important d'un campus.
 	 * @param campus Identifica al campus.
-	 * @return
+	 * @return  Un string amb contingut o sense.
 	 */
 	public String GetMainCampusData(String campus) {
 		return ControladorDomini.getInstance().GetMainCampusData(campus);
 	}
 	
 	/**
-	 * 
+	 * Retorna totes les aules presents en un campus.
 	 * @param campus Identifica al campus.
-	 * @return
+	 * @return Un hashset amb contingut o sense.
 	 */
 	public HashSet<String> getAllAules(String campus) {
 		return ControladorDomini.getInstance().aulesPresents(campus);
 	}
 	
 	/**
-	 * 
+	 * Retorna tota la informació import d'una aula.
 	 * @param campus Identifica al campus.
 	 * @param aula Identifica al aula.
-	 * @return
+	 * @return  Una llista amb contingut o sense.
 	 */
 	public ArrayList<String> GetMainAulaData(String campus, String aula) {
 		return ControladorDomini.getInstance().GetMainAulaData(campus, aula);
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Retorna tots els plans d'estudis existents.
+	 * @return Un hashset amb contingut o sense.
 	 */
 	public HashSet<String> getAllPlaEstudis() {
 		return ControladorDomini.getInstance().plansEstudisPresents();
 	}
 	
 	/**
-	 * 
+	 * Retorna la informació primordial d'un pla d'estudis.
 	 * @param plaEstudis Identifica al pla d'estudis.
-	 * @return
+	 * @return Un string amb contingut o sense.
 	 */
 	public String GetMainPlaEstudisData(String plaEstudis) {
 		return ControladorDomini.getInstance().GetMainPlaEstudisData(plaEstudis);
 	}
 	
 	/**
-	 * 
+	 * Retorna el total d'assignatures existents en un pla d'estudis.
 	 * @param plaEstudis Identifica al pla d'estudis.
-	 * @return
+	 * @return Un hashset amb contingut o sense.
 	 */
 	public HashSet<String> getAllAssignatures(String plaEstudis) {
 		return ControladorDomini.getInstance().assignaturesPresents(plaEstudis);
 	}
 	
 	/**
-	 * 
+	 * Retorna el total del grups existents en una ssignatura.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
-	 * @return
+	 * @return  Un hashset amb contingut o sense.
 	 */
 	public HashSet<String> getAllGrups(String plaEstudis, String assignatura){
 		return ControladorDomini.getInstance().grupsPresents(plaEstudis, assignatura);
 	}
 	
 	/**
-	 * 
+	 * Retorna tota la informació primordial d'un grup.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param grup Identifica al grup.
-	 * @return
+	 * @return Una list amb contingut o sense.
 	 */
 	public ArrayList<String> GetMainGrupData(String plaEstudis, String assignatura, int grup) {
 		return ControladorDomini.getInstance().GetMainGrupData(plaEstudis, assignatura, grup);
 	}
 	
 	/**
-	 * 
+	 * Retorna totes les sessions existents.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
-	 * @return
+	 * @return Un hashset amb contingut o sense.
 	 */
 	public HashSet<String> getAllSessions(String plaEstudis, String assignatura){
 		return ControladorDomini.getInstance().sessionsPresents(plaEstudis, assignatura);
 	}
 	
 	/**
-	 * 
+	 * Retorna tota la informació primordial d'una sessió.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param tipus Identifica al tipus de la sessió.
 	 * @param hores Identifica a l'hora de la sessió.
 	 * @param deGrup Indica si la sessio es de grup.
-	 * @return
+	 * @return Un hashset amb contingut o sense.
 	 */
 	public ArrayList<String> GetMainSessioData(String plaEstudis, String assignatura, String tipus, int hores, boolean deGrup) {
 		return ControladorDomini.getInstance().GetMainSessioData(plaEstudis, assignatura, tipus, hores, deGrup);
 	}
 	
 	/**
-	 * 
+	 * Retorna tots els subgrups existents en un grup.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param grup Identifica al grup.
-	 * @return
+	 * @return Un hashset amb contingut o sense.
 	 */
 	public HashSet<String> getAllSubGrups(String plaEstudis, String assignatura, int grup){
 		return ControladorDomini.getInstance().subgrupsPresents(plaEstudis, assignatura, grup);
 	}
 	
 	/**
-	 * 
+	 * Retorna tota la informació primordial d'un subgrup.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param grup Identifica al grup.
 	 * @param subgrup Identifica al subgrup.
-	 * @return
+	 * @return Una list amb contingut o sense.
 	 */
 	public ArrayList<String> GetMainSubGrupData(String plaEstudis, String assignatura, int grup, int subgrup) {
 		return ControladorDomini.getInstance().GetMainSubGrupData(plaEstudis, assignatura, grup, subgrup);
 	}
 	
 	/**
-	 * 
+	 * Retorna el mapa d'hores aptes.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param grup Identifica al grup.
 	 * @param subgrup Identifica al subgrup.
-	 * @return
+	 * @return Un map amb contingut o sense.
 	 */
 	public Map<Integer, boolean[]> getHorizon(String plaEstudis, String assignatura, int grup, int subgrup){
 		return ControladorDomini.getInstance().getHorizon(plaEstudis, assignatura, grup, subgrup);
 	}
 	
 	/**
-	 * 
+	 * Retorna el marge que compon l'horari.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param campus Identifica al campus.
 	 * @param iter Indica sobre quina iteració treballar.
-	 * @return
+	 * @return Un pair de pairs amb contingut o sense.
 	 */
 	public Pair<Pair<Integer, Integer>, Pair<Integer, Integer>> getMarginHorari(String plaEstudis, String campus, int iter){
 		return ControladorDomini.getInstance().getMarginHorari(plaEstudis, campus, iter);
 	}
 	
 	/**
-	 * 
+	 * Genera n horaris.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param campus Identifica al campus.
 	 * @param nhoraris Indica el total d'horaris a generar.
 	 * @param flags Proporciona els flags a tenir en compte
 	 * @param purge Indica si es vol purgar els horaris antics o no.
-	 * @return
+	 * @return Total d'horaris generats.
 	 */
 	public int generarHorari(String plaEstudis, String campus, int nhoraris, HashSet<String> flags, boolean purge) {
 		String warn = ControladorDomini.getInstance().generarHorari(plaEstudis, campus, nhoraris, flags, purge);
@@ -287,7 +287,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Dona d'alta un campus.
 	 * @param campus Identifica al campus.
 	 */
 	public void CrearCampus(String campus) {
@@ -296,7 +296,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Esborra un campus
 	 * @param campus Identifica al campus.
 	 */
 	public void EliminarCampus(String campus) {
@@ -304,7 +304,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Modifica un campus
 	 * @param campus Identifica al campus.
 	 * @param nom Nou nom del campus.
 	 * @param autor Nom de l'autor del campus.
@@ -315,7 +315,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Dona d'alta una aula
 	 * @param campus Identifica al campus.
 	 * @param aula Identifica l'aula.
 	 * @param capacitat Indica la capacitat de l'aula.
@@ -326,7 +326,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Esborra una aula.
 	 * @param campus Identifica al campus.
 	 * @param aula Identifica l'aula.
 	 */
@@ -336,7 +336,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Modifica una aula.
 	 * @param campus Identifica al campus.
 	 * @param aula Identifica l'aula.
 	 * @param nom Nou nom de l'aula.
@@ -349,7 +349,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Dona d'alta un pla d'estudis.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 */
 	public void CrearPlaEstudis(String plaEstudis) {
@@ -358,7 +358,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Esborra un pla d'estudis.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 */
 	public void EliminaPlaEstudis(String plaEstudis) {
@@ -366,7 +366,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Modifica un pla d'estudis.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param nom Nou nom del pla d'estudis.
 	 * @param autor Nom de l'autor del pla d'estudis.
@@ -380,7 +380,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Dona d'alta una assignatura.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 */
@@ -390,7 +390,7 @@ public class ControladorPresentacio {
 	}
 
 	/**
-	 * 
+	 * Esborra una assignatura.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 */
@@ -400,7 +400,7 @@ public class ControladorPresentacio {
 	}
 
 	/**
-	 * 
+	 * Modifica una assignatura.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param nom Nou nom de l'assignatura.
@@ -411,7 +411,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Dona d'alta un grup.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param grup Identifica al grup.
@@ -423,7 +423,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Esborra un grup.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param grup Identifica al grup.
@@ -433,7 +433,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Modifica un grup.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param grup Identifica al grup.
@@ -448,7 +448,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Dona d'alta un subgrup.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param grup Identifica al grup.
@@ -462,7 +462,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Esborra un subgrup.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param grup Identifica al subgrup.
@@ -473,7 +473,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Modifica un subgrup.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param grup Identifica al grup.
@@ -488,7 +488,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Dona d'alta una sessió de grup.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param tipus Identifica al tipus de la sessió.
@@ -500,7 +500,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Esborra una sessio de grup.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param tipus Identifica al tipus de la sessió.
@@ -512,7 +512,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Modifica una sessio de grup.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param tipus Identifica al tipus de la sessió.
@@ -528,7 +528,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Dona d'alta una sessio de subgrup.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param tipus Identifica al tipus de la sessió.
@@ -540,7 +540,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Esborra una sessio de subgrup.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param tipus Identifica al tipus de la sessió.
@@ -552,7 +552,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Esborra un horari.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param campus Identifica al campus.
 	 * @param iter Indica sobre quina iteració treballar.
@@ -563,7 +563,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Modifica una sessio de subgrup.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param tipus Identifica al tipus de la sessió.
@@ -579,7 +579,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Assigna una sessio de grup.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param tipus Identifica al tipus de la sessió.
@@ -592,7 +592,7 @@ public class ControladorPresentacio {
 	}
 
 	/**
-	 * 
+	 * Desassigna una sessio de grup.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param tipus Identifica al tipus de la sessió.
@@ -605,7 +605,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Assigna una sessio de subgrup.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param tipus Identifica al tipus de la sessió.
@@ -619,7 +619,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Desassigna una sessio de subgrup.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param tipus Identifica al tipus de la sessió.
@@ -633,7 +633,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Estableix les hores aptes.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param grup Identifica al grup.
@@ -648,7 +648,7 @@ public class ControladorPresentacio {
 	}
 
 	/**
-	 * 
+	 * Estableix els solapaments d'una ssignatura.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param assigToRegister Identifica l'assignatura a registrar.
@@ -660,7 +660,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Estableix els solpaments d'un grup.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param grup Identifica al grup.
@@ -674,7 +674,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Estableix els solapaments d'un subgrup.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param grup Identifica al grup.
@@ -689,7 +689,7 @@ public class ControladorPresentacio {
 	}
 
 	/**
-	 * 
+	 * Modifica un horari.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param campus Identifica al campus.
 	 * @param iter Indica sobre quina iteració treballar.
@@ -713,7 +713,7 @@ public class ControladorPresentacio {
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////  EXPORTS  //////////////////////////////////////
 	/**
-	 * 
+	 * Exporta una assignatura.
 	 * @param path Ubicació a la que fer l'export.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
@@ -724,7 +724,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Exporta una aula.
 	 * @param path Ubicació a la que fer l'export.
 	 * @param campus Identifica al campus.
 	 * @param aula Identifica l'aula.
@@ -735,7 +735,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Exporta un campus.
 	 * @param path Ubicació a la que fer l'export.
 	 * @param campus Identifica al campus.
 	 */
@@ -745,7 +745,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Exporta un grup
 	 * @param path Ubicació a la que fer l'export.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
@@ -757,7 +757,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Exporta un horari
 	 * @param path Ubicació a la que fer l'export.
 	 * @param flags Indica els flags utilitzats per a la generació de l'horari.
 	 * @param plaEstudis Identifica al pla d'estudis.
@@ -770,7 +770,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Exporta un pla d'estudis
 	 * @param path Ubicació a la que fer l'export.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 */
@@ -780,7 +780,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Exporta una sessio de grup.
 	 * @param path Ubicació a la que fer l'export.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
@@ -793,7 +793,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Exporta una sessio de subgrup
 	 * @param path Ubicació a la que fer l'export.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
@@ -807,7 +807,7 @@ public class ControladorPresentacio {
 	}
 	
 	/**
-	 * 
+	 * Exporta un subgrup
 	 * @param path Ubicació a la que fer l'export.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
