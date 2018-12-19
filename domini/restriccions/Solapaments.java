@@ -1,6 +1,8 @@
 package domini.restriccions;
 
 import java.util.*;
+
+import domini.ControladorDomini;
 import domini.classes.*;
 import domini.tools.Estructura;
 import domini.tools.Segment;
@@ -30,7 +32,8 @@ public class Solapaments {
 	 */
 	private PlaEstudis plaEstudis;
 	private String assignatura;
-	private int numero = 0;
+	private int numgrup = 0;
+	private int numsubgrup = 0;
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  PÚBLIQUES  /////////////////////////////////////
@@ -55,7 +58,7 @@ public class Solapaments {
 	}
 	
 	/**
-	 * Constructora de la classe NoSolaparGrup.
+	 * Constructora de la classe NoSolaparSubGrup.
 	 */
 	public Solapaments(SubGrup subGrup) throws Exception{
 		ExceptionManager.thrower(this.linker(null, null, subGrup));
@@ -89,12 +92,13 @@ public class Solapaments {
 		else if(grup != null) {
 			this.plaEstudis = grup.getAssignatura().getPlaEstudis();
 			this.assignatura = grup.getAssignatura().getNom();
-			this.numero = grup.getNumero();
+			this.numgrup = grup.getNumero();
 		}
 		else {
 			this.plaEstudis = subGrup.getGrup().getAssignatura().getPlaEstudis();
 			this.assignatura = subGrup.getGrup().getAssignatura().getNom();
-			this.numero = subGrup.getNumero();
+			this.numgrup = subGrup.getGrup().getNumero();
+			this.numsubgrup = subGrup.getNumero();
 		}
 		
 		return 0;
@@ -130,9 +134,16 @@ public class Solapaments {
 		else if(permet) this.disjuntes.get(assig).removeIf(item -> item.intValue() == numero);
 		else this.disjuntes.get(assig).add(numero);
 		
-		//Si A no pot solapar amb B, es evident que B no pot solapar amb A
-		//TODO: reciprocitat de la funcionalitat.
-
+		//Si A no pot solapar amb B, es evident que B no pot solapar amb A; i viceversa.
+		if(numsubgrup != 0) {
+			for(Grup grup : plaEstudis.getAssignatura(assig).getGrups())
+				for(SubGrup subgrup : grup.getAllSubGrups())
+					if(subgrup.getNumero() == numero)
+						ControladorDomini.getInstance().SetSolapamentSubGrup(plaEstudis.getNom(), assig, grup.getNumero(), numero, this.assignatura, numsubgrup, permet);
+		}
+		else if(numgrup != 0) ControladorDomini.getInstance().SetSolapamentGrup(plaEstudis.getNom(), assig, numero, this.assignatura, numgrup, permet);
+		else ControladorDomini.getInstance().SetSolapamentAssig(plaEstudis.getNom(), assig, this.assignatura, permet);
+		
 		return 0;
 	}
 
