@@ -13,7 +13,7 @@ import domini.classes.*;
 
 public class DriverProvadorImports {
 	
-	private static String path = "/home/blackaichi/Desktop/codificar_classes/export";
+	private static String path = "/home/manerow/Documentos/aaaa/export/";
 	
 	private static String error;
 	
@@ -114,7 +114,9 @@ public class DriverProvadorImports {
 	 * @throws Exception
 	 */
 	private static void provaHorari() {
-		
+		cd.importaHorari(path);
+		//if (Horari.getInstance().campus.getNom() == "campus nord") 	System.out.println("Campus Correcte");
+		//if (Horari.getInstance().plaEstudis.getNom() == "fib") System.out.println("PlaEstudis Correcte");
 	}
 
 	/**
