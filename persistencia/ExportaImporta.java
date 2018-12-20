@@ -9,7 +9,7 @@ import java.util.*;
  *
  */
 
-public abstract class ExportaImporta {
+public class ExportaImporta {
 	
 	/**
 	 * Instància del controlador de persistència

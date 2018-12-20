@@ -755,4 +755,8 @@ public final class ControladorPersistencia {
 		return null;
 	}
 	
+	public HashSet<String> llistaFitxers(String path) {
+		return ExportaImporta.fitxersPath(path);
+	}
+	
 }
