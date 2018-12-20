@@ -307,8 +307,8 @@ public final class ControladorPersistencia {
 	 * @param id identificador de l'horari
 	 * @return null en cas de estar correcte, sinó l'error
 	 */
-	public String importaHorari(String path, String nomC, String nomPE, int id) {
-		return DadesHorari.getInstancia().importaHorari(path, nomC, nomPE, id);
+	public String importaHorari(String path) {
+		return DadesHorari.getInstancia().importaHorari(path);
 	}
 	
 	/**
@@ -758,5 +758,13 @@ public final class ControladorPersistencia {
 	public HashSet<String> llistaFitxers(String path) {
 		return ExportaImporta.fitxersPath(path);
 	}
-	
+		/**
+	 * Afegeix una estructura buida al map d'horaris.
+	 * @param plaEstudis Pla d'estudis del qual serà l'horari.
+	 * @param campus Campus del qual serà l'horari.
+	 * @return Iteració dins del set on s'ubica l'estructura generada.
+	 */
+	public int generarEntorn(String plaEstudis, String nomCampus) {
+		return cd.generarEntorn(plaEstudis, nomCampus);
+	}
 }
