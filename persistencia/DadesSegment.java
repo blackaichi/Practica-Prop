@@ -60,19 +60,21 @@ public class DadesSegment extends ExportaImporta {
 					aula = f.get(i++);
 					String s = f.get(i++);
 					String[] splited = s.split("\\s+");
+					if (splited.length < 4 || splited.length > 5) System.out.println("el segment esta mal");
 					nomA = splited[0];
 					tipus = splited[1];
 					hores = Integer.parseInt(splited[2]);
 					numg = Integer.parseInt(splited[3]);
 					if (splited.length == 5) numsg = Integer.parseInt(splited[4]);
-					if (!f.get(i++).equals("END SEGM")) return "error en acabar fitxer segment";
-					if ((error = cp.creaSegmentImportat(plaEst,nomC,dia,hora,aula,nomA,tipus,hores,numg,numsg,id)) != null) return error;
-				}
+					if (!f.get(i++).equals("END SEGM")) System.out.println("error en acabar fitxer segment");
+					if ((error = cp.creaSegmentImportat(plaEst,nomC,dia,hora,aula,nomA,tipus,hores,numg,numsg,id)) != null) System.out.println(error);
+			}
 			return null;			
 		}
 		catch (Exception e) {
-			return e.getMessage();
+			System.out.println(e);
 		}
+		return null;
 	}
 }
 
