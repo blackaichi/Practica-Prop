@@ -9,6 +9,7 @@ import presentacio.vistes.Main;
 
 import java.util.*;
 import utils.*;
+
 /**
  * 
  * @author eric.casanovas@est.fib.upc.edu
@@ -23,6 +24,10 @@ public final class ControladorDomini {
 	
 	private static ControladorDomini current;
 	
+	/**
+	 * Retorna la instancia corrent del controlador.
+	 * @return Instancia de la classe.
+	 */
 	public static ControladorDomini getInstance() {
 		if(current == null) current = new ControladorDomini();
 		return current;
@@ -31,6 +36,21 @@ public final class ControladorDomini {
 	////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////  ACCIONS  /////////////////////////////////////
 	
+	/**
+	 * Proporciona un set de tots els fitxer presents en una ubicació conreta.
+	 * @param path Direcció de la qual se'n volen obtenir els fitxers.
+	 * @return Un set amb contingut o sense.
+	 */
+	public HashSet<String> fitxersAt(String path){
+		return ControladorPersistencia.getInstancia().llistaFitxers(path);
+	}
+	
+	/**
+	 * Indica el total d'horaris que hi ha generats.
+	 * @param plaEstudis IDentifica al pla d'estudis.
+	 * @param campus Identifica al campus.
+	 * @return Un enter superior o igual 0.
+	 */
 	public int getNHoraris(String plaEstudis, String campus) {
 		try {
 			return Horari.getInstance().getHoraris(plaEstudis, campus).size();
@@ -40,6 +60,12 @@ public final class ControladorDomini {
 		}
 	}
 	
+	/**
+	 * Retorna tot els conjunts de grup / subgrup presents en una ssignatura.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica a l'assignatura. 
+	 * @return Un map buit o ple.
+	 */
 	public Map<Integer, HashSet<Integer>> getConjunts(String plaEstudis, String assignatura){
 		try {
 			Map<Integer, HashSet<Integer>> conjunts = new HashMap<Integer, HashSet<Integer>>();
@@ -56,6 +82,11 @@ public final class ControladorDomini {
 		}
 	}
 	
+	/**
+	 * Retorna tots els conjunts existents dins d'un pla d'estudis.
+	 * @param plaEstudis IDentifica al pla d'estudis.
+	 * @return Un map ple o buit.
+	 */
 	public Map<String, HashSet<Integer>> getConjunts(String plaEstudis){
 		Map<String, HashSet<Integer>> conjunts = new HashMap<String, HashSet<Integer>>();
 		try {
@@ -75,6 +106,14 @@ public final class ControladorDomini {
 		}
 	}
 	
+	/**
+	 * Proporciona tot el registre de solapaments de l'objecte indicat.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica a l'assignatura.
+	 * @param grup Identifica al grup.
+	 * @param subgrup Identifica al subgrup.
+	 * @return Un map ple o buit.
+	 */
 	public Map<String, HashSet<Integer>> getDisjuntes(String plaEstudis, String assignatura, int grup, int subgrup){
 		try {
 			if(subgrup > 0) return PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).getSubGrup(subgrup).getSolapaments().getDisjuntes();
@@ -87,6 +126,14 @@ public final class ControladorDomini {
 		}
 	}
 	
+	/**
+	 * Retorna tots els solapaments registrats.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param grup Identifica al grup.
+	 * @param subgrup Identifica al subgrup.
+	 * @return Un map amb contingut o sense.
+	 */
 	public Map<String, HashSet<Integer>> getSolapaments(String plaEstudis, String assignatura, int grup, int subgrup){
 		try {
 			if(subgrup > 0) return PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).getSubGrup(subgrup).getSolapaments().getDisjuntes();
@@ -98,6 +145,15 @@ public final class ControladorDomini {
 		}
 	}
 	
+	/**
+	 * Proporciona totes les assignacins d'una sessió
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param tipus Identifica al tipus de la sessió.
+	 * @param hores Identifica a l'hora de la sessió.
+	 * @param sessioGrup Indica si és o no una sessio de grup.
+	 * @return Un hashset amb contingut o sense.
+	 */
 	public HashSet<Integer> getAssignades(String plaEstudis, String assignatura, String tipus, int hores, boolean sessioGrup){
 		try {
 			HashSet<Integer> assignacions = new HashSet<Integer>();
@@ -117,10 +173,19 @@ public final class ControladorDomini {
 		}
 	}
 	
+	/**
+	 * Retorna tots el campus existents.
+	 * @return  Un set amb contingut o sense.
+	 */
 	public HashSet<String> campusPresents(){
 		return Campus.getKeys();
 	}
 	
+	/**
+	 * Retorna tota la informació important d'un campus.
+	 * @param campus Identifica al campus.
+	 * @return  Un string amb contingut o sense.
+	 */
 	public String GetMainCampusData(String campus) {
 		try {
 			Campus toGet = Campus.getCampus(campus);
@@ -131,6 +196,11 @@ public final class ControladorDomini {
 		}
 	}
 	
+	/**
+	 * Retorna totes les aules presents en un campus.
+	 * @param campus Identifica al campus.
+	 * @return Un hashset amb contingut o sense.
+	 */
 	public HashSet<String> aulesPresents(String campus){
 		HashSet<Aula> aules = Campus.getCampus(campus).getAllAules();
 		
@@ -140,6 +210,12 @@ public final class ControladorDomini {
 		return allAules;
 	}
 	
+	/**
+	 * Retorna tota la informació import d'una aula.
+	 * @param campus Identifica al campus.
+	 * @param aula Identifica al aula.
+	 * @return  Una llista amb contingut o sense.
+	 */
 	public ArrayList<String> GetMainAulaData(String campus, String aula) {
 		try {
 			ArrayList<String> data = new ArrayList<>();
@@ -155,10 +231,19 @@ public final class ControladorDomini {
 		}	
 	}
 	
+	/**
+	 * Retorna tots els plans d'estudis existents.
+	 * @return Un hashset amb contingut o sense.
+	 */
 	public HashSet<String> plansEstudisPresents(){
 		return PlaEstudis.getKeys();
 	}
 		
+	/**
+	 * Retorna la informació primordial d'un pla d'estudis.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @return Un string amb contingut o sense.
+	 */
 	public String GetMainPlaEstudisData(String plaEstudis) {
 		try {
 			PlaEstudis toGet = PlaEstudis.getPlaEstudis(plaEstudis);
@@ -169,6 +254,11 @@ public final class ControladorDomini {
 		}
 	}
 	
+	/**
+	 * Retorna el total d'assignatures existents en un pla d'estudis.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @return Un hashset amb contingut o sense.
+	 */
 	public HashSet<String> assignaturesPresents(String plaEstudis){
 		HashSet<Assignatura> assig = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatures();
 		
@@ -178,6 +268,12 @@ public final class ControladorDomini {
 		return allAssig;
 	}
 	
+	/**
+	 * Retorna el total del grups existents en una ssignatura.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @return  Un hashset amb contingut o sense.
+	 */
 	public HashSet<String> grupsPresents(String plaEstudis, String assignatura){
 		HashSet<Grup> grups = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrups();
 		
@@ -187,6 +283,13 @@ public final class ControladorDomini {
 		return allGrups;
 	}
 	
+	/**
+	 * Retorna tota la informació primordial d'un grup.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param grup Identifica al grup.
+	 * @return Una list amb contingut o sense.
+	 */
 	public ArrayList<String> GetMainGrupData(String plaEstudis, String assignatura, int grup) {
 		try {
 			ArrayList<String> data = new ArrayList<>();
@@ -202,6 +305,12 @@ public final class ControladorDomini {
 		}
 	}
 	
+	/**
+	 * Retorna totes les sessions existents.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @return Un hashset amb contingut o sense.
+	 */
 	public HashSet<String> sessionsPresents(String plaEstudis, String assignatura){
 		HashSet<SessioGrup> sessionsGrup = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getSessionsG();
 		HashSet<SessioSubGrup> sessionsSubGrup = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getSessionsSG();
@@ -213,6 +322,15 @@ public final class ControladorDomini {
 		return allSessions;
 	}
 	
+	/**
+	 * Retorna tota la informació primordial d'una sessió.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param tipus Identifica al tipus de la sessió.
+	 * @param hores Identifica a l'hora de la sessió.
+	 * @param deGrup Indica si la sessio es de grup.
+	 * @return Un hashset amb contingut o sense.
+	 */
 	public ArrayList<String> GetMainSessioData(String plaEstudis, String assignatura, String tipus, int hores, boolean deGrup) {
 		try {
 			ArrayList<String> data = new ArrayList<>();
@@ -235,6 +353,13 @@ public final class ControladorDomini {
 		}
 	}
 	
+	/**
+	 * Retorna tots els subgrups existents en un grup.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param grup Identifica al grup.
+	 * @return Un hashset amb contingut o sense.
+	 */
 	public HashSet<String> subgrupsPresents(String plaEstudis, String assignatura, int numero){
 		HashSet<SubGrup> subgrups = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(numero).getAllSubGrups();
 		
@@ -244,6 +369,14 @@ public final class ControladorDomini {
 		return allSubGrups;
 	}
 	
+	/**
+	 * Retorna tota la informació primordial d'un subgrup.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param grup Identifica al grup.
+	 * @param subgrup Identifica al subgrup.
+	 * @return Una list amb contingut o sense.
+	 */
 	public ArrayList<String> GetMainSubGrupData(String plaEstudis, String assignatura, int grup, int subgrup) {
 		try {
 			ArrayList<String> data = new ArrayList<>();
@@ -258,6 +391,14 @@ public final class ControladorDomini {
 		}
 	}
 	
+	/**
+	 * Retorna el mapa d'hores aptes.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param grup Identifica al grup.
+	 * @param subgrup Identifica al subgrup.
+	 * @return Un map amb contingut o sense.
+	 */
 	public Map<Integer, boolean[]> getHorizon(String plaEstudis, String assignatura, int grup, int subgrup){
 		if(subgrup > 0) return PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).getSubGrup(subgrup).getRestriccioHoresAptes().getHoresAptes();
 		else if(grup > 0) return PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).getRestriccioHoresAptes().getHoresAptes();
@@ -267,6 +408,13 @@ public final class ControladorDomini {
 		return null;
 	}
 	
+	/**
+	 * Retorna el marge que compon l'horari.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param campus Identifica al campus.
+	 * @param iter Indica sobre quina iteració treballar.
+	 * @return Un pair de pairs amb contingut o sense.
+	 */
 	public Pair<Pair<Integer, Integer>, Pair<Integer, Integer>> getMarginHorari(String plaEstudis, String campus, int iter){
 		try {
 			Iterator<Estructura> iterator = Horari.getInstance().getHoraris(plaEstudis, campus).iterator();
@@ -344,6 +492,15 @@ public final class ControladorDomini {
 		return dades;
 	}
 	
+	/**
+	 * Genera n horaris.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param campus Identifica al campus.
+	 * @param nhoraris Indica el total d'horaris a generar.
+	 * @param flags Proporciona els flags a tenir en compte
+	 * @param purge Indica si es vol purgar els horaris antics o no.
+	 * @return Total d'horaris generats.
+	 */
 	public String generarHorari(String plaEstudis, String campus, int nhoraris, HashSet<String> flags, boolean purge) {
 		try {
 			PlaEstudis pl = PlaEstudis.getPlaEstudis(plaEstudis);
@@ -357,6 +514,10 @@ public final class ControladorDomini {
 		}
 	}
 	
+	/**
+	 * Dona d'alta un campus.
+	 * @param campus Identifica al campus.
+	 */
 	public String CrearCampus(String campus) {
 		try {
 			Campus.newCampus(campus);
@@ -368,11 +529,21 @@ public final class ControladorDomini {
 		return null;
 	}
 	
+	/**
+	 * Esborra un campus
+	 * @param campus Identifica al campus.
+	 */
 	public String EliminarCampus(String campus) {
 		Campus.eliminarCampus(campus);
 		return null;
 	}
 	
+	/**
+	 * Modifica un campus
+	 * @param campus Identifica al campus.
+	 * @param nom Nou nom del campus.
+	 * @param autor Nom de l'autor del campus.
+	 */
 	public String ModificarCampus(String campus, String nom, String autor) {
 		try {
 			Campus toUpdate = Campus.getCampus(campus);
@@ -390,6 +561,12 @@ public final class ControladorDomini {
 		
 	}
 	
+	/**
+	 * Dona d'alta una aula
+	 * @param campus Identifica al campus.
+	 * @param aula Identifica l'aula.
+	 * @param capacitat Indica la capacitat de l'aula.
+	 */
 	public String CrearAula(String campus, String aula, int capacitat) {
 		try {			
 			Campus.getCampus(campus).altaAula(aula, capacitat);
@@ -401,12 +578,25 @@ public final class ControladorDomini {
 		return null;
 	}
 	
+	/**
+	 * Esborra una aula.
+	 * @param campus Identifica al campus.
+	 * @param aula Identifica l'aula.
+	 */
 	public String EliminarAula(String campus, String aula) {
 		if(Campus.getCampus(campus) == null) return "El campus no existeix";
 		Campus.getCampus(campus).baixaAula(aula);
 		return null;
 	}
 	
+	/**
+	 * Modifica una aula.
+	 * @param campus Identifica al campus.
+	 * @param aula Identifica l'aula.
+	 * @param nom Nou nom de l'aula.
+	 * @param capacitat Nova capacitat de l'aula.
+	 * @param equip Equip present a l'aula.
+	 */
 	public String ModificarAula(String campus, String aula, String nom, int capacitat, HashSet<String> equip) {
 		try {
 			Aula toUpdate = Campus.getCampus(campus).getAula(aula);
@@ -425,6 +615,10 @@ public final class ControladorDomini {
 		
 	}
 	
+	/**
+	 * Dona d'alta un pla d'estudis.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 */
 	public String CrearPlaEstudis(String plaEstudis) {
 		try {
 			PlaEstudis.newPlaEstudis(plaEstudis);
@@ -436,11 +630,23 @@ public final class ControladorDomini {
 		return null;
 	}
 	
+	/**
+	 * Esborra un pla d'estudis.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 */
 	public String EliminaPlaEstudis(String plaEstudis) {
 		PlaEstudis.eliminaPlaEstudis(plaEstudis);
 		return null;
 	}
 	
+	/**
+	 * Modifica un pla d'estudis.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param nom Nou nom del pla d'estudis.
+	 * @param autor Nom de l'autor del pla d'estudis.
+	 * @param lectiu Horari lectiu del pla.
+	 * @param rang Rang horari del pla.
+	 */
 	public String ModificarPlaEstudis(String plaEstudis, String nom, String autor, Map<Integer, boolean[]> lectiu, int[] rangDia) {
 		try {
 			PlaEstudis toUpdate = PlaEstudis.getPlaEstudis(plaEstudis);
@@ -458,6 +664,11 @@ public final class ControladorDomini {
 		return null;
 	}
 	
+	/**
+	 * Dona d'alta una assignatura.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 */
 	public String CrearAssignatura(String plaEstudis, String assignatura) {
 		try {
 			PlaEstudis.getPlaEstudis(plaEstudis).altaAssignatura(assignatura);
@@ -469,6 +680,11 @@ public final class ControladorDomini {
 		return null;
 	}
 
+	/**
+	 * Esborra una assignatura.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 */
 	public String EliminarAssignatura(String plaEstudis, String assignatura) {
 		try {
 			PlaEstudis.getPlaEstudis(plaEstudis).baixaAssignatura(assignatura);
@@ -480,6 +696,12 @@ public final class ControladorDomini {
 		return null;
 	}
 
+	/**
+	 * Modifica una assignatura.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param nom Nou nom de l'assignatura.
+	 */
 	public String ModificarAssignatura(String plaEstudis, String assignatura, String nom) {
 		try {
 			Assignatura toUpdate = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura);
@@ -496,6 +718,13 @@ public final class ControladorDomini {
 		
 	}
 	
+	/**
+	 * Dona d'alta un grup.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param grup Identifica al grup.
+	 * @param capacitat Capacitat del grup.
+	 */
 	public String CrearGrup(String plaEstudis, String assignatura, int grup, int capacitat) {
 		try {
 			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).altaGrup(grup, capacitat, "MT");
@@ -507,11 +736,26 @@ public final class ControladorDomini {
 		return null;
 	}
 	
+	/**
+	 * Esborra un grup.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param grup Identifica al grup.
+	 */
 	public String EliminarGrup(String plaEstudis, String assignatura, int grup) {
 		PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).baixaGrup(grup);
 		return null;
 	}
 	
+	/**
+	 * Modifica un grup.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param grup Identifica al grup.
+	 * @param numero Identifica al grup.
+	 * @param places Noves places del grup.
+	 * @param franja Nova franja del grup.
+	 */
 	public String ModificarGrup(String plaEstudis, String assignatura, int grup, int numero, int places, String franja) {
 		try {
 			Grup toUpdate = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup);
@@ -530,6 +774,15 @@ public final class ControladorDomini {
 		
 	}
 	
+	/**
+	 * Dona d'alta un subgrup.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param grup Identifica al grup.
+	 * @param subGrup Identifica al subgrup.
+	 * @param places Places del subgrup
+	 * @param force Indica si cal adaptar el grup del subgrup a les places solicitades.
+	 */
 	public String CrearSubGrup(String plaEstudis, String assignatura, int grup, int subGrup, int places, boolean force) {
 		try {
 			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).altaSubGrup(subGrup, places, force);
@@ -541,11 +794,28 @@ public final class ControladorDomini {
 		return null;
 	}
 	
+	/**
+	 * Esborra un subgrup.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param grup Identifica al subgrup.
+	 * @param subGrup Identifica al subgrup.
+	 */
 	public String EliminaSubGrup(String plaEstudis, String assignatura, int grup, int subGrup) {
 		PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).baixaSubGrup(subGrup);
 		return null;
 	}
 	
+	/**
+	 * Modifica un subgrup.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param grup Identifica al grup.
+	 * @param subgrup Identifica al subgrup.
+	 * @param numero  Identifica al subgrup.
+	 * @param places Nova quantitat de places.
+	 * @param incr Indica si cal incrementar el total de places del grup.
+	 */
 	public String ModificarSubGrup(String plaEstudis, String assignatura, int grup, int subgrup, int numero, int places, boolean incr) {
 		try {
 			SubGrup toUpdate = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).getSubGrup(subgrup);
@@ -563,6 +833,13 @@ public final class ControladorDomini {
 		
 	}
 	
+	/**
+	 * Dona d'alta una sessió de grup.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param tipus Identifica al tipus de la sessió.
+	 * @param hores Identifica a l'hora de la sessió.
+	 */
 	public String CrearSessioGrup(String plaEstudis, String assignatura, String tipus, int hores) {
 		try {
 			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).altaSessioG(tipus, hores);
@@ -574,6 +851,13 @@ public final class ControladorDomini {
 		return null;
 	}
 	
+	/**
+	 * Esborra una sessio de grup.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param tipus Identifica al tipus de la sessió.
+	 * @param hores Identifica a l'hora de la sessió.
+	 */
 	public String EliminaSessioGrup(String plaEstudis, String assignatura, String tipus, int hores) {
 		try {
 			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).baixaSessioG(tipus, hores);
@@ -585,6 +869,17 @@ public final class ControladorDomini {
 		return null;
 	}
 
+	/**
+	 * Modifica una sessio de grup.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param tipus Identifica al tipus de la sessió.
+	 * @param hores Identifica a l'hora de la sessió.
+	 * @param newTipus Nou tipus de la sessió.
+	 * @param newHores Nova quantitat d'hores.
+	 * @param nsessions Nova quantita d'nsessions.
+	 * @param equip Equip necessari a la sessió.
+	 */
 	public String ModificarSessioGrup(String plaEstudis, String assignatura, String tipus, int hores, String newTipus, int newHores, int nsessions, HashSet<String> material) {
 		try {
 			SessioGrup toUpdate = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getSessioG(tipus, hores);
@@ -603,6 +898,13 @@ public final class ControladorDomini {
 		return null;
 	}
 	
+	/**
+	 * Dona d'alta una sessio de subgrup.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param tipus Identifica al tipus de la sessió.
+	 * @param hores Identifica a l'hora de la sessió.
+	 */
 	public String CrearSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores) {
 		try {
 			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).altaSessioSG(tipus, hores);
@@ -614,6 +916,13 @@ public final class ControladorDomini {
 		return null;
 	}
 	
+	/**
+	 * Esborra una sessio de subgrup.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param tipus Identifica al tipus de la sessió.
+	 * @param hores Identifica a l'hora de la sessió.
+	 */
 	public String EliminaSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores) {
 		try {
 			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).baixaSessioSG(tipus, hores);
@@ -625,6 +934,12 @@ public final class ControladorDomini {
 		return null;
 	}
 	
+	/**
+	 * Esborra un horari.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param campus Identifica al campus.
+	 * @param iter Indica sobre quina iteració treballar.
+	 */
 	public String EliminaHorari(String plaEstudis, String campus, int iter) {
 		try {
 			int iteration = iter;
@@ -642,6 +957,17 @@ public final class ControladorDomini {
 		return null;
 	}
 	
+	/**
+	 * Modifica una sessio de subgrup.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param tipus Identifica al tipus de la sessió.
+	 * @param hores Identifica a l'hora de la sessió.
+	 * @param newTipus Nou tipus de la sessió.
+	 * @param newHores Nova quantitat d'hores.
+	 * @param nsessions Nova quantitat d'nsessions.
+	 * @param equip Equip necessari per a la sessió.
+	 */
 	public String ModificarSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores, String newTipus, int newHores, int nsessions, HashSet<String> material) {
 		try {
 			SessioSubGrup toUpdate = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getSessioSG(tipus, hores);
@@ -660,6 +986,14 @@ public final class ControladorDomini {
 		return null;
 	}
 	
+	/**
+	 * Assigna una sessio de grup.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param tipus Identifica al tipus de la sessió.
+	 * @param hores Identifica a l'hora de la sessió.
+	 * @param grup Identifica al grup.
+	 */
 	public String AssignaSessioGrup(String plaEstudis, String assignatura, String tipus, int hores, int grup) {
 		try {
 			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getSessioG(tipus, hores).assignaSessio(grup);
@@ -671,6 +1005,14 @@ public final class ControladorDomini {
 		return null;
 	}
 
+	/**
+	 * Desassigna una sessio de grup.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param tipus Identifica al tipus de la sessió.
+	 * @param hores Identifica a l'hora de la sessió.
+	 * @param grup Identifica al grup.
+	 */
 	public String DesassignaSessioGrup(String plaEstudis, String assignatura, String tipus, int hores, int grup) {
 		try {
 			SessioGAssignada sessio = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).getSessio(tipus, hores);
@@ -683,6 +1025,15 @@ public final class ControladorDomini {
 		return null;
 	}
 	
+	/**
+	 * Assigna una sessio de subgrup.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param tipus Identifica al tipus de la sessió.
+	 * @param hores Identifica a l'hora de la sessió.
+	 * @param grup Identifica al grup.
+	 * @param subgrup Identifica al subgrup.
+	 */
 	public String AssignaSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores, int grup, int subgrup) {
 		try {
 			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getSessioSG(tipus, hores).assignaSessio(grup, subgrup);
@@ -694,6 +1045,15 @@ public final class ControladorDomini {
 		return null;
 	}
 	
+	/**
+	 * Desassigna una sessio de subgrup.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param tipus Identifica al tipus de la sessió.
+	 * @param hores Identifica a l'hora de la sessió.
+	 * @param grup Identifica al grup.
+	 * @param subgrup Identifica al subgrup.
+	 */
 	public String DesassignaSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores, int grup, int subgrup) {
 		try {
 			SessioSGAssignada sessio = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).getSubGrup(subgrup).getSessio(tipus, hores);
@@ -706,6 +1066,16 @@ public final class ControladorDomini {
 		return null;
 	}
 	
+	/**
+	 * Estableix les hores aptes.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param grup Identifica al grup.
+	 * @param subgrup Identifica al subgrup.
+	 * @param franja Indica la franja.
+	 * @param apte Senyala si la franja es apte o no.
+	 * @param force Indica si cal forçar la fraja o no.
+	 */
 	public String HoresAptes(String plaEstudis, String assignatura, int grup, int subgrup, Map<Integer, int[]> franja, boolean apte, boolean force) {
 		try {
 			if(grup == 0 && subgrup == 0)
@@ -722,6 +1092,13 @@ public final class ControladorDomini {
 		return null;
 	}
 
+	/**
+	 * Estableix els solapaments d'una ssignatura.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param assigToRegister Identifica l'assignatura a registrar.
+	 * @param permet Indica si s'ha de permetre o no el solapament.
+	 */
 	public String SetSolapamentAssig(String plaEstudis, String assignatura, String assigToRegister, boolean permet) {
 		try {
 			Assignatura assig = PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assigToRegister);
@@ -734,6 +1111,15 @@ public final class ControladorDomini {
 		return null;
 	}
 	
+	/**
+	 * Estableix els solpaments d'un grup.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param grup Identifica al grup.
+	 * @param assigToRegister Identifica l'assignatura del grup que es vol registrar.
+	 * @param numToRegister Identifica al grup/subgrup que es vol registrar.
+	 * @param permet Indica si pot o no solapar-se.
+	 */
 	public String SetSolapamentGrup(String plaEstudis, String assignatura, int grup, String assigToRegister, int numToRegister, boolean permet) {
 		try {
 			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).setSolapament(assigToRegister, numToRegister, permet);
@@ -745,6 +1131,16 @@ public final class ControladorDomini {
 		return null;
 	}
 	
+	/**
+	 * Estableix els solapaments d'un subgrup.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param assignatura Identifica l'assignatura.
+	 * @param grup Identifica al grup.
+	 * @param subgrup Identifica al subgrup.
+	 * @param assigToRegister Identifica l'assignatura del grup que es vol registrar.
+	 * @param numToRegister Identifica al grup/subgrup que es vol registrar.
+	 * @param permet Indica si pot o no solapar-se.
+	 */
 	public String SetSolapamentSubGrup(String plaEstudis, String assignatura, int grup, int subgrup, String assigToRegister, int numToRegister, boolean permet) {
 		try {
 			PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).getSubGrup(subgrup).setSolapament(assigToRegister, numToRegister, permet);
@@ -756,6 +1152,21 @@ public final class ControladorDomini {
 		return null;
 }
 
+	/**
+	 * Modifica un horari.
+	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @param campus Identifica al campus.
+	 * @param iter Indica sobre quina iteració treballar.
+	 * @param assig Identifica l'assignatura de la sessió a desplaçar.
+	 * @param numero Identifica al grup/subgrup de la sessio.
+	 * @param dia Indica a quin dia es troba.
+	 * @param hora Indica a quina hora es troba la sessió.
+	 * @param newDia Indica a quin dia desplaçar la sessió.
+	 * @param newHora Indica a quina hora desplaçar.
+	 * @param commit Indica si es vol fer el canvi definitiu.
+	 * @param force Indica si es vol o no procedir al canvi tot i que sigui incongruent amb les restriccions de l'horari.
+	 * @return Un set amb totes les restriccions violades al fer el canvi.
+	 */
 	public HashSet<String> ModificarHorari(String plaEstudis, String campus, int iter, String assignatura, int numero, int dia, int hora, int newDia, int newHora, boolean commit, boolean force){
 		HashSet<String> warning = new HashSet<String>();
 		
