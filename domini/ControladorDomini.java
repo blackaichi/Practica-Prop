@@ -35,6 +35,15 @@ public final class ControladorDomini {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////  ACCIONS  /////////////////////////////////////
+	/**
+	 * Afegeix una estructura buida al map d'horaris.
+	 * @param plaEstudis Pla d'estudis del qual serà l'horari.
+	 * @param campus Campus del qual serà l'horari.
+	 * @return Iteració dins del set on s'ubica l'estructura generada.
+	 */
+	public int generarEntorn(String plaEstudis, String campus) {
+		return Horari.getInstance().generarEntorn(plaEstudis, campus);
+	}
 	
 	/**
 	 * Proporciona un set de tots els fitxer presents en una ubicació conreta.
