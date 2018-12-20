@@ -11,6 +11,7 @@ import utils.Pair;
 /**
  * 
  * @author adria.manero@est.fib.upc.edu
+ * @author hector.morales.carnice@est.fib.upc.edu
  *
  */
 public class ControladorPresentacio {
@@ -31,6 +32,15 @@ public class ControladorPresentacio {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////  ACCIONS  ////////////////////////////////////
+	/**
+	 * Proporciona un set de tots els fitxer presents en una ubicació conreta.
+	 * @param path Direcció de la qual se'n volen obtenir els fitxers.
+	 * @return Un set amb contingut o sense.
+	 */
+	public HashSet<String> fitxersAt(String path){
+		return ControladorDomini.getInstance().fitxersAt(path);
+	}
+	
 	/**
 	 * Indica el total d'horaris que hi ha generats.
 	 * @param plaEstudis IDentifica al pla d'estudis.
@@ -701,7 +711,7 @@ public class ControladorPresentacio {
 	 * @param newHora Indica a quina hora desplaçar.
 	 * @param commit Indica si es vol fer el canvi definitiu.
 	 * @param force Indica si es vol o no procedir al canvi tot i que sigui incongruent amb les restriccions de l'horari.
-	 * @return
+	 * @return Un set amb totes les restriccions violades al fer el canvi.
 	 */
 	public HashSet<String> ModificarHorari(String plaEstudis, String campus, int iter, String assig, int numero, int dia, int hora, int newDia, int newHora, boolean commit, boolean force){
 		return ControladorDomini.getInstance().ModificarHorari(plaEstudis, campus, iter, assig, numero, dia, hora, newDia, newHora, commit, force);
@@ -764,8 +774,8 @@ public class ControladorPresentacio {
 	 * @param campus Identifica al campus.
 	 * @param iteracions Identifica l'iteració sobre la qual treballar.
 	 */
-	public void exportaHorari(String path, HashSet<String> flags, String plaEstudis, String campus, int iteracions) {
-		String s = ControladorDomini.getInstance().exportaHorari(path, flags, campus, plaEstudis, iteracions);
+	public void exportaHorari(String path, String plaEstudis, String campus, int iteracions) {
+		String s = ControladorDomini.getInstance().exportaHorari(path, campus, plaEstudis, iteracions);
 		if(s != null) Main.getInstance().showWarning("Error exportar Horari",s);
 	}
 	
@@ -801,8 +811,8 @@ public class ControladorPresentacio {
 	 * @param hores Identifica a l'hora de la sessió.
 	 * @param grup Identifica al grup.
 	 */
-	public void exportaSessioSubGrup(String path, String plaEstudis, String assignatura, String tipus, int hores, int grup) {
-		String s = ControladorDomini.getInstance().exportaSessioSubGrup(path, plaEstudis, assignatura, tipus, hores, grup, true);
+	public void exportaSessioSubGrup(String path, String plaEstudis, String assignatura, String tipus, int hores) {
+		String s = ControladorDomini.getInstance().exportaSessioSubGrup(path, plaEstudis, assignatura, tipus, hores, true);
 		if(s != null) Main.getInstance().showWarning("Error exportar SessioSubGrup",s);
 	}
 	
