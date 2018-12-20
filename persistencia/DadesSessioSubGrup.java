@@ -89,8 +89,6 @@ public class DadesSessioSubGrup extends ExportaImporta {
 			}
 			int i = 0;
 			if (!f.get(i).equals("SessioSubGrup")) return "no conte una sessio subgrup el fitxer";
-			for (String s : f) 
-				System.out.println(s);
 			while (i < f.size() && f.get(i++).equals("SessioSubGrup")) {
 				if (i + 4 > f.size()) return "error llargada de sessio subgrup";
 				HashSet<String> equip = new HashSet<String>();
