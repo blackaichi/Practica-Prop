@@ -162,6 +162,25 @@ public class Estructura {
 	}
 	
 	/**
+	 * Retorna, si hi és, el segment de l'assignatura i numero de grup/subgrup
+	 * present al dia i hora entrats en aquest horari. 
+	 * @param dia Indica el dia el qual s'ha de cercar.
+	 * @param hora Indica l'hora en la qual s'ha de cercar.
+	 * @param assignatura Identifica l'assignatura de la sessio del segment.
+	 * @param numero Identifica el numero de grup/subgrup de la sessio del segment.
+	 * @return Un segment null o no.
+	 */
+	public Segment getSegment(int dia, int hora, String assignatura, int numero) {
+		for(Segment item : getAllSegments(dia, hora))
+			if(assignatura.equals(item.getSessio().snull()? item.getSessio().first.getGrup().getAssignatura().getNom() : 
+															item.getSessio().second.getSessioSubGrup().getAssignatura().getNom()) &&
+			   numero == (item.getSessio().snull()? item.getSessio().first.getGrup().getNumero() : 
+				   									item.getSessio().second.getSubGrup().getNumero())) return item;
+		
+		return null;
+	}
+	
+	/**
 	 * Retorna el set de flags actius per aquest horari.
 	 * @return Un HashSet buit, o amb molts elements.
 	 */
@@ -180,6 +199,39 @@ public class Estructura {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  MODIFICADORES  /////////////////////////////////
+	/**
+	 * Esborra una sessio completa de l'horari.
+	 * @param assignatura Identifica l'assignatura de la sessio a esborrar.
+	 * @param numero Identifica al grup o subgrup de la sessio a esborrar.
+	 * @param dia Senyala el dia en el qual es vol dur a terme l'eliminació.
+	 * @param hora Senyala l'hora en la qual hi ha alguna de les hores de la sessio a eliminar.
+	 */
+	public void purgeSegment(String assignatura, int numero, int dia, int hora) {
+		int durada = 0;
+		int horaIni = 0;
+		
+		for(Segment segment : horari.get(dia).get(hora)) {
+			String assig = segment.getSessio().snull()? segment.getSessio().first.getGrup().getAssignatura().getNom() : 
+														segment.getSessio().second.getSessioSubGrup().getAssignatura().getNom();
+			
+			int grup = segment.getSessio().snull()? segment.getSessio().first.getGrup().getNumero() : 
+													segment.getSessio().second.getSubGrup().getNumero();
+			
+			if(assig.equals(assignatura) && grup == numero) {
+				horaIni = segment.getData().getHora();
+				durada = segment.getSessio().snull()? segment.getSessio().first.getSessioGrup().getHores() : 
+													  segment.getSessio().second.getSessioSubGrup().getHores();
+				
+				break;
+			}
+		}
+		
+		for(int incr = 0; incr < durada; incr++)
+			horari.get(dia).get(horaIni+incr).removeIf(item -> assignatura.equals(item.getSessio().snull()? item.getSessio().first.getGrup().getAssignatura().getNom() : 
+																											item.getSessio().second.getSessioSubGrup().getAssignatura().getNom()) &&
+															   numero == (item.getSessio().snull()? item.getSessio().first.getGrup().getNumero() : 
+																								  	item.getSessio().second.getSubGrup().getNumero()));
+	}
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  CONSULTORES  ///////////////////////////////////
