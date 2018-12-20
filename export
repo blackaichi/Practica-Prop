@@ -1,17 +1,61 @@
-public void exportaSegment(String path, String nomAula,	String nomAssig, String tipus, int hores,
-			int numg, int numsg, boolean grup) {
-		String str = "";
-		System.out.println(nomAula);
-		if (nomAula == null) {
-			exporta(path, "Segment\nbuit\nEND SEGM\n", false);
-		}
-		else {
-			str = str.concat("Segment").concat(endl);
-			str = str.concat(nomAula).concat(endl);
-			str = str.concat(nomAssig.concat(" ")).concat(tipus.concat(" ")).concat(String.valueOf(hores).concat(" "));
-			str = str.concat(String.valueOf(numg));
-			if (!grup) str = str.concat(" ".concat(String.valueOf(numsg)));
-			str = str.concat(endl).concat("END SEGM").concat(endl);
-			exporta(path, str, false);
-		}
-	}
+PlaEstudis
+fib
+Desconegut
+ttttttttttttttttttttttttnnnnnn
+mati: null tarda: null
+Assignatura
+prop
+Grup
+20
+30
+MT
+HoresAptes
+0(tttttttttttttttttttttttt)1(null)2(null)3(null)4(null)5(null)6(null)
+END HA
+Solapaments
+prop 20
+END SOLAP
+END GRUP
+Grup
+10
+25
+MT
+SubGrup
+11
+5
+Solapaments
+prop 10
+END SOLAP
+HoresAptes
+0(tttttttttttttttttttttttt)1(null)2(null)3(null)4(null)5(null)6(null)
+END HA
+END SUBGRUP
+HoresAptes
+0(tttttttttttttttttttttttt)1(null)2(null)3(null)4(null)5(null)6(null)
+END HA
+Solapaments
+prop 10,11
+END SOLAP
+END GRUP
+SessioGrup
+noequip
+2
+teo
+1
+20,10
+END SESSIOG
+SessioSubGrup
+noequip
+2
+lab
+1
+10-11
+END SESSIOSG
+HoresAptes
+0(tttttttttttttttttttttttt)1(null)2(null)3(null)4(null)5(null)6(null)
+END HA
+Solapaments
+none
+END SOLAP
+END ASSIG
+END PE
