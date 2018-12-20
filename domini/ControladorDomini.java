@@ -630,8 +630,8 @@ public final class ControladorDomini {
 	 */
 	public String CrearPlaEstudis(String plaEstudis) {
 		try {
-			PlaEstudis.newPlaEstudis(plaEstudis);
-			
+			HashSet<String> pe = PlaEstudis.getKeys();
+						
 		} catch(Exception e) {
 			return e.toString();
 		}
@@ -658,6 +658,7 @@ public final class ControladorDomini {
 	 */
 	public String ModificarPlaEstudis(String plaEstudis, String nom, String autor, Map<Integer, boolean[]> lectiu, int[] rangDia) {
 		try {
+			System.out.println("ESTIC A MODIFICA");
 			PlaEstudis toUpdate = PlaEstudis.getPlaEstudis(plaEstudis);
 			
 			int checker = 0;
@@ -666,6 +667,7 @@ public final class ControladorDomini {
 			   (lectiu != null && (checker = toUpdate.setLectiu(lectiu)) != 0) ||
 			   (rangDia != null && (checker = toUpdate.setRangDia(rangDia)) != 0))
 				return ExceptionManager.getException(checker);
+			System.out.println("HE TROBAT UN ERROR");
 		}
 		catch(Exception e) {
 			return e.toString();
@@ -1201,6 +1203,38 @@ public final class ControladorDomini {
 		
 		return warning;
 	}
+	public String crearSegment(String plaEst, String nomC, int dia, int hora, String aula, String nomA, String tipus, int hores, int numg, int numsg, int id) {
+		try {
+			SessioGAssignada sg = null;
+			SessioSGAssignada ssg = null;
+			System.out.println("ESTIC A crear SEGMENT");
+			HashSet<String> pe = PlaEstudis.getKeys();
+			System.out.println(pe.size());
+			for (String p : pe) System.out.println(p + " PLA ESTUDIS TROBAT");
+			HashSet<String> c  = Campus.getKeys();
+			System.out.println("Campus "+c.size());
+			for (String p : c) System.out.println(p + " CAMPUS TROBAT");
+			if (numsg == -1) sg = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(nomA).getGrup(numg).getSessio(tipus, hores);
+			else ssg = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(nomA).getGrup(numg).getSubGrup(numsg).getSessio(tipus, hores);
+			System.out.println("E1");
+			Aula a = Campus.getCampus(nomC).getAula(aula);
+			Segment s = new Segment(sg, ssg);
+			s.setAula(a);
+			s.setData(new Data(dia,hora));
+			Iterator<Estructura> iterator = Horari.getInstance().getHoraris(plaEst, nomC).iterator();
+			while(--id > 0) iterator.next();
+			Estructura horari = iterator.next();
+			horari.setSegment(s, dia, hora);
+			System.out.println("E2");
+			System.out.println("SEGMENT CREAT");
+		}
+		catch(Exception e) {
+			System.out.println(e);
+		}
+		
+		return null;
+}
+
 	
 	////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////  FUNCIONS PERSISTENCIA  ////////////////////////
@@ -1493,7 +1527,6 @@ public final class ControladorDomini {
 	public String exportaSegment(String path, int dia, int hora, String nomC, String nomPE, int id) {
 		try {
 			HashSet<Estructura> h = Horari.getInstance().getHoraris(nomPE, nomC);
-			
 			Estructura aux = new Estructura(PlaEstudis.getPlaEstudis(nomPE),Campus.getCampus(nomC));
 			String nomAula = null;
 			String nomAssig = null;
@@ -1584,8 +1617,10 @@ public final class ControladorDomini {
 	* @param id identificador de l'horari
 	* @return null en cas de cap error, l'error com a String altrament
 	*/
-	public String importaHorari(String path, String nomC, String nomPE, int id) {
-		return ControladorPersistencia.getInstancia().importaHorari(path, nomC, nomPE, id);
+	public String importaHorari(String path) {
+		return ControladorPersistencia.getInstancia().importaHorari(path);
+		/*for(Estructura e : Horari.getInstance().getHoraris("fib", "campus nord"))
+		Estructura.printHorari(e);*/
 	}
 	
 	/**
