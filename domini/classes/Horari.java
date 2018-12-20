@@ -264,7 +264,32 @@ public class Horari {
 		
 		return history;
 	}
-
+	
+	/**
+	 * Afegeix una estructura buida al map d'horaris.
+	 * @param plaEstudis Pla d'estudis del qual serà l'horari.
+	 * @param campus Campus del qual serà l'horari.
+	 * @return Iteració dins del set on s'ubica l'estructura generada.
+	 */
+	public int generarEntorn(String plaEstudis, String campus) {
+		try {
+			inicialitzaEntorn(PlaEstudis.getPlaEstudis(plaEstudis), Campus.getCampus(campus), false);
+			Estructura entorn = new Estructura(PlaEstudis.getPlaEstudis(plaEstudis), Campus.getCampus(campus));
+			HorarisCandidats.get(plaEstudis).get(campus).add(entorn);
+			
+			int iter = 0;
+			for(Estructura struct : HorarisCandidats.get(plaEstudis).get(campus)) {
+				if(struct == entorn) break;
+				else iter++;
+			}
+			
+			return ++iter;
+		}
+		catch(Exception e) {
+			return 0;
+		}
+	}
+	
 	////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////  CONSULTORES  ///////////////////////////////////
 	/**
