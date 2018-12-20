@@ -223,7 +223,7 @@ public class DriverProvadorExports {
 		Campus.newCampus("campus");
 		Campus c = Campus.getCampus("campus");
 		c.setAutor("eric");
-		c.altaAula("a5102", 20);
+		/*c.altaAula("a5102", 20);
 		c.altaAula("a5101", 10);
 		
 		/*System.out.print("Indica el nom del campus(String): ");
