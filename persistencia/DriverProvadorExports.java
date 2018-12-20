@@ -14,7 +14,7 @@ import utils.*;
 
 public class DriverProvadorExports {
 	
-	private static String path = "/home/blackaichi/Desktop/codificar_classes/export";
+	private static String path = "/home/manerow/Documentos/aaaa/export";
 
 	private static String error;
 	
@@ -165,7 +165,7 @@ public class DriverProvadorExports {
 		Horari.getInstance().GENERADOR(pe, c, f, n, true);
 		for(Estructura struct : Horari.getInstance().getHoraris(pe.getNom(), c.getNom()))
 			Estructura.printHorari(struct);
-		cd.exportaHorari(path, f, c.getNom(), pe.getNom(), 0);
+		cd.exportaHorari(path, c.getNom(), pe.getNom(), 0);
 	}
 
 	/**
@@ -223,7 +223,7 @@ public class DriverProvadorExports {
 		Campus.newCampus("campus");
 		Campus c = Campus.getCampus("campus");
 		c.setAutor("eric");
-		/*c.altaAula("a5102", 20);
+		c.altaAula("a5102", 20);
 		c.altaAula("a5101", 10);
 		
 		/*System.out.print("Indica el nom del campus(String): ");
@@ -254,14 +254,7 @@ public class DriverProvadorExports {
 		Assignatura b = pe.getAssignatura("IES");
 		a.altaGrup(10, 20, "M");
 		b.altaGrup(20, 10, "T");
-		Grup g = a.getGrup(10);
-		Grup p = b.getGrup(20);
-		g.altaSubGrup(11, 20, false);
-		p.altaSubGrup(22, 5, false);
 		a.altaSessioG("PC", 2);
-		b.altaSessioG("teo", 2);
-		a.altaSessioSG("lab", 1);
-		b.altaSessioSG("ex", 3);
 		cd.exportaPlaEstudis(path, "pe");
 		
 		/*
