@@ -73,7 +73,7 @@ public class DadesCampus extends ExportaImporta {
 			if (entrada.contains("Aula") && entrada.contains("END AULA"))
 				entrada = entrada.subList(entrada.indexOf("Aula"), entrada.lastIndexOf("END AULA")+1);
 			if ((error = cp.creaCampusImportat(nomC, autor)) != null) return error;
-			if ((error = DadesAula.getInstancia().importaAula(path, nomC, entrada)) != null) {
+			if (entrada.size() != 4 && (error = DadesAula.getInstancia().importaAula(path, nomC, entrada)) != null) {
 				cp.eliminaCampus(nomC);
 				return error;
 			}
