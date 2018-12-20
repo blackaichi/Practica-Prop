@@ -254,7 +254,14 @@ public class DriverProvadorExports {
 		Assignatura b = pe.getAssignatura("IES");
 		a.altaGrup(10, 20, "M");
 		b.altaGrup(20, 10, "T");
+		Grup g = a.getGrup(10);
+		Grup p = b.getGrup(20);
+		g.altaSubGrup(11, 20, false);
+		p.altaSubGrup(22, 5, false);
 		a.altaSessioG("PC", 2);
+		b.altaSessioG("teo", 2);
+		a.altaSessioSG("lab", 1);
+		b.altaSessioSG("ex", 3);
 		cd.exportaPlaEstudis(path, "pe");
 		
 		/*

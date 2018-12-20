@@ -105,7 +105,7 @@ public class DadesGrup extends ExportaImporta {
 				}
 				else return "no conte hores aptes";
 				if (aux.contains("Solapaments") && aux.contains("END SOLAP")) {
-					entry = aux.subList(aux.indexOf("Solapaments"), aux.lastIndexOf("END SOLAP")+1);
+					entry = aux.subList(aux.indexOf("Solapaments"), aux.indexOf("END SOLAP")+1);
 					if ((error = DadesSolapaments.getInstancia().importaSolapaments(nomPE, nomA, numero, -1, entry)) != null) {
 						cp.eliminaGrup(nomPE, nomA, numero);
 						return error;
@@ -116,13 +116,13 @@ public class DadesGrup extends ExportaImporta {
 				if (aux.contains("SubGrup") && aux.contains("END SUBGRUP")) {
 					if (aux.indexOf("SubGrup") == -1 || aux.lastIndexOf("END SUBGRUP") == -1) 
 						return "Error a la part de grup";
-					entry = aux.subList(aux.indexOf("Grup"), aux.lastIndexOf("END GRUP")+1);
+					entry = aux.subList(aux.indexOf("SubGrup"), aux.lastIndexOf("END SUBGRUP")+1);
 					if ((error = DadesSubGrup.getInstancia().importaSubGrup(path, nomPE, nomA, numero, entry)) != null) {
 						cp.eliminaGrup(nomPE, nomA, numero);
 						return error;
 					}
 				}
-				f = f.subList(aux.indexOf("END GRUP")+1, f.size());
+				f = f.subList(f.indexOf("END GRUP")+1, f.size());
 				i = 0;
 			}
 			return null;			

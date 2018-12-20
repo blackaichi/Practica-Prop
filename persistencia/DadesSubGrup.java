@@ -45,10 +45,10 @@ public class DadesSubGrup extends ExportaImporta {
 		String str = "SubGrup".concat(endl);
 		str = str.concat(String.valueOf(numero)).concat(endl);
 		str = str.concat(String.valueOf(places)).concat(endl);
-		DadesHoresAptes.getInstancia().exportaHoresAptes(path, horesAptes);
-		DadesSolapaments.getInstancia().exportaSolapaments(path, solapaments);
-		str = str.concat("END SUBGRUP").concat(endl);
 		exporta(path, str, crea);
+		DadesSolapaments.getInstancia().exportaSolapaments(path, solapaments);
+		DadesHoresAptes.getInstancia().exportaHoresAptes(path, horesAptes);
+		exporta(path, "END SUBGRUP\n", false);
 	}
 
 	/**
@@ -79,16 +79,16 @@ public class DadesSubGrup extends ExportaImporta {
 			if (!f.get(i).equals("SubGrup")) return "no conte un subgrup el fitxer";
 			while (i < f.size() && f.get(i++).equals("SubGrup")) {
 				if (f.contains("END SUBGRUP") && f.contains("SubGrup")) 
-					aux = f.subList(f.indexOf("SubGrup"), f.indexOf("END SUBGRUP"));
+					aux = f.subList(f.indexOf("SubGrup"), f.indexOf("END SUBGRUP")+1);
 				else return "error al grup";
 				if (i + 2 > f.size()) return "error llargada del subgrup";
 				numero = Integer.parseInt(f.get(i++));
 				places = Integer.parseInt(f.get(i++));
-				if (!f.get(i++).equals("END SUBGRUP")) return "error en acabar fitxer grup";
+				if (!f.get(f.size()-1).equals("END SUBGRUP")) return "error en acabar fitxer grup";
 				if ((error = cp.creaSubGrupImportat(nomPE, nomA, grup, numero, places)) != null) return error;
 				List<String> entry;
 				if (aux.contains("Solapaments") && aux.contains("END SOLAP")) {
-					entry = aux.subList(aux.indexOf("Solapaments"), aux.lastIndexOf("END SOLAP")+1);
+					entry = aux.subList(aux.indexOf("Solapaments"), aux.indexOf("END SOLAP")+1);
 					if ((error = DadesSolapaments.getInstancia().importaSolapaments(nomPE, nomA, grup, numero, entry)) != null) {
 						cp.eliminaSubGrup(nomPE, nomA, grup, numero);
 						return error;
@@ -96,13 +96,13 @@ public class DadesSubGrup extends ExportaImporta {
 				}
 				else return "error no conte solapaments";
 				if (aux.contains("HoresAptes") && aux.contains("END HA")) {
-					entry = aux.subList(aux.indexOf("HoresAptes"), aux.lastIndexOf("END HA")+1);
+					entry = aux.subList(aux.indexOf("HoresAptes"), aux.indexOf("END HA")+1);
 					if ((error = DadesHoresAptes.getInstancia().importaHoresAptes(nomPE, nomA, grup, numero, entry)) != null) {
 						cp.eliminaSubGrup(nomPE, nomA, grup, numero);
 						return error;
 					}
 				}
-				f = f.subList(aux.indexOf("END ASSIG")+1, f.size()-1);
+				f = f.subList(f.indexOf("END SUBGRUP")+1, f.size());
 				i = 0;
 			}
 			return null;			

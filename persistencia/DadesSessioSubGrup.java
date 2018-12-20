@@ -89,6 +89,8 @@ public class DadesSessioSubGrup extends ExportaImporta {
 			}
 			int i = 0;
 			if (!f.get(i).equals("SessioSubGrup")) return "no conte una sessio subgrup el fitxer";
+			for (String s : f) 
+				System.out.println(s);
 			while (i < f.size() && f.get(i++).equals("SessioSubGrup")) {
 				if (i + 4 > f.size()) return "error llargada de sessio subgrup";
 				HashSet<String> equip = new HashSet<String>();
@@ -105,16 +107,18 @@ public class DadesSessioSubGrup extends ExportaImporta {
 				hores = Integer.parseInt(f.get(i++));
 				tipus = f.get(i++);
 				nsessions = Integer.parseInt(f.get(i++));
-				if (!f.get(i++).equals("END SESSIOG")) return "error en acabar fitxer sessiosubgrup";
+				if (!f.get(f.size()-1).equals("END SESSIOSG")) return "error en acabar fitxer sessiosubgrup";
 				if ((error = cp.creaSessioSubGrupImportada(nomPE, nomA, equip, hores, tipus, nsessions)) != null) return error;
 				if (assignada) {
-					String[] a = f.get(i).split(",");
-					for (String as : a) {
-						String[] aa = as.split("-");
-						if (aa.length != 2) return "error a sessio subgrup";
-						if ((error = cp.creaSessioSubGrupAImportada(nomPE, nomA, tipus, hores, Integer.parseInt(aa[0]), Integer.parseInt(aa[1]))) != null) {
-							cp.eliminaSessioSubGrup(nomPE, nomA, tipus, hores);
-							return error;
+					if (!f.get(i).equals("none")) {
+						String[] a = f.get(i).split(",");
+						for (String as : a) {
+							String[] aa = as.split("-");
+							if (aa.length != 2) return "error a sessio subgrup";
+							if ((error = cp.creaSessioSubGrupAImportada(nomPE, nomA, tipus, hores, Integer.parseInt(aa[0]), Integer.parseInt(aa[1]))) != null) {
+								cp.eliminaSessioSubGrup(nomPE, nomA, tipus, hores);
+								return error;
+							}
 						}
 					}
 				}

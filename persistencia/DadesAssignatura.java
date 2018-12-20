@@ -117,7 +117,6 @@ public class DadesAssignatura extends ExportaImporta {
 					if (aux.indexOf("SessioSubGrup") == -1 || aux.lastIndexOf("END SESSIOSG") == -1) 
 						return "Error a la part de sessio subgrup";
 					entry = aux.subList(aux.indexOf("SessioSubGrup"), aux.lastIndexOf("END SESSIOSG")+1);
-					System.out.println("PER PUTO FI");
 					if ((error = DadesSessioSubGrup.getInstancia().importaSessioSubGrup(path, nomPE, nomA, entry)) != null) {
 						cp.eliminaAssignatura(nomPE, nomA);
 						return error;
