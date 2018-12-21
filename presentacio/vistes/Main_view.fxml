@@ -96,7 +96,7 @@
       </TabPane>
       <Pane layoutX="681.0" layoutY="29.0" prefHeight="761.0" prefWidth="400.0">
          <children>
-            <ScrollPane prefHeight="761.0" prefWidth="400.0">
+            <ScrollPane prefHeight="850.0" prefWidth="400.0">
               <content>
                 <AnchorPane>
                      <children>
