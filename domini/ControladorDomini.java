@@ -13,7 +13,7 @@ import utils.*;
 /**
  * 
  * @author eric.casanovas@est.fib.upc.edu
- * @autor hector.morales.carnice@est.fib.upc.edu
+ * @author hector.morales.carnice@est.fib.upc.edu
  * @author adria.manero@est.fib.upc.edu
  *
  */
@@ -39,6 +39,7 @@ public final class ControladorDomini {
 	 * Afegeix una estructura buida al map d'horaris.
 	 * @param plaEstudis Pla d'estudis del qual serà l'horari.
 	 * @param campus Campus del qual serà l'horari.
+	 * @param flags flags corresponents al horari
 	 * @return Iteració dins del set on s'ubica l'estructura generada.
 	 */
 	public int generarEntorn(String plaEstudis, String campus, HashSet<String> flags) {
@@ -366,7 +367,7 @@ public final class ControladorDomini {
 	 * Retorna tots els subgrups existents en un grup.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
-	 * @param grup Identifica al grup.
+	 * @param numero numero de grup
 	 * @return Un hashset amb contingut o sense.
 	 */
 	public HashSet<String> subgrupsPresents(String plaEstudis, String assignatura, int numero){
@@ -450,6 +451,15 @@ public final class ControladorDomini {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param plaEstudis nom del pla d'estudis
+	 * @param campus nom del campus
+	 * @param dia dia del segment
+	 * @param hora hora del segment
+	 * @param iter iterador per identificar el horari
+	 * @return retorna tots els segments corresponents als parametres indicats
+	 */
 	public HashSet<ArrayList<String>> getSegments(String plaEstudis, String campus, int dia, int hora, int iter){
 		HashSet<ArrayList<String>> dades = new HashSet<ArrayList<String>>();
 		
@@ -526,6 +536,7 @@ public final class ControladorDomini {
 	/**
 	 * Dona d'alta un campus.
 	 * @param campus Identifica al campus.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String CrearCampus(String campus) {
 		try {
@@ -541,6 +552,7 @@ public final class ControladorDomini {
 	/**
 	 * Esborra un campus
 	 * @param campus Identifica al campus.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String EliminarCampus(String campus) {
 		Campus.eliminarCampus(campus);
@@ -552,6 +564,7 @@ public final class ControladorDomini {
 	 * @param campus Identifica al campus.
 	 * @param nom Nou nom del campus.
 	 * @param autor Nom de l'autor del campus.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String ModificarCampus(String campus, String nom, String autor) {
 		try {
@@ -575,6 +588,7 @@ public final class ControladorDomini {
 	 * @param campus Identifica al campus.
 	 * @param aula Identifica l'aula.
 	 * @param capacitat Indica la capacitat de l'aula.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String CrearAula(String campus, String aula, int capacitat) {
 		try {			
@@ -591,6 +605,7 @@ public final class ControladorDomini {
 	 * Esborra una aula.
 	 * @param campus Identifica al campus.
 	 * @param aula Identifica l'aula.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String EliminarAula(String campus, String aula) {
 		if(Campus.getCampus(campus) == null) return "El campus no existeix";
@@ -605,6 +620,7 @@ public final class ControladorDomini {
 	 * @param nom Nou nom de l'aula.
 	 * @param capacitat Nova capacitat de l'aula.
 	 * @param equip Equip present a l'aula.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String ModificarAula(String campus, String aula, String nom, int capacitat, HashSet<String> equip) {
 		try {
@@ -627,6 +643,7 @@ public final class ControladorDomini {
 	/**
 	 * Dona d'alta un pla d'estudis.
 	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String CrearPlaEstudis(String plaEstudis) {
 		try {
@@ -641,6 +658,7 @@ public final class ControladorDomini {
 	/**
 	 * Esborra un pla d'estudis.
 	 * @param plaEstudis Identifica al pla d'estudis.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String EliminaPlaEstudis(String plaEstudis) {
 		PlaEstudis.eliminaPlaEstudis(plaEstudis);
@@ -653,7 +671,8 @@ public final class ControladorDomini {
 	 * @param nom Nou nom del pla d'estudis.
 	 * @param autor Nom de l'autor del pla d'estudis.
 	 * @param lectiu Horari lectiu del pla.
-	 * @param rang Rang horari del pla.
+	 * @param rangDia  rang en el que pots fer classe dins d'un dia.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String ModificarPlaEstudis(String plaEstudis, String nom, String autor, Map<Integer, boolean[]> lectiu, int[] rangDia) {
 		try {
@@ -676,6 +695,7 @@ public final class ControladorDomini {
 	 * Dona d'alta una assignatura.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String CrearAssignatura(String plaEstudis, String assignatura) {
 		try {
@@ -692,6 +712,7 @@ public final class ControladorDomini {
 	 * Esborra una assignatura.
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String EliminarAssignatura(String plaEstudis, String assignatura) {
 		try {
@@ -709,6 +730,7 @@ public final class ControladorDomini {
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param nom Nou nom de l'assignatura.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String ModificarAssignatura(String plaEstudis, String assignatura, String nom) {
 		try {
@@ -732,6 +754,7 @@ public final class ControladorDomini {
 	 * @param assignatura Identifica l'assignatura.
 	 * @param grup Identifica al grup.
 	 * @param capacitat Capacitat del grup.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String CrearGrup(String plaEstudis, String assignatura, int grup, int capacitat) {
 		try {
@@ -749,6 +772,7 @@ public final class ControladorDomini {
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param assignatura Identifica l'assignatura.
 	 * @param grup Identifica al grup.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String EliminarGrup(String plaEstudis, String assignatura, int grup) {
 		PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).baixaGrup(grup);
@@ -763,6 +787,7 @@ public final class ControladorDomini {
 	 * @param numero Identifica al grup.
 	 * @param places Noves places del grup.
 	 * @param franja Nova franja del grup.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String ModificarGrup(String plaEstudis, String assignatura, int grup, int numero, int places, String franja) {
 		try {
@@ -790,6 +815,7 @@ public final class ControladorDomini {
 	 * @param subGrup Identifica al subgrup.
 	 * @param places Places del subgrup
 	 * @param force Indica si cal adaptar el grup del subgrup a les places solicitades.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String CrearSubGrup(String plaEstudis, String assignatura, int grup, int subGrup, int places, boolean force) {
 		try {
@@ -808,6 +834,7 @@ public final class ControladorDomini {
 	 * @param assignatura Identifica l'assignatura.
 	 * @param grup Identifica al subgrup.
 	 * @param subGrup Identifica al subgrup.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String EliminaSubGrup(String plaEstudis, String assignatura, int grup, int subGrup) {
 		PlaEstudis.getPlaEstudis(plaEstudis).getAssignatura(assignatura).getGrup(grup).baixaSubGrup(subGrup);
@@ -823,6 +850,7 @@ public final class ControladorDomini {
 	 * @param numero  Identifica al subgrup.
 	 * @param places Nova quantitat de places.
 	 * @param incr Indica si cal incrementar el total de places del grup.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament.
 	 */
 	public String ModificarSubGrup(String plaEstudis, String assignatura, int grup, int subgrup, int numero, int places, boolean incr) {
 		try {
@@ -847,6 +875,7 @@ public final class ControladorDomini {
 	 * @param assignatura Identifica l'assignatura.
 	 * @param tipus Identifica al tipus de la sessió.
 	 * @param hores Identifica a l'hora de la sessió.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String CrearSessioGrup(String plaEstudis, String assignatura, String tipus, int hores) {
 		try {
@@ -865,6 +894,7 @@ public final class ControladorDomini {
 	 * @param assignatura Identifica l'assignatura.
 	 * @param tipus Identifica al tipus de la sessió.
 	 * @param hores Identifica a l'hora de la sessió.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String EliminaSessioGrup(String plaEstudis, String assignatura, String tipus, int hores) {
 		try {
@@ -886,7 +916,8 @@ public final class ControladorDomini {
 	 * @param newTipus Nou tipus de la sessió.
 	 * @param newHores Nova quantitat d'hores.
 	 * @param nsessions Nova quantita d'nsessions.
-	 * @param equip Equip necessari a la sessió.
+	 * @param material material necessari per la sessio
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String ModificarSessioGrup(String plaEstudis, String assignatura, String tipus, int hores, String newTipus, int newHores, int nsessions, HashSet<String> material) {
 		try {
@@ -912,6 +943,7 @@ public final class ControladorDomini {
 	 * @param assignatura Identifica l'assignatura.
 	 * @param tipus Identifica al tipus de la sessió.
 	 * @param hores Identifica a l'hora de la sessió.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String CrearSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores) {
 		try {
@@ -930,6 +962,7 @@ public final class ControladorDomini {
 	 * @param assignatura Identifica l'assignatura.
 	 * @param tipus Identifica al tipus de la sessió.
 	 * @param hores Identifica a l'hora de la sessió.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String EliminaSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores) {
 		try {
@@ -947,6 +980,7 @@ public final class ControladorDomini {
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param campus Identifica al campus.
 	 * @param iter Indica sobre quina iteració treballar.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String EliminaHorari(String plaEstudis, String campus, int iter) {
 		try {
@@ -974,7 +1008,8 @@ public final class ControladorDomini {
 	 * @param newTipus Nou tipus de la sessió.
 	 * @param newHores Nova quantitat d'hores.
 	 * @param nsessions Nova quantitat d'nsessions.
-	 * @param equip Equip necessari per a la sessió.
+	 * @param material material necessari per a la sessio.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String ModificarSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores, String newTipus, int newHores, int nsessions, HashSet<String> material) {
 		try {
@@ -1001,6 +1036,7 @@ public final class ControladorDomini {
 	 * @param tipus Identifica al tipus de la sessió.
 	 * @param hores Identifica a l'hora de la sessió.
 	 * @param grup Identifica al grup.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String AssignaSessioGrup(String plaEstudis, String assignatura, String tipus, int hores, int grup) {
 		try {
@@ -1020,6 +1056,7 @@ public final class ControladorDomini {
 	 * @param tipus Identifica al tipus de la sessió.
 	 * @param hores Identifica a l'hora de la sessió.
 	 * @param grup Identifica al grup.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String DesassignaSessioGrup(String plaEstudis, String assignatura, String tipus, int hores, int grup) {
 		try {
@@ -1041,6 +1078,7 @@ public final class ControladorDomini {
 	 * @param hores Identifica a l'hora de la sessió.
 	 * @param grup Identifica al grup.
 	 * @param subgrup Identifica al subgrup.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String AssignaSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores, int grup, int subgrup) {
 		try {
@@ -1061,6 +1099,7 @@ public final class ControladorDomini {
 	 * @param hores Identifica a l'hora de la sessió.
 	 * @param grup Identifica al grup.
 	 * @param subgrup Identifica al subgrup.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String DesassignaSessioSubGrup(String plaEstudis, String assignatura, String tipus, int hores, int grup, int subgrup) {
 		try {
@@ -1083,6 +1122,7 @@ public final class ControladorDomini {
 	 * @param franja Indica la franja.
 	 * @param apte Senyala si la franja es apte o no.
 	 * @param force Indica si cal forçar la fraja o no.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String HoresAptes(String plaEstudis, String assignatura, int grup, int subgrup, Map<Integer, int[]> franja, boolean apte, boolean force) {
 		try {
@@ -1106,6 +1146,7 @@ public final class ControladorDomini {
 	 * @param assignatura Identifica l'assignatura.
 	 * @param assigToRegister Identifica l'assignatura a registrar.
 	 * @param permet Indica si s'ha de permetre o no el solapament.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String SetSolapamentAssig(String plaEstudis, String assignatura, String assigToRegister, boolean permet) {
 		try {
@@ -1127,6 +1168,7 @@ public final class ControladorDomini {
 	 * @param assigToRegister Identifica l'assignatura del grup que es vol registrar.
 	 * @param numToRegister Identifica al grup/subgrup que es vol registrar.
 	 * @param permet Indica si pot o no solapar-se.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String SetSolapamentGrup(String plaEstudis, String assignatura, int grup, String assigToRegister, int numToRegister, boolean permet) {
 		try {
@@ -1148,6 +1190,7 @@ public final class ControladorDomini {
 	 * @param assigToRegister Identifica l'assignatura del grup que es vol registrar.
 	 * @param numToRegister Identifica al grup/subgrup que es vol registrar.
 	 * @param permet Indica si pot o no solapar-se.
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String SetSolapamentSubGrup(String plaEstudis, String assignatura, int grup, int subgrup, String assigToRegister, int numToRegister, boolean permet) {
 		try {
@@ -1165,7 +1208,7 @@ public final class ControladorDomini {
 	 * @param plaEstudis Identifica al pla d'estudis.
 	 * @param campus Identifica al campus.
 	 * @param iter Indica sobre quina iteració treballar.
-	 * @param assig Identifica l'assignatura de la sessió a desplaçar.
+	 * @param assignatura Identifica l'assignatura de la sessió a desplaçar.
 	 * @param numero Identifica al grup/subgrup de la sessio.
 	 * @param dia Indica a quin dia es troba.
 	 * @param hora Indica a quina hora es troba la sessió.
@@ -1241,7 +1284,7 @@ public final class ControladorDomini {
 	 * @param plaEst Nom del pla d'estudis
 	 * @param nomA Nom de l'assignatura
 	 * @param rec True si es vol truncar el fitxer, false si es vol fer un append
-	 * @return
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String exportaAssignatura(String path, String plaEst, String nomA, boolean rec) {
 		try {
@@ -1287,7 +1330,7 @@ public final class ControladorDomini {
 	 * @param nomAula Nom de l'aula
 	 * @param nomCampus Nom del Campus
 	 * @param rec True si es vol truncar el fitxer, false si es vol fer un append
-	 * @return
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String exportaAula(String path, String nomAula, String nomCampus, boolean rec) {
 		try {
@@ -1306,7 +1349,7 @@ public final class ControladorDomini {
 	 * 
 	 * @param path Path on volem exportar el Campus
 	 * @param nomC Nom del campus
-	 * @return
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String exportaCampus(String path, String nomC) {
 		try {
@@ -1334,7 +1377,7 @@ public final class ControladorDomini {
 	 * @param assignatura Nom de l'assignatura
 	 * @param plaEst Nom del Pla d'Estudis
 	 * @param rec True si es vol truncar el fitxer, false si es vol fer un append
-	 * @return
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String exportaGrup(String path,int numero, String assignatura, String plaEst, boolean rec) {
 		try {
@@ -1359,11 +1402,10 @@ public final class ControladorDomini {
 	/**
 	 * 
 	 * @param path Path on volem exportar l'Horari
-	 * @param flags Flags corresponents al Horari
 	 * @param nomC Nom del campus
 	 * @param nomPE Nom del Pla d'Estudis
 	 * @param id Iterador per exportar l'horari desitjat.
-	 * @return
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String exportaHorari(String path, String nomC, String nomPE, int id) {
 		try {
@@ -1402,7 +1444,7 @@ public final class ControladorDomini {
 	 * 
 	 * @param path Path on volem exportar el Pla d'estudis
 	 * @param plaEst nom del Pla d'Estuds
-	 * @return
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String exportaPlaEstudis(String path, String plaEst) {
 		try {
@@ -1431,7 +1473,7 @@ public final class ControladorDomini {
 	 * @param tipus Tipus de la sessio que volem exportar.
 	 * @param hores Hores de la sessio que volem exportar.
 	 * @param rec True si es vol truncar el fitxer, false si es vol fer un append
-	 * @return
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String exportaSessioGrup(String path, String plaEst, String nomAssig, String tipus, Integer hores, boolean rec) {
 		try {
@@ -1460,9 +1502,8 @@ public final class ControladorDomini {
 	 * @param nomAssig Nom de l'Assignatura
 	 * @param tipus Tipus de la Sessio
 	 * @param hores Hores de la Sessio
-	 * @param numg numero de grup.
 	 * @param rec True si es vol truncar el fitxer, false si es vol fer un append
-	 * @return
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String exportaSessioSubGrup(String path, String plaEst, String nomAssig, String tipus, Integer hores, boolean rec) {
 		try {
@@ -1491,7 +1532,7 @@ public final class ControladorDomini {
 	 * @param assignatura Nom de l'Assignatura
 	 * @param plaEst Nom del Pla d'Estudis
 	 * @param rec True si es vol truncar el fitxer, false si es vol fer un append
-	 * @return
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String exportaSubGrup(String path, int numeroSG,int numeroG, String assignatura, String plaEst, boolean rec) {
 		try {
@@ -1515,7 +1556,7 @@ public final class ControladorDomini {
 	 * @param nomC Nom del Campus
 	 * @param nomPE Nom del Pla d'estudis
 	 * @param id Iterador per identificar l'horari correcte
-	 * @return
+	 * @return retorna null si no hi ha error o el missatge d'error altrament
 	 */
 	public String exportaSegment(String path, int dia, int hora, String nomC, String nomPE, int id) {
 		try {
@@ -1576,9 +1617,9 @@ public final class ControladorDomini {
 	
 	/**
 	* Importa un aula
-	* @param Path llista amb el que hi havia al fitxer
-	* @param NomC nom del campus que pertany l'aula
-	* @return Null en cas de cap error, l'error com a String altrament
+	* @param path llista amb el que hi havia al fitxer
+	* @param nomC nom del campus que pertany l'aula
+	* @return null en cas de cap error, l'error com a String altrament
 	*/
 	public String importaAula(String path, String nomC) {
 		return ControladorPersistencia.getInstancia().importaAula(path, nomC);
@@ -1586,8 +1627,8 @@ public final class ControladorDomini {
 	
 	/**
 	* Importa un campus
-	* @param Path llista amb el que hi havia al fitxer
-	* @return Null en cas de estar correcte, sinó l'error
+	* @param path llista amb el que hi havia al fitxer
+	* @return null en cas de estar correcte, sinó l'error
 	*/
 	public String importaCampus(String path) {
 		return ControladorPersistencia.getInstancia().importaCampus(path);
@@ -1607,9 +1648,6 @@ public final class ControladorDomini {
 	/**
 	* Importa un horari
 	* @param path path del fitxer que volem 
-	* @param nomC nom del campus
-	* @param nomPE nom del pla d'estudis
-	* @param id identificador de l'horari
 	* @return null en cas de cap error, l'error com a String altrament
 	*/
 	public String importaHorari(String path) {
