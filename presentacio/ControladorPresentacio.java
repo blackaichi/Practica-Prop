@@ -884,8 +884,8 @@ public class ControladorPresentacio {
 	 * @param id identificador de l'horari
 	 * @return null en cas de cap error, l'error com a String altrament
 	 */
-	public void importaHorari(String path, String nomC, String nomPE, int id) {
-		String s = ControladorDomini.getInstance().importaHorari(path, nomC, nomPE, id);
+	public void importaHorari(String path) {
+		String s = ControladorDomini.getInstance().importaHorari(path);
 		if(s != null) Main.getInstance().showWarning("Error importar Horari",s);
 	}
 	
