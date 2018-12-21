@@ -9,6 +9,11 @@ import javafx.scene.layout.*;
 import presentacio.ControladorPresentacio;
 import presentacio.tools.GridPaneManager;
 
+/**
+ * 
+ * @author hector.morales.carnice@est.fib.upc.edu
+ *
+ */
 public class GrupManager {
 
 	static private GrupManager current;
