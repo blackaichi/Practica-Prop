@@ -1204,19 +1204,11 @@ public final class ControladorDomini {
 		try {
 			SessioGAssignada sg = null;
 			SessioSGAssignada ssg = null;
-			HashSet<String> pe = PlaEstudis.getKeys();
-			HashSet<String> c  = Campus.getKeys();
-			System.out.println("ei_abans " + numg + " " + numsg);
-			for(Grup ng : PlaEstudis.getPlaEstudis(plaEst).getAssignatura(nomA).getGrups()) System.out.print(ng.getNumero() + " ");
-			System.out.print("\n");
 			if (numsg == -1) {
 				PlaEstudis pla = PlaEstudis.getPlaEstudis(plaEst);
 				Assignatura ass = pla.getAssignatura(nomA);
 				Grup gr = ass.getGrup(numg);
 				sg = gr.getSessio(tipus, hores);
-				
-				//sg = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(nomA).getGrup(numg).getSessio(tipus, hores);
-				System.out.println("ei_abans");
 			}
 			else ssg = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(nomA).getGrup(numg).getSubGrup(numsg).getSessio(tipus, hores);
 			Aula a = Campus.getCampus(nomC).getAula(aula);
@@ -1228,10 +1220,9 @@ public final class ControladorDomini {
 			while(--it > 0) iterator.next();
 			Estructura horari = iterator.next();
 			horari.setSegment(s, dia, hora);
-			System.out.println("aaaaa");
 		}
 		catch(Exception e) {
-			System.out.println(e);
+			return e.toString();
 		}
 		
 		return null;
@@ -1541,14 +1532,11 @@ public final class ControladorDomini {
 				it--;
 			}
 			HashSet<Segment> segment = aux.getAllSegments(dia, hora);
-			System.out.println("SIZE: " + segment.size());
 			for (Segment s : segment) {
 				int numg = 0;
 				int numsg = 0;
 				nomAula = s.getAula().getNom();
-				System.out.println(nomAula);
 				boolean grup = s.getSessio().snull();
-				System.out.println(grup);
 				if (grup) {
 					numg = s.getSessio().first.getGrup().getNumero();
 					nomAssig = s.getSessio().first.getSessioGrup().getAssignatura().getNom();
@@ -1569,7 +1557,6 @@ public final class ControladorDomini {
 			return null;
 		}
 		catch (Exception e) {
-			System.out.println(e);
 			return e.toString();
 		}
 }
