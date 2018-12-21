@@ -271,12 +271,12 @@ public class Horari {
 	 * @param campus Campus del qual serà l'horari.
 	 * @return Iteració dins del set on s'ubica l'estructura generada.
 	 */
-	public int generarEntorn(String plaEstudis, String campus) {
+	public int generarEntorn(String plaEstudis, String campus, HashSet<String> flags) {
 		try {
 			inicialitzaEntorn(PlaEstudis.getPlaEstudis(plaEstudis), Campus.getCampus(campus), false);
 			Estructura entorn = new Estructura(PlaEstudis.getPlaEstudis(plaEstudis), Campus.getCampus(campus));
 			HorarisCandidats.get(plaEstudis).get(campus).add(entorn);
-			
+			entorn.setFlags(flags);
 			int iter = 0;
 			for(Estructura struct : HorarisCandidats.get(plaEstudis).get(campus)) {
 				if(struct == entorn) break;
