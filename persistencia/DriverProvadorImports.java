@@ -4,6 +4,7 @@ import java.util.*;
 
 import domini.ControladorDomini;
 import domini.classes.*;
+import domini.tools.Estructura;
 
 /**
  * 
@@ -115,8 +116,18 @@ public class DriverProvadorImports {
 	 */
 	private static void provaHorari() {
 		cd.importaHorari(path);
-		//if (Horari.getInstance().campus.getNom() == "campus nord") 	System.out.println("Campus Correcte");
-		//if (Horari.getInstance().plaEstudis.getNom() == "fib") System.out.println("PlaEstudis Correcte");
+		Campus c = Campus.getCampus("campus nord");
+		PlaEstudis pe = PlaEstudis.getPlaEstudis("fib");
+		if (c != null) 	System.out.println("Campus Correcte");
+		if (pe != null) System.out.println("PlaEstudis Correcte");
+		System.out.println("Comprobació Assignacions Horari");
+		HashSet<Estructura> h = Horari.getInstance().getHoraris(pe.getNom(), c.getNom());
+		if (h != null) System.out.println("El horari té el pla d'estudis i el campus assignats");
+		for(Estructura e : h) {
+			System.out.print("************* HORARI *****************");
+			Estructura.printHorari(e);
+			System.out.print("///////////// END HORARI ///////////////");
+		}
 	}
 
 	/**
