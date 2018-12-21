@@ -31,6 +31,20 @@ public class DadesHorari extends ExportaImporta {
 		return instancia;
 	}
 	
+	/**
+	 * 
+	 * @param path Path on volem exportar l'horari
+	 * @param flags Flags de l'estructura de l'horari que volem exportar
+	 * @param nomC Nom del Campus
+	 * @param autorC nom del autor del Campus
+	 * @param aules Aules del campus
+	 * @param nomPE Nom del pla d'estudis
+	 * @param autorPE autor del pla d'estudis
+	 * @param lectiu hores lectives del pls
+	 * @param rang Rang en el que es pot fer classe en un dia
+	 * @param assignatures assignatures del pla d'estudis
+	 * @param id identificador d'un horari
+	 */
 	public void exportaHorari(String path, HashSet<String> flags, String nomC,String autorC,
 		HashSet<String> aules,String nomPE, String autorPE, Map<Integer, boolean[] > lectiu,
 		int[] rang,HashSet<String> assignatures, int id) {
@@ -71,8 +85,12 @@ public class DadesHorari extends ExportaImporta {
 		}
 		exporta(path, "END HORARI", false);
 	}
-
-
+	
+	/**
+	 * Importa un horari
+	 * @param path path del horari que volem importar 
+	 * @return null en cas de estar correcte, sinó l'error
+	 */
 	public String importaHorari(String path) {
 		try {
 			
@@ -112,17 +130,20 @@ public class DadesHorari extends ExportaImporta {
 			HashSet<String> flags = new HashSet<String>();
 			String[] f = entrada.get(i++).split(",");
 			for(String nom : f) flags.add(nom);
-			int id = cp.generarEntorn(nomPla, nomCampus);
+			int id = cp.generarEntorn(nomPla, nomCampus, flags);
 			for(int k = 0; k < 7; ++k) {
+				i++;
 				for(int j = 0; j < 24; ++j) {
-					if (entrada.get(i++).equals("Segment")) {
+					i++;
+					while(entrada.get(i).equals("Segment")) {
 						List<String> aux;
-						aux = entrada.subList(i-1, i+3); 
+						aux = entrada.subList(i, i+4);
 						if(aux.size() != 4) return "error tamany segment ";
 						DadesSegment.getInstancia().importaSegment(nomPla, nomCampus, k, j, aux, id);
 						i+=4;
 					}
 				}
+
 			}
 			
 		} catch (Exception e) {

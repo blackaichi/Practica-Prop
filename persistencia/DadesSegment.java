@@ -24,13 +24,12 @@ public class DadesSegment extends ExportaImporta {
 	
 	/**
 	 * Exporta un segment
-	 * @param path 
-	 * @param nomAula
-	 * @param nomAssig
-	 * @param tipus
-	 * @param numg
-	 * @param numsg
-	 * @param grup
+	 * @param path Path on volem exportar el segment
+	 * @param nomAula nom de l'aula que correspon al segment
+	 * @param nomAssig nom de l'assignatura que correspon al segment
+	 * @param tipus Tipus de sessio corresponent al segment
+	 * @param numg numero de grup de la sessio corresponent al segment
+	 * @param numsg numero de subgrup de la sessio corresponent al segment si no hi ha, es = 0.
 	 */
 	public void exportaSegment(String path, String nomAula,	String nomAssig, String tipus, int hores,
 			int numg, int numsg) {
@@ -48,7 +47,16 @@ public class DadesSegment extends ExportaImporta {
 			exporta(path, str, false);
 		}
 	}
-	
+	/**
+	 * 
+	 * @param plaEst nom del pla d'estudis
+	 * @param nomC nom del campus
+	 * @param dia dia del segment
+	 * @param hora hora del segment
+	 * @param f segment que volem traduir
+	 * @param id identificador d'un horari
+	 * @return null en cas de estar correcte, sinó l'error
+	 */
 	public String importaSegment(String plaEst, String nomC, int dia, int hora, List<String> f,int id) {
 		try {
 			int i = 0;

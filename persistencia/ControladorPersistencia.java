@@ -764,7 +764,7 @@ public final class ControladorPersistencia {
 	 * @param campus Campus del qual serà l'horari.
 	 * @return Iteració dins del set on s'ubica l'estructura generada.
 	 */
-	public int generarEntorn(String plaEstudis, String nomCampus) {
-		return cd.generarEntorn(plaEstudis, nomCampus);
+	public int generarEntorn(String plaEstudis, String nomCampus,HashSet<String> flags) {
+		return cd.generarEntorn(plaEstudis, nomCampus,flags);
 	}
 }
