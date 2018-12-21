@@ -630,8 +630,7 @@ public final class ControladorDomini {
 	 */
 	public String CrearPlaEstudis(String plaEstudis) {
 		try {
-			HashSet<String> pe = PlaEstudis.getKeys();
-						
+			PlaEstudis.newPlaEstudis(plaEstudis);
 		} catch(Exception e) {
 			return e.toString();
 		}
@@ -658,7 +657,6 @@ public final class ControladorDomini {
 	 */
 	public String ModificarPlaEstudis(String plaEstudis, String nom, String autor, Map<Integer, boolean[]> lectiu, int[] rangDia) {
 		try {
-			System.out.println("ESTIC A MODIFICA");
 			PlaEstudis toUpdate = PlaEstudis.getPlaEstudis(plaEstudis);
 			
 			int checker = 0;
@@ -667,7 +665,6 @@ public final class ControladorDomini {
 			   (lectiu != null && (checker = toUpdate.setLectiu(lectiu)) != 0) ||
 			   (rangDia != null && (checker = toUpdate.setRangDia(rangDia)) != 0))
 				return ExceptionManager.getException(checker);
-			System.out.println("HE TROBAT UN ERROR");
 		}
 		catch(Exception e) {
 			return e.toString();
@@ -1207,26 +1204,31 @@ public final class ControladorDomini {
 		try {
 			SessioGAssignada sg = null;
 			SessioSGAssignada ssg = null;
-			System.out.println("ESTIC A crear SEGMENT");
 			HashSet<String> pe = PlaEstudis.getKeys();
-			System.out.println(pe.size());
-			for (String p : pe) System.out.println(p + " PLA ESTUDIS TROBAT");
 			HashSet<String> c  = Campus.getKeys();
-			System.out.println("Campus "+c.size());
-			for (String p : c) System.out.println(p + " CAMPUS TROBAT");
-			if (numsg == -1) sg = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(nomA).getGrup(numg).getSessio(tipus, hores);
+			System.out.println("ei_abans " + numg + " " + numsg);
+			for(Grup ng : PlaEstudis.getPlaEstudis(plaEst).getAssignatura(nomA).getGrups()) System.out.print(ng.getNumero() + " ");
+			System.out.print("\n");
+			if (numsg == -1) {
+				PlaEstudis pla = PlaEstudis.getPlaEstudis(plaEst);
+				Assignatura ass = pla.getAssignatura(nomA);
+				Grup gr = ass.getGrup(numg);
+				sg = gr.getSessio(tipus, hores);
+				
+				//sg = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(nomA).getGrup(numg).getSessio(tipus, hores);
+				System.out.println("ei_abans");
+			}
 			else ssg = PlaEstudis.getPlaEstudis(plaEst).getAssignatura(nomA).getGrup(numg).getSubGrup(numsg).getSessio(tipus, hores);
-			System.out.println("E1");
 			Aula a = Campus.getCampus(nomC).getAula(aula);
 			Segment s = new Segment(sg, ssg);
 			s.setAula(a);
 			s.setData(new Data(dia,hora));
 			Iterator<Estructura> iterator = Horari.getInstance().getHoraris(plaEst, nomC).iterator();
-			while(--id > 0) iterator.next();
+			int it = id;
+			while(--it > 0) iterator.next();
 			Estructura horari = iterator.next();
 			horari.setSegment(s, dia, hora);
-			System.out.println("E2");
-			System.out.println("SEGMENT CREAT");
+			System.out.println("aaaaa");
 		}
 		catch(Exception e) {
 			System.out.println(e);
@@ -1539,14 +1541,16 @@ public final class ControladorDomini {
 				it--;
 			}
 			HashSet<Segment> segment = aux.getAllSegments(dia, hora);
+			System.out.println("SIZE: " + segment.size());
 			for (Segment s : segment) {
 				int numg = 0;
 				int numsg = 0;
 				nomAula = s.getAula().getNom();
+				System.out.println(nomAula);
 				boolean grup = s.getSessio().snull();
+				System.out.println(grup);
 				if (grup) {
 					numg = s.getSessio().first.getGrup().getNumero();
-					
 					nomAssig = s.getSessio().first.getSessioGrup().getAssignatura().getNom();
 					tipus = s.getSessio().first.getSessioGrup().getTipus();
 					hores = s.getSessio().first.getSessioGrup().getHores();
@@ -1556,15 +1560,19 @@ public final class ControladorDomini {
 					nomAssig = s.getSessio().second.getSessioSubGrup().getAssignatura().getNom();
 					tipus = s.getSessio().second.getSessioSubGrup().getTipus();
 					hores = s.getSessio().second.getSessioSubGrup().getHores();
+					for(Grup gr : PlaEstudis.getPlaEstudis(nomPE).getAssignatura(nomAssig).getGrups()) 
+						for (SubGrup sg : gr.getAllSubGrups())
+							if (sg.getNumero() == numsg) numg = gr.getNumero();
 				}
-				ControladorPersistencia.getInstancia().exportaSegment(path,nomAula,nomAssig,tipus,hores,numg,numsg,grup);
+				ControladorPersistencia.getInstancia().exportaSegment(path,nomAula,nomAssig,tipus,hores,numg,numsg);
 			}
 			return null;
 		}
 		catch (Exception e) {
+			System.out.println(e);
 			return e.toString();
 		}
-	}
+}
 
 	////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////  IMPORTS  //////////////////////////////////////
