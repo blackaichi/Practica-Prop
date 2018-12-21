@@ -8,7 +8,7 @@ Practica feta per:
 - Èric Casanovas (https://github.com/blackaichi)
 
 Repartiment treball (consultar UML.png):
-- **Hèctor**: crear les classes Grup, Subgrup, Campus, Aula, ExceptionManager, SolapamentsGrupSubGrup, HoresAptesGrupSubGrup, Horari, Segment, Pair, Diseny de totes les vistes (.fxml), Controlador Presentació, Controladors de les vistes.
+- **Hèctor**: crear les classes Grup, Subgrup, Campus, Aula, ExceptionManager, Solapaments, HoresAptes, NSessions, AulaAdient, Horari, Estructura, Segment, Pair, Diseny de totes les vistes (.fxml), Controlador Presentació, Controladors de les vistes.
 
 - **Adrià**: crear les classes PlaEstudis, Assignatura, DriverPlaEstudis, DriverAssignatura, Controlador Presentació, Controladors de les vistes.
 
