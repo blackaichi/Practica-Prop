@@ -41,8 +41,8 @@ public final class ControladorDomini {
 	 * @param campus Campus del qual serà l'horari.
 	 * @return Iteració dins del set on s'ubica l'estructura generada.
 	 */
-	public int generarEntorn(String plaEstudis, String campus) {
-		return Horari.getInstance().generarEntorn(plaEstudis, campus);
+	public int generarEntorn(String plaEstudis, String campus, HashSet<String> flags) {
+		return Horari.getInstance().generarEntorn(plaEstudis, campus, flags);
 	}
 	
 	/**
