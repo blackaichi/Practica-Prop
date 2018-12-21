@@ -82,8 +82,7 @@ public class DadesHorari extends ExportaImporta {
 			File dir = new File(path);
 			if (dir.exists()) {
 				File[] entrades = dir.listFiles();
-				if (entrades.length != 3) System.out.println("error falta arxius al directori");
-				System.out.println("aaaaaaa");
+				if (entrades.length != 3) return "falta arxius al directori";
 				for (File f : entrades) {
 					String fil = f.getName();
 					if(fil.contains("Campus")) campus_path = f.getAbsolutePath();
@@ -94,10 +93,8 @@ public class DadesHorari extends ExportaImporta {
 			}
 			dir.mkdir();
 			cp.importaCampus(campus_path);
-			System.out.println("VAIG A ENTRAR A PLA D'ESTUDIS");
 			cp.importaPlaEstudis(plaEstudis_path);
-			System.out.println("Surto de PlaEstudis" + " " + plaEstudis_path);
-			if (horari == null) System.out.println("no hi ha cap export de horari en aquest path");
+			if (horari == null) return  "no hi ha cap export de horari en aquest path";
 			File file = new File(horari);
 			BufferedReader br = new BufferedReader(new FileReader(file)); 
 			String s = "";
@@ -121,7 +118,7 @@ public class DadesHorari extends ExportaImporta {
 					if (entrada.get(i++).equals("Segment")) {
 						List<String> aux;
 						aux = entrada.subList(i-1, i+3); 
-						if(aux.size() != 4) System.out.println("error tamany segment ");
+						if(aux.size() != 4) return "error tamany segment ";
 						DadesSegment.getInstancia().importaSegment(nomPla, nomCampus, k, j, aux, id);
 						i+=4;
 					}
@@ -129,7 +126,7 @@ public class DadesHorari extends ExportaImporta {
 			}
 			
 		} catch (Exception e) {
-			System.out.println(e);
+			e.getMessage();
 		}
 		return null;
 	}

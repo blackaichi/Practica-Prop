@@ -33,9 +33,8 @@ public class DadesSegment extends ExportaImporta {
 	 * @param grup
 	 */
 	public void exportaSegment(String path, String nomAula,	String nomAssig, String tipus, int hores,
-			int numg, int numsg, boolean grup) {
+			int numg, int numsg) {
 		String str = "";
-		System.out.println(nomAula);
 		if (nomAula == null) {
 			exporta(path, "Segment\nbuit\nEND SEGM\n", false);
 		}
@@ -44,7 +43,7 @@ public class DadesSegment extends ExportaImporta {
 			str = str.concat(nomAula).concat(endl);
 			str = str.concat(nomAssig.concat(" ")).concat(tipus.concat(" ")).concat(String.valueOf(hores).concat(" "));
 			str = str.concat(String.valueOf(numg));
-			if (!grup) str = str.concat(" ".concat(String.valueOf(numsg)));
+			if (numsg != 0) str = str.concat(" ".concat(String.valueOf(numsg)));
 			str = str.concat(endl).concat("END SEGM").concat(endl);
 			exporta(path, str, false);
 		}
@@ -60,21 +59,20 @@ public class DadesSegment extends ExportaImporta {
 					aula = f.get(i++);
 					String s = f.get(i++);
 					String[] splited = s.split("\\s+");
-					if (splited.length < 4 || splited.length > 5) System.out.println("el segment esta mal");
+					if (splited.length < 4 || splited.length > 5) return "El segment te una mida incorrecta";
 					nomA = splited[0];
 					tipus = splited[1];
 					hores = Integer.parseInt(splited[2]);
 					numg = Integer.parseInt(splited[3]);
 					if (splited.length == 5) numsg = Integer.parseInt(splited[4]);
-					if (!f.get(i++).equals("END SEGM")) System.out.println("error en acabar fitxer segment");
-					if ((error = cp.creaSegmentImportat(plaEst,nomC,dia,hora,aula,nomA,tipus,hores,numg,numsg,id)) != null) System.out.println(error);
+					if (!f.get(i++).equals("END SEGM")) return "error en acabar fitxer segment";
+					if ((error = cp.creaSegmentImportat(plaEst,nomC,dia,hora,aula,nomA,tipus,hores,numg,numsg,id)) != null) return error;
 			}
 			return null;			
 		}
 		catch (Exception e) {
-			System.out.println(e);
+			return e.getMessage();
 		}
-		return null;
 	}
 }
 

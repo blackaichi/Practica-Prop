@@ -142,8 +142,8 @@ public final class ControladorPersistencia {
 			DadesHorari.getInstancia().exportaHorari(path, flags, nomC, autorC, aules,nomPE,autorPE,lectiu,rang,assignatures,id);
 			return null;
 		}
-		catch (Exception ex) {
-			return ex.getMessage();
+		catch (Exception e) {
+			return e.getMessage();
 		}
 	}
 	
@@ -246,9 +246,9 @@ public final class ControladorPersistencia {
 	 * @return null null en cas de estar correcte, sinó l'error
 	 */
 	public String exportaSegment(String path, String nomAula, String nomAssig, String tipus, int hores,
-			int numg, int numsg, boolean grup) {
+			int numg, int numsg) {
 		try {
-			DadesSegment.getInstancia().exportaSegment(path, nomAula, nomAssig, tipus, hores, numg, numsg, grup);
+			DadesSegment.getInstancia().exportaSegment(path, nomAula, nomAssig, tipus, hores, numg, numsg);
 			return null;
 		}
 		catch (Exception e) {
