@@ -31,34 +31,58 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TabPane prefHeight="520.0" prefWidth="295.0" tabClosingPolicy="UNAVAILABLE">
-                          <tabs>
-                            <Tab text="Grups">
-                              <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <Pane prefHeight="520.0" prefWidth="295.0">
+                           <children>
+                              <ScrollPane prefHeight="520.0" prefWidth="296.0">
+                                <content>
+                                  <AnchorPane>
                                        <children>
-                                          <Button id="grup_creador" layoutX="2.0" layoutY="459.0" mnemonicParsing="false" onAction="#onCreateGrup" prefHeight="29.0" prefWidth="292.0" text="+ Crear grup" />
-                                          <ListView id="grups_list" fx:id="grups" onMouseClicked="#onGrupItemClicked" prefHeight="459.0" prefWidth="295.0" />
+                                          <TabPane prefHeight="520.0" prefWidth="295.0" tabClosingPolicy="UNAVAILABLE">
+                                            <tabs>
+                                              <Tab text="Grups">
+                                                <content>
+                                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                         <children>
+                                                            <Button id="grup_creador" layoutX="2.0" layoutY="459.0" mnemonicParsing="false" onAction="#onCreateGrup" prefHeight="29.0" prefWidth="292.0" text="+ Crear grup" />
+                                                            <ListView id="grups_list" fx:id="grups" onMouseClicked="#onGrupItemClicked" prefHeight="459.0" prefWidth="295.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                </content>
+                                              </Tab>
+                                            </tabs>
+                                          </TabPane>
                                        </children>
                                     </AnchorPane>
-                              </content>
-                            </Tab>
-                          </tabs>
-                        </TabPane>
-                        <TabPane layoutX="295.0" prefHeight="520.0" prefWidth="295.0" tabClosingPolicy="UNAVAILABLE">
-                           <tabs>
-                              <Tab text="Sessions">
-                                 <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                </content>
+                              </ScrollPane>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="295.0" prefHeight="520.0" prefWidth="296.0">
+                           <children>
+                              <ScrollPane prefHeight="521.0" prefWidth="296.0">
+                                <content>
+                                  <AnchorPane>
                                        <children>
-                                          <Button id="sessio_creador" layoutX="2.0" layoutY="459.0" mnemonicParsing="false" onAction="#onCreateSessio" prefHeight="29.0" prefWidth="292.0" text="+ Crear sessio" />
-                                          <ListView id="sessions_list" fx:id="sessions" onMouseClicked="#onSessioItemClicked" prefHeight="459.0" prefWidth="295.0" />
+                                          <TabPane prefHeight="520.0" prefWidth="295.0" tabClosingPolicy="UNAVAILABLE">
+                                             <tabs>
+                                                <Tab text="Sessions">
+                                                   <content>
+                                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                         <children>
+                                                            <Button id="sessio_creador" layoutX="2.0" layoutY="459.0" mnemonicParsing="false" onAction="#onCreateSessio" prefHeight="29.0" prefWidth="292.0" text="+ Crear sessio" />
+                                                            <ListView id="sessions_list" fx:id="sessions" onMouseClicked="#onSessioItemClicked" prefHeight="459.0" prefWidth="295.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                   </content>
+                                                </Tab>
+                                             </tabs>
+                                          </TabPane>
                                        </children>
                                     </AnchorPane>
-                                 </content>
-                              </Tab>
-                           </tabs>
-                        </TabPane>
+                                </content>
+                              </ScrollPane>
+                           </children>
+                        </Pane>
                      </children>
                   </AnchorPane>
                </content>

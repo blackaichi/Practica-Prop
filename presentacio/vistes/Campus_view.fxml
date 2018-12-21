@@ -27,20 +27,32 @@
             <Button id="aplicar_sessio" layoutX="305.0" layoutY="6.0" mnemonicParsing="false" onAction="#apply" prefHeight="29.0" prefWidth="88.0" text="Aplicar" />
          </children>
       </Pane>
-      <TabPane layoutY="208.0" prefHeight="513.0" prefWidth="400.0" tabClosingPolicy="UNAVAILABLE">
-        <tabs>
-          <Tab text="Aules">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+      <Pane layoutY="208.0" prefHeight="516.0" prefWidth="400.0">
+         <children>
+            <ScrollPane prefHeight="516.0" prefWidth="400.0">
+              <content>
+                <AnchorPane prefHeight="517.0" prefWidth="400.0">
                      <children>
-                        <Button id="aula_creador" layoutY="454.0" mnemonicParsing="false" onAction="#onCreateAula" prefHeight="25.0" prefWidth="400.0" text="+ Crear aula" />
-                        <ListView id="list_aules" fx:id="aules" onMouseClicked="#onAulaItemClicked" prefHeight="455.0" prefWidth="400.0" />
+                        <TabPane prefHeight="513.0" prefWidth="400.0" tabClosingPolicy="UNAVAILABLE">
+                          <tabs>
+                            <Tab text="Aules">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <Button id="aula_creador" layoutY="454.0" mnemonicParsing="false" onAction="#onCreateAula" prefHeight="25.0" prefWidth="400.0" text="+ Crear aula" />
+                                          <ListView id="list_aules" fx:id="aules" onMouseClicked="#onAulaItemClicked" prefHeight="455.0" prefWidth="400.0" />
+                                       </children>
+                                    </AnchorPane>
+                              </content>
+                            </Tab>
+                          </tabs>
+                        </TabPane>
                      </children>
                   </AnchorPane>
-            </content>
-          </Tab>
-        </tabs>
-      </TabPane>
+              </content>
+            </ScrollPane>
+         </children>
+      </Pane>
       <MenuBar id="status_bar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="400.0">
          <menus>
             <Menu mnemonicParsing="false" text="Dades">

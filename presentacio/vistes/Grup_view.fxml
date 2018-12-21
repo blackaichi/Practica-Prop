@@ -58,8 +58,20 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button layoutX="4.0" layoutY="508.0" mnemonicParsing="false" onAction="#onCreateSubGrup" prefHeight="25.0" prefWidth="493.0" text="+ Crear subgrup" />
-                        <ListView id="subgrups_list" fx:id="subgrups" onMouseClicked="#onSubGrupItemClicked" prefHeight="506.0" prefWidth="500.0" />
+                        <Pane prefHeight="540.0" prefWidth="500.0">
+                           <children>
+                              <ScrollPane prefHeight="540.0" prefWidth="500.0">
+                                <content>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="540.0" prefWidth="497.0">
+                                       <children>
+                                          <ListView id="subgrups_list" fx:id="subgrups" onMouseClicked="#onSubGrupItemClicked" prefHeight="515.0" prefWidth="500.0" />
+                                          <Button layoutX="4.0" layoutY="514.0" mnemonicParsing="false" onAction="#onCreateSubGrup" prefHeight="25.0" prefWidth="493.0" text="+ Crear subgrup" />
+                                       </children>
+                                    </AnchorPane>
+                                </content>
+                              </ScrollPane>
+                           </children>
+                        </Pane>
                      </children>
                   </AnchorPane>
             </content>
