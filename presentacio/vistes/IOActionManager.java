@@ -8,6 +8,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import presentacio.ControladorPresentacio;
 
+/**
+ * 
+ * @author hector.morales.carnice@est.fib.upc.edu
+ *
+ */
 public class IOActionManager {
 
 	static private IOActionManager current;
@@ -25,6 +30,16 @@ public class IOActionManager {
 	
 	////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////  PRIVADES /////////////////////////////////////
+	/**
+	 * Indica si un fitxer existeix o no.
+	 * @param completePath
+	 * @return True si, i només si, el fitxer/carpeta existeix.
+	 */
+	private boolean checkIfExists(String completePath) {
+		int index = completePath.lastIndexOf('/');
+		return ControladorPresentacio.getInstance().fitxersAt(completePath.substring(0, index)).contains(completePath.substring(index+1, completePath.length()));
+	}
+	
 	/**
 	 * Comprova que els parametres necessaris per dur a terme una acció estiguin correctament configurats.
 	 * @return True si i només si tots els parametres estan correctes; false altrament.
@@ -50,9 +65,15 @@ public class IOActionManager {
 	 */
 	private String getExtension(String path) {
 		StringTokenizer token = new StringTokenizer(path, ".");
+		boolean hasExtension = false;
+		
 		do {
 			String depurat = token.nextToken();
-			if(!token.hasMoreTokens()) return depurat;
+			if(!token.hasMoreTokens()) {
+				return hasExtension? depurat : "horari";
+			}
+			
+			hasExtension = true;
 		}while(token.hasMoreTokens());
 		
 		return null;
@@ -83,9 +104,9 @@ public class IOActionManager {
 		if(completePath.charAt(completePath.length()-1) != '/') completePath = completePath.concat("/");
 		completePath = completePath.concat(file.getText().replaceAll(" ", "_"));
 		
+		boolean onAction = true;
 		switch(getAction().first) {
 			case "horari":
-				completePath = completePath.concat(".horari");
 				ControladorPresentacio.getInstance().exportaHorari(completePath, Main.getInstance().getSelection().first, Main.getInstance().getSelection().second, Main.getInstance().getIteration());
 				break;
 		
@@ -129,8 +150,12 @@ public class IOActionManager {
 				ControladorPresentacio.getInstance().exportaSessioSubGrup(completePath, PlaEstudisManager.getPath(), AssignaturaManager.getPath(), AssignaturaManager.getInstance().getTipusSessio(objecte.getText()), AssignaturaManager.getInstance().getDuradaSessio(objecte.getText()));
 				break;
 				
-			default: break;
+			default:
+				onAction = false;
+				break;
 		}
+		
+		if(onAction) Main.getInstance().showWarning("Importació", checkIfExists(completePath)? "L'objecte s'ha exportat correctament." : "Sembla que s'ha produit algun error!");
 	}
 	
 	/**
@@ -142,56 +167,60 @@ public class IOActionManager {
 		if(completePath.charAt(completePath.length()-1) != '/') completePath = completePath.concat("/");
 		
 		String[] fitxers = file.getText().split(";");
-		for(int iter = 0; iter < fitxers.length; iter++) {
-			completePath = completePath.concat(fitxers[iter].split(" ")[0]);
+		for(int iter = 0; iter < fitxers.length; iter++)
+			if(!ControladorPresentacio.getInstance().fitxersAt(completePath).contains(fitxers[iter].split(" ")[0]))
+				Main.getInstance().showWarning("Fitxer inexistent", "El fitxer amb nom ".concat(fitxers[iter].split(" ")[0]).concat(" no s'ubica al path ").concat(completePath));
+			else{
+				String newcompletePath = completePath.concat(fitxers[iter].split(" ")[0]);
 			
-			switch(getExtension(file.getText())) {
-				case "horari":
-					Main.getInstance().update();
-					break;
-			
-				case "plaest":
-					ControladorPresentacio.getInstance().importaPlaEstudis(completePath);
-					Main.getInstance().update();
-					break;
-					
-				case "campus":
-					ControladorPresentacio.getInstance().importaCampus(completePath);
-					Main.getInstance().update();
-					break;
-					
-				case "aula":
-					ControladorPresentacio.getInstance().importaAula(completePath, CampusManager.getPath());
-					CampusManager.getInstance().update();
-					break;
-					
-				case "assig":
-					ControladorPresentacio.getInstance().importaAssignatura(completePath, PlaEstudisManager.getPath());
-					PlaEstudisManager.getInstance().update();
-					break;
-					
-				case "grup":
-					ControladorPresentacio.getInstance().importaGrup(completePath, PlaEstudisManager.getPath(), AssignaturaManager.getPath());
-					AssignaturaManager.getInstance().update();
-					break;
-					
-				case "subgrup":
-					ControladorPresentacio.getInstance().importaSubGrup(completePath, PlaEstudisManager.getPath(), AssignaturaManager.getPath(), Integer.parseInt(GrupManager.getPath()));
-					GrupManager.getInstance().update();
-					break;
-					
-				case "sessg":
-					ControladorPresentacio.getInstance().importaSessioGrup(completePath, PlaEstudisManager.getPath(), AssignaturaManager.getPath());
-					AssignaturaManager.getInstance().update();
-					break;
-					
-				case "sesssubg":
-					ControladorPresentacio.getInstance().importaSessioSubGrup(completePath, PlaEstudisManager.getPath(), AssignaturaManager.getPath());
-					AssignaturaManager.getInstance().update();
-					break;
-					
-				default: break;
-			}
+				switch(getExtension(file.getText())) {
+					case "horari":
+						ControladorPresentacio.getInstance().importaHorari(newcompletePath);
+						Main.getInstance().update();
+						break;
+				
+					case "plaest":
+						ControladorPresentacio.getInstance().importaPlaEstudis(newcompletePath);
+						Main.getInstance().update();
+						break;
+						
+					case "campus":
+						ControladorPresentacio.getInstance().importaCampus(newcompletePath);
+						Main.getInstance().update();
+						break;
+						
+					case "aula":
+						ControladorPresentacio.getInstance().importaAula(newcompletePath, CampusManager.getPath());
+						CampusManager.getInstance().update();
+						break;
+						
+					case "assig":
+						ControladorPresentacio.getInstance().importaAssignatura(newcompletePath, PlaEstudisManager.getPath());
+						PlaEstudisManager.getInstance().update();
+						break;
+						
+					case "grup":
+						ControladorPresentacio.getInstance().importaGrup(newcompletePath, PlaEstudisManager.getPath(), AssignaturaManager.getPath());
+						AssignaturaManager.getInstance().update();
+						break;
+						
+					case "subgrup":
+						ControladorPresentacio.getInstance().importaSubGrup(newcompletePath, PlaEstudisManager.getPath(), AssignaturaManager.getPath(), Integer.parseInt(GrupManager.getPath()));
+						GrupManager.getInstance().update();
+						break;
+						
+					case "sessg":
+						ControladorPresentacio.getInstance().importaSessioGrup(newcompletePath, PlaEstudisManager.getPath(), AssignaturaManager.getPath());
+						AssignaturaManager.getInstance().update();
+						break;
+						
+					case "sesssubg":
+						ControladorPresentacio.getInstance().importaSessioSubGrup(newcompletePath, PlaEstudisManager.getPath(), AssignaturaManager.getPath());
+						AssignaturaManager.getInstance().update();
+						break;
+						
+					default: break;
+				}
 		}
 	}
 	
@@ -220,7 +249,7 @@ public class IOActionManager {
 		if(defaultPath != null && !defaultPath.isEmpty())
 			this.path.setText(defaultPath);
 		
-		if(!getAction().second) file.setPromptText("'TOTS' o bé el nom dels fitxers a importar (separats per ';')");
+		if(!getAction().second) file.setPromptText("Nom dels fitxers (entre ';') o carpeta de l'horari a importar.");
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////
