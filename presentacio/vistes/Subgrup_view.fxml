@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="770.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentacio.vistes.SubGrupManager">
+   <children>
+      <Pane layoutY="29.0" prefHeight="41.0" prefWidth="500.0">
+         <children>
+            <Label id="subgrup_title" fx:id="title" layoutX="14.0" layoutY="11.0" prefHeight="15.0" prefWidth="374.0" text="Subgrup: nou_subgrup">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Button id="aplicar_sessio" layoutX="405.0" layoutY="6.0" mnemonicParsing="false" onAction="#apply" prefHeight="29.0" prefWidth="88.0" text="Aplicar" />
+         </children>
+      </Pane>
+      <Pane layoutY="70.0" prefHeight="130.0" prefWidth="500.0">
+         <children>
+            <TextField id="numero_subgrup" fx:id="nom" layoutX="95.0" layoutY="14.0" prefHeight="25.0" prefWidth="374.0" promptText="numero de subgrup" />
+            <TextField id="places_subgrup" fx:id="places" layoutX="95.0" layoutY="49.0" prefHeight="25.0" prefWidth="374.0" promptText="capacitat del subgrup" />
+            <Label layoutX="14.0" layoutY="19.0" text="Numero" />
+            <Label layoutX="14.0" layoutY="54.0" text="Places:" />
+            <Separator layoutY="-1.0" prefHeight="5.0" prefWidth="500.0" />
+            <Label layoutX="14.0" layoutY="88.0" text="Franja:" />
+            <Label id="franja_title" fx:id="franja" layoutX="95.0" layoutY="88.0" prefHeight="15.0" prefWidth="277.0" text="Qualsevol" />
+            <CheckBox fx:id="force" layoutX="335.0" layoutY="87.0" mnemonicParsing="false" text="Forçar les places" />
+         </children>
+      </Pane>
+      <MenuBar id="status_bar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="500.0">
+         <menus>
+            <Menu disable="true" mnemonicParsing="false" text="Dades" />
+            <Menu disable="true" mnemonicParsing="false" text="Editar" />
+         </menus>
+      </MenuBar>
+      <TabPane layoutY="200.0" prefHeight="572.0" prefWidth="500.0" tabClosingPolicy="UNAVAILABLE">
+         <tabs>
+            <Tab text="Solapaments">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label ellipsisString="" layoutX="13.0" layoutY="7.0" prefHeight="41.0" prefWidth="475.0" text="Selecciona tots aquelles grups/subgrups amb els quals no es pot solapar aquest grup." wrapText="true" />
+                        <GridPane id="solapaments_container" fx:id="solap_container" layoutX="14.0" layoutY="53.0" prefHeight="472.0" prefWidth="473.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="Hores aptes">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label ellipsisString="" layoutX="13.0" prefHeight="41.0" prefWidth="475.0" text="Selecciona aquelles hores en les quals el grup pot fer classe." wrapText="true" />
+                        <GridPane id="hores_aptes_container" fx:id="aptes_container" layoutX="13.0" layoutY="41.0" prefHeight="485.0" prefWidth="474.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+   </children>
+</Pane>

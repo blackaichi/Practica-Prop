@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<Pane prefHeight="720.0" prefWidth="590.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentacio.vistes.AssignaturaManager">
+   <children>
+      <Pane layoutY="68.0" prefHeight="100.0" prefWidth="590.0">
+         <children>
+            <TextField id="nom_assignatura" fx:id="nom" layoutX="85.0" layoutY="38.0" prefHeight="25.0" prefWidth="280.0" promptText="nom de l'assignatura" />
+            <Label layoutX="14.0" layoutY="43.0" text="Nom:" />
+            <Separator layoutY="-1.0" prefHeight="3.0" prefWidth="590.0" />
+         </children>
+      </Pane>
+      <Pane layoutY="27.0" prefHeight="41.0" prefWidth="590.0">
+         <children>
+            <Label id="assignatura_title" fx:id="title" layoutX="13.0" layoutY="11.0" prefHeight="15.0" prefWidth="374.0" text="Assignatura: nova_assignatura">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Button id="aplicar_sessio" layoutX="496.0" layoutY="6.0" mnemonicParsing="false" onAction="#apply" prefHeight="29.0" prefWidth="88.0" text="Aplicar" />
+         </children>
+      </Pane>
+      <TabPane layoutY="168.0" prefHeight="552.0" prefWidth="590.0" tabClosingPolicy="UNAVAILABLE">
+         <tabs>
+            <Tab text="Elements">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Pane prefHeight="520.0" prefWidth="295.0">
+                           <children>
+                              <ScrollPane prefHeight="520.0" prefWidth="296.0">
+                                <content>
+                                  <AnchorPane>
+                                       <children>
+                                          <TabPane prefHeight="520.0" prefWidth="295.0" tabClosingPolicy="UNAVAILABLE">
+                                            <tabs>
+                                              <Tab text="Grups">
+                                                <content>
+                                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                         <children>
+                                                            <Button id="grup_creador" layoutX="2.0" layoutY="459.0" mnemonicParsing="false" onAction="#onCreateGrup" prefHeight="29.0" prefWidth="292.0" text="+ Crear grup" />
+                                                            <ListView id="grups_list" fx:id="grups" onMouseClicked="#onGrupItemClicked" prefHeight="459.0" prefWidth="295.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                </content>
+                                              </Tab>
+                                            </tabs>
+                                          </TabPane>
+                                       </children>
+                                    </AnchorPane>
+                                </content>
+                              </ScrollPane>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="295.0" prefHeight="520.0" prefWidth="296.0">
+                           <children>
+                              <ScrollPane prefHeight="521.0" prefWidth="296.0">
+                                <content>
+                                  <AnchorPane>
+                                       <children>
+                                          <TabPane prefHeight="520.0" prefWidth="295.0" tabClosingPolicy="UNAVAILABLE">
+                                             <tabs>
+                                                <Tab text="Sessions">
+                                                   <content>
+                                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                         <children>
+                                                            <Button id="sessio_creador" layoutX="2.0" layoutY="459.0" mnemonicParsing="false" onAction="#onCreateSessio" prefHeight="29.0" prefWidth="292.0" text="+ Crear sessio" />
+                                                            <ListView id="sessions_list" fx:id="sessions" onMouseClicked="#onSessioItemClicked" prefHeight="459.0" prefWidth="295.0" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                   </content>
+                                                </Tab>
+                                             </tabs>
+                                          </TabPane>
+                                       </children>
+                                    </AnchorPane>
+                                </content>
+                              </ScrollPane>
+                           </children>
+                        </Pane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="Solapaments">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label ellipsisString="" layoutX="14.0" prefHeight="55.0" prefWidth="563.0" text="Selecciona totes aquelles assignatures amb les quals no es pot solapar aquesta assignatura:" wrapText="true" />
+                        <GridPane id="solapaments_container" fx:id="solap_container" layoutX="15.0" layoutY="69.0" prefHeight="440.0" prefWidth="561.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Hores aptes">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label ellipsisString="" layoutX="15.0" prefHeight="55.0" prefWidth="563.0" text="Selecciona totes aquelles hores en les quals hi pot haver classe d'aquesta assignatura:" wrapText="true" />
+                        <ScrollPane layoutX="1.0" layoutY="53.0" prefHeight="465.0" prefWidth="590.0">
+                           <content>
+                              <GridPane id="hores_aptes_container" fx:id="aptes_container" maxHeight="1.7976931348623157E308" prefHeight="465.0" prefWidth="572.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                              </GridPane>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+      <MenuBar id="status_bar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="590.0">
+         <menus>
+            <Menu mnemonicParsing="false" text="Dades">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#onImportarAction" text="Importar..." />
+                  <MenuItem mnemonicParsing="false" onAction="#onExportAction" text="Exportar..." />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Editar">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#onModify" text="Modificar" />
+                  <MenuItem mnemonicParsing="false" onAction="#onDelete" text="Esborrar" />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+   </children>
+</Pane>
